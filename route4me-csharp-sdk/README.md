@@ -1,6 +1,6 @@
 # Route4Me Route Optimization SaaS C# SDK (.net core framework)
 
-[![Build Status](https://travis-ci.org/route4me/route4me-csharp-core-sdk.svg?branch=master)](https://travis-ci.org/route4me/route4me-csharp-core-sdk)
+[![Build Status](https://travis-ci.org/route4me/route4me-net-core/route4me-csharp-sdk.svg?branch=master)](https://travis-ci.org/route4me/route4me-net-core/route4me-csharp-sdk)
 [![Build status](https://ci.appveyor.com/api/projects/status/8iq2b0ctti0lw79k?svg=true)](https://ci.appveyor.com/project/novapulsar/route4me-csharp-sdk)
 
 
