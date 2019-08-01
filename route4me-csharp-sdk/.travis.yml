@@ -11,6 +11,7 @@ sudo: required
 dist: xenial
 dotnet: 2.2
 script:
+    - cd route4me-csharp-sdk
     - dotnet restore
     - dotnet build
     - dotnet test ./Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj --filter TestCategory!=OPTIONAL-TEST
