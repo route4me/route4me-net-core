@@ -475,14 +475,15 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("depot_lng", mergeRoutesParameters.DepotLng.ToString())
             };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                StatusResponse response = GetJsonObjectFromAPI<StatusResponse>
+                    (roParames, R4MEInfrastructureSettings.MergeRoutes,
+                    HttpMethodType.Post, httpContent, out errorString);
 
-			StatusResponse response = GetJsonObjectFromAPI<StatusResponse>
-				(roParames, R4MEInfrastructureSettings.MergeRoutes,
-				HttpMethodType.Post, httpContent, out errorString);
-
-			return (response != null && response.status) ? true : false;
-		}
+                return (response != null && response.status) ? true : false;
+            };
+ 		}
 
         /// <summary>
         /// Resequences/roptimizes a route. TO DO: this endpoint seems to be deprecated and should be disabled
@@ -597,12 +598,13 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("recipient_email", Email)
             };
 
-			//keyValues.Add(new KeyValuePair<string, string>("recipient_email", Email));
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
+            //keyValues.Add(new KeyValuePair<string, string>("recipient_email", Email));
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                StatusResponse response = GetJsonObjectFromAPI<StatusResponse>(roParames, R4MEInfrastructureSettings.RouteSharing, HttpMethodType.Post, httpContent, out errorString);
 
-			StatusResponse response = GetJsonObjectFromAPI<StatusResponse>(roParames, R4MEInfrastructureSettings.RouteSharing, HttpMethodType.Post, httpContent, out errorString);
-
-			return (response != null && response.status) ? true : false;
+                return (response != null && response.status) ? true : false;
+            };
 		}
 
         /// <summary>
@@ -1064,10 +1066,11 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("format", memParams.Format)
             };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
-
-            return GetJsonObjectFromAPI<MemberResponse>(roParams, R4MEInfrastructureSettings.UserAuthentication, 
-                HttpMethodType.Post, httpContent, out errorString);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                return GetJsonObjectFromAPI<MemberResponse>(roParams, R4MEInfrastructureSettings.UserAuthentication,
+                    HttpMethodType.Post, httpContent, out errorString);
+            };
 		}
 
         /// <summary>
@@ -1097,10 +1100,11 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("strPassword_2", memParams.StrPassword_2)
             };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
-
-            return GetJsonObjectFromAPI<MemberResponse>(roParams, R4MEInfrastructureSettings.UserRegistration,
-                HttpMethodType.Post, httpContent, out errorString);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                return GetJsonObjectFromAPI<MemberResponse>(roParams, R4MEInfrastructureSettings.UserRegistration,
+                    HttpMethodType.Post, httpContent, out errorString);
+            };
 		}
 
         /// <summary>
@@ -1287,7 +1291,7 @@ namespace Route4MeSDK
                     { new StringContent(noteContents), "strNoteContents" }
                 };
 
-				httpContent = multipartFormDataContent;
+                httpContent = multipartFormDataContent;
 			}
 			else
 			{
@@ -1300,21 +1304,21 @@ namespace Route4MeSDK
 				httpContent = new FormUrlEncodedContent(keyValues);
 			}
 
-			AddAddressNoteResponse response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
-																 R4MEInfrastructureSettings.AddRouteNotesHost,
-																 HttpMethodType.Post,
-																 httpContent,
-																 out errorString);
+                AddAddressNoteResponse response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
+                                                                 R4MEInfrastructureSettings.AddRouteNotesHost,
+                                                                 HttpMethodType.Post,
+                                                                 httpContent,
+                                                                 out errorString);
 
 
-            if (attachmentStreamContent != null) attachmentStreamContent.Dispose();
-			if (attachmentFileStream != null) attachmentFileStream.Dispose();
+                if (attachmentStreamContent != null) attachmentStreamContent.Dispose();
+                if (attachmentFileStream != null) attachmentFileStream.Dispose();
 
-            if (response != null && response.Note == null && response.Status == false) 
-                errorString = "Note not added";
+                if (response != null && response.Note == null && response.Status == false)
+                    errorString = "Note not added";
 
-            return response?.Note ?? null;
-            //return (response != null) ? (response.Note != null ? response.Note : null) : null;
+                return response?.Note ?? null;
+
 		}
 
         /// <summary>
@@ -1468,17 +1472,18 @@ namespace Route4MeSDK
 
             customNotes.ForEach(kv1 => { keyValues.Add(new KeyValuePair<string, string>(kv1.Key, kv1.Value)); });
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                AddAddressNoteResponse response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
+                                                                   R4MEInfrastructureSettings.AddRouteNotesHost,
+                                                                   HttpMethodType.Post,
+                                                                   httpContent,
+                                                                   out errorString);
 
-			AddAddressNoteResponse response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
-															   R4MEInfrastructureSettings.AddRouteNotesHost,
-															   HttpMethodType.Post,
-															   httpContent,
-															   out errorString);
-
-            return (response == null) ? (object)errorString : (response.GetType() != typeof(AddAddressNoteResponse) 
-                ? "Can not add custom note to the route" 
-                : (response.Status ? (object)response.Note : "Can not add custom note to the route"));
+                return (response == null) ? (object)errorString : (response.GetType() != typeof(AddAddressNoteResponse)
+                    ? "Can not add custom note to the route"
+                    : (response.Status ? (object)response.Note : "Can not add custom note to the route"));
+            };
 		}
 
 		#endregion
@@ -1727,17 +1732,18 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("after_destination_id", Convert.ToString(afterDestinationId))
             };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                MoveDestinationToRouteResponse response = GetJsonObjectFromAPI<MoveDestinationToRouteResponse>(new GenericParameters(),
+                                                                     R4MEInfrastructureSettings.MoveRouteDestination,
+                                                                     HttpMethodType.Post,
+                                                                     httpContent,
+                                                                     out errorString);
 
-			MoveDestinationToRouteResponse response = GetJsonObjectFromAPI<MoveDestinationToRouteResponse>(new GenericParameters(),
-																 R4MEInfrastructureSettings.MoveRouteDestination,
-																 HttpMethodType.Post,
-																 httpContent,
-																 out errorString);
+                if (response.Error != null) errorString = response.Error;
 
-            if (response.Error != null) errorString = response.Error;
-
-            return (response != null) ? response.Success : false;
+                return (response != null) ? response.Success : false;
+            };
 		}
 
         /// <summary>
@@ -2529,9 +2535,11 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("addresses", geoParams.Addresses)
             };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
-
-            return GetJsonObjectFromAPI<string>(request, R4MEInfrastructureSettings.Geocoder, HttpMethodType.Post, httpContent, true, out errorString);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                return GetJsonObjectFromAPI<string>(request, R4MEInfrastructureSettings.Geocoder, HttpMethodType.Post, httpContent, true, out errorString);
+            };
+ 
 		}
 
         /// <summary>
@@ -2567,19 +2575,22 @@ namespace Route4MeSDK
 		{
 			GeocodingRequest request = new GeocodingRequest { };
 
-			HttpContent content = new StringContent(jsonAddresses);
-			content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            using (HttpContent content = new StringContent(jsonAddresses))
+            {
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-			Tuple<UploadAddressesToTemporaryStorageResponse, string> result = GetJsonObjectFromAPIAsync<UploadAddressesToTemporaryStorageResponse>(request,
-															   R4MEInfrastructureSettings.FastGeocoder,
-															   HttpMethodType.Post,
-															   content, false).GetAwaiter().GetResult();
+                Tuple<UploadAddressesToTemporaryStorageResponse, string> result = GetJsonObjectFromAPIAsync<UploadAddressesToTemporaryStorageResponse>(request,
+                                                                   R4MEInfrastructureSettings.FastGeocoder,
+                                                                   HttpMethodType.Post,
+                                                                   content, false).GetAwaiter().GetResult();
 
-			Thread.SpinWait(5000);
+                Thread.SpinWait(5000);
 
-            errorString = result.Item2;
+                errorString = result.Item2;
 
-			return result.Item1;
+                return result.Item1;
+            };
+                
 		}
 
         /// <summary>
@@ -2598,18 +2609,19 @@ namespace Route4MeSDK
                 new KeyValuePair<string, string>("addresses", geoParams.Addresses)
             };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                Task<Tuple<string, string>> result = GetJsonObjectFromAPIAsync<string>(request,
+                                                                    R4MEInfrastructureSettings.Geocoder,
+                                                                    HttpMethodType.Post,
+                                                                    httpContent, true);
 
-			Task<Tuple<string, string>> result = GetJsonObjectFromAPIAsync<string>(request,
-																R4MEInfrastructureSettings.Geocoder,
-																HttpMethodType.Post,
-																httpContent, true);
+                result.Wait();
 
-			result.Wait();
+                errorString = (result.IsFaulted || result.IsCanceled) ? result.Result.Item2 : "";
 
-            errorString = (result.IsFaulted || result.IsCanceled) ? result.Result.Item2 : "";
-
-			return result.Result.Item1;
+                return result.Result.Item1;
+            };
 		}
 
         /// <summary>
@@ -3119,6 +3131,7 @@ namespace Route4MeSDK
 								}
 
 								HttpResponseMessage response = null;
+
 								if (isPut)
 								{
 									response = await httpClient.PutAsync(parametersURI, content);
@@ -3135,7 +3148,7 @@ namespace Route4MeSDK
 								}
 								else
 								{
-									var request = new HttpRequestMessage();
+									//var request = new HttpRequestMessage();
 									response = await httpClient.PostAsync(parametersURI, content).ConfigureAwait(true);
 								}
 
@@ -3150,34 +3163,36 @@ namespace Route4MeSDK
 								}
 								else
 								{
-									var streamTask = await (response.Content).ReadAsStreamAsync();
-									ErrorResponse errorResponse = null;
-									try
-									{
-										errorResponse = streamTask.ReadObject<ErrorResponse>();
-									}
-									catch// (Exception e)
-									{
-										errorResponse = default;
-									}
-									if (errorResponse != null && errorResponse.Errors != null && errorResponse.Errors.Count > 0)
-									{
-										foreach (String error in errorResponse.Errors)
-										{
-											if (errorMessage.Length > 0)
-												errorMessage += "; ";
-											errorMessage += error;
-										}
-									}
-									else
-									{
-										var responseStream = await response.Content.ReadAsStringAsync();
-										String responseString = responseStream;
-										if (responseString != null)
-											errorMessage = "Response: " + responseString;
-									}
+                                    using (var streamTask = await (response.Content).ReadAsStreamAsync())
+                                    {
+                                        ErrorResponse errorResponse = null;
+                                        try
+                                        {
+                                            errorResponse = streamTask.ReadObject<ErrorResponse>();
+                                        }
+                                        catch// (Exception e)
+                                        {
+                                            errorResponse = default;
+                                        }
+                                        if (errorResponse != null && errorResponse.Errors != null && errorResponse.Errors.Count > 0)
+                                        {
+                                            foreach (String error in errorResponse.Errors)
+                                            {
+                                                if (errorMessage.Length > 0)
+                                                    errorMessage += "; ";
+                                                errorMessage += error;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var responseStream = await response.Content.ReadAsStringAsync();
+                                            String responseString = responseStream;
+                                            if (responseString != null)
+                                                errorMessage = "Response: " + responseString;
+                                        }
+                                    };
 								}
-
+                                response.Dispose();
 								break;
 							}
 					}
@@ -3268,11 +3283,13 @@ namespace Route4MeSDK
 								}
 								else
 								{
-									var cts = new CancellationTokenSource();
-									cts.CancelAfter(1000 * 60 * 5); // 3 seconds
+                                    using (var cts = new CancellationTokenSource())
+                                    {
+                                        cts.CancelAfter(1000 * 60 * 5); // 3 seconds
 
-									var request = new HttpRequestMessage();
-									response = httpClient.PostAsync(parametersURI, content, cts.Token);
+                                        //var request = new HttpRequestMessage();
+                                        response = httpClient.PostAsync(parametersURI, content, cts.Token);
+                                    };
 								}
 
 								// Wait for response
@@ -3516,16 +3533,22 @@ namespace Route4MeSDK
 
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
 
-            WinHttpHandler httpHandler = new WinHttpHandler();
-            httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            WinHttpHandler httpHandler = new WinHttpHandler
+            {
+                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+            };
 
-            HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
+            //httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            using (httpHandler)
+            {
+                HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
 
-			result.Timeout = m_DefaultTimeOut;
-			result.DefaultRequestHeaders.Accept.Clear();
-			result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                result.Timeout = m_DefaultTimeOut;
+                result.DefaultRequestHeaders.Accept.Clear();
+                result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-			return result;
+                return result;
+            };
 		}
 
 		private HttpClient CreateAsyncHttpClient(string url)
@@ -3539,16 +3562,21 @@ namespace Route4MeSDK
 
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
 
-            WinHttpHandler httpHandler = new WinHttpHandler();
-            httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            WinHttpHandler httpHandler = new WinHttpHandler
+            {
+                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+            };
 
-            HttpClient result = new HttpClient(handler) { BaseAddress = new Uri(url) };
+            using (httpHandler)
+            {
+                HttpClient result = new HttpClient(handler) { BaseAddress = new Uri(url) };
 
-			result.Timeout = m_DefaultTimeOut;
-			result.DefaultRequestHeaders.Accept.Clear();
-			result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                result.Timeout = m_DefaultTimeOut;
+                result.DefaultRequestHeaders.Accept.Clear();
+                result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-			return result;
+                return result;
+            };
 		}
 
 		#endregion
