@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "13a87b8acd60c76c753a0df16559f9f858588a32"
+    "signature": "c93079718264dfc7481a57d1ed8f2f511bbf3cfc"
   },
   "compilationOptions": {},
   "targets": {
@@ -11,11 +11,22 @@
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
+          "Newtonsoft.Json": "12.0.2",
           "System.Configuration.ConfigurationManager": "4.5.0",
-          "System.Net.Http.WinHttpHandler": "4.5.4"
+          "System.Net.Http.WinHttpHandler": "4.5.4",
+          "fastJSON": "2.2.4",
+          "SocketIoClientDotNet.core_2.2": "1.0.0.0"
         },
         "runtime": {
           "Route4MeSDKLibrary.dll": {}
+        }
+      },
+      "fastJSON/2.2.4": {
+        "runtime": {
+          "lib/netstandard2.0/fastJSON.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.0"
+          }
         }
       },
       "Microsoft.AspNetCore.Connections.Abstractions/2.2.0": {
@@ -45,7 +56,7 @@
       "Microsoft.AspNetCore.Http.Connections.Common/1.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Connections.Abstractions": "2.2.0",
-          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json": "12.0.2",
           "System.Buffers": "4.5.0"
         },
         "runtime": {
@@ -257,11 +268,11 @@
           }
         }
       },
-      "Newtonsoft.Json/11.0.2": {
+      "Newtonsoft.Json/12.0.2": {
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "11.0.0.0",
-            "fileVersion": "11.0.2.21924"
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.2.23222"
           }
         }
       },
@@ -623,6 +634,14 @@
         "dependencies": {
           "System.Runtime": "4.1.0"
         }
+      },
+      "SocketIoClientDotNet.core_2.2/1.0.0.0": {
+        "runtime": {
+          "SocketIoClientDotNet.core_2.2.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -631,6 +650,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "fastJSON/2.2.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iVGB/WrrflgKxMM+kG8zef98bFgMrOeHgGV/NNEFMh2ISgt+2BM1nBSqY4Ka0L0m1285AWV0e+4CHk8RDm8mlw==",
+      "path": "fastjson/2.2.4",
+      "hashPath": "fastjson.2.2.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Connections.Abstractions/2.2.0": {
       "type": "package",
@@ -779,12 +805,12 @@
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
     },
-    "Newtonsoft.Json/11.0.2": {
+    "Newtonsoft.Json/12.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
-      "path": "newtonsoft.json/11.0.2",
-      "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
+      "sha512": "sha512-rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
+      "path": "newtonsoft.json/12.0.2",
+      "hashPath": "newtonsoft.json.12.0.2.nupkg.sha512"
     },
     "Remotion.Linq/2.2.0": {
       "type": "package",
@@ -1079,6 +1105,11 @@
       "sha512": "sha512-k1S4Gc6IGwtHGT8188RSeGaX86Qw/wnrgNLshJvsdNUOPP9etMmo8S07c+UlOAx4K/xLuN9ivA1bD0LVurtIxQ==",
       "path": "system.threading.tasks/4.0.11",
       "hashPath": "system.threading.tasks.4.0.11.nupkg.sha512"
+    },
+    "SocketIoClientDotNet.core_2.2/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
