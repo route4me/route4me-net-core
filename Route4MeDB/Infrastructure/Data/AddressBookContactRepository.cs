@@ -83,7 +83,7 @@ namespace Route4MeDB.Infrastructure.Data
                          where addressBookContact.Address1.Contains(query) ||
                          addressBookContact.Address2.Contains(query) ||
                          addressBookContact.AddressAlias.Contains(query) ||
-                         addressBookContact.AddressCustomData.Values.ToList().Contains(query)
+                         addressBookContact.AddressCustomData.Contains(query)
                          select new { addressBookContact.FirstName, addressBookContact.LastName };
 
             return await Task.Run(() =>
