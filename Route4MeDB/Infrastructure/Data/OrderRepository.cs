@@ -34,7 +34,7 @@ namespace Route4MeDB.Infrastructure.Data
         public async Task<Order> GetOrderByIdAsync(int orderId)
         {
             return await _dbContext.Orders
-                .FirstOrDefaultAsync(x => x.OrderId == orderId);
+                .FirstOrDefaultAsync(x => x.Id == orderId);
         }
 
         /// <summary>

@@ -12,11 +12,37 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
     {
         public Schedule() { }
 
-        public bool Enabled { get; private set; }
+        public Schedule(string scheduleMode, bool blNth)
+        {
+            switch (scheduleMode)
+            {
+                case "daily":
+                    this.Daily = new ScheduleDaily();
+                    this.Mode = "daily";
+                    break;
+                case "weekly":
+                    this.Weekly = new ScheduleWeekly();
+                    this.Mode = "weekly";
+                    break;
+                case "monthly":
+                    this.Monthly = new ScheduleMonthly();
+                    this.Mode = "monthly";
+                    if (blNth) this.Monthly.Nth = new ScheduleMonthlyNth();
+                    break;
+                case "annually":
+                    this.Annually = new ScheduleAnnually();
+                    this.Mode = "annually";
+                    if (blNth) this.Annually.Nth = new ScheduleMonthlyNth();
+                    break;
+            }
 
-        public string From { get; private set; }
+        }
 
-        public string Mode { get; private set; }
+        public bool Enabled { get; set; }
+
+        public string From { get; set; }
+
+        public string Mode { get; set; }
 
         internal string _daily { get; set; }
 

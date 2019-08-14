@@ -58,6 +58,8 @@ namespace Route4MeDB.Infrastructure.Data
 
         private void ConfigureOrder(EntityTypeBuilder<Order> builder)
         {
+            builder.ToTable("Order");
+
             builder.Property(a => a.Address1)
                .HasMaxLength(120)
                .IsRequired();
@@ -74,7 +76,7 @@ namespace Route4MeDB.Infrastructure.Data
             builder.Property(a => a.AddressCountryId)
                .HasMaxLength(3);
 
-            builder.Property(a => a.EXT_FIELD_custom_data)
+            builder.Property(a => a.ExtFieldCustomData)
                .HasMaxLength(255);
         }
     }
