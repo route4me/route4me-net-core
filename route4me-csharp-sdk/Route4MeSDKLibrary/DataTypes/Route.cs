@@ -218,7 +218,7 @@ namespace Route4MeSDK.DataTypes
         /// Vehicle.
         /// </summary>
         [DataMember(Name = "vehicle")]
-        public String Vehicle { get; set; }
+        public object Vehicle { get; set; }
 
         /// <summary>
         /// Member config key-value pairs.
