@@ -17,7 +17,7 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 
         public ScheduleWeekly() { }
 
-        public int Every { get; private set; }
+        public int Every { get; set; }
 
         internal string _weekdays { get; set; }
 

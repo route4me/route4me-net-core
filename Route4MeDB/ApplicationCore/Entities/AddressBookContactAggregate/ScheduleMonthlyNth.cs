@@ -15,8 +15,8 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 
         public ScheduleMonthlyNth() { }
 
-        public int N { get; private set; }
+        public int N { get; set; }
 
-        public int What { get; private set; }
+        public int What { get; set; }
     }
 }

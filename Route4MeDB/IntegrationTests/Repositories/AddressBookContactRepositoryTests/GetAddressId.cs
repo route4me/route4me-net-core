@@ -1,44 +1,67 @@
 ﻿using Route4MeDB.Infrastructure.Data;
+using Route4MeDB.ApplicationCore.Specifications;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-//using Microsoft.eShopWeb.UnitTests.Builders;
+using Route4MeDB.UnitTests.Builders;
 using Xunit;
 using Xunit.Abstractions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace Route4MeDB.IntegrationTests.Repositories.OrderRepositoryTests
 {
     public class GetAddressId
     {
         private readonly Route4MeDbContext _route4meDbContext;
-        private readonly OrderRepository _orderRepository;
-        private OrderBuilder OrderBuilder { get; } = new OrderBuilder();
+        private readonly AddressBookContactRepository _addressBookContactRepository;
+        private AddressBookContactBuilder addressBookContactBuilder { get; } = new AddressBookContactBuilder();
         private readonly ITestOutputHelper _output;
-        public GetById(ITestOutputHelper output)
+
+        public GetAddressId(ITestOutputHelper output)
         {
             _output = output;
-            var dbOptions = new DbContextOptionsBuilder<CatalogContext>()
-                .UseInMemoryDatabase(databaseName: "TestCatalog")
+            var dbOptions = new DbContextOptionsBuilder<Route4MeDbContext>()
+                .UseInMemoryDatabase(databaseName: "Route4MeDB")
                 .Options;
-            _catalogContext = new CatalogContext(dbOptions);
-            _orderRepository = new OrderRepository(_catalogContext);
+            _route4meDbContext = new Route4MeDbContext(dbOptions);
+            _addressBookContactRepository = new AddressBookContactRepository(_route4meDbContext);
         }
 
         [Fact]
-        public async Task GetsExistingOrder()
+        public async Task GetsExistingAddressBookContact()
         {
-            var existingOrder = OrderBuilder.WithDefaultValues();
-            _catalogContext.Orders.Add(existingOrder);
-            _catalogContext.SaveChanges();
-            int orderId = existingOrder.Id;
-            _output.WriteLine($"OrderId: {orderId}");
+            var existingAddressBookContact = addressBookContactBuilder.WithDefaultValues();
+            _route4meDbContext.AddressBookContacts.Add(existingAddressBookContact);
+            _route4meDbContext.SaveChanges();
+            int addressId = existingAddressBookContact.AddressId;
+            _output.WriteLine($"AddressId: {addressId}");
 
-            var orderFromRepo = await _orderRepository.GetByIdAsync(orderId);
-            Assert.Equal(OrderBuilder.TestBuyerId, orderFromRepo.BuyerId);
+            var addressSpec = new AddressBookContactSpecification(addressId);
 
-            // Note: Using InMemoryDatabase OrderItems is available. Will be null if using SQL DB.
-            var firstItem = orderFromRepo.OrderItems.FirstOrDefault();
-            Assert.Equal(OrderBuilder.TestUnits, firstItem.Units);
+            var addressBookContactFromRepo = await _addressBookContactRepository.GetByIdAsync(addressSpec);
+
+            Assert.Equal(addressBookContactBuilder.testData.FirstName, addressBookContactFromRepo.FirstName);
+            Assert.Equal(addressBookContactBuilder.testData.LastName, addressBookContactFromRepo.LastName);
+        }
+
+        [Fact]
+        public async Task GetsExistingAddressBookContactAsync()
+        {
+            var firstAddressBookContact = addressBookContactBuilder.WithDefaultValues();
+            _route4meDbContext.AddressBookContacts.Add(firstAddressBookContact);
+            int firstAddressId = firstAddressBookContact.AddressId;
+
+            var secondAddressBookContact = addressBookContactBuilder.WithSchedule();
+            _route4meDbContext.AddressBookContacts.Add(secondAddressBookContact);
+            int secondAddressId = secondAddressBookContact.AddressId;
+
+            _route4meDbContext.SaveChanges();
+
+            var addressBookContactFromRepo = await _addressBookContactRepository.GetAddressBookContactByIdAsync(secondAddressId);
+
+            Assert.Equal(secondAddressId, addressBookContactFromRepo.AddressId);
+            Assert.Equal(secondAddressBookContact.FirstName, addressBookContactFromRepo.FirstName);
+            Assert.Equal(secondAddressBookContact.LastName, addressBookContactFromRepo.LastName);
         }
     }
 }

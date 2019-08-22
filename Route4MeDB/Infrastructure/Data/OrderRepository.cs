@@ -156,11 +156,11 @@ namespace Route4MeDB.Infrastructure.Data
                     x.SetValue(order, x.GetValue(orderParameters));
                 });
 
-            await this.UpdateAsync(order);
+            var updatedOrder = await this.UpdateAsync(order);
 
             return await Task.Run(() =>
             {
-                return order;
+                return updatedOrder;
             });
         }
 
