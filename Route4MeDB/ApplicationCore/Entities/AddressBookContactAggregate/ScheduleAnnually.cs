@@ -9,9 +9,9 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
     public class ScheduleAnnually : BaseEntity, IAggregateRoot
     {
-        public int Every { get; private set; }
+        public int Every { get; set; }
 
-        public bool UseNth { get; private set; }
+        public bool UseNth { get; set; }
 
         internal string _months { get; set; }
 

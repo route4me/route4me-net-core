@@ -37,9 +37,9 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
             }
         }
 
-        public int Every { get; private set; }
+        public int Every { get; set; }
 
-        public string Mode { get; private set; }
+        public string Mode { get; set; }
 
         internal string _dates { get; set; }
 

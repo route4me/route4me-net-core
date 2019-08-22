@@ -21,9 +21,9 @@ namespace Route4MeDB.Infrastructure.Data
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(ISpecification<T> spec)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return ApplySpecification(spec).ToListAsync().Result.FirstOrDefault();
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync()
@@ -49,10 +49,12 @@ namespace Route4MeDB.Infrastructure.Data
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
+
+            return entity;
         }
 
         public async Task DeleteAsync(T entity)

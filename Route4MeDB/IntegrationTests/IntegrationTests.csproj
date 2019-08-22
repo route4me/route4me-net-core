@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\OrderTests\" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Route4MeDbLibrary\Route4MeDbLibrary.csproj" />
+    <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,6 +14,6 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 
         public ScheduleDaily() { }
 
-        public int Every { get; private set; }
+        public int Every { get; set; }
     }
 }

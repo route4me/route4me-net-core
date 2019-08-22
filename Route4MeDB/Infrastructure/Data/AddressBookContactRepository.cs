@@ -83,7 +83,7 @@ namespace Route4MeDB.Infrastructure.Data
                          where addressBookContact.Address1.Contains(query) ||
                          addressBookContact.Address2.Contains(query) ||
                          addressBookContact.AddressAlias.Contains(query) ||
-                         addressBookContact.AddressCustomData.Values.ToList().Contains(query)
+                         addressBookContact.AddressCustomData.Contains(query)
                          select new { addressBookContact.FirstName, addressBookContact.LastName };
 
             return await Task.Run(() =>
@@ -99,7 +99,11 @@ namespace Route4MeDB.Infrastructure.Data
         /// <returns>Address book contact</returns>
         public async Task<AddressBookContact> CreateAddressBookContactAsync(AddressBookContact addressBookContactParameters)
         {
-            var addressBookContact = new AddressBookContact(addressBookContactParameters);
+            var propertyNames = addressBookContactParameters.GetType().GetProperties()
+                .ToList().Where(x => x.GetValue(addressBookContactParameters) != null && x.Name!="AddressId")
+                .Select(y => y.Name).ToList();
+
+            var addressBookContact = new AddressBookContact(addressBookContactParameters, propertyNames);
 
             await this.AddAsync(addressBookContact);
 

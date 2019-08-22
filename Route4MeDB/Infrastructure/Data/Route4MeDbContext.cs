@@ -29,8 +29,9 @@ namespace Route4MeDB.Infrastructure.Data
             builder.HasKey(ci => ci.AddressId);
 
             builder.Property(ci => ci.AddressId)
-               .ForSqlServerUseSequenceHiLo("address_book_contact_hilo")
-               .IsRequired();
+               .IsConcurrencyToken(true)
+               .IsRowVersion()
+               .ValueGeneratedOnAdd();
 
             builder.Property(a => a.Address1)
                .HasColumnName("address_1")
@@ -58,9 +59,16 @@ namespace Route4MeDB.Infrastructure.Data
 
         private void ConfigureOrder(EntityTypeBuilder<Order> builder)
         {
+            builder.ToTable("Order");
+
             builder.Property(a => a.Address1)
                .HasMaxLength(120)
                .IsRequired();
+
+            builder.Property(a => a.OrderId)
+               .IsConcurrencyToken(true)
+               .IsRowVersion()
+               .ValueGeneratedOnAdd();
 
             builder.Property(a => a.Address2)
                .HasMaxLength(120);
@@ -74,8 +82,10 @@ namespace Route4MeDB.Infrastructure.Data
             builder.Property(a => a.AddressCountryId)
                .HasMaxLength(3);
 
-            builder.Property(a => a.EXT_FIELD_custom_data)
+            builder.Property(a => a.ExtFieldCustomData)
                .HasMaxLength(255);
+
+
         }
     }
 }

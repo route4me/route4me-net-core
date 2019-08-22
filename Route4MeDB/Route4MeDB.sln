@@ -16,7 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{517226A4
 		Route4MeDbLibrary\Class1.cs = Route4MeDbLibrary\Class1.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{47A9EC5C-8C23-4B7A-AFFB-1761ABBA3A86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{47A9EC5C-8C23-4B7A-AFFB-1761ABBA3A86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{79D37645-CF8B-4C37-B21C-F48BFC799FF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,12 +48,17 @@ Global
 		{47A9EC5C-8C23-4B7A-AFFB-1761ABBA3A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47A9EC5C-8C23-4B7A-AFFB-1761ABBA3A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47A9EC5C-8C23-4B7A-AFFB-1761ABBA3A86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D37645-CF8B-4C37-B21C-F48BFC799FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D37645-CF8B-4C37-B21C-F48BFC799FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D37645-CF8B-4C37-B21C-F48BFC799FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D37645-CF8B-4C37-B21C-F48BFC799FF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{47A9EC5C-8C23-4B7A-AFFB-1761ABBA3A86} = {517226A4-0A40-4CF8-857F-3C46B9E0B48F}
+		{79D37645-CF8B-4C37-B21C-F48BFC799FF0} = {517226A4-0A40-4CF8-857F-3C46B9E0B48F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {601AABD6-AF1D-43DD-A37C-A38689665412}
