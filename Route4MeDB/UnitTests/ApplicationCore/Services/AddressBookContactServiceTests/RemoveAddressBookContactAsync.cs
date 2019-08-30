@@ -36,18 +36,15 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.AddressBookContactServic
 
             AddressBookContact contact = await _mockContactRepo.AddAsync(contact1);
 
-            int retAddressId = contact.AddressId;
+            int retAddressDbId = contact.AddressDbId;
 
             var contactService = new AddressBookContactService(_mockContactRepo);
 
-            //var result = await contactService.GetAddressBookContactByIdAsync(retAddressId);
-
-            var remResult = await contactService.RemoveAddressBookContactAsync(new int[] { retAddressId });
-            output.WriteLine("remResult -> ");
-            output.WriteLine(remResult.ToString());
+            var remResult = await contactService.RemoveAddressBookContactAsync(new int[] { retAddressDbId });
+            output.WriteLine("remResult -> "+ remResult[0].ToString());
 
             Assert.True(remResult.Length>0);
-            Assert.True(remResult[0] == retAddressId);
+            Assert.True(remResult[0] == retAddressDbId);
         }
     }
 }

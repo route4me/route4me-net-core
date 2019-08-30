@@ -6,25 +6,25 @@ namespace Route4MeDB.ApplicationCore.Specifications
     public class OrderSpecification : BaseSpecification<Order>
     {
         public OrderSpecification() :
-            base(i => (i.OrderId>0))
+            base(i => (i.OrderDbId>0))
         {
-            AddInclude(o => o.OrderId);
+            AddInclude(o => o.OrderDbId);
         }
 
-        public OrderSpecification(int[] orderIds) :
-            base(i => (orderIds.Contains(i.OrderId)))
+        public OrderSpecification(int[] orderDbIds) : 
+            base(i => (orderDbIds.Contains(i.OrderDbId)))
         {
-
+            
         }
 
-        public OrderSpecification(int orderId) :
-            base(i => (i.OrderId==orderId))
+        public OrderSpecification(int orderDbId) :
+            base(i => (i.OrderDbId==orderDbId))
         {
             //AddInclude(o => o.OrderId);
         }
 
         public OrderSpecification(int? offset, int? limit) :
-            base(i => (i.OrderId>0 || (offset.HasValue && limit.HasValue)))
+            base(i => (i.OrderDbId>0 || (offset.HasValue && limit.HasValue)))
         {
             ApplyPaging((int)offset, (int)limit);
         }

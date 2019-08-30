@@ -35,18 +35,18 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.OrderTests
 
             Order order = await _mockOrderRepo.AddAsync(order1);
 
-            int retOrderId = order.OrderId;
+            int retOrderDbId = order.OrderDbId;
 
             var orderService = new OrderService(_mockOrderRepo);
 
-            var result = await orderService.GetOrderByIdAsync(retOrderId);
+            var result = await orderService.GetOrderByIdAsync(retOrderDbId);
 
             order.Address1 = "address1 Modified";
             order.AddressAlias = "alias1 Modified";
 
-            Order orderUpdated = await orderService.UpdateOrderAsync(order.OrderId, order);
+            Order orderUpdated = await orderService.UpdateOrderAsync(order.OrderDbId, order);
 
-            output.WriteLine("orderUpdated -> " + orderUpdated.ToString());
+            output.WriteLine("retOrderId -> " + retOrderDbId);
 
             Assert.NotNull(orderUpdated);
             Assert.Equal("address1 Modified", orderUpdated.Address1);

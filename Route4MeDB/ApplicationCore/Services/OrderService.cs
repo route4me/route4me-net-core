@@ -39,9 +39,9 @@ namespace Route4MeDB.ApplicationCore.Services
             return order;
         }
 
-        public async Task<Order> GetOrderByIdAsync(int orderId)
+        public async Task<Order> GetOrderByIdAsync(int orderDbId)
         {
-            var orderSpec = new OrderSpecification(orderId);
+            var orderSpec = new OrderSpecification(orderDbId);
 
             var result = _orderRepository.GetByIdAsync(orderSpec).Result;
 
@@ -51,9 +51,9 @@ namespace Route4MeDB.ApplicationCore.Services
             });
         }
 
-        public async Task<IEnumerable<Order>> GetOrdersByIDsAsync(int[] orderIDs)
+        public async Task<IEnumerable<Order>> GetOrdersByIDsAsync(int[] orderDbIDs)
         {
-            var orderSpec = new OrderSpecification(orderIDs);
+            var orderSpec = new OrderSpecification(orderDbIDs);
 
             var result = _orderRepository.ListAsync(orderSpec).Result.AsEnumerable<Order>();
 
@@ -85,12 +85,12 @@ namespace Route4MeDB.ApplicationCore.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> RemoveOrdersAsync(int[] orderIDs)
+        public async Task<bool> RemoveOrdersAsync(int[] orderDbIDs)
         {
             bool removed = false;
             try
             {
-                orderIDs.ToList().ForEach(x =>
+                orderDbIDs.ToList().ForEach(x =>
                 {
                     var orderSpec = new OrderSpecification(x);
                     var order = _orderRepository.GetByIdAsync(orderSpec).Result;
@@ -109,18 +109,18 @@ namespace Route4MeDB.ApplicationCore.Services
             });
         }
 
-        public async Task<Order> UpdateOrderAsync(int orderId, Order orderParameters)
+        public async Task<Order> UpdateOrderAsync(int orderDbId, Order orderParameters)
         {
-            var orderSpec = new OrderSpecification(orderId);
+            var orderSpec = new OrderSpecification(orderDbId);
 
             var order = _orderRepository.GetByIdAsync(orderSpec).Result;
 
             orderParameters.GetType().GetProperties().ToList()
-                .ForEach(async x => {
+                .ForEach(x => {
                     if (x.GetValue(orderParameters)!=null && x.Name!="OrderId") x.SetValue(order, x.GetValue(orderParameters));
                 });
 
-            var orderUpdated =_orderRepository.UpdateAsync(order);
+            var orderUpdated = await _orderRepository.UpdateAsync(order);
 
             return await Task.Run(() =>
             {

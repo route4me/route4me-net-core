@@ -3,6 +3,7 @@ using Route4MeDB.ApplicationCore.Services;
 using System.Threading.Tasks;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 using System.Collections.Generic;
 using Route4MeDB.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,15 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.OrderTests
         private Route4MeDbContext _mockContext;
         private DbContextOptions<Route4MeDbContext> _options;
         private static readonly Fixture Fixture = new Fixture();
+        private readonly ITestOutputHelper _output;
 
-        public GetOrdersByIdsAsync()
+        public GetOrdersByIdsAsync(ITestOutputHelper output)
         {
             _options = new DbContextOptionsBuilder<Route4MeDbContext>()
             .UseInMemoryDatabase(databaseName: "Route4MeDB").Options;
             _mockContext = new Route4MeDbContext(_options);
             _mockOrderRepo = new OrderRepository(_mockContext);
+            _output = output;
         }
 
         [Fact]
@@ -42,14 +45,15 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.OrderTests
 
             _mockContext.SaveChanges();
 
-            var orderIDs = new List<int>()
+            var orderDbIDs = new List<int>()
             {
-                createdOrder1.OrderId, createdOrder2.OrderId
+                createdOrder1.OrderDbId, createdOrder2.OrderDbId
             };
 
             var orderService = new OrderService(_mockOrderRepo);
 
-            var results = await orderService.GetOrdersByIDsAsync(orderIDs.ToArray());
+            var results = await orderService.GetOrdersByIDsAsync(orderDbIDs.ToArray());
+            _output.WriteLine($"results: {results}");
 
             Assert.True(results.Count() >= 2);
         }

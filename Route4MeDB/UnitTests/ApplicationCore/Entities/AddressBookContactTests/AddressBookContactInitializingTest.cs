@@ -15,7 +15,7 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Entities.AddressBookContactTests
             Assert.Null(newContact.AddressAlias);
             Assert.True(double.TryParse(newContact.CachedLat.ToString(), out _));
             Assert.True(double.TryParse(newContact.CachedLng.ToString(), out _));
-            Assert.True(int.TryParse(newContact.AddressId.ToString(), out _));
+            Assert.True(int.TryParse(newContact.AddressDbId.ToString(), out _));
         }
 
         [Fact]

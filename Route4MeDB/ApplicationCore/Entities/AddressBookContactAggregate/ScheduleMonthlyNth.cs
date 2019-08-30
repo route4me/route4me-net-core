@@ -2,9 +2,11 @@
 using Ardalis.GuardClauses;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
+    [Owned]
     public class ScheduleMonthlyNth : BaseEntity, IAggregateRoot
     {
         public ScheduleMonthlyNth(int _n = 1, int _what = 1)

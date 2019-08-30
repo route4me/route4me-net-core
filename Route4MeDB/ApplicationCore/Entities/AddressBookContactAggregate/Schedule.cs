@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
+    [Owned]
     public class Schedule : BaseEntity, IAggregateRoot
     {
         public Schedule() { }
