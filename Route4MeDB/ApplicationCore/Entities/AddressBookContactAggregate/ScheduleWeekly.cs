@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
+    [Owned]
     public class ScheduleWeekly : BaseEntity, IAggregateRoot
     {
         public ScheduleWeekly(int _every = 1, int[] _weekdays = null)

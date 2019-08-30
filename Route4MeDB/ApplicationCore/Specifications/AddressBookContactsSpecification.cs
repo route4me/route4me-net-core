@@ -8,7 +8,7 @@ namespace Route4MeDB.ApplicationCore.Specifications
         public AddressBookContactsSpecification(int? offset, int? limit) :
             base(i => ((!offset.HasValue || !limit.HasValue)))
         {
-            AddInclude(o => o.AddressId);
+            AddInclude(o => o.AddressDbId);
             ApplyPaging((int)offset, (int)limit);
         }
     }

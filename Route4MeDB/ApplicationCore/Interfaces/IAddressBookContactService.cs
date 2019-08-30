@@ -8,16 +8,16 @@ namespace Route4MeDB.ApplicationCore.Interfaces
     {
         Task<AddressBookContact> CreateAddressBookContactAsync(AddressBookContact addressBookContactParameters);
 
-        Task<AddressBookContact> GetAddressBookContactByIdAsync(int addressId);
+        Task<AddressBookContact> GetAddressBookContactByIdAsync(int addressDbId);
 
         Task<IEnumerable<AddressBookContact>> GetAddressBookContactsAsync(int offset, int limit);
 
-        Task<IEnumerable<AddressBookContact>> GetAddressBookContactsByIdsAsync(int[] contactIDs);
+        Task<IEnumerable<AddressBookContact>> GetAddressBookContactsByIdsAsync(int[] contactDbIDs);
 
         //Task<IEnumerable<dynamic>> GetAddressBookContactsAsync(string query, string[] fields);
 
-        Task<AddressBookContact> UpdateAddressBookContactAsync(int addressId, AddressBookContact addressBookContactParameters);
+        Task<AddressBookContact> UpdateAddressBookContactAsync(int addressDbId, AddressBookContact addressBookContactParameters);
 
-        Task<int[]> RemoveAddressBookContactAsync(int[] addressIDs);
+        Task<int[]> RemoveAddressBookContactAsync(int[] addressDbIDs);
     }
 }

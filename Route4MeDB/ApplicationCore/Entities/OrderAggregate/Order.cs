@@ -31,13 +31,16 @@ namespace Route4MeDB.ApplicationCore.Entities.OrderAggregate
             CachedLat = cachedLat;
             CachedLng = cachedLng;
 
-            if (orderId != null) OrderId = (int)orderId;
+            if (orderId != null) OrderId = Convert.ToInt32(orderId);
             if (addressAlias != null) AddressAlias = addressAlias;
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key, Column("order_id")]
-        public int OrderId { get; set; }
+        [Key, Column("order_db_id")]
+        public int OrderDbId { get; set; }
+
+        [Column("order_id")]
+        public int? OrderId { get; set; }
 
         [Column("address_1")]
         public string Address1 { get; set; }

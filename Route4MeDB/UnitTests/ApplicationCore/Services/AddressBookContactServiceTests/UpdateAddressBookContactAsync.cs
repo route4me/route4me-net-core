@@ -31,16 +31,21 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.AddressBookContactServic
             AddressBookContact contact1 = Fixture.Build<AddressBookContact>()
                 .With(c => c.Address1, "address1")
                 .With(c => c.AddressAlias, "alias1").Create();
+            output.WriteLine("contactUpdated > contact1  -> " + contact1.AddressDbId);
 
-            AddressBookContact contact = await _mockContactRepo.AddAsync(contact1);
+            var contact = await _mockContactRepo.AddAsync(contact1);
+
+            int contactDbId = contact.AddressDbId;
 
             var contactService = new AddressBookContactService(_mockContactRepo);
+
+            var result = await contactService.GetAddressBookContactByIdAsync(contactDbId);
 
             contact.Address1 = "address1 Modified";
             contact.AddressAlias = "alias1 Modified";
 
-            AddressBookContact contactUpdated = await contactService.UpdateAddressBookContactAsync(contact.AddressId, contact);
-            output.WriteLine("contactUpdated -> " + contactUpdated.ToString());
+            var contactUpdated = await contactService.UpdateAddressBookContactAsync(contact.AddressDbId, contact);
+            output.WriteLine("contactDbId -> " + contactDbId);
 
             Assert.NotNull(contactUpdated);
             Assert.Equal("address1 Modified", contactUpdated.Address1);

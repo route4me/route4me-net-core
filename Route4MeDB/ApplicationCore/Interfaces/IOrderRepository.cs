@@ -5,7 +5,7 @@ namespace Route4MeDB.ApplicationCore.Interfaces
 {
     public interface IOrderRepository : IAsyncRepository<Order>
     {
-        Task<Order> GetOrderByIdAsync(int orderId);
+        Task<Order> GetOrderByIdAsync(int orderDbId);
     }
 }
 

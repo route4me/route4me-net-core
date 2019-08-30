@@ -45,16 +45,15 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.AddressBookContactServic
 
             _mockContext.SaveChanges();
 
-            var contactIDs = new List<int>()
+            var contactDbIDs = new List<int>()
             {
-                createdContact1.AddressId, createdContact2.AddressId
+                createdContact1.AddressDbId, createdContact2.AddressDbId
             };
 
             var contactService = new AddressBookContactService(_mockContactRepo);
 
-            var results = await contactService.GetAddressBookContactsByIdsAsync(contactIDs.ToArray());
-            output.WriteLine("results -> ");
-            output.WriteLine(results.ToString());
+            var results = await contactService.GetAddressBookContactsByIdsAsync(contactDbIDs.ToArray());
+            output.WriteLine("results -> "+ results.ToString());
 
             Assert.True(results.Count() >= 2);
         }

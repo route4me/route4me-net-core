@@ -35,13 +35,13 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.OrderTests
 
             Order order = await _mockOrderRepo.AddAsync(order1);
 
-            int retOrderId = order.OrderId;
+            int retOrderDbId = order.OrderDbId;
 
             var orderService = new OrderService(_mockOrderRepo);
 
-            var result = await orderService.GetOrderByIdAsync(retOrderId);
+            var result = await orderService.GetOrderByIdAsync(retOrderDbId);
 
-            var remResult = await orderService.RemoveOrdersAsync(new int[] { result.OrderId });
+            var remResult = await orderService.RemoveOrdersAsync(new int[] { result.OrderDbId });
             output.WriteLine("remResult -> " + remResult.ToString());
 
             Assert.True(remResult);

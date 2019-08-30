@@ -34,9 +34,9 @@ namespace Route4MeDB.ApplicationCore.Services
             return await _addressBookContactRepository.AddAsync(addressBookContact);
         }
 
-        public async Task<AddressBookContact> GetAddressBookContactByIdAsync(int addressId)
+        public async Task<AddressBookContact> GetAddressBookContactByIdAsync(int addressDbId)
         {
-            var addressSpec = new AddressBookContactSpecification(addressId);
+            var addressSpec = new AddressBookContactSpecification(addressDbId);
             return await _addressBookContactRepository.GetByIdAsync(addressSpec);
         }
 
@@ -52,9 +52,9 @@ namespace Route4MeDB.ApplicationCore.Services
             });
         }
 
-        public async Task<IEnumerable<AddressBookContact>> GetAddressBookContactsByIdsAsync(int[] contactIDs)
+        public async Task<IEnumerable<AddressBookContact>> GetAddressBookContactsByIdsAsync(int[] contactDbIDs)
         {
-            var contactSpec = new AddressBookContactSpecification(contactIDs);
+            var contactSpec = new AddressBookContactSpecification(contactDbIDs);
 
             var result = _addressBookContactRepository.ListAsync(contactSpec).Result.AsEnumerable<AddressBookContact>();
 
@@ -80,13 +80,16 @@ namespace Route4MeDB.ApplicationCore.Services
         }
 
 
-        public async Task<AddressBookContact> UpdateAddressBookContactAsync(int addressId, AddressBookContact addressBookContactParameters)
+        public async Task<AddressBookContact> UpdateAddressBookContactAsync(int addressDbId, AddressBookContact addressBookContactParameters)
         {
-            var addressBookContact = await this.GetAddressBookContactByIdAsync(addressId);
+            //var addressBookContact = await this.GetAddressBookContactByIdAsync(addressId);
+            var contactSpec = new AddressBookContactSpecification(addressDbId);
+            var addressBookContact = _addressBookContactRepository.GetByIdAsync(contactSpec).Result;
 
             addressBookContactParameters.GetType().GetProperties().ToList()
-                .ForEach(x => {
-                    x.SetValue(addressBookContact, x.GetValue(addressBookContactParameters));
+                .ForEach(async x => {
+                    if (x.GetValue(addressBookContactParameters) != null && x.Name != "AddressDbId")
+                        x.SetValue(addressBookContact, x.GetValue(addressBookContactParameters));
                 });
 
             await this._addressBookContactRepository.UpdateAsync(addressBookContact);
@@ -97,20 +100,20 @@ namespace Route4MeDB.ApplicationCore.Services
             });
         }
 
-        public async Task<int[]> RemoveAddressBookContactAsync(int[] addressIDs)
+        public async Task<int[]> RemoveAddressBookContactAsync(int[] addressDbIDs)
         {
-            IEnumerable<AddressBookContact> contactsRemove = await this.GetAddressBookContactsByIdsAsync(addressIDs);
-            List<int> removedAddressIDs = new List<int>();
+            IEnumerable<AddressBookContact> contactsRemove = await this.GetAddressBookContactsByIdsAsync(addressDbIDs);
+            var removedAddressDbIDs = new List<int>();
 
             contactsRemove.ToList().ForEach(x =>
             {
                 this._addressBookContactRepository.DeleteAsync(x);
-                removedAddressIDs.Add(x.AddressId);
+                removedAddressDbIDs.Add(x.AddressDbId);
             });
 
             return await Task.Run(() =>
             {
-                return removedAddressIDs.ToArray();
+                return removedAddressDbIDs.ToArray();
             });
         }
     }

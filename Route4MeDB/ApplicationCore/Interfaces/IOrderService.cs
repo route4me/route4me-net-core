@@ -8,9 +8,9 @@ namespace Route4MeDB.ApplicationCore.Interfaces
     {
         Task<Order> CreateOrderAsync(Order orderParameters);
 
-        Task<Order> GetOrderByIdAsync(int orderId);
+        Task<Order> GetOrderByIdAsync(int orderDbId);
 
-        Task<IEnumerable<Order>> GetOrdersByIDsAsync(int[] orderIDs);
+        Task<IEnumerable<Order>> GetOrdersByIDsAsync(int[] orderDbIDs);
 
         Task<IEnumerable<Order>> GetOrdersAsync(int offset, int limit);
 
@@ -18,8 +18,8 @@ namespace Route4MeDB.ApplicationCore.Interfaces
 
         Task<IEnumerable<Order>> GetOrdersByInsertedDateAsync(int offset, int limit, string insertedDate);
 
-        Task<Order> UpdateOrderAsync(int orderId, Order orderParameters);
+        Task<Order> UpdateOrderAsync(int ordeDbrId, Order orderParameters);
 
-        Task<bool> RemoveOrdersAsync(int[] orderIDs);
+        Task<bool> RemoveOrdersAsync(int[] orderDbIDs);
     }
 }

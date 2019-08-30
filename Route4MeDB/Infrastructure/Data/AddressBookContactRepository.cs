@@ -20,9 +20,9 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="addressId">Address book contact ID</param>
         /// <returns>True, if an address book contact exists</returns>
-        public bool CheckIfAddressBookContactExists(int addressId)
+        public bool CheckIfAddressBookContactExists(int addressDbId)
         {
-            return _dbContext.AddressBookContacts.Any(e => e.AddressId == addressId);
+            return _dbContext.AddressBookContacts.Any(e => e.AddressDbId == addressDbId);
         }
 
         /// <summary>
@@ -30,10 +30,10 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="addressId">Address book contact ID</param>
         /// <returns>Address book contact</returns>
-        public async Task<AddressBookContact> GetAddressBookContactByIdAsync(int addressId)
+        public async Task<AddressBookContact> GetAddressBookContactByIdAsync(int addressDbId)
         {
             return await _dbContext.AddressBookContacts
-                .FirstOrDefaultAsync(x => x.AddressId == addressId);
+                .FirstOrDefaultAsync(x => x.AddressDbId == addressDbId);
         }
 
         /// <summary>
@@ -59,9 +59,9 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="contactIDs">An array of the address IDs.</param>
         /// <returns>An array of the address book contacts</returns>
-        public async Task<IEnumerable<AddressBookContact>> GetAddressBookContactsAsync(int[] contactIDs)
+        public async Task<IEnumerable<AddressBookContact>> GetAddressBookContactsAsync(int[] contactDbIDs)
         {
-            var result = _dbContext.AddressBookContacts.Where(x => contactIDs.Contains(x.AddressId))
+            var result = _dbContext.AddressBookContacts.Where(x => contactDbIDs.Contains(x.AddressDbId))
                 .ToListAsync().GetAwaiter().GetResult().AsEnumerable();
 
             return await Task.Run(() =>
@@ -100,7 +100,7 @@ namespace Route4MeDB.Infrastructure.Data
         public async Task<AddressBookContact> CreateAddressBookContactAsync(AddressBookContact addressBookContactParameters)
         {
             var propertyNames = addressBookContactParameters.GetType().GetProperties()
-                .ToList().Where(x => x.GetValue(addressBookContactParameters) != null && x.Name!="AddressId")
+                .ToList().Where(x => x.GetValue(addressBookContactParameters) != null && x.Name!="AddressDbId")
                 .Select(y => y.Name).ToList();
 
             var addressBookContact = new AddressBookContact(addressBookContactParameters, propertyNames);
@@ -119,11 +119,12 @@ namespace Route4MeDB.Infrastructure.Data
         /// <param name="addressId">Address ID of the existing address book contact.</param>
         /// <param name="addressBookContactParameters">Address book contact as the input parameters</param>
         /// <returns>Address book contact</returns>
-        public async Task<AddressBookContact> UpdateAddressBookContactAsync(int addressId, AddressBookContact addressBookContactParameters)
+        public async Task<AddressBookContact> UpdateAddressBookContactAsync(int addressDbId, AddressBookContact addressBookContactParameters)
         {
-            var addressBookContact = await this.GetAddressBookContactByIdAsync(addressId);
+            var addressBookContact = await this.GetAddressBookContactByIdAsync(addressDbId);
 
-            addressBookContactParameters.GetType().GetProperties().ToList()
+            addressBookContactParameters.GetType().GetProperties()
+                .Where(x => x.Name!= "AddressDbId").ToList()
                 .ForEach(x =>  {
                     x.SetValue(addressBookContact, x.GetValue(addressBookContactParameters));
                 });
@@ -141,20 +142,20 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="addressIDs"></param>
         /// <returns></returns>
-        public async Task<int[]> RemoveAddressBookContactAsync(int[] addressIDs)
+        public async Task<int[]> RemoveAddressBookContactAsync(int[] addressDbIDs)
         {
-            IEnumerable<AddressBookContact> contactsRemove = await this.GetAddressBookContactsAsync(addressIDs);
-            List<int> removedAddressIDs = new List<int>();
+            IEnumerable<AddressBookContact> contactsRemove = await this.GetAddressBookContactsAsync(addressDbIDs);
+            var removedAddressDbIDs = new List<int>();
 
             contactsRemove.ToList().ForEach(x =>
             {
                 this._dbContext.AddressBookContacts.Remove(x);
-                removedAddressIDs.Add(x.AddressId);
+                removedAddressDbIDs.Add(x.AddressDbId);
             });
 
             return await Task.Run(() =>
             {
-                return removedAddressIDs.ToArray();
+                return removedAddressDbIDs.ToArray();
             });
         }
 

@@ -36,11 +36,11 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.OrderTests
 
             Order order = await _mockOrderRepo.AddAsync(order1);
 
-            int retOrderId = order.OrderId;
+            int retOrderDbId = order.OrderDbId;
 
             var orderService = new OrderService(_mockOrderRepo);
 
-            var result = await orderService.GetOrderByIdAsync(retOrderId);
+            var result = await orderService.GetOrderByIdAsync(retOrderDbId);
             output.WriteLine("result -> ");
             output.WriteLine(result.ToString());
 

@@ -23,10 +23,39 @@ namespace Route4MeDB.Route4MeDbLibrary
 
         public IConfiguration Configuration { get; }
 
+        public DatabaseProviders DatabaseProvider { get; set; }
+
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
+            switch (DatabaseProvider)
+            {
+                case DatabaseProviders.LocalDb:
+                    
+                    break;
+                case DatabaseProviders.MsSq:
+                    
+                    break;
+                case DatabaseProviders.Sqlexpress:
+                    
+                    break;
+                case DatabaseProviders.SqlCompact40:
+                    
+                    break;
+                case DatabaseProviders.SQLite:
+                    
+                    break;
+                case DatabaseProviders.PostgreSql:
+                    
+                    break;
+                case DatabaseProviders.MySql:
+                    
+                    break;
+                default:
+                    ConfigureInMemoryDatabases(services);
+                    break;
+            }
             // use in-memory database
-            ConfigureInMemoryDatabases(services);
+            //ConfigureInMemoryDatabases(services);
 
             // use real database
             // ConfigureProductionServices(services);

@@ -21,9 +21,9 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="orderId">Order ID</param>
         /// <returns>True, if an order exists</returns>
-        public bool CheckIfOrderExists(int orderId)
+        public bool CheckIfOrderExists(int orderDbId)
         {
-            return _dbContext.Orders.Any(e => e.OrderId == orderId);
+            return _dbContext.Orders.Any(e => e.OrderDbId == orderDbId);
         }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="orderId">Order ID</param>
         /// <returns>Order</returns>
-        public async Task<Order> GetOrderByIdAsync(int orderId)
+        public async Task<Order> GetOrderByIdAsync(int orderDbId)
         {
             return await _dbContext.Orders
-                .FirstOrDefaultAsync(x => x.Id == orderId);
+                .FirstOrDefaultAsync(x => x.OrderDbId == orderDbId);
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="orderIDs">An array of the order IDs.</param>
         /// <returns>An array of the orders</returns>
-        public async Task<IEnumerable<Order>> GetOrdersAsync(int[] orderIDs)
+        public async Task<IEnumerable<Order>> GetOrdersAsync(int[] orderDbIDs)
         {
-            var result = _dbContext.Orders.Where(x => orderIDs.Contains(x.OrderId))
+            var result = _dbContext.Orders.Where(x => orderDbIDs.Contains(x.OrderDbId))
                 .ToListAsync().GetAwaiter().GetResult().AsEnumerable();
 
             return await Task.Run(() =>
@@ -86,7 +86,7 @@ namespace Route4MeDB.Infrastructure.Data
 
             var result = _dbContext.Orders
                 .FromSql("SELECT {0} {1}", string.Join(",",fields), from)
-                .OrderBy(b => b.OrderId);
+                .OrderBy(b => b.OrderDbId);
 
             return await Task.Run(() =>
             {
@@ -147,9 +147,9 @@ namespace Route4MeDB.Infrastructure.Data
         /// <param name="orderId">Order ID of the existing order.</param>
         /// <param name="orderParameters">Order as the input parameters</param>
         /// <returns>AOrder</returns>
-        public async Task<Order> UpdateOrderAsync(int orderId, Order orderParameters)
+        public async Task<Order> UpdateOrderAsync(int orderDbId, Order orderParameters)
         {
-            var order = await this.GetOrderByIdAsync(orderId);
+            var order = await this.GetOrderByIdAsync(orderDbId);
 
             orderParameters.GetType().GetProperties().ToList()
                 .ForEach(x => {
@@ -169,20 +169,20 @@ namespace Route4MeDB.Infrastructure.Data
         /// </summary>
         /// <param name="orderIDs"></param>
         /// <returns></returns>
-        public async Task<int[]> RemoveOrderAsync(int[] orderIDs)
+        public async Task<int[]> RemoveOrderAsync(int[] orderDbIDs)
         {
-            IEnumerable<Order> ordersRemove = await this.GetOrdersAsync(orderIDs);
-            List<int> removedOrderIDs = new List<int>();
+            IEnumerable<Order> ordersRemove = await this.GetOrdersAsync(orderDbIDs);
+            var removedOrderDbIDs = new List<int>();
 
             ordersRemove.ToList().ForEach(x =>
             {
                 this._dbContext.Orders.Remove(x);
-                removedOrderIDs.Add(x.OrderId);
+                removedOrderDbIDs.Add(x.OrderDbId);
             });
 
             return await Task.Run(() =>
             {
-                return removedOrderIDs.ToArray();
+                return removedOrderDbIDs.ToArray();
             });
         }
     }

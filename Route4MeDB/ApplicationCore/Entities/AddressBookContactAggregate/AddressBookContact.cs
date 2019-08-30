@@ -35,7 +35,7 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
             CachedLat = cachedLat;
             CachedLng = cachedLng;
 
-            if (addressId != null) AddressId = (int)addressId;
+            if (addressId != null) AddressId = Convert.ToInt32(addressId);
             if (addressAlias != null) AddressAlias = addressAlias;
         }
 
@@ -56,9 +56,11 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
         [Column("created_timestamp")]
         public int CreatedTimestamp { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key, Column("address_id")]
-        public int AddressId { get; set; }
+        [Key, Column("address_db_id")]
+        public int AddressDbId { get; set; }
+
+        [Column("address_id")]
+        public int? AddressId { get; set; }
 
         [Column("address_1")]
         public string Address1 { get; set; }
@@ -153,7 +155,7 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 
         [NotMapped]
         public string[] ScheduleBlackList
-        {
+        {    
             get { return _ScheduleBlackList == null ? null : JsonConvert.DeserializeObject<string[]>(_ScheduleBlackList); }
             set { _ScheduleBlackList = JsonConvert.SerializeObject(value); }
         }
@@ -199,10 +201,11 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
             AddressBookContact clonedContact = new AddressBookContact();
             this.GetType().GetProperties().ToList()
                 .ForEach(x => {
-                    if (x.Name!="AddressId") x.SetValue(clonedContact, x.GetValue(this));
+                    if (x.Name!="AddressDbId") x.SetValue(clonedContact, x.GetValue(this));
                 });
 
             return clonedContact;
         }
     }
 }
+

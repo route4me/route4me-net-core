@@ -6,25 +6,25 @@ namespace Route4MeDB.ApplicationCore.Specifications
     public class AddressBookContactSpecification : BaseSpecification<AddressBookContact>
     {
         public AddressBookContactSpecification() :
-            base(i => (i.AddressId > 0))
+            base(i => (i.AddressDbId > 0))
         {
-            AddInclude(o => o.AddressId);
+            AddInclude(o => o.AddressDbId);
         }
 
-        public AddressBookContactSpecification(int? addressId) :
-            base(i => (i.AddressId == addressId))
+        public AddressBookContactSpecification(int? addressDbId) :
+            base(i => (i.AddressDbId == addressDbId))
         {
             //AddInclude(o => o.AddressId);
         }
 
-        public AddressBookContactSpecification(int[] addressIds) :
-            base(i => (addressIds.Contains(i.AddressId)))
+        public AddressBookContactSpecification(int[] addressDbIds) :
+            base(i => (addressDbIds.Contains(i.AddressDbId)))
         {
 
         }
 
         public AddressBookContactSpecification(int? offset, int? limit) :
-            base(i => (i.AddressId > 0 || (offset.HasValue && limit.HasValue)))
+            base(i => (i.AddressDbId > 0 || (offset.HasValue && limit.HasValue)))
         {
             ApplyPaging((int)offset, (int)limit);
         }
