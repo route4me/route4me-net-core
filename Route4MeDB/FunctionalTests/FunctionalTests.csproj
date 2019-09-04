@@ -32,12 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MySqlDb\" />
-    <Folder Include="PostgreSqlDb\" />
     <Folder Include="SqlServerDb\" />
-    <Folder Include="SQLiteDb\" />
-    <Folder Include="SqlCompact40Db\" />
-    <Folder Include="SqlExpressDb\" />
   </ItemGroup>
 
 </Project>
