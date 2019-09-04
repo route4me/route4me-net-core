@@ -1,78 +1,76 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 using Route4MeDB.Route4MeDbLibrary;
 using Route4MeDB.Infrastructure.Data;
-using Route4MeDB.UnitTests.Builders;
 using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
-using Route4MeDB.ApplicationCore.Specifications;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
+using Route4MeDB.FunctionalTest;
 
 namespace Route4MeDB.FunctionalTests.LocalDb
 {
-    public class AddressBookContactTests
+    public class DatabaseContactsFixture : DatabaseFixtureBase
     {
-        private readonly Route4MeDbContext _route4meDbContext;
-        private readonly Route4MeDbManager r4mdbManager;
-        private AddressBookContactBuilder addressBookContactBuilder { get; } = new AddressBookContactBuilder();
-        private readonly ITestOutputHelper _output;
-        private readonly AddressBookContactRepository _addressBookContactRepository;
-
-        public IConfigurationRoot Configuration { get; }
-
-        public AddressBookContactTests(ITestOutputHelper output)
+        public DatabaseContactsFixture()
         {
-            var curPath = Directory.GetCurrentDirectory();
-            var configBuilder = new ConfigurationBuilder()
-   .SetBasePath(curPath)
-   .AddJsonFile("appsettings.json", optional: true);
-            var config = configBuilder.Build();
-
-            //var config = (new ConfigurationBuilder()).Build();
-
-            //var builder = new ConfigurationBuilder();
-            //builder.AddJsonFile("appsettings.json", optional: false);
-             
-            //var configuration = builder.Build();
-            //AppSettingsReader appreader = new AppSettingsReader();
-            //var appSettings = ConfigurationManager.AppSettings;
-            //var _connectionString = configuration.GetConnectionString("DefaultConnection");
-
             Route4MeDbManager.DatabaseProvider = DatabaseProviders.LocalDb;
-            r4mdbManager = new Route4MeDbManager(config);
 
-            _route4meDbContext = r4mdbManager.Route4MeContext;
+            GetDbContext(DatabaseProviders.LocalDb);
 
             _addressBookContactRepository = new AddressBookContactRepository(_route4meDbContext);
+        }
+
+        public AddressBookContactRepository _addressBookContactRepository;
+    }
+
+    public class AddressBookContactTests: FactAttribute, IClassFixture<DatabaseContactsFixture>
+    {
+        private readonly ITestOutputHelper _output;
+        DatabaseContactsFixture fixture;
+        public IConfigurationRoot Configuration { get; }
+
+        public AddressBookContactTests(DatabaseContactsFixture fixture, ITestOutputHelper output)
+        {
+            this.fixture = fixture;
+
+            var curPath = Directory.GetCurrentDirectory();
+            var configBuilder = new ConfigurationBuilder()
+               .SetBasePath(curPath)
+               .AddJsonFile("appsettings.json", optional: true);
+            var config = configBuilder.Build();
+
+            Route4MeDbManager.DatabaseProvider = DatabaseProviders.LocalDb;
+            fixture.r4mdbManager = new Route4MeDbManager(config);
+
+            fixture._route4meDbContext = fixture.r4mdbManager.Route4MeContext;
+
+            fixture._addressBookContactRepository = new AddressBookContactRepository(fixture._route4meDbContext);
             _output = output;
         }
 
-        [Fact]
+        [IgnoreIfNoLocalDb]
         public void GetAddressBookContactsTest()
         {
             var addresDbIDs = new List<int>();
 
-            var firstAddressBookContact = addressBookContactBuilder.WithDefaultValues();
-            _route4meDbContext.AddressBookContacts.Add(firstAddressBookContact);
+            var firstAddressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            fixture._route4meDbContext.AddressBookContacts.Add(firstAddressBookContact);
             int firstAddressDbId = firstAddressBookContact.AddressDbId;
             addresDbIDs.Add(firstAddressDbId);
 
-            var secondAddressBookContact = addressBookContactBuilder.WithSchedule();
-            _route4meDbContext.AddressBookContacts.Add(secondAddressBookContact);
+            var secondAddressBookContact = fixture.addressBookContactBuilder.WithSchedule();
+            fixture._route4meDbContext.AddressBookContacts.Add(secondAddressBookContact);
             int secondAddressDbId = secondAddressBookContact.AddressDbId;
             addresDbIDs.Add(secondAddressDbId);
 
-            _route4meDbContext.SaveChanges();
+            fixture._route4meDbContext.SaveChanges();
 
-            var contacts = _route4meDbContext.AddressBookContacts.Skip(0).Take(2);
+            var contacts = fixture._route4meDbContext.AddressBookContacts.Skip(0).Take(2);
 
-            var linqContacts = _route4meDbContext.AddressBookContacts
+            var linqContacts = fixture._route4meDbContext.AddressBookContacts
                 .Where(x => addresDbIDs.Contains(x.AddressDbId)).ToList<AddressBookContact>();
 
             foreach (var linqContact in linqContacts)
@@ -81,20 +79,20 @@ namespace Route4MeDB.FunctionalTests.LocalDb
             }
         }
 
-        [Fact]
+        [IgnoreIfNoLocalDb]
         public async Task GetExistingAddressBookContactAsync()
         {
-            var firstAddressBookContact = addressBookContactBuilder.WithDefaultValues();
-            await _route4meDbContext.AddressBookContacts.AddAsync(firstAddressBookContact);
+            var firstAddressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(firstAddressBookContact);
 
-            await _route4meDbContext.SaveChangesAsync();
+            await fixture._route4meDbContext.SaveChangesAsync();
 
             int createdAddressDbId = firstAddressBookContact.AddressDbId;
 
-            var addressBookContactFromRepo = await _addressBookContactRepository
+            var addressBookContactFromRepo = await fixture._addressBookContactRepository
                 .GetAddressBookContactByIdAsync(createdAddressDbId);
 
-            var linqContact = _route4meDbContext.AddressBookContacts
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
                 .Where(x => createdAddressDbId == x.AddressDbId).FirstOrDefault();
 
             Assert.Equal(createdAddressDbId, addressBookContactFromRepo.AddressDbId);
@@ -104,23 +102,23 @@ namespace Route4MeDB.FunctionalTests.LocalDb
             Assert.Equal(firstAddressBookContact.LastName, linqContact.LastName);
         }
 
-        [Fact]
+        [IgnoreIfNoLocalDb]
         public async Task UpdateAddressBookContactAsync()
         {
-            var addressBookContact = addressBookContactBuilder.WithDefaultValues();
-            await _route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
+            var addressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
 
-            await _route4meDbContext.SaveChangesAsync();
+            await fixture._route4meDbContext.SaveChangesAsync();
 
             addressBookContact.FirstName = "Peter Modified";
             addressBookContact.LastName = "Newman Modified";
 
-            var updatedContact = await _addressBookContactRepository
+            var updatedContact = await fixture._addressBookContactRepository
                 .UpdateAddressBookContactAsync(addressBookContact.AddressDbId, addressBookContact);
 
-            await _route4meDbContext.SaveChangesAsync();
+            await fixture._route4meDbContext.SaveChangesAsync();
 
-            var linqContact = _route4meDbContext.AddressBookContacts
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
                 .Where(x => x.AddressDbId == updatedContact.AddressDbId).FirstOrDefault();
 
             Assert.Equal<AddressBookContact>(updatedContact, linqContact);

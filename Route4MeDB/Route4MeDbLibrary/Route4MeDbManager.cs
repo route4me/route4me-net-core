@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
 using System.IO;
 
 namespace Route4MeDB.Route4MeDbLibrary
@@ -21,7 +22,7 @@ namespace Route4MeDB.Route4MeDbLibrary
     public enum DatabaseProviders
     {
         LocalDb,
-        MsSq,
+        MsSql,
         Sqlexpress,
         SqlCompact40,
         SQLite,
@@ -74,7 +75,7 @@ namespace Route4MeDB.Route4MeDbLibrary
                         .UseSqlServer(ConfigurationExtensions.GetConnectionString(this.Config,"DefaultConnection"))
                         .Options;
                     break;
-                case DatabaseProviders.MsSq:
+                case DatabaseProviders.MsSql:
                     _options = new DbContextOptionsBuilder<Route4MeDbContext>()
                         .UseSqlServer(Config.GetConnectionString("MsSqlConnection"))
                         .Options;
@@ -85,9 +86,9 @@ namespace Route4MeDB.Route4MeDbLibrary
                         .Options;
                     break;
                 case DatabaseProviders.SqlCompact40:
-                    _options = new DbContextOptionsBuilder<Route4MeDbContext>()
-                        .UseSqlServer(Config.GetConnectionString("SqlCompact40Connection"))
-                        .Options;
+                    //_options = new DbContextOptionsBuilder<Route4MeDbContext>()
+                    //    .UseSqlCe(Config.GetConnectionString("SqlCompact40Connection"))
+                    //    .Options;
                     break;
                 case DatabaseProviders.SQLite:
                     _options = new DbContextOptionsBuilder<Route4MeDbContext>()
@@ -101,7 +102,7 @@ namespace Route4MeDB.Route4MeDbLibrary
                     break;
                 case DatabaseProviders.MySql:
                     _options = new DbContextOptionsBuilder<Route4MeDbContext>()
-                        .UseMySQL(Config.GetConnectionString("MySqlConnection"))
+                        .UseMySql(Config.GetConnectionString("MySqlConnection"))
                         .Options;
                     break;
                 default:
@@ -125,7 +126,7 @@ namespace Route4MeDB.Route4MeDbLibrary
                     services.AddDbContext<Route4MeDbContext>(options =>
                     options.UseSqlServer(Config.GetConnectionString("DefaultConnection")));
                     break;
-                case DatabaseProviders.MsSq:
+                case DatabaseProviders.MsSql:
                     services.AddDbContext<Route4MeDbContext>(options =>
                     options.UseSqlServer(Config.GetConnectionString("MsSqlConnection")));
                     break;
@@ -134,8 +135,8 @@ namespace Route4MeDB.Route4MeDbLibrary
                     options.UseSqlServer(Config.GetConnectionString("SqlExpressConnection")));
                     break;
                 case DatabaseProviders.SqlCompact40:
-                    services.AddDbContext<Route4MeDbContext>(options =>
-                    options.UseSqlServer(Config.GetConnectionString("SqlCompact40Connection")));
+                    //services.AddDbContext<Route4MeDbContext>(options =>
+                    //options.UseSqlServer(Config.GetConnectionString("SqlCompact40Connection")));
                     break;
                 case DatabaseProviders.SQLite:
                     services.AddDbContext<Route4MeDbContext>(options =>
@@ -147,7 +148,7 @@ namespace Route4MeDB.Route4MeDbLibrary
                     break;
                 case DatabaseProviders.MySql:
                     services.AddDbContext<Route4MeDbContext>(options =>
-                    options.UseNpgsql(Config.GetConnectionString("MySqlConnection")));
+                    options.UseMySql(Config.GetConnectionString("MySqlConnection")));
                     break;
                 default:
                     services.AddDbContext<Route4MeDbContext>(options =>

@@ -32,7 +32,7 @@ namespace Route4MeDB.Route4MeDbLibrary
                 case DatabaseProviders.LocalDb:
                     
                     break;
-                case DatabaseProviders.MsSq:
+                case DatabaseProviders.MsSql:
                     
                     break;
                 case DatabaseProviders.Sqlexpress:
