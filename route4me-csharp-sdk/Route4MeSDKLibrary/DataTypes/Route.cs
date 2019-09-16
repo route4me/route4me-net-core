@@ -14,13 +14,13 @@ namespace Route4MeSDK.DataTypes
         /// The route ID
         /// </summary>
         [DataMember(Name = "route_id", EmitDefaultValue = false)]
-        public string RouteID { get; set; }
+        public string RouteId { get; set; }
 
         /// <summary>
         /// The member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public string MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// The member's email
@@ -95,43 +95,46 @@ namespace Route4MeSDK.DataTypes
         /// Cost of the route
         /// </summary>
         [DataMember(Name = "route_cost", EmitDefaultValue = false)]
-        public double? RouteCost { get; set; }
+        public decimal? RouteCost { get; set; }
 
         /// <summary>
         /// Total route revenue
         /// </summary>
         [DataMember(Name = "route_revenue", EmitDefaultValue = false)]
-        public double? RouteRevenue { get; set; }
+        public decimal? RouteRevenue { get; set; }
 
         /// <summary>
         /// Net revenue per distance unit
         /// </summary>
         [DataMember(Name = "net_revenue_per_distance_unit", EmitDefaultValue = false)]
-        public double? NetRevenuePerDistanceUnit { get; set; }
+        public decimal? NetRevenuePerDistanceUnit { get; set; }
 
         /// <summary>
         /// Miles per gallon
         /// </summary>
         [DataMember(Name = "mpg", EmitDefaultValue = false)]
-        public string Mpg { get; set; }
+        public double? Mpg { get; set; }
 
         /// <summary>
         /// Total route's trip distance
         /// </summary>
         [DataMember(Name = "trip_distance", EmitDefaultValue = false)]
-        public double? TripDistance { get; set; }
+        public decimal? TripDistance { get; set; }
 
         /// <summary>
         /// Gas price
         /// </summary>
         [DataMember(Name = "gas_price", EmitDefaultValue = false)]
-        public double? GasPrice { get; set; }
+        public decimal? GasPrice { get; set; }
 
         /// <summary>
         /// Total route duration (seconds)
         /// </summary>
         [DataMember(Name = "route_duration_sec", EmitDefaultValue = false)]
         public int? RouteDurationSec { get; set; }
+
+        [DataMember(Name = "total_wait_time", EmitDefaultValue = false)]
+        public int? TotalWaitTime { get; set; }
 
         /// <summary>
         /// Planned total route duration.
@@ -146,7 +149,7 @@ namespace Route4MeSDK.DataTypes
         /// Actual travel distance.
         /// </summary>
         [DataMember(Name = "actual_travel_distance")]
-        public double? ActualTravelDistance { get; set; }
+        public decimal? ActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel time.
@@ -182,7 +185,7 @@ namespace Route4MeSDK.DataTypes
         /// Paying miles
         /// </summary>
         [DataMember(Name = "paying_miles")]
-        public double? PayingMiles { get; set; }
+        public decimal? PayingMiles { get; set; }
 
         /// <summary>
         /// Channel name.
@@ -213,6 +216,18 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "notes_count")]
         public int? NotesCount { get; set; }
+
+        /// <summary>
+        /// Distance unit. Available values: 'mi', 'km'
+        /// </summary>
+        [DataMember(Name = "udu_distance_unit")]
+        public string UduDistanceUnit { get; set; }
+
+        [DataMember(Name = "udu_actual_travel_distance")]
+        public decimal? UduActualTravelDistance { get; set; }
+
+        [DataMember(Name = "udu_trip_distance")]
+        public decimal? UduTripDistance { get; set; }
 
         /// <summary>
         /// Vehicle.
