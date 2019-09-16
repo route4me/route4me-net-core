@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
     [Owned]
-    public class Schedule : BaseEntity, IAggregateRoot
+    public class Schedule
     {
         public Schedule() { }
 
@@ -46,41 +46,41 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 
         public string Mode { get; set; }
 
-        internal string _daily { get; set; }
+        public ScheduleDaily Daily { get; set; }
 
-        [NotMapped]
-        public ScheduleDaily Daily
-        {
-            get { return _daily == null ? null : JsonConvert.DeserializeObject<ScheduleDaily>(_daily); }
-            set { _daily = JsonConvert.SerializeObject(value); }
-        }
+        //[NotMapped]
+        //public ScheduleDaily DailyObject
+        //{
+        //    get { return Daily == null ? null : JsonConvert.DeserializeObject<ScheduleDaily>(Daily); }
+        //    set { Daily = JsonConvert.SerializeObject(value); }
+        //}
 
-        internal string _weekly { get; set; }
+        public ScheduleWeekly Weekly { get; set; }
 
-        [NotMapped]
-        public ScheduleWeekly Weekly
-        {
-            get { return _weekly == null ? null : JsonConvert.DeserializeObject<ScheduleWeekly>(_weekly); }
-            set { _weekly = JsonConvert.SerializeObject(value); }
-        }
+        //[NotMapped]
+        //public ScheduleWeekly WeeklyObject
+        //{
+        //    get { return Weekly == null ? null : JsonConvert.DeserializeObject<ScheduleWeekly>(Weekly); }
+        //    set { Weekly = JsonConvert.SerializeObject(value); }
+        //}
 
-        internal string _monthly { get; set; }
+        public ScheduleMonthly Monthly { get; set; }
 
-        [NotMapped]
-        public ScheduleMonthly Monthly
-        {
-            get { return _monthly == null ? null : JsonConvert.DeserializeObject<ScheduleMonthly>(_monthly); }
-            set { _monthly = JsonConvert.SerializeObject(value); }
-        }
+        //[NotMapped]
+        //public ScheduleMonthly MonthlyObject
+        //{
+        //    get { return Monthly == null ? null : JsonConvert.DeserializeObject<ScheduleMonthly>(Monthly); }
+        //    set { Monthly = JsonConvert.SerializeObject(value); }
+        //}
 
-        internal string _annually { get; set; }
+        public ScheduleAnnually Annually { get; set; }
 
-        [NotMapped]
-        public ScheduleAnnually Annually
-        {
-            get { return _annually == null ? null : JsonConvert.DeserializeObject<ScheduleAnnually>(_annually); }
-            set { _annually = JsonConvert.SerializeObject(value); }
-        }
+        //[NotMapped]
+        //public ScheduleAnnually AnnuallyObject
+        //{
+        //    get { return Annually == null ? null : JsonConvert.DeserializeObject<ScheduleAnnually>(Annually); }
+        //    set { Annually = JsonConvert.SerializeObject(value); }
+        //}
 
         public bool ValidateScheduleMode(object ScheduleMode)
         {

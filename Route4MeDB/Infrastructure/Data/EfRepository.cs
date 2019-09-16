@@ -57,10 +57,12 @@ namespace Route4MeDB.Infrastructure.Data
             return entity;
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task<EntityState> DeleteAsync(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
+            Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry removedEntity = _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();
+
+            return removedEntity.State;
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

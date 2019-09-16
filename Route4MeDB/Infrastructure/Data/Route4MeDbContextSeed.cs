@@ -68,7 +68,7 @@ namespace Route4MeDB.Infrastructure.Data
                                 { "scheduled", "yes" }, { "service type", "publishing" }
                             }
                         ),
-                    Schedules = new Schedule[]
+                    SchedulesArray = new Schedule[]
                     {
                          new Schedule()
                             {

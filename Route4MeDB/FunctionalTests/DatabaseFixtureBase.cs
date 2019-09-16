@@ -13,8 +13,10 @@ namespace Route4MeDB.FunctionalTests
         public Route4MeDbContext _route4meDbContext;
         public Route4MeDbManager r4mdbManager;
         public ITestOutputHelper _output;
+
         public AddressBookContactBuilder addressBookContactBuilder { get; } = new AddressBookContactBuilder();
         public OrderBuilder orderBuilder { get; } = new OrderBuilder();
+        public OptimizationBuilder optimizationBuilder { get; } = new OptimizationBuilder();
 
         public void GetDbContext(DatabaseProviders dbProvider)
         {

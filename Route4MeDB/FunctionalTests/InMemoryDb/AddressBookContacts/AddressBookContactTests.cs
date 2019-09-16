@@ -9,23 +9,33 @@ using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
 using Route4MeDB.ApplicationCore.Specifications;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Route4MeDB.FunctionalTests.InMemoryDb
 {
-    public class AddressBookContactTests : IDisposable
+    public class DatabaseContactsFixture : DatabaseFixtureBase
     {
-        private readonly Route4MeDbContext _route4meDbContext;
-        private readonly Route4MeDbManager r4mdbManager;
-        private AddressBookContactBuilder addressBookContactBuilder { get; } = new AddressBookContactBuilder();
-        private readonly ITestOutputHelper _output;
-
-        public AddressBookContactTests(ITestOutputHelper output, IConfiguration Configuration=null)
+        public DatabaseContactsFixture()
         {
             Route4MeDbManager.DatabaseProvider = DatabaseProviders.InMemory;
-            r4mdbManager = new Route4MeDbManager(Configuration);
 
-            _route4meDbContext = r4mdbManager.Route4MeContext;
+            GetDbContext(DatabaseProviders.InMemory);
 
+            _addressBookContactRepository = new AddressBookContactRepository(_route4meDbContext);
+        }
+
+        public AddressBookContactRepository _addressBookContactRepository;
+    }
+
+    public class AddressBookContactTests : IDisposable, IClassFixture<DatabaseContactsFixture>
+    {
+        private readonly ITestOutputHelper _output;
+        DatabaseContactsFixture fixture;
+        public IConfigurationRoot Configuration { get; }
+
+        public AddressBookContactTests(DatabaseContactsFixture fixture, ITestOutputHelper output)
+        {
+            this.fixture = fixture;
             _output = output;
         }
 
@@ -35,25 +45,27 @@ namespace Route4MeDB.FunctionalTests.InMemoryDb
         }
 
         [Fact]
-        public void GetAddressBookContactsTest()
+        public async void GetAddressBookContactsTest()
         {
             var addresDbIDs = new List<int>();
 
-            var firstAddressBookContact = addressBookContactBuilder.WithDefaultValues();
-            _route4meDbContext.AddressBookContacts.Add(firstAddressBookContact);
+            var firstAddressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(firstAddressBookContact);
             int firstAddressDbId = firstAddressBookContact.AddressDbId;
             addresDbIDs.Add(firstAddressDbId);
 
-            var secondAddressBookContact = addressBookContactBuilder.WithSchedule();
-            _route4meDbContext.AddressBookContacts.Add(secondAddressBookContact);
+            var secondAddressBookContact = fixture.addressBookContactBuilder.WithSchedule();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(secondAddressBookContact);
             int secondAddressDbId = secondAddressBookContact.AddressDbId;
             addresDbIDs.Add(secondAddressDbId);
 
-            _route4meDbContext.SaveChanges();
+            await fixture._route4meDbContext.SaveChangesAsync();
 
-            var contacts = _route4meDbContext.AddressBookContacts.Skip(0).Take(2);
+            var contacts = fixture._route4meDbContext.AddressBookContacts
+                .OrderByDescending(x => x.AddressDbId)
+                .Skip(0).Take(2);
 
-            var linqContacts = _route4meDbContext.AddressBookContacts
+            var linqContacts = fixture._route4meDbContext.AddressBookContacts
                 .Where(x => addresDbIDs.Contains(x.AddressDbId)).ToList<AddressBookContact>();
 
             foreach (var linqContact in linqContacts)
@@ -65,42 +77,111 @@ namespace Route4MeDB.FunctionalTests.InMemoryDb
         [Fact]
         public async void GetsExistingAddressBookContactAsync()
         {
-            var existingAddressBookContact = addressBookContactBuilder.WithDefaultValues();
-            _route4meDbContext.AddressBookContacts.Add(existingAddressBookContact);
-            _route4meDbContext.SaveChanges();
+            var existingAddressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            fixture._route4meDbContext.AddressBookContacts.Add(existingAddressBookContact);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
             int addressDbId = existingAddressBookContact.AddressDbId;
-            _output.WriteLine($"AddressDbId: {addressDbId}");
+            //_output.WriteLine($"AddressDbId: {addressDbId}");
 
             var addressSpec = new AddressBookContactSpecification(addressDbId);
 
-            var addressBookContactFromRepo = await r4mdbManager.ContactsRepository.GetByIdAsync(addressSpec);
+            var addressBookContactFromRepo = await fixture.r4mdbManager.ContactsRepository.GetByIdAsync(addressSpec);
 
-            Assert.Equal(addressBookContactBuilder.testData.FirstName, addressBookContactFromRepo.FirstName);
-            Assert.Equal(addressBookContactBuilder.testData.LastName, addressBookContactFromRepo.LastName);
+            Assert.Equal(fixture.addressBookContactBuilder.testData.FirstName, addressBookContactFromRepo.FirstName);
+            Assert.Equal(fixture.addressBookContactBuilder.testData.LastName, addressBookContactFromRepo.LastName);
         }
 
         [Fact]
         public async void UpdateAddressBookContactAsync()
         {
-            var addressBookContact = addressBookContactBuilder.WithDefaultValues();
-            _route4meDbContext.AddressBookContacts.Add(addressBookContact);
+            var addressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
             int firstAddressDbId = addressBookContact.AddressDbId;
 
-            _route4meDbContext.SaveChanges();
+            await fixture._route4meDbContext.SaveChangesAsync();
 
             addressBookContact.FirstName = "Peter Modified";
             addressBookContact.LastName = "Newman Modified";
 
-            var updatedContact = await r4mdbManager.ContactsRepository
+            var updatedContact = await fixture.r4mdbManager.ContactsRepository
                 .UpdateAddressBookContactAsync(addressBookContact.AddressDbId, addressBookContact);
 
-            _route4meDbContext.SaveChanges();
+            await fixture._route4meDbContext.SaveChangesAsync();
 
-            var linqContact = _route4meDbContext.AddressBookContacts
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
                 .Where(x => x.AddressId == updatedContact.AddressId).FirstOrDefault();
 
             Assert.Equal(updatedContact.Address1, linqContact.Address1);
             Assert.Equal(updatedContact.AddressId, linqContact.AddressId);
+        }
+
+        [Fact]
+        public async void CustomDataTestAsync()
+        {
+            string customDataJsonString = JsonConvert.SerializeObject(fixture.addressBookContactBuilder.testData.AddressCustomDataDic);
+            var addressBookContact = fixture.addressBookContactBuilder.WithCustomData();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
+                .Where(x => x.AddressDbId == addressBookContact.AddressDbId).FirstOrDefault();
+
+            Assert.Equal(customDataJsonString, linqContact.AddressCustomData);
+        }
+
+        [Fact]
+        public async void ScheduleBlackListTestAsync()
+        {
+            var scheduleBlackList = fixture.addressBookContactBuilder.testData.ScheduleBlacklistArray;
+            var addressBookContact = fixture.addressBookContactBuilder.WithScheduleBlacklist();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
+                .Where(x => x.AddressDbId == addressBookContact.AddressDbId).FirstOrDefault();
+
+            Assert.Equal<string[]>(scheduleBlackList, linqContact.ScheduleBlackListArray);
+        }
+
+        [Fact]
+        public async void ScheduleTestAsync()
+        {
+            var schedules = fixture.addressBookContactBuilder.testData.SchedulesArray;
+            var addressBookContact = fixture.addressBookContactBuilder.WithSchedule();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
+                .Where(x => x.AddressDbId == addressBookContact.AddressDbId).FirstOrDefault();
+
+            Assert.Equal(addressBookContact.Schedules, linqContact.Schedules);
+        }
+
+        [Fact]
+        public async void RemoveAddressBookContactAsync()
+        {
+            var addressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var createdContactDbId = addressBookContact.AddressDbId;
+
+            var removedContacts = await fixture._addressBookContactRepository
+                .RemoveAddressBookContactAsync(new int[] { createdContactDbId });
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            Assert.Equal(removedContacts[0], createdContactDbId);
+
+            var linqContact = fixture._route4meDbContext.AddressBookContacts
+                .Where(x => x.AddressDbId == createdContactDbId).FirstOrDefault();
+
+            Assert.Null(linqContact);
         }
     }
 }

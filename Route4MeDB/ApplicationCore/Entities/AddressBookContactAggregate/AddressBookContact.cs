@@ -3,6 +3,7 @@ using Ardalis.GuardClauses;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -132,32 +133,46 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 
         [Column("address_custom_data")]
         public string AddressCustomData { get; set; }
-
+        
+        /// <summary>
+        /// Property for get/set custom data as Dictionary<string, string> object
+        /// Gets/sets string data from/to AddressCustomData fild.
+        /// This property will be not mapped as the table field.
+        /// </summary>
         [NotMapped]
-        public Dictionary<string, string> AddressCustomDatas
+        public Dictionary<string, string> AddressCustomDataDic
         {
-            get { return AddressCustomData == null ? null : JsonConvert.DeserializeObject<Dictionary<string, string>>(AddressCustomData); }
+            get { return AddressCustomData == null ? null : JsonConvert.DeserializeObject<Dictionary<string, string>>(AddressCustomData, new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }); }
             set { AddressCustomData = JsonConvert.SerializeObject(value); }
         }
 
         [Column("schedule")]
-        internal string _Schedules { get; set; }
+        public string Schedules { get; set; }
 
         [NotMapped]
-        public IList<Schedule> Schedules
+        public Schedule[] SchedulesArray
         {
-            get { return _Schedules == null ? null : JsonConvert.DeserializeObject<IList<Schedule>>(_Schedules); }
-            set { _Schedules = JsonConvert.SerializeObject(value); }
+            get { return Schedules == null ? null : JsonConvert.DeserializeObject<Schedule[]>(Schedules); }
+            set { Schedules = JsonConvert.SerializeObject(value, new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }); }
         }
 
         [Column("schedule_blacklist")]
-        internal string _ScheduleBlackList { get; set; }
+        public string ScheduleBlackList { get; set; }
 
         [NotMapped]
-        public string[] ScheduleBlackList
-        {    
-            get { return _ScheduleBlackList == null ? null : JsonConvert.DeserializeObject<string[]>(_ScheduleBlackList); }
-            set { _ScheduleBlackList = JsonConvert.SerializeObject(value); }
+        public string[] ScheduleBlackListArray
+        {
+            get { return ScheduleBlackList == null ? null : JsonConvert.DeserializeObject<string[]>(ScheduleBlackList, new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }); }
+            set { ScheduleBlackList = JsonConvert.SerializeObject(value); }
         }
 
         [Column("service_time")]
