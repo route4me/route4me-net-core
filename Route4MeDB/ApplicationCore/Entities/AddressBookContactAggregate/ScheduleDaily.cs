@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
     [Owned]
-    public class ScheduleDaily : BaseEntity, IAggregateRoot
+    public class ScheduleDaily
     {
         public ScheduleDaily(int _every = 1)
         {

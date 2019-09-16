@@ -25,4 +25,10 @@
     <ProjectReference Include="..\Route4MeDbLibrary\Route4MeDbLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Route4MeSDKLibrary">
+      <HintPath>..\..\route4me-csharp-sdk\Route4MeSDKLibrary\bin\Debug\netcoreapp2.2\Route4MeSDKLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

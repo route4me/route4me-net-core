@@ -3123,10 +3123,28 @@
           "Moq": "4.12.0",
           "Route4MeDbLibrary": "1.0.0",
           "xunit": "2.4.0",
-          "xunit.runner.visualstudio": "2.4.0"
+          "xunit.runner.visualstudio": "2.4.0",
+          "Route4MeSDKLibrary": "1.0.0.0",
+          "SocketIoClientDotNet.core_2.2": "1.0.0.0"
         },
         "runtime": {
           "UnitTests.dll": {}
+        }
+      },
+      "Route4MeSDKLibrary.Reference/1.0.0.0": {
+        "runtime": {
+          "Route4MeSDKLibrary.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SocketIoClientDotNet.core_2.2.Reference/1.0.0.0": {
+        "runtime": {
+          "SocketIoClientDotNet.core_2.2.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -4876,6 +4894,16 @@
     },
     "UnitTests/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Route4MeSDKLibrary.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SocketIoClientDotNet.core_2.2.Reference/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }
