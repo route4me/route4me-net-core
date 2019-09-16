@@ -108,5 +108,42 @@ namespace Route4MeDB.FunctionalTests.PostgreSqlDb
 
             Assert.Equal<Order>(updatedOrder, linqOrder);
         }
+
+        [IgnoreIfNoPostgreSqlDb]
+        public async Task RemoveOrderAsync()
+        {
+            var order = fixture.orderBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.Orders.AddAsync(order);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var createdOrderDbID = order.OrderDbId;
+
+            var removedOrders = await fixture._orderRepository
+                .RemoveOrderAsync(new int[] { order.OrderDbId });
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            Assert.Equal(removedOrders[0], createdOrderDbID);
+
+            var linqOrder = fixture._route4meDbContext.Orders
+                .Where(x => x.OrderDbId == createdOrderDbID).FirstOrDefault();
+
+            Assert.Null(linqOrder);
+        }
+
+        [IgnoreIfNoPostgreSqlDb]
+        public async Task CustomDataTestAsync()
+        {
+            var order = fixture.orderBuilder.WithCustomData();
+            await fixture._route4meDbContext.Orders.AddAsync(order);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var linqOrder = fixture._route4meDbContext.Orders
+                .Where(x => x.OrderDbId == order.OrderDbId).FirstOrDefault();
+
+            Assert.Equal(order.ExtFieldCustomData, linqOrder.ExtFieldCustomData);
+        }
     }
 }

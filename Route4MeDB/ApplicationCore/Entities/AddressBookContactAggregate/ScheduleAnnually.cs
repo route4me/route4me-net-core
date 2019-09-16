@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
 {
     [Owned]
-    public class ScheduleAnnually : BaseEntity, IAggregateRoot
+    public class ScheduleAnnually
     {
         public int Every { get; set; }
 

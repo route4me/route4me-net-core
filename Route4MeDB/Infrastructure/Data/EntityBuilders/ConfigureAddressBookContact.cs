@@ -10,11 +10,11 @@ namespace Route4MeDB.Infrastructure.Data
         {
             builder.HasKey(ci => ci.AddressDbId);
 
-            builder.Property(ci => ci.AddressDbId)
-               .IsConcurrencyToken(true)
-               .IsRowVersion()
-               .ValueGeneratedOnAdd()
-               .UseSqlServerIdentityColumn();
+            //builder.Property(ci => ci.AddressDbId)
+            //   .IsConcurrencyToken(true)
+            //   .IsRowVersion()
+            //   .ValueGeneratedOnAdd()
+            //   .UseSqlServerIdentityColumn();
 
             builder.Property(ci => ci.AddressId)
                .IsRowVersion();

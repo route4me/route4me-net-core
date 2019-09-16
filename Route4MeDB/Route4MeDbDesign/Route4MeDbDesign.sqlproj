@@ -57,4 +57,11 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="AddressesTable.sql" />
+    <Build Include="NotesTable.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Route4MeDbDesign.refactorlog" />
+  </ItemGroup>
 </Project>

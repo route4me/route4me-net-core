@@ -3,7 +3,6 @@ using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
 using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
 using System.Collections.Generic;
 
-
 namespace Route4MeDB.UnitTests.Builders
 {
     public class OrderBuilder
@@ -24,8 +23,7 @@ namespace Route4MeDB.UnitTests.Builders
             public string EXT_FIELD_last_name = "Carol";
             public string EXT_FIELD_email = "lcarol654@yahoo.com";
             public string EXT_FIELD_phone = "897946541";
-            public string EXT_FIELD_custom_data = JsonConvert.SerializeObject(
-                new Dictionary<string, string>() { { "order_type", "scheduled order" } });
+            public Dictionary<string, string> EXT_FIELD_custom_datas = new Dictionary<string, string>() { { "order_type", "scheduled order" } };
             public string DayScheduledForYyMmDd = "2017-12-20";
             public int LocalTimeWindowEnd = 39000;
             public int LocalTimeWindowEnd2 = 46200;
@@ -60,7 +58,7 @@ namespace Route4MeDB.UnitTests.Builders
                 EXT_FIELD_last_name = testData.EXT_FIELD_last_name,
                 EXT_FIELD_email = testData.EXT_FIELD_email,
                 EXT_FIELD_phone = testData.EXT_FIELD_phone,
-                EXT_FIELD_custom_datas = new Dictionary<string, string> { { "cust field", "cust value" } },
+               // EXT_FIELD_custom_datas = new Dictionary<string, string> { { "cust field", "cust value" } },
                 DayScheduledForYyMmDd = testData.DayScheduledForYyMmDd,
                 LocalTimeWindowEnd = testData.LocalTimeWindowEnd,
                 LocalTimeWindowEnd2 = testData.LocalTimeWindowEnd2,
@@ -76,7 +74,7 @@ namespace Route4MeDB.UnitTests.Builders
         public Order WithCustomData()
         {
             _order = WithDefaultValues();
-            _order.ExtFieldCustomData = testData.EXT_FIELD_custom_data;
+            _order.EXT_FIELD_custom_datas = testData.EXT_FIELD_custom_datas;
             return _order;
         }
     }

@@ -13,20 +13,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Route4MeDB.FunctionalTests.InMemoryDb
 {
-    public class OrderTests
+    public class DatabaseOrdersFixture : DatabaseFixtureBase
     {
-        private readonly Route4MeDbContext _route4meDbContext;
-        private readonly Route4MeDbManager r4mdbManager;
-        private OrderBuilder orderBuilder { get; } = new OrderBuilder();
-        private readonly ITestOutputHelper _output;
-
-        public OrderTests(ITestOutputHelper output, IConfiguration Configuration = null)
+        public DatabaseOrdersFixture()
         {
             Route4MeDbManager.DatabaseProvider = DatabaseProviders.InMemory;
-            r4mdbManager = new Route4MeDbManager(Configuration);
 
-            _route4meDbContext = r4mdbManager.Route4MeContext;
+            GetDbContext(DatabaseProviders.InMemory);
 
+            _orderRepository = new OrderRepository(_route4meDbContext);
+        }
+
+        public OrderRepository _orderRepository;
+    }
+
+    public class OrderTests : IClassFixture<DatabaseOrdersFixture>
+    {
+        private readonly ITestOutputHelper _output;
+        DatabaseOrdersFixture fixture;
+        public IConfigurationRoot Configuration { get; }
+
+        public OrderTests(DatabaseOrdersFixture fixture, ITestOutputHelper output)
+        {
+            this.fixture = fixture;
             _output = output;
         }
 
@@ -35,21 +44,21 @@ namespace Route4MeDB.FunctionalTests.InMemoryDb
         {
             var orderDbIDs = new List<int>();
 
-            var firstOrder = orderBuilder.WithDefaultValues();
-            _route4meDbContext.Orders.Add(firstOrder);
+            var firstOrder = fixture.orderBuilder.WithDefaultValues();
+            fixture._route4meDbContext.Orders.Add(firstOrder);
             int firstAddressDbId = firstOrder.OrderDbId;
             orderDbIDs.Add(firstAddressDbId);
 
-            var secondOrder = orderBuilder.WithCustomData();
-            _route4meDbContext.Orders.Add(secondOrder);
+            var secondOrder = fixture.orderBuilder.WithCustomData();
+            fixture._route4meDbContext.Orders.Add(secondOrder);
             int secondOrderDbId = secondOrder.OrderDbId;
             orderDbIDs.Add(secondOrderDbId);
 
-            _route4meDbContext.SaveChanges();
+            fixture._route4meDbContext.SaveChanges();
 
-            var orders = await r4mdbManager.OrdersRepository.GetOrdersAsync(0, 1000);
+            var orders = await fixture.r4mdbManager.OrdersRepository.GetOrdersAsync(0, 1000);
 
-            var linqOrders = await _route4meDbContext.Orders
+            var linqOrders = await fixture._route4meDbContext.Orders
                 .Where(x => orderDbIDs.Contains(x.OrderDbId)).ToListAsync<Order>();
 
             foreach (var linqOrder in linqOrders)
@@ -61,36 +70,36 @@ namespace Route4MeDB.FunctionalTests.InMemoryDb
         [Fact]
         public async void GetsExistingOrder()
         {
-            var existingOrder = orderBuilder.WithDefaultValues();
-            _route4meDbContext.Orders.Add(existingOrder);
-            _route4meDbContext.SaveChanges();
+            var existingOrder = fixture.orderBuilder.WithDefaultValues();
+            fixture._route4meDbContext.Orders.Add(existingOrder);
+            fixture._route4meDbContext.SaveChanges();
             int orderDbId = existingOrder.OrderDbId;
             _output.WriteLine($"OrderDbId: {orderDbId}");
 
             var orderSpec = new OrderSpecification(orderDbId);
 
-            var orderFromRepo = await r4mdbManager.OrdersRepository.GetByIdAsync(orderSpec);
-            Assert.Equal(orderBuilder.testData.EXT_FIELD_first_name, orderFromRepo.EXT_FIELD_first_name);
-            Assert.Equal(orderBuilder.testData.EXT_FIELD_last_name, orderFromRepo.EXT_FIELD_last_name);
+            var orderFromRepo = await fixture.r4mdbManager.OrdersRepository.GetByIdAsync(orderSpec);
+            Assert.Equal(fixture.orderBuilder.testData.EXT_FIELD_first_name, orderFromRepo.EXT_FIELD_first_name);
+            Assert.Equal(fixture.orderBuilder.testData.EXT_FIELD_last_name, orderFromRepo.EXT_FIELD_last_name);
         }
 
         [Fact]
         public async void UpdateOrderAsync()
         {
-            var order = orderBuilder.WithDefaultValues();
-            _route4meDbContext.Orders.Add(order);
+            var order = fixture.orderBuilder.WithDefaultValues();
+            fixture._route4meDbContext.Orders.Add(order);
             int firstAddressDbId = order.OrderDbId;
 
-            _route4meDbContext.SaveChanges();
+            fixture._route4meDbContext.SaveChanges();
 
             order.EXT_FIELD_first_name = "Peter Modified";
             order.EXT_FIELD_last_name = "Newman Modified";
 
-            var updatedOrder = await r4mdbManager.OrdersRepository.UpdateOrderAsync(order.OrderDbId, order);
+            var updatedOrder = await fixture.r4mdbManager.OrdersRepository.UpdateOrderAsync(order.OrderDbId, order);
 
-            _route4meDbContext.SaveChanges();
+            fixture._route4meDbContext.SaveChanges();
 
-            var linqOrder = _route4meDbContext.Orders
+            var linqOrder = fixture._route4meDbContext.Orders
                 .Where(x => x.OrderDbId == updatedOrder.OrderDbId).FirstOrDefault();
 
             //Assert.Equal(updatedOrder, linqOrder);
@@ -99,6 +108,43 @@ namespace Route4MeDB.FunctionalTests.InMemoryDb
 
             Assert.Equal("Peter Modified", linqOrder.EXT_FIELD_first_name);
             Assert.Equal("Newman Modified", linqOrder.EXT_FIELD_last_name);
+        }
+
+        [Fact]
+        public async void RemoveOrderAsync()
+        {
+            var order = fixture.orderBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.Orders.AddAsync(order);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var createdOrderDbID = order.OrderDbId;
+
+            var removedOrders = await fixture._orderRepository
+                .RemoveOrderAsync(new int[] { order.OrderDbId });
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            Assert.Equal(removedOrders[0], createdOrderDbID);
+
+            var linqOrder = fixture._route4meDbContext.Orders
+                .Where(x => x.OrderDbId == createdOrderDbID).FirstOrDefault();
+
+            Assert.Null(linqOrder);
+        }
+
+        [Fact]
+        public async void CustomDataTestAsync()
+        {
+            var order = fixture.orderBuilder.WithCustomData();
+            await fixture._route4meDbContext.Orders.AddAsync(order);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var linqOrder = fixture._route4meDbContext.Orders
+                .Where(x => x.OrderDbId == order.OrderDbId).FirstOrDefault();
+
+            Assert.Equal(order.ExtFieldCustomData, linqOrder.ExtFieldCustomData);
         }
     }
 }

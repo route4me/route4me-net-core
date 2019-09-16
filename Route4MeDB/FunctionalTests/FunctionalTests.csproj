@@ -32,7 +32,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TestData\" />
     <Folder Include="SqlServerDb\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\mdmd_optiization_24stops_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\mdmd_optiization_24stops_RESPONSE.rar">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\mdmd_optimization_24stops_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\optimization_with_custom_fields.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\sdrt_optimization_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\sd_optimization_10stops_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

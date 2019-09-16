@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Route4MeDB.FunctionalTest;
 
 namespace Route4MeDB.FunctionalTests.LocalDb
 {
@@ -34,23 +35,10 @@ namespace Route4MeDB.FunctionalTests.LocalDb
         public OrderTests(DatabaseOrdersFixture fixture, ITestOutputHelper output)
         {
             this.fixture = fixture;
-
-            var curPath = Directory.GetCurrentDirectory();
-            var configBuilder = new ConfigurationBuilder()
-               .SetBasePath(curPath)
-               .AddJsonFile("appsettings.json", optional: true);
-            var config = configBuilder.Build();
-
-            Route4MeDbManager.DatabaseProvider = DatabaseProviders.LocalDb;
-            fixture.r4mdbManager = new Route4MeDbManager(config);
-
-            fixture._route4meDbContext = fixture.r4mdbManager.Route4MeContext;
-
-            fixture._orderRepository = new OrderRepository(fixture._route4meDbContext);
             _output = output;
         }
 
-        [Fact]
+        [IgnoreIfNoLocalDb]
         public async Task GetOrdersTest()
         {
             var orderDbIDs = new List<int>();
@@ -80,7 +68,7 @@ namespace Route4MeDB.FunctionalTests.LocalDb
             }
         }
 
-        [Fact]
+        [IgnoreIfNoLocalDb]
         public async Task GetExistingOrderAsync()
         {
             var firstOrder = fixture.orderBuilder.WithDefaultValues();
@@ -103,7 +91,7 @@ namespace Route4MeDB.FunctionalTests.LocalDb
             Assert.Equal(firstOrder.EXT_FIELD_last_name, linqOrder.EXT_FIELD_last_name);
         }
 
-        [Fact]
+        [IgnoreIfNoLocalDb]
         public async Task UpdateOrderAsync()
         {
             var order = fixture.orderBuilder.WithDefaultValues();
@@ -123,6 +111,43 @@ namespace Route4MeDB.FunctionalTests.LocalDb
                 .Where(x => x.OrderDbId == updatedOrder.OrderDbId).FirstOrDefault();
 
             Assert.Equal<Order>(updatedOrder, linqOrder);
+        }
+
+        [IgnoreIfNoLocalDb]
+        public async Task RemoveOrderAsync()
+        {
+            var order = fixture.orderBuilder.WithDefaultValues();
+            await fixture._route4meDbContext.Orders.AddAsync(order);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var createdOrderDbID = order.OrderDbId;
+
+            var removedOrders = await fixture._orderRepository
+                .RemoveOrderAsync(new int[] { order.OrderDbId });
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            Assert.Equal(removedOrders[0], createdOrderDbID);
+
+            var linqOrder = fixture._route4meDbContext.Orders
+                .Where(x => x.OrderDbId == createdOrderDbID).FirstOrDefault();
+
+            Assert.Null(linqOrder);
+        }
+
+        [IgnoreIfNoLocalDb]
+        public async Task CustomDataTestAsync()
+        {
+            var order = fixture.orderBuilder.WithCustomData();
+            await fixture._route4meDbContext.Orders.AddAsync(order);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            var linqOrder = fixture._route4meDbContext.Orders
+                .Where(x => x.OrderDbId == order.OrderDbId).FirstOrDefault();
+
+            Assert.Equal(order.ExtFieldCustomData, linqOrder.ExtFieldCustomData);
         }
     }
 }

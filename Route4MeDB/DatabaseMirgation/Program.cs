@@ -1,26 +1,16 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using Route4MeDB.Route4MeDbLibrary;
+﻿using Route4MeDB.Route4MeDbLibrary;
 using Route4MeDB.Infrastructure.Data;
 using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
-using Route4MeDB.ApplicationCore.Specifications;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Builder.Internal;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Route4MeDB.UnitTests.Builders;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using Route4MeDbLibrary;
 
 namespace RouteMeDB.DatabaseMirgation
 {
@@ -28,14 +18,13 @@ namespace RouteMeDB.DatabaseMirgation
     {
         static void Main(string[] args)
         {
+            // Specify here a database provider
             var dbProvider = DatabaseProviders.PostgreSql;
             var curPath = Directory.GetCurrentDirectory();
             var configBuilder = new ConfigurationBuilder()
                .SetBasePath(curPath)
                .AddJsonFile("appsettings.json", optional: true);
             var config = configBuilder.Build();
-            //var basedir = Utils.GetRoute4MeDbBaseDir(curPath);
-            // Specify here a database provider
 
             Route4MeDbManager.DatabaseProvider = dbProvider;
 
@@ -65,9 +54,6 @@ namespace RouteMeDB.DatabaseMirgation
                     break;
             }
 
-            //var optBuilder = new DbContextOptionsBuilder<Route4MeDbContext>()
-            //    .UseMySQL(config.GetConnectionString("MySqlConnection"));
-
             var services = new ServiceCollection()
             .AddLogging().AddSingleton<DbContextOptions>(optBuilder.Options)
             .AddOptions()
@@ -76,6 +62,7 @@ namespace RouteMeDB.DatabaseMirgation
 
             if ((_route4meDbContext.Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
                 _route4meDbContext.Database.EnsureDeleted();
+
 
             _route4meDbContext.Database.EnsureCreated();
 

@@ -24,9 +24,9 @@ namespace Route4MeDB.UnitTests.Builders
             public double CachedLat => 38.141598;
             public double CachedLng => -85.793846;
             public string AddressCity => "Louisville";
-            public string AddressCustomData = JsonConvert.SerializeObject( new Dictionary<string, string>()
-                { { "scheduled", "yes" }, { "service type", "publishing" } });
-            public Schedule[] Schedules = new Schedule[]
+            public Dictionary<string, string> AddressCustomDataDic = new Dictionary<string, string>()
+                { { "scheduled", "yes" }, { "service type", "publishing" } };
+            public Schedule[] SchedulesArray = new Schedule[]
              {
                 new Schedule()
                 {
@@ -35,7 +35,7 @@ namespace Route4MeDB.UnitTests.Builders
                     Daily = new ScheduleDaily(1)
                 }
              };
-            public string[] ScheduleBlacklist = new string[]
+            public string[] ScheduleBlacklistArray = new string[]
             {
                 "2019-07-21", "2019-07-22", "2019-07-23"
             };
@@ -74,21 +74,21 @@ namespace Route4MeDB.UnitTests.Builders
         public AddressBookContact WithCustomData()
         {
             _addressBookContact = WithDefaultValues();
-            _addressBookContact.AddressCustomData = testData.AddressCustomData;
+            _addressBookContact.AddressCustomDataDic = testData.AddressCustomDataDic;
             return _addressBookContact;
         }
 
         public AddressBookContact WithSchedule()
         {
             _addressBookContact = WithDefaultValues();
-            _addressBookContact.Schedules = testData.Schedules;
+            _addressBookContact.SchedulesArray = testData.SchedulesArray;
             return _addressBookContact;
         }
 
         public AddressBookContact WithScheduleBlacklist()
         {
             _addressBookContact = WithDefaultValues();
-            _addressBookContact.ScheduleBlackList = testData.ScheduleBlacklist;
+            _addressBookContact.ScheduleBlackListArray = testData.ScheduleBlacklistArray;
             return _addressBookContact;
         }
     }

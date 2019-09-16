@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+//using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
 using Route4MeDB.ApplicationCore;
 using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
 using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
+using Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate;
+using Route4MeDB.ApplicationCore.Entities.RouteAggregate;
 
 namespace Route4MeDB.Infrastructure.Data
 {
@@ -34,6 +37,22 @@ namespace Route4MeDB.Infrastructure.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<AddressNote> AddressNotes { get; set; }
+
+        public DbSet<Route> Routes { get; set; }
+
+        public DbSet<Direction> Directions { get; set; }
+
+        public DbSet<OptimizationProblem> Optimizations { get; set; }
+
+        public DbSet<TrackingHistory> TrackingHistories { get; set; }
+
+        public DbSet<Path> Pathes { get; set; }
+
+        public DbSet<PathToNext> PathesToNext { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -49,11 +68,29 @@ namespace Route4MeDB.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //base.OnModelCreating(builder);
+
             builder.Entity<AddressBookContact>(configureEnity.ConfigureAddressBookContact);
 
             builder.Entity<Order>(configureEnity.ConfigureOrder);
 
             builder.Entity<Audit>(configureEnity.ConfigureAudit);
+
+            builder.Entity<AddressNote>(configureEnity.ConfigureAddressNotes);
+
+            builder.Entity<Address>(configureEnity.ConfigureAddresses);
+
+            builder.Entity<Direction>(configureEnity.ConfigureDirections);
+
+            builder.Entity<Route>(configureEnity.ConfigureRoutes);
+
+            builder.Entity<OptimizationProblem>(configureEnity.ConfigureOptimizations);
+
+            builder.Entity<TrackingHistory>(configureEnity.ConfigureTrackingHistory);
+
+            builder.Entity<Path>(configureEnity.ConfigurePathes);
+
+            builder.Entity<PathToNext>(configureEnity.ConfigurePathesToNext);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
