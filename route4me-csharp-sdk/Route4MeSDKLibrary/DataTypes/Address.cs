@@ -27,7 +27,7 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         // The ID of the member inside the Route4Me system.
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public string MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// First name
@@ -212,65 +212,65 @@ namespace Route4MeSDK.DataTypes
         /// The data will be visible on the manifest, website, and mobile apps.
         /// </summary>
         [DataMember(Name = "customer_po", EmitDefaultValue = false)]
-        public object CustomerPo { get; set; }
+        public string CustomerPo { get; set; }
 
         /// <summary>
         /// Pass-through data about this route destination.
         /// The data will be visible on the manifest, website, and mobile apps.
         /// </summary>
         [DataMember(Name = "invoice_no", EmitDefaultValue = false)]
-        public object InvoiceNo { get; set; }
+        public string InvoiceNo { get; set; }
 
         /// <summary>
         /// Pass-through data about this route destination.
         /// The data will be visible on the manifest, website, and mobile apps.
         /// </summary>
         [DataMember(Name = "reference_no", EmitDefaultValue = false)]
-        public object ReferenceNo { get; set; }
+        public string ReferenceNo { get; set; }
 
         /// <summary>
         /// Pass-through data about this route destination.
         /// The data will be visible on the manifest, website, and mobile apps.
         /// </summary>
         [DataMember(Name = "order_no", EmitDefaultValue = false)]
-        public object OrderNo { get; set; }
+        public string OrderNo { get; set; }
 
         /// <summary>
         /// The address order ID
         /// </summary>
         [DataMember(Name = "order_id", EmitDefaultValue = false)]
-        public System.Nullable<int> OrderId { get; set; }
+        public int? OrderId { get; set; }
 
         /// <summary>
         /// The address cargo weight
         /// </summary>
         [DataMember(Name = "weight", EmitDefaultValue = false)]
-        public object Weight { get; set; }
+        public decimal? Weight { get; set; }
 
         /// <summary>
         /// The address cost
         /// </summary>
         [DataMember(Name = "cost", EmitDefaultValue = false)]
-        public object Cost { get; set; }
+        public decimal? Cost { get; set; }
 
         /// <summary>
         /// The address revenue
         /// </summary>
         [DataMember(Name = "revenue", EmitDefaultValue = false)]
-        public object Revenue { get; set; }
+        public decimal? Revenue { get; set; }
 
         /// <summary>
         /// The cubic volume that this destination/order/line-item consumes/contains.
         /// This is how much space it will take up on a vehicle.
         /// </summary>
         [DataMember(Name = "cube", EmitDefaultValue = false)]
-        public object Cube { get; set; }
+        public decimal? Cube { get; set; }
 
         /// <summary>
         /// The number of pieces/palllets that this destination/order/line-item consumes/contains on a vehicle.
         /// </summary>
         [DataMember(Name = "pieces", EmitDefaultValue = false)]
-        public object Pieces { get; set; }
+        public int? Pieces { get; set; }
 
         /// <summary>
         /// Pass-through data about this route destination.
@@ -278,7 +278,7 @@ namespace Route4MeSDK.DataTypes
         /// Also used to email clients when vehicles are approaching (future capability).
         /// </summary>
         [DataMember(Name = "email", EmitDefaultValue = false)]
-        public object Email { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Pass-through data about this route destination.
@@ -286,7 +286,7 @@ namespace Route4MeSDK.DataTypes
         /// Also used to send SMS messages to clients when vehicles are approaching (future capability).
         /// </summary>
         [DataMember(Name = "phone", EmitDefaultValue = false)]
-        public object Phone { get; set; }
+        public string Phone { get; set; }
 
         /// <summary>
         /// The number of notes that are already associated with this address on the route.
@@ -322,7 +322,7 @@ namespace Route4MeSDK.DataTypes
         /// Server-side generated amount of seconds that it will take to get to the next location.
         /// </summary>
         [DataMember(Name = "distance_to_next_destination", EmitDefaultValue = false)]
-        public double? DistanceToNextDestination { get; set; }
+        public decimal? DistanceToNextDestination { get; set; }
 
         /// <summary>
         /// Generated time window start.
