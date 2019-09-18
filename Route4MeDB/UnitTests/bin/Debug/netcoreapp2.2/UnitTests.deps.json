@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "488b0e6fc0de7275b48367e6f8b938ca7ad86128"
+    "signature": "4620a3bf4c3f59bb4bed5603f9da8ea770e6074a"
   },
   "compilationOptions": {},
   "targets": {
@@ -13,7 +13,6 @@
           "Infrastructure": "1.0.0",
           "Microsoft.NET.Test.Sdk": "16.0.1",
           "Moq": "4.12.0",
-          "Route4MeDbLibrary": "1.0.0",
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0",
           "Route4MeSDKLibrary": "1.0.0.0"
@@ -945,31 +944,6 @@
           }
         }
       },
-      "Microsoft.Extensions.Configuration.FileExtensions/2.2.0": {
-        "dependencies": {
-          "Microsoft.Extensions.Configuration": "2.2.0",
-          "Microsoft.Extensions.FileProviders.Physical": "2.2.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Extensions.Configuration.FileExtensions.dll": {
-            "assemblyVersion": "2.2.0.0",
-            "fileVersion": "2.2.0.18315"
-          }
-        }
-      },
-      "Microsoft.Extensions.Configuration.Json/2.2.0": {
-        "dependencies": {
-          "Microsoft.Extensions.Configuration": "2.2.0",
-          "Microsoft.Extensions.Configuration.FileExtensions": "2.2.0",
-          "Newtonsoft.Json": "12.0.2"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Extensions.Configuration.Json.dll": {
-            "assemblyVersion": "2.2.0.0",
-            "fileVersion": "2.2.0.18315"
-          }
-        }
-      },
       "Microsoft.Extensions.DependencyInjection/2.2.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "2.2.0"
@@ -1021,18 +995,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Extensions.FileProviders.Composite.dll": {
-            "assemblyVersion": "2.2.0.0",
-            "fileVersion": "2.2.0.18315"
-          }
-        }
-      },
-      "Microsoft.Extensions.FileProviders.Physical/2.2.0": {
-        "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "2.2.0",
-          "Microsoft.Extensions.FileSystemGlobbing": "2.2.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Extensions.FileProviders.Physical.dll": {
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.0.18315"
           }
@@ -3108,17 +3070,6 @@
           "Infrastructure.dll": {}
         }
       },
-      "Route4MeDbLibrary/1.0.0": {
-        "dependencies": {
-          "ApplicationCore": "1.0.0",
-          "Infrastructure": "1.0.0",
-          "Microsoft.EntityFrameworkCore.InMemory": "2.2.6",
-          "Microsoft.Extensions.Configuration.Json": "2.2.0"
-        },
-        "runtime": {
-          "Route4MeDbLibrary.dll": {}
-        }
-      },
       "Route4MeSDKLibrary/1.0.0.0": {
         "runtime": {
           "Route4MeSDKLibrary.dll": {
@@ -3668,20 +3619,6 @@
       "path": "microsoft.extensions.configuration.binder/2.2.0",
       "hashPath": "microsoft.extensions.configuration.binder.2.2.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Configuration.FileExtensions/2.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-H1qCpWBC8Ed4tguTR/qYkbb3F6DI5Su3t8xyFo3/5MzAd8PwPpHzgX8X04KbBxKmk173Pb64x7xMHarczVFQUA==",
-      "path": "microsoft.extensions.configuration.fileextensions/2.2.0",
-      "hashPath": "microsoft.extensions.configuration.fileextensions.2.2.0.nupkg.sha512"
-    },
-    "Microsoft.Extensions.Configuration.Json/2.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-jUDdmLyFmLf9V3mqnMzSAzAv4QigJ67tZh5Q7HBXeBnESL2UyeesNG6jSBti+b63JpxZf+EDyn+anx3gyrNxug==",
-      "path": "microsoft.extensions.configuration.json/2.2.0",
-      "hashPath": "microsoft.extensions.configuration.json.2.2.0.nupkg.sha512"
-    },
     "Microsoft.Extensions.DependencyInjection/2.2.0": {
       "type": "package",
       "serviceable": true,
@@ -3716,13 +3653,6 @@
       "sha512": "sha512-Az/RxWB+UlyVN/TvQFaGXx8XAXVZN5WQnnuJOsjwBzghSJc1i8zqNjIypPHOedcuIXs2XSWgOSL6YQ3BlCnoJA==",
       "path": "microsoft.extensions.fileproviders.composite/2.2.0",
       "hashPath": "microsoft.extensions.fileproviders.composite.2.2.0.nupkg.sha512"
-    },
-    "Microsoft.Extensions.FileProviders.Physical/2.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-tbDHZnBJkjYd9NjlRZ9ondDiv1Te3KYCTW2RWpR1B0e1Z8+EnFRo7qNnHkkSCixLdlPZzhjlX24d/PixQ7w2dA==",
-      "path": "microsoft.extensions.fileproviders.physical/2.2.0",
-      "hashPath": "microsoft.extensions.fileproviders.physical.2.2.0.nupkg.sha512"
     },
     "Microsoft.Extensions.FileSystemGlobbing/2.2.0": {
       "type": "package",
@@ -4871,11 +4801,6 @@
       "sha512": ""
     },
     "Infrastructure/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Route4MeDbLibrary/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

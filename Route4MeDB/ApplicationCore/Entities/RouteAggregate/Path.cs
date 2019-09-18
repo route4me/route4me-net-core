@@ -12,11 +12,11 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         [Column("route_id", TypeName = "varchar(32)")]
         public string RouteId { get; set; }
 
-        [Column("route_destination_id")]
-        public int? RouteDestinationId { get; set; }
+        //[Column("route_destination_id")]
+        //public int? RouteDestinationId { get; set; }
 
-        [Column("sequence_no")]
-        public int? SequenceNo { get; set; }
+        //[Column("sequence_no")]
+        //public int? SequenceNo { get; set; }
 
         ///<summary>
         /// Latitude

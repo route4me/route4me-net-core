@@ -1,11 +1,16 @@
 ﻿using Newtonsoft.Json;
+using Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate;
 using Route4MeDB.ApplicationCore.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Route4MeDB.ApplicationCore.Entities.GeocodingAggregate
 {
-    public class Geocoding : BaseEntity, IAggregateRoot
+    public class Geocoding : IAggregateRoot
     {
+        [Key, Column("geocoding_db_id")]
+        public int GeocodingDbId { get; set; }
+
         /// <summary>
         /// A unique identifier for the geocoding
         /// </summary>
@@ -66,7 +71,14 @@ namespace Route4MeDB.ApplicationCore.Entities.GeocodingAggregate
         /// The address curbside coordinates
         /// </summary>
         [Column("curbside_coordinates")]
-        public GeoPoint CurbsideCoordinates { get; set; }
+        public string CurbsideCoordinates { get; set; }
+
+        [NotMapped]
+        public GeoPoint CurbsideCoordinatesObj
+        {
+            get { return CurbsideCoordinates == null ? null : JsonConvert.DeserializeObject<GeoPoint>(CurbsideCoordinates); }
+            set { CurbsideCoordinates = JsonConvert.SerializeObject(value); }
+        }
 
         /// <summary>
         /// The address without number
@@ -79,5 +91,9 @@ namespace Route4MeDB.ApplicationCore.Entities.GeocodingAggregate
         /// </summary>
         [Column("place_id")]
         public string PlaceID { get; set; }
+
+        public int RouteDestinationDbId { get; set; }
+        [ForeignKey("RouteDestinationDbId")]
+        public Address Route { get; set; }
     }
 }

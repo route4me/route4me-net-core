@@ -46,10 +46,5 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public string RouteDbId { get; set; }
         [ForeignKey("RouteDbId")]
         public Route Route { get; set; }
-
-        // TO DO: Adjust later
-        //public string OptimizationProblemDbId { get; set; }
-        //[ForeignKey("FK_Directions_OptimizationProblemDbId")]
-        //public OptimizationProblem optimizationProblem { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace Route4MeDB.FunctionalTests
         public AddressBookContactBuilder addressBookContactBuilder { get; } = new AddressBookContactBuilder();
         public OrderBuilder orderBuilder { get; } = new OrderBuilder();
         public OptimizationBuilder optimizationBuilder { get; } = new OptimizationBuilder();
+        public RouteBuilder routeBuilder { get; } = new RouteBuilder();
 
         public void GetDbContext(DatabaseProviders dbProvider)
         {

@@ -118,6 +118,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// <summary>
         /// Edge by edge turn-by-turn directions. See <see cref="Direction"/>
         /// </summary>
+        // TO DO: removing this column causes error - find why.
         [Column("directions")]
         public List<Direction> Directions { get; set; }
 

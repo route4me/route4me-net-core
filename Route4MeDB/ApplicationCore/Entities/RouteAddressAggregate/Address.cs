@@ -155,7 +155,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// An array containing Geocoding objects.
         /// </summary>
         [Column("geocodings")]
-        public Geocoding[] Geocodings { get; set; }
+        public List<Geocoding> Geocodings { get; set; }
 
         /// <summary>
         /// When planning a route from the address book or using existing address book IDs, 
@@ -454,7 +454,6 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
 
         /// <summary>
         /// Curbside latitude.
-        /// Generate optimal routes and driving directions to this curbside latitude.
         /// </summary>
         [Range(-90, 90)]
         [Column("curbside_lat")]
@@ -462,7 +461,6 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
 
         /// <summary>
         /// Curbside longitude.
-        /// Generate optimal routes and driving directions to the curbside longitude.
         /// </summary>
         [Range(-180, 180)]
         [Column("curbside_lng")]

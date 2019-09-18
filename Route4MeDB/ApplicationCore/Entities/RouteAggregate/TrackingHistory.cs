@@ -33,13 +33,13 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Direction/heading at the time of the location transaction event.
         /// </summary>
         [Column("d")]
-        public decimal Direction { get; set; }
+        public decimal? Direction { get; set; }
 
         /// <summary>
         /// The original timestamp in unix timestamp format at the moment location transaction event.
         /// </summary>
         [Column("ts")]
-        public long TimeStamp { get; set; }
+        public long? TimeStamp { get; set; }
 
         /// <summary>
         /// The original timestamp in a human readable timestamp format at the moment location transaction event.

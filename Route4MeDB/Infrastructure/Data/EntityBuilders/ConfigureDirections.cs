@@ -16,7 +16,11 @@ namespace Route4MeDB.Infrastructure.Data
             //builder.Property(d => d.RouteId)
             //    .HasMaxLength(32)
             //    .IsUnicode(false);
+            builder.Property(d => d.Location)
+                .IsUnicode(false);
 
+            builder.Property(d => d.Steps)
+                .IsUnicode(false);
 
         }
     }
