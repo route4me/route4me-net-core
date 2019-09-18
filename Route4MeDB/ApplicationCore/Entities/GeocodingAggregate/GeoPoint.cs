@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Route4MeDB.ApplicationCore.Entities.GeocodingAggregate
 {
     [Owned]
-    public class GeoPoint : BaseEntity, IAggregateRoot
+    public class GeoPoint : IAggregateRoot
     {
         /// <summary>
         /// Latitude
