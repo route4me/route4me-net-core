@@ -15,7 +15,7 @@ namespace Route4MeSDK.DataTypes
         /// Speed at the time of the location transaction event.
         /// </summary>
         [DataMember(Name = "s")]
-        public double? Speed { get; set; }
+        public decimal? Speed { get; set; }
 
         /// <summary>
         /// Latitude at the time of the location transaction event.
@@ -33,13 +33,13 @@ namespace Route4MeSDK.DataTypes
         /// Direction/heading at the time of the location transaction event.
         /// </summary>
         [DataMember(Name = "d")]
-        public string D { get; set; }
+        public decimal? Direction { get; set; }
 
         /// <summary>
         /// The original timestamp in unix timestamp format at the moment location transaction event.
         /// </summary>
         [DataMember(Name = "ts")]
-        public string TimeStamp { get; set; }
+        public long? TimeStamp { get; set; }
 
         /// <summary>
         /// The original timestamp in a human readable timestamp format at the moment location transaction event.
