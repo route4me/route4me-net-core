@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
 using Route4MeDB.ApplicationCore;
 using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
+using Route4MeDB.ApplicationCore.Entities.GeocodingAggregate;
 using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
 using Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate;
 using Route4MeDB.ApplicationCore.Entities.RouteAggregate;
@@ -53,6 +54,8 @@ namespace Route4MeDB.Infrastructure.Data
 
         public DbSet<PathToNext> PathesToNext { get; set; }
 
+        public DbSet<Geocoding> Geocodings { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -89,6 +92,8 @@ namespace Route4MeDB.Infrastructure.Data
             builder.Entity<TrackingHistory>(configureEnity.ConfigureTrackingHistory);
 
             builder.Entity<Path>(configureEnity.ConfigurePathes);
+
+            builder.Entity<Geocoding>(configureEnity.ConfigureGeocodings);
 
             builder.Entity<PathToNext>(configureEnity.ConfigurePathesToNext);
         }

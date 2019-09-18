@@ -6,6 +6,11 @@ using Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate;
 using RouteEntity = Route4MeDB.ApplicationCore.Entities.RouteAggregate.Route;
 using AddressEntity = Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate.Address;
 using AddressNoteEntity = Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate.AddressNote;
+using GeocodingEntity = Route4MeDB.ApplicationCore.Entities.GeocodingAggregate.Geocoding;
+using PathToNextEntity = Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate.PathToNext;
+using PathEntity = Route4MeDB.ApplicationCore.Entities.RouteAggregate.Path;
+using TrackingHistoryEntity = Route4MeDB.ApplicationCore.Entities.RouteAggregate.TrackingHistory;
+using DirectionEntity = Route4MeDB.ApplicationCore.Entities.RouteAggregate.Direction;
 using Route4MeDB.ApplicationCore;
 using Route4MeDbLibrary;
 using EnumR4M = Route4MeDB.ApplicationCore.Enum;
@@ -17,6 +22,8 @@ using Route4MeSDK.DataTypes;
 using RouteTable = Route4MeSDK.DataTypes.DataObjectRoute;
 using AddressTable = Route4MeSDK.DataTypes.Address;
 using AddressNoteTable = Route4MeSDK.DataTypes.AddressNote;
+using TrackingHistoryTable = Route4MeSDK.DataTypes.TrackingHistory;
+using DirectionTable = Route4MeSDK.DataTypes.Direction;
 using System.Reflection;
 
 namespace Route4MeDB.UnitTests.Builders
@@ -163,6 +170,9 @@ namespace Route4MeDB.UnitTests.Builders
                                 optimization.Routes.Add(getRouteEntity(route));
                             }
                             break;
+                        case "Directions":
+                            continue; // TO DO: optimization hasn't Directions - remove from ROute4MeSDK / Optimization
+                            break;
                         default:
                             typeof(OptimizationProblem).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
                             .SetValue(optimization, prop.GetValue(optimizationObject));
@@ -174,7 +184,7 @@ namespace Route4MeDB.UnitTests.Builders
             return optimization;
         }
 
-        private RouteEntity getRouteEntity(RouteTable routeObject)
+        public RouteEntity getRouteEntity(RouteTable routeObject)
         {
             var route = new RouteEntity();
 
@@ -184,7 +194,8 @@ namespace Route4MeDB.UnitTests.Builders
 
             foreach (PropertyInfo prop in routeTableProperties)
             {
-                if (routeEntityProperties.Contains(prop.Name))
+                Console.WriteLine(prop.Name + " -> "+prop.PropertyType.ToString());
+                if (routeEntityProperties.Contains(prop.Name) || prop.Name=="TrackingHistory" || prop.Name == "Path")
                 {
                     if (prop.GetValue(routeObject) == null) continue;
 
@@ -194,15 +205,33 @@ namespace Route4MeDB.UnitTests.Builders
                             route.Parameters = JsonConvert.SerializeObject(routeObject.Parameters, settings);
                             break;
                         case "Addresses":
-                            route.Addresses = new List<AddressEntity>();
+                            if (routeObject.Addresses == null) continue;
+
                             foreach (var address in routeObject.Addresses)
                             {
+                                if (route.Addresses == null) route.Addresses = new List<AddressEntity>();
                                 route.Addresses.Add(getAddressEntity(address));
                             }
                             break;
+                        case "Directions":
+                            if (routeObject.Directions == null) continue;
+
+                            foreach (var direction in routeObject.Directions)
+                            {
+                                var directionEntity = getDirectionEntity(direction);
+                                directionEntity.RouteId = routeObject.RouteId;
+
+                                if (directionEntity != null)
+                                {
+                                    if (route.Directions == null) route.Directions = new List<DirectionEntity>();
+                                    route.Directions.Add(directionEntity);
+                                }
+                            }
+                            break;
                         case "Notes":
-                            var notes = prop.GetValue(routeObject) as AddressNoteTable[];
-                            foreach (var note in notes)
+                            if (routeObject.Notes == null) continue;
+
+                            foreach (var note in routeObject.Notes)
                             {
                                 var noteEntity = getAddressNoteEntity(note);
                                 if (noteEntity != null)
@@ -212,12 +241,42 @@ namespace Route4MeDB.UnitTests.Builders
                                 }
                             }
                             break;
-                        //case "Path":
-                        //    route.Path = JsonConvert.SerializeObject(routeObject.Path);
-                        //    break;
-                        //case "TrackingHistory":
-                        //    route.TrackingHistory = JsonConvert.SerializeObject(routeObject.TrackingHistory, settings);
-                        //    break;
+                        case "Path":
+                            if (routeObject.Path == null) continue;
+
+                            foreach (var path in routeObject.Path)
+                            {
+                                if (path == null) continue;
+
+                                var pathEntity = new PathEntity()
+                                {
+                                    RouteId = route.RouteId,
+                                    Lat = path.Lat,
+                                    Lng = path.Lng
+                                };
+                                if (pathEntity != null)
+                                {
+                                    if (route.Pathes == null) route.Pathes = new List<PathEntity>();
+                                    route.Pathes.Add(pathEntity);
+                                }
+                            }
+                            break;
+                        case "TrackingHistory":
+                            if (routeObject.TrackingHistory == null) continue;
+
+                            foreach (var trackingHistory in routeObject.TrackingHistory)
+                            {
+                                if (trackingHistory == null) continue;
+
+                                var trackingHistoryEntity = getTrackingHistoryEntity(trackingHistory);
+
+                                if (trackingHistoryEntity != null)
+                                {
+                                    if (route.TrackingHistories == null) route.TrackingHistories = new List<TrackingHistoryEntity>();
+                                    route.TrackingHistories.Add(trackingHistoryEntity);
+                                }
+                            }
+                            break;
                         case "Links":
                             route.Links = JsonConvert.SerializeObject(routeObject.Links, settings);
                             break;
@@ -243,7 +302,7 @@ namespace Route4MeDB.UnitTests.Builders
             return route;
         }
 
-        private AddressEntity getAddressEntity(AddressTable addressObject)
+        public AddressEntity getAddressEntity(AddressTable addressObject)
         {
             var address = new AddressEntity();
 
@@ -258,8 +317,9 @@ namespace Route4MeDB.UnitTests.Builders
                     switch (prop.Name)
                     {
                         case "Notes":
-                            var notes = prop.GetValue(addressObject) as AddressNoteTable[];
-                            foreach (var note in notes)
+                            if (addressObject.Notes == null) continue;
+
+                            foreach (var note in addressObject.Notes)
                             {
                                 var noteEntity = getAddressNoteEntity(note);
                                 if (noteEntity != null)
@@ -270,7 +330,43 @@ namespace Route4MeDB.UnitTests.Builders
                             }
                             break;
                         case "Geocodings":
+                            if (addressObject.Geocodings == null) continue;
 
+                            foreach (var geocoding in addressObject.Geocodings)
+                            {
+                                if (geocoding != null)
+                                {
+                                    var geocodingEntity = getGeocodingEntity(geocoding);
+                                    if (geocodingEntity != null)
+                                    {
+                                        if (address.Geocodings == null) address.Geocodings = new List<GeocodingEntity>();
+                                        address.Geocodings.Add(geocodingEntity);
+                                    }
+                                }
+                            }
+                            
+                            break;
+                        case "PathToNext":
+                            if (addressObject.PathToNext == null) continue;
+
+                            foreach (var path in addressObject.PathToNext)
+                            {
+                                if (path == null) continue;
+
+                                var pathEntity = new PathToNext()
+                                {
+                                    RouteId = address.RouteId,
+                                    RouteDestinationId = address.RouteDestinationId,
+                                    SequenceNo = address.SequenceNo,
+                                    Lat = path.Latitude,
+                                    Lng = path.Longitude
+                                };
+                                if (pathEntity != null)
+                                {
+                                    if (address.PathToNext == null) address.PathToNext = new List<PathToNextEntity>();
+                                    address.PathToNext.Add(pathEntity);
+                                }
+                            }
                             break;
                         case "Manifest":
                             address.Manifest = JsonConvert.SerializeObject(addressObject.Manifest, settings);
@@ -300,7 +396,7 @@ namespace Route4MeDB.UnitTests.Builders
             return address;
         }
 
-        private AddressNoteEntity  getAddressNoteEntity(AddressNoteTable addressNoteObject)
+        public AddressNoteEntity  getAddressNoteEntity(AddressNoteTable addressNoteObject)
         {
             var addressNote = new AddressNoteEntity();
 
@@ -341,6 +437,84 @@ namespace Route4MeDB.UnitTests.Builders
             }
 
             return addressNote;
+        }
+
+        public GeocodingEntity getGeocodingEntity(Geocoding geocodingObject)
+        {
+            var geocoding = new GeocodingEntity();
+
+            var geocodingEntityProperties = typeof(GeocodingEntity).GetProperties().Select(x => x.Name);
+
+            foreach (PropertyInfo prop in typeof(Geocoding).GetProperties())
+            {
+                if (prop.GetValue(geocodingObject) == null) continue;
+
+                switch (prop.Name)
+                {
+                    case "CurbsideCoordinates":
+                        geocoding.CurbsideCoordinates = JsonConvert.SerializeObject(geocodingObject.CurbsideCoordinates, settings);
+                        break;
+                    case "Bbox":
+                        geocoding.Bbox = JsonConvert.SerializeObject(geocodingObject.Bbox, settings);
+                        break;
+                    default:
+                        typeof(GeocodingEntity).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
+                        .SetValue(geocoding, prop.GetValue(geocodingObject));
+                        break;
+                }
+            }
+
+            return geocoding;
+        }
+
+        public TrackingHistoryEntity getTrackingHistoryEntity(TrackingHistoryTable trackingHistoryObject)
+        {
+            var trackingHistory = new TrackingHistoryEntity();
+
+            var trackingHistoryProperties = typeof(TrackingHistoryEntity).GetProperties().Select(x => x.Name);
+
+            foreach (PropertyInfo prop in typeof(TrackingHistoryTable).GetProperties())
+            {
+                if (prop.GetValue(trackingHistoryObject) == null) continue;
+
+                switch (prop.Name)
+                {
+                    default:
+                        typeof(TrackingHistoryEntity).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
+                        .SetValue(trackingHistory, prop.GetValue(trackingHistoryObject));
+                        break;
+                }
+            }
+
+            return trackingHistory;
+        }
+
+        public DirectionEntity getDirectionEntity(DirectionTable directionObject)
+        {
+            var direction = new DirectionEntity();
+
+            var directionProperties = typeof(DirectionEntity).GetProperties().Select(x => x.Name);
+
+            foreach (PropertyInfo prop in typeof(DirectionTable).GetProperties())
+            {
+                if (prop.GetValue(directionObject) == null) continue;
+
+                switch (prop.Name)
+                {
+                    case "Location":
+                        direction.Location = JsonConvert.SerializeObject(directionObject.Location, settings);
+                        break;
+                    case "Steps":
+                        direction.Steps = JsonConvert.SerializeObject(directionObject.Steps, settings);
+                        break;
+                    default:
+                        typeof(DirectionEntity).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
+                        .SetValue(direction, prop.GetValue(directionObject));
+                        break;
+                }
+            }
+
+            return direction;
         }
     }
 }

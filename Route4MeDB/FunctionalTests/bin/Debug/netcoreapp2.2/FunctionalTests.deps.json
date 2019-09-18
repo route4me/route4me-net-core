@@ -3122,7 +3122,6 @@
           "Infrastructure": "1.0.0",
           "Microsoft.NET.Test.Sdk": "16.0.1",
           "Moq": "4.12.0",
-          "Route4MeDbLibrary": "1.0.0",
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0",
           "Route4MeSDKLibrary": "1.0.0.0",
