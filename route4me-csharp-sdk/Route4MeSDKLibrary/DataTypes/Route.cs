@@ -17,10 +17,17 @@ namespace Route4MeSDK.DataTypes
         public string RouteId { get; set; }
 
         /// <summary>
+        /// User route rating [0, 5]. A null value means no rating was given. 
+        /// Users can rate routes so that future optimizations take these ratings into account.
+        /// </summary>
+        [DataMember(Name = "user_route_rating", EmitDefaultValue = false)]
+        public int? UserRouteRating { get; set; }
+
+        /// <summary>
         /// The member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public string MemberId { get; set; }
 
         /// <summary>
         /// The member's email
@@ -41,6 +48,12 @@ namespace Route4MeSDK.DataTypes
         public string MemberLastName { get; set; }
 
         /// <summary>
+        /// Channel name.
+        /// </summary>
+        [DataMember(Name = "channel_name", EmitDefaultValue = false)]
+        public string ChannelName { get; set; }
+
+        /// <summary>
         /// URL to a member picture
         /// </summary>
         [DataMember(Name = "member_picture", EmitDefaultValue = false)]
@@ -53,25 +66,10 @@ namespace Route4MeSDK.DataTypes
         public string MemberTrackingSubheadline { get; set; }
 
         /// <summary>
-        /// Route rating done by a user.
-        /// <para>Available values: <value>0, 1, 2, 3, 4, 5</value></para>
-        /// <remarks><para>A null value means no rating was given. 
-        /// Users can rate routes so that future optimizations take these ratings into account.</para></remarks>
-        /// </summary>
-        [DataMember(Name = "user_route_rating", EmitDefaultValue = false)]
-        public int? UserRouteRating { get; set; }
-
-        /// <summary>
         /// If true, the order is approved for execution
         /// </summary>
         [DataMember(Name = "approved_for_execution")]
         public bool ApprovedForExecution { get; set; }
-
-        /// <summary>
-        /// If true, route is unrouted.
-        /// </summary>
-        [DataMember(Name = "is_unrouted")]
-        public bool IsUnrouted { get; set; }
 
         /// <summary>
         /// Counter of the approved revisions
@@ -95,37 +93,57 @@ namespace Route4MeSDK.DataTypes
         /// Cost of the route
         /// </summary>
         [DataMember(Name = "route_cost", EmitDefaultValue = false)]
-        public decimal? RouteCost { get; set; }
+        public double? RouteCost { get; set; }
 
         /// <summary>
         /// Total route revenue
         /// </summary>
         [DataMember(Name = "route_revenue", EmitDefaultValue = false)]
-        public decimal? RouteRevenue { get; set; }
+        public double? RouteRevenue { get; set; }
 
         /// <summary>
         /// Net revenue per distance unit
         /// </summary>
         [DataMember(Name = "net_revenue_per_distance_unit", EmitDefaultValue = false)]
-        public decimal? NetRevenuePerDistanceUnit { get; set; }
+        public double? NetRevenuePerDistanceUnit { get; set; }
 
         /// <summary>
         /// Miles per gallon
         /// </summary>
         [DataMember(Name = "mpg", EmitDefaultValue = false)]
-        public double? Mpg { get; set; }
+        public string mpg { get; set; }
 
         /// <summary>
         /// Total route's trip distance
         /// </summary>
         [DataMember(Name = "trip_distance", EmitDefaultValue = false)]
-        public decimal? TripDistance { get; set; }
+        public double? TripDistance { get; set; }
+
+        /// <summary>
+        /// The UDU distance measurement unit for the route.
+        /// enum: ["mi", "km"]
+        /// </summary>
+        /// <remarks>km or mi, the route4me api will convert all measurements into these units</remarks>
+        [DataMember(Name = "udu_distance_unit", EmitDefaultValue = false)]
+        public string UduDistanceUnit { get; set; }
+
+        /// <summary>
+        /// Total route's UDU trip distance
+        /// </summary>
+        [DataMember(Name = "udu_trip_distance", EmitDefaultValue = false)]
+        public double? UduTripDistance { get; set; }
+
+        /// <summary>
+        /// If true, route is unrouted.
+        /// </summary>
+        [DataMember(Name = "is_unrouted", EmitDefaultValue = false)]
+        public bool? IsUnrouted { get; set; }
 
         /// <summary>
         /// Gas price
         /// </summary>
         [DataMember(Name = "gas_price", EmitDefaultValue = false)]
-        public decimal? GasPrice { get; set; }
+        public double? GasPrice { get; set; }
 
         /// <summary>
         /// Total route duration (seconds)
@@ -133,118 +151,107 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "route_duration_sec", EmitDefaultValue = false)]
         public int? RouteDurationSec { get; set; }
 
+        /// <summary>
+        /// Planned total route duration (seconds).
+        /// </summary>
+        [DataMember(Name = "planned_total_route_duration", EmitDefaultValue = false)]
+        public int? PlannedTotalRrouteDuration { get; set; }
+
+        /// <summary>
+        /// Total wait time (seconds).
+        /// </summary>
         [DataMember(Name = "total_wait_time", EmitDefaultValue = false)]
         public int? TotalWaitTime { get; set; }
 
         /// <summary>
-        /// Planned total route duration.
-        /// <remarks><para>
-        /// The duration between the latest window end and the earliest window start.
-        /// </para></remarks>
+        /// UDU Actual travel distance.
         /// </summary>
-        [DataMember(Name = "planned_total_route_duration", EmitDefaultValue = false)]
-        public int? PlannedTotalRouteDuration { get; set; }
+        [DataMember(Name = "udu_actual_travel_distance", EmitDefaultValue = false)]
+        public decimal? UduActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel distance.
         /// </summary>
-        [DataMember(Name = "actual_travel_distance")]
+        [DataMember(Name = "actual_travel_distance", EmitDefaultValue = false)]
         public decimal? ActualTravelDistance { get; set; }
 
         /// <summary>
-        /// Actual travel time.
+        /// Actual travel time (seconds).
         /// </summary>
-        [DataMember(Name = "actual_travel_time")]
+        [DataMember(Name = "actual_travel_time", EmitDefaultValue = false)]
         public int? ActualTravelTime { get; set; }
 
         /// <summary>
         /// Actual footsteps.
         /// </summary>
-        [DataMember(Name = "actual_footsteps")]
-        public int? ActualFootSteps { get; set; }
+        [DataMember(Name = "actual_footsteps", EmitDefaultValue = false)]
+        public int? ActualFootsteps { get; set; }
 
         /// <summary>
-        /// Working time
+        /// Working time.
         /// </summary>
-        [DataMember(Name = "working_time")]
+        [DataMember(Name = "working_time", EmitDefaultValue = false)]
         public int? WorkingTime { get; set; }
 
         /// <summary>
-        /// Driving time
+        /// Driving time.
         /// </summary>
-        [DataMember(Name = "driving_time")]
+        [DataMember(Name = "driving_time", EmitDefaultValue = false)]
         public int? DrivingTime { get; set; }
 
         /// <summary>
-        /// Idling time
+        /// Idling time.
         /// </summary>
-        [DataMember(Name = "idling_time")]
+        [DataMember(Name = "idling_time", EmitDefaultValue = false)]
         public int? IdlingTime { get; set; }
 
         /// <summary>
-        /// Paying miles
+        /// Idling time.
         /// </summary>
-        [DataMember(Name = "paying_miles")]
+        [DataMember(Name = "paying_miles", EmitDefaultValue = false)]
         public decimal? PayingMiles { get; set; }
 
         /// <summary>
-        /// Channel name.
-        /// </summary>
-        [DataMember(Name = "channel_name")]
-        public string ChannelName { get; set; }
-
-        /// <summary>
         /// Geofence polygon type.
+        /// enum: ["circle", "poly", "rect"]
         /// </summary>
-        [DataMember(Name = "geofence_polygon_type")]
+        [DataMember(Name = "geofence_polygon_type", EmitDefaultValue = false)]
         public string GeofencePolygonType { get; set; }
 
         /// <summary>
         /// Geofence polygon size.
         /// </summary>
-        [DataMember(Name = "geofence_polygon_size")]
+        [DataMember(Name = "geofence_polygon_size", EmitDefaultValue = false)]
         public int? GeofencePolygonSize { get; set; }
 
         /// <summary>
         /// Destination count.
         /// </summary>
-        [DataMember(Name = "destination_count")]
+        [DataMember(Name = "destination_count", EmitDefaultValue = false)]
         public int? DestinationCount { get; set; }
 
         /// <summary>
         /// Notes count in the route.
         /// </summary>
-        [DataMember(Name = "notes_count")]
+        [DataMember(Name = "notes_count", EmitDefaultValue = false)]
         public int? NotesCount { get; set; }
-
-        /// <summary>
-        /// Distance unit. Available values: 'mi', 'km'
-        /// </summary>
-        [DataMember(Name = "udu_distance_unit")]
-        public string UduDistanceUnit { get; set; }
-
-        [DataMember(Name = "udu_actual_travel_distance")]
-        public decimal? UduActualTravelDistance { get; set; }
-
-        [DataMember(Name = "udu_trip_distance")]
-        public decimal? UduTripDistance { get; set; }
-
-        /// <summary>
-        /// Vehicle.
-        /// </summary>
-        [DataMember(Name = "vehicle")]
-        public object Vehicle { get; set; }
-
-        /// <summary>
-        /// Member config key-value pairs.
-        /// </summary>
-        [DataMember(Name = "member_config_storage")]
-        public Dictionary<String,String> MemberConfigStorage { get; set; }
 
         /// <summary>
         /// Route notes
         /// </summary>
         [DataMember(Name = "notes", EmitDefaultValue = false)]
         public AddressNote[] Notes { get; set; }
+
+        /// <summary>
+        /// A vehicle assigned to the route.
+        /// </summary>
+        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        public VehicleV4Response Vehilce { get; set; }
+
+        /// <summary>
+        /// Member config key-value pairs.
+        /// </summary>
+        [DataMember(Name = "member_config_storage", EmitDefaultValue = false)]
+        public Dictionary<string, string> MemberConfigStorage { get; set; }
     }
 }

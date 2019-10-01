@@ -23,7 +23,10 @@ namespace Route4MeSDK
         public const string UserRegistration = MainHost + "/actions/register_action.php";
         public const string UserConfiguration = MainHost + "/api.v4/configuration-settings.php";
         public const string AddRouteNotesHost = MainHost + "/actions/addRouteNotes.php";
+
         public const string ActivityFeedHost = MainHost + "/api.v4/activity_feed.php";
+        public const string GetActivitiesHost = MainHost + "/api/get_activities.php";
+
         public const string GetAddress = MainHost + "/api.v4/address.php";
         public const string DuplicateRoute = MainHost + "/actions/duplicate_route.php";
         public const string MoveRouteDestination = MainHost + "/actions/route/move_route_destination.php";
@@ -35,6 +38,7 @@ namespace Route4MeSDK
         public const string Avoidance = MainHost + "/api.v4/avoidance.php";
         public const string Territory = MainHost + "/api.v4/territory.php";
         public const string Order = MainHost + "/api.v4/order.php";
+        public const string OrderCustomField = MainHost + "/api.v4/order_custom_user_fields.php";
         public const string MergeRoutes = MainHost + "/actions/merge_routes.php";
         public const string RouteReoptimize = MainHost + "/api.v3/route/reoptimize_2.php";
         public const string RouteSharing = MainHost + "/actions/route/share_route.php";
