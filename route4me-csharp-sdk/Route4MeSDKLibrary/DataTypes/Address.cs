@@ -109,12 +109,6 @@ namespace Route4MeSDK.DataTypes
         public string OptimizationProblemId { get; set; }
 
         /// <summary>
-        /// The route name.
-        /// </summary>
-        [DataMember(Name = "route_name", EmitDefaultValue = false)]
-        public string RouteName { get; set; }
-
-        /// <summary>
         /// The destination's sequence number in the route.
         /// </summary>
         [DataMember(Name = "sequence_no", EmitDefaultValue = false)]
@@ -477,6 +471,18 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "tracking_number", EmitDefaultValue = false)]
         public string tracking_number { get; set; }
+
+        /// <summary>
+        /// Server-side generated amount of seconds that it will take to get to the next location.
+        /// </summary>
+        [DataMember(Name = "udu_distance_to_next_destination", EmitDefaultValue = false)]
+        public decimal? UduDistanceToNextDestination { get; set; }
+
+        /// <summary>
+        /// Wait time to next destination.
+        /// </summary>
+        [DataMember(Name = "wait_time_to_next_destination", EmitDefaultValue = false)]
+        public int? WaitTimeToNextDestination { get; set; }
 
         /// <summary>
         /// Manifest of a route address.
