@@ -7971,7 +7971,8 @@ namespace Route4MeSDKUnitTest
         static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey; //
         static TestDataRepository tdr;
         static List<string> lsOptimizationIDs;
-        static readonly List<string> lsOrders = new List<string>();
+        static List<string> lsOrderIds = new List<string>();
+        static List<Order> lsOrders = new List<Order>();
 
         [ClassInitialize()]
         public static void CreateOrderTest(TestContext context)
@@ -8011,7 +8012,7 @@ namespace Route4MeSDKUnitTest
 
                 Assert.IsNotNull(resultOrder, "CreateOrderTest failed... " + errorString);
 
-                lsOrders.Add(resultOrder.order_id.ToString());
+                lsOrderIds.Add(resultOrder.order_id.ToString());
             }
             else
             {
@@ -8049,7 +8050,7 @@ namespace Route4MeSDKUnitTest
 
             string orderIds = "";
 
-            foreach (string ord1 in lsOrders) orderIds += ord1 + ",";
+            foreach (string ord1 in lsOrderIds) orderIds += ord1 + ",";
             orderIds = orderIds.TrimEnd(',');
 
             OrderParameters orderParameters = new OrderParameters()
@@ -8144,7 +8145,7 @@ namespace Route4MeSDKUnitTest
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
             Order order = null;
-            string orderId = lsOrders.Count > 0 ? lsOrders[0] : "";
+            string orderId = lsOrderIds.Count > 0 ? lsOrderIds[0] : "";
 
             Assert.IsFalse(orderId == "", "There is no order for updating...");
 
@@ -8313,6 +8314,62 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void CreateOrderWithCustomFieldTest()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var orderParams = new Order()
+            {
+                address_1 = "1358 E Luzerne St, Philadelphia, PA 19124, US",
+                cached_lat = 48.335991,
+                cached_lng = 31.18287,
+                day_scheduled_for_YYMMDD = "2019-10-11",
+                address_alias = "Auto test address",
+                CustomUserFields = new OrderCustomField[]
+                {
+                    new OrderCustomField()
+                    {
+                        OrderCustomFieldId = 93,
+                        OrderCustomFieldValue = "false"
+                    }
+                }
+            };
+
+            var result = route4Me.AddOrder(orderParams, out string errorString);
+
+            Assert.IsNotNull(result, "AddOrdersToRouteTest failed... " + errorString);
+
+            lsOrderIds.Add(result.order_id.ToString());
+
+            lsOrders.Add(result);
+        }
+
+        [TestMethod]
+        public void UpdateOrderWithCustomFieldTest()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var order = lsOrders[lsOrders.Count - 1];
+
+            order.CustomUserFields = new OrderCustomField[]
+            {
+                new OrderCustomField()
+                {
+                    OrderCustomFieldId = 93,
+                    OrderCustomFieldValue = "true"
+                }
+            };
+
+            var result = route4Me.UpdateOrder(order, out string errorString);
+
+            Assert.IsNotNull(result, "AddOrdersToRouteTest failed... " + errorString);
+        }
+
+        [TestMethod]
         public void AddOrdersToRouteTest()
         {
             if (skip == "yes") return;
@@ -8398,16 +8455,22 @@ namespace Route4MeSDKUnitTest
         {
             if (skip == "yes") return;
 
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
             // Run the query
-            bool removed = route4Me.RemoveOrders(lsOrders.ToArray(), out string errorString);
+            string errorString;
+            bool removed = route4Me.RemoveOrders(lsOrderIds.ToArray(), out errorString);
+
+            lsOrders.Clear();
+            lsOrderIds.Clear();
 
             Assert.IsTrue(removed, "RemoveOrdersTest failed... " + errorString);
 
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
             Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+
+            lsOptimizationIDs.Clear();
         }
     }
 
@@ -9465,7 +9528,7 @@ namespace Route4MeSDKUnitTest
         static readonly string c_ApiKey = ApiKeys.ActualApiKey; // Creating of a user better to do with the business and higher account types --- put in the parameter an appropriate API key
         static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey;
 
-        static List<int> lsMembers;
+        static List<string> lsMembers;
 
         int? createdMemberID;
 
@@ -9476,21 +9539,19 @@ namespace Route4MeSDKUnitTest
 
             skip = c_ApiKey == c_ApiKey_1 ? "yes" : "no";
 
-            lsMembers = new List<int>();
+            lsMembers = new List<string>();
 
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
             GenericParameters parameters = new GenericParameters();
 
-            // Run the query
-            Route4MeManager.GetUsersResponse dataObjects = route4Me.GetUsers(parameters, out string errorString);
+            var dispetcher = (new UsersGroup()).CreateUser("SUB_ACCOUNT_DISPATCHER", out string errorString);
+            Assert.IsInstanceOfType(dispetcher, typeof(MemberResponseV4), "Cannot create dispetcher. " + errorString);
+            lsMembers.Add(dispetcher.member_id);
 
-            Assert.IsInstanceOfType(dataObjects, typeof(Route4MeManager.GetUsersResponse), errorString);
-
-            foreach (MemberResponseV4 member in dataObjects.Results)
-            {
-                lsMembers.Add(Convert.ToInt32(member.member_id));
-            }
+            var driver = (new UsersGroup()).CreateUser("SUB_ACCOUNT_DRIVER", out errorString);
+            Assert.IsInstanceOfType(driver, typeof(MemberResponseV4), "Cannot create driver. " + errorString);
+            lsMembers.Add(driver.member_id);
         }
 
         [TestMethod]
@@ -9500,35 +9561,59 @@ namespace Route4MeSDKUnitTest
 
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberParametersV4 @params = new MemberParametersV4
+            var dispetcher = this.CreateUser("SUB_ACCOUNT_DISPATCHER", out string errorString);
+
+            //For successful testing of an user creating, you shuld provide valid email address, otherwise you'll get error "Email is used in system"
+            string rightResponse = dispetcher != null ? "ok" : ((errorString == "Email is used in system" || errorString == "Registration: The e-mail address is missing or invalid.") ? "ok" : "");
+
+            Assert.IsTrue(rightResponse == "ok", "CreateUserTest failed... " + errorString);
+
+            lsMembers.Add(dispetcher.member_id);
+        }
+
+        public MemberResponseV4 CreateUser(string memberType, out string errorString)
+        {
+            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+
+            string userFirstName = "";
+            string userLastName = "";
+            string userPhone = "";
+
+            switch (memberType)
+            {
+                case "SUB_ACCOUNT_DISPATCHER":
+                    userFirstName = "Clay";
+                    userLastName = "Abraham";
+                    userPhone = "571-259-5939";
+                    break;
+                case "SUB_ACCOUNT_DRIVER":
+                    userFirstName = "Driver";
+                    userLastName = "Driverson";
+                    userPhone = "577-222-5555";
+                    break;
+            }
+
+            MemberParametersV4 @params = new MemberParametersV4()
             {
                 HIDE_ROUTED_ADDRESSES = "FALSE",
-                member_phone = "571-259-5939",
+                member_phone = userPhone,
                 member_zipcode = "22102",
                 member_email = "regression.autotests+" + DateTime.Now.ToString("yyyyMMddHHmmss") + "@gmail.com",
                 HIDE_VISITED_ADDRESSES = "FALSE",
                 READONLY_USER = "FALSE",
-                member_type = "SUB_ACCOUNT_DISPATCHER",
+                member_type = memberType,
                 date_of_birth = "2010",
-                member_first_name = "Clay",
+                member_first_name = userFirstName,
                 member_password = "123456",
                 HIDE_NONFUTURE_ROUTES = "FALSE",
-                member_last_name = "Abraham",
+                member_last_name = userLastName,
                 SHOW_ALL_VEHICLES = "FALSE",
                 SHOW_ALL_DRIVERS = "FALSE"
             };
 
-            // Run the query
-            var result = route4Me.CreateUser(@params, out string errorString);
+            var result = route4Me.CreateUser(@params, out errorString);
 
-            createdMemberID = Convert.ToInt32(result.member_id);
-
-            //For successful testing of an user creating, you shuld provide valid email address, otherwise you'll get error "Email is used in system"
-            string rightResponse = result != null ? "ok" : ((errorString == "Email is used in system" || errorString == "Registration: The e-mail address is missing or invalid.") ? "ok" : "");
-
-            Assert.IsTrue(rightResponse == "ok", "CreateUserTest failed... " + errorString);
-
-            lsMembers.Add(Convert.ToInt32(result.member_id));
+            return result;
         }
 
         [TestMethod]
@@ -9538,41 +9623,15 @@ namespace Route4MeSDKUnitTest
 
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberParametersV4 @params = new MemberParametersV4
-            {
-                HIDE_ROUTED_ADDRESSES = "FALSE",
-                member_phone = "571-259-5939",
-                member_zipcode = "22102",
-                member_email = "regression.autotests+" + DateTime.Now.ToString("yyyyMMddHHmmss") + "@gmail.com",
-                HIDE_VISITED_ADDRESSES = "FALSE",
-                READONLY_USER = "FALSE",
-                member_type = "SUB_ACCOUNT_DISPATCHER",
-                date_of_birth = "2010",
-                member_first_name = "Clay",
-                member_password = "123456",
-                HIDE_NONFUTURE_ROUTES = "FALSE",
-                member_last_name = "Abraham",
-                SHOW_ALL_VEHICLES = "FALSE",
-                SHOW_ALL_DRIVERS = "FALSE"
-            };
-
-            // Run the query
-            var result = route4Me.CreateUser(@params, out string errorString);
-
-            //For successful testing of an user creating, you shuld provide valid email address, otherwise you'll get error "Email is used in system"
-            string rightResponse = result != null ? "ok" : ((errorString == "Email is used in system" || errorString == "Registration: The e-mail address is missing or invalid.") ? "ok" : "");
-
-            Assert.IsTrue(rightResponse == "ok", "CreateUserTest failed... " + errorString);
-
-            lsMembers.Add(Convert.ToInt32(result.member_id));
+            int memberId = Convert.ToInt32(lsMembers[lsMembers.Count - 1]);
 
             MemberParametersV4 @customParams = new MemberParametersV4
             {
-                member_id = result.member_id != null ? Convert.ToInt32(result.member_id) : -1,
+                member_id = memberId,
                 custom_data = new Dictionary<string,string>() {{"Custom Key 2", "Custom Value 2"}}
             };
 
-            MemberResponseV4 result2 = route4Me.UserUpdate(@customParams, out errorString);
+            MemberResponseV4 result2 = route4Me.UserUpdate(@customParams, out string errorString);
 
             Assert.IsTrue(result2!=null, "UpdateUserTest failed... " + errorString);
 
@@ -9588,7 +9647,7 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            int memberID = lsMembers[0];
+            int memberID = Convert.ToInt32(lsMembers[0]);
             MemberParametersV4 @params = new MemberParametersV4 { member_id = memberID };
 
             // Run the query
@@ -9621,7 +9680,7 @@ namespace Route4MeSDKUnitTest
 
             MemberParametersV4 @params = new MemberParametersV4
             {
-                member_id = createdMemberID!=null ? createdMemberID : lsMembers[lsMembers.Count - 1],
+                member_id = createdMemberID!=null ? createdMemberID : Convert.ToInt32(lsMembers[lsMembers.Count - 1]),
                 member_phone = "571-259-5939"
             };
 
@@ -9701,7 +9760,7 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberParametersV4 @params = new MemberParametersV4 { member_id = lsMembers[lsMembers.Count - 1] };
+            MemberParametersV4 @params = new MemberParametersV4 { member_id = Convert.ToInt32(lsMembers[lsMembers.Count - 1]) };
 
             // Run the query
             bool result = route4Me.UserDelete(@params, out string errorString);
@@ -9709,6 +9768,21 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(result, "DeleteUserTest failed... " + errorString);
 
             lsMembers.RemoveAt(lsMembers.Count - 1);
+        }
+
+        [ClassCleanup()]
+        public static void UsersGroupCleanup()
+        {
+            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var parameters = new MemberParametersV4();
+            string errorString = "";
+            bool result;
+
+            foreach (var memberId in lsMembers)
+            {
+                parameters.member_id = Convert.ToInt32(memberId);
+                result = route4Me.UserDelete(parameters, out errorString);
+            }
         }
     }
 
@@ -9886,6 +9960,8 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void CreatetVehicleTest()
         {
+            if (c_ApiKey == ApiKeys.DemoApiKey) return;
+
             // Create common vehicle
             VehicleV4Parameters commonVehicleParams = new VehicleV4Parameters()
             {
@@ -10040,6 +10116,8 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void UpdateVehicleTest()
         {
+            if (c_ApiKey == ApiKeys.DemoApiKey) return;
+
             if (lsVehicleIDs.Count < 1)
             {
                 VehicleV4Parameters newVehicle = new VehicleV4Parameters()
