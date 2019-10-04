@@ -33,6 +33,12 @@ namespace Route4MeSDK.DataTypes
         public int[] addresses { get; set; }
 
         ///<summary>
+        /// The orders comprised in the territory.
+        ///</summary>
+        [DataMember(Name = "orders")]
+        public int[] Orders { get; set; }
+
+        ///<summary>
         /// Member Id.
         ///</summary>
         [DataMember(Name = "member_id")]
