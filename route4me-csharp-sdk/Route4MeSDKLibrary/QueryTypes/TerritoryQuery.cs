@@ -30,5 +30,11 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [HttpQueryMemberAttribute(Name = "addresses", EmitDefaultValue = false)]
         public Nullable<int> Addresses { get; set; }
+
+        /// <summary>
+        /// If equal = 1, the enclosed orders will be included in the response.
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "orders", EmitDefaultValue = false)]
+        public int? Orders { get; set; }
     }
 }

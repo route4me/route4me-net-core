@@ -7884,7 +7884,9 @@ namespace Route4MeSDKUnitTest
 
             TerritoryQuery territoryQuery = new TerritoryQuery()
             {
-                TerritoryId = territoryId
+                TerritoryId = territoryId,
+                Addresses = 1,
+                Orders = 1
             };
 
             // Run the query

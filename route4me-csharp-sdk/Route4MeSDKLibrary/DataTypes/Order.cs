@@ -179,6 +179,11 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "order_icon", EmitDefaultValue = false)]
         public string order_icon { get; set; }
-
+        
+        /// <summary>
+        /// Custom user field of the order
+        /// </summary>
+        [DataMember(Name = "custom_user_fields", EmitDefaultValue = false)]
+        public OrderCustomField[] CustomUserFields { get; set; }
     }
 }
