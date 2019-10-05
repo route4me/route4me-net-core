@@ -967,14 +967,30 @@ namespace Route4MeSDK
             return GetJsonObjectFromAPI<FindAssetResponse>(request, R4MEInfrastructureSettings.AssetTracking, HttpMethodType.Get, false, out errorString);
 		}
 
-		#endregion
+        /// <summary>
+        /// Get user locations
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="errorString"></param>
+        /// <returns></returns>
+        public Dictionary<string, UserLocation> GetUserLocations(GenericParameters parameters, out string errorString)
+        {
+            var userLocations = GetJsonObjectFromAPI<Dictionary<string, UserLocation>>(parameters,
+                R4MEInfrastructureSettings.UserLocation,
+                HttpMethodType.Get,
+                false, out errorString);
 
-		#region Users
+            return userLocations;
+        }
+
+        #endregion
+
+        #region Users
 
         /// <summary>
         /// The response for the get users process
         /// </summary>
-		[DataContract]
+        [DataContract]
 		public sealed class GetUsersResponse
 		{
             /// <value>The array of the User objects</value>
