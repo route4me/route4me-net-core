@@ -21,7 +21,7 @@ namespace Route4MeSDKUnitTest
 {
     public class ApiKeys
     {
-        public const string ActualApiKey = "51d0c0701ce83855c9f62d0440096e7c";
+        public const string ActualApiKey = "11111111111111111111111111111111";
         public const string DemoApiKey = "11111111111111111111111111111111";
     }
 
@@ -9512,6 +9512,44 @@ namespace Route4MeSDKUnitTest
             var dataObject = route4Me.GetLastLocation(genericParameters, out string errorString);
 
             Assert.IsNotNull(dataObject, "TrackDeviceLastLocationHistoryTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void GetAllUserLocationsTest()
+        {
+            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+
+            var genericParameters = new GenericParameters();
+
+            var userLocations = route4Me.GetUserLocations(genericParameters, out string errorString);
+
+            Assert.IsNotNull(userLocations, "GetAllUserLocationsTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void QueryUserLocationsTest()
+        {
+            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+
+            var genericParameters = new GenericParameters();
+
+            var userLocations = route4Me.GetUserLocations(genericParameters, out string errorString);
+
+            Assert.IsNotNull(userLocations, "GetAllUserLocationsTest failed... " + errorString);
+
+            var userLocation = userLocations.Where(x => x.Value.UserTracking != null).FirstOrDefault().Value;
+
+            if (userLocation == null) userLocation = userLocations[userLocations.Keys.First()];
+
+            string email = userLocation.MemberData.MemberEmail;
+
+            genericParameters.ParametersCollection.Add("query", email);
+
+            var queriedUserLocations = route4Me.GetUserLocations(genericParameters, out errorString);
+
+            Assert.IsNotNull(queriedUserLocations, "QueryUserLocationsTest failed... " + errorString);
+
+            Assert.IsTrue(queriedUserLocations.Count() == 1, "QueryUserLocationsTest failed... " + errorString);
         }
 
         [ClassCleanup()]
