@@ -21,7 +21,7 @@ namespace Route4MeSDKUnitTest
 {
     public class ApiKeys
     {
-        public const string ActualApiKey = "11111111111111111111111111111111";
+        public const string ActualApiKey = "51d0c0701ce83855c9f62d0440096e7c";
         public const string DemoApiKey = "11111111111111111111111111111111";
     }
 
@@ -9998,6 +9998,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        [Ignore]
         public void CreatetVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
@@ -10154,6 +10155,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        [Ignore]
         public void UpdateVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
