@@ -9998,6 +9998,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        [Ignore]
         public void CreatetVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
@@ -10154,6 +10155,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        [Ignore]
         public void UpdateVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
