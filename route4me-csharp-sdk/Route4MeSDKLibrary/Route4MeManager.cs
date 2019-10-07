@@ -2340,13 +2340,27 @@ namespace Route4MeSDK
             //return (response != null) ? response.Results : null;
 		}
 
-		/// <summary>
-		/// Creates an order
-		/// </summary>
-		/// <param name="order"> The Order type object as the request payload </param>
-		/// <param name="errorString"> out: Error as string </param>
-		/// <returns> Order object </returns>
-		public Order AddOrder(Order order, out string errorString)
+        /// <summary>
+        /// Filter for the orders filtering
+        /// </summary>
+        /// <param name="orderFilter">The OrderFilterParameters object as a HTTP request payload</param>
+        /// <param name="errorString">out: Error as string</param>
+        /// <returns>Array of the Order type objects</returns>
+        public Order[] FilterOrders(OrderFilterParameters orderFilter, out string errorString)
+        {
+            GetOrdersResponse response = GetJsonObjectFromAPI<GetOrdersResponse>(orderFilter,
+                R4MEInfrastructureSettings.Order, HttpMethodType.Post, out errorString);
+
+            return (response != null) ? response.Results : null;
+        }
+
+        /// <summary>
+        /// Creates an order
+        /// </summary>
+        /// <param name="order"> The Order type object as the request payload </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> Order object </returns>
+        public Order AddOrder(Order order, out string errorString)
 		{
 			order.PrepareForSerialization();
 
