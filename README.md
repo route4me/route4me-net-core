@@ -1,8 +1,5 @@
 # Route4Me Route Optimization SaaS C# SDK (.net core framework)
 
-[![Build Status](https://travis-ci.org/route4me/route4me-net-core/route4me-csharp-sdk.svg?branch=master)](https://travis-ci.org/route4me/route4me-net-core/route4me-csharp-sdk)
-[![Build status](https://ci.appveyor.com/api/projects/status/8iq2b0ctti0lw79k?svg=true)](https://ci.appveyor.com/project/novapulsar/route4me-net-core/route4me-csharp-sdk)
-
 
 ### What does the Route4Me SDK permit me to do?
 This SDK makes it easier for you use the Route4Me API, which creates optimally sequenced driving routes for many drivers. 
