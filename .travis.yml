@@ -6,8 +6,9 @@
 # =============================================================================
 
 language: csharp
-mono: none
-dotnet: 2.1.502
+
+mono: latest
+
 script:
   - dotnet restore route4me-csharp-sdk/Route4MeSDK.sln
   - dotnet build -v q -f netcoreapp2.1 route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeSDKLibrary.csproj
