@@ -34,6 +34,12 @@ namespace Route4MeSDK.QueryTypes
         public Nullable<bool> IsDeleted { get; set; }
 
         /// <summary>
+        /// Required for a vehicle creating.
+        /// </summary>
+        [DataMember(Name = "vehicle_name", EmitDefaultValue = false)]
+        public string VehicleName { get; set; }
+
+        /// <summary>
         /// Vehicle alias.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
@@ -157,7 +163,7 @@ namespace Route4MeSDK.QueryTypes
 
         /// <summary>
         /// A number of the vecile's axles.
-        /// <remarks><para>Data member parameter.</para></remarks>
+        /// Available values: 2,3,4
         /// </summary>
         [DataMember(Name = "vehicle_axle_count", EmitDefaultValue = false)]
         public Nullable<int> VehicleAxleCount { get; set; }

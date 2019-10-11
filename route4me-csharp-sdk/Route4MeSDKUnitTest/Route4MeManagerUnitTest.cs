@@ -21,7 +21,7 @@ namespace Route4MeSDKUnitTest
 {
     public class ApiKeys
     {
-        public const string ActualApiKey = "11111111111111111111111111111111";
+        public const string ActualApiKey = "51d0c0701ce83855c9f62d0440096e7c";
         public const string DemoApiKey = "11111111111111111111111111111111";
     }
 
@@ -198,6 +198,66 @@ namespace Route4MeSDKUnitTest
             DataObjectRoute dataObject = route4Me.UpdateRoute(routeParameters, out string errorString);
 
             Assert.IsNotNull(dataObject, "UpdateRouteTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void AssignVehicleToRouteTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var vehicleGroup = new VehiclesGroup();
+            var vehicles = vehicleGroup.GetVehiclesList();
+
+            int randomNumber = (new Random()).Next(0, vehicles.PerPage - 1);
+            var vehicleId = vehicles.Data[randomNumber].VehicleId;
+
+            string routeId = tdr.SD10Stops_route_id;
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+
+            var routeParameters = new RouteParametersQuery()
+            {
+                RouteId = routeId,
+                Parameters = new RouteParameters()
+                {
+                    VehicleId = vehicleId
+                }
+            };
+
+            route4Me.UpdateRoute(routeParameters, out string errorString);
+
+            var route = route4Me.GetRoute(new RouteParametersQuery() { RouteId = routeId }, out errorString);
+
+            Assert.IsInstanceOfType(route.Vehilce, typeof(VehicleV4Response), "AssignVehicleToRouteTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void AssignMemberToRouteTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            string errorString;
+            var members = route4Me.GetUsers(new GenericParameters(), out errorString);
+
+            int randomNumber = (new Random()).Next(0, members.Results.Length - 1);
+            var memberId = members.Results[randomNumber].member_id;
+
+            string routeId = tdr.SD10Stops_route_id;
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+
+            var routeParameters = new RouteParametersQuery()
+            {
+                RouteId = routeId,
+                Parameters = new RouteParameters()
+                {
+                    MemberId = memberId
+                }
+            };
+
+            route4Me.UpdateRoute(routeParameters, out errorString);
+
+            var route = route4Me.GetRoute(new RouteParametersQuery() { RouteId = routeId }, out errorString);
+
+            Assert.IsTrue(route.MemberId == memberId, "AssignMemberToRouteTest failed... " + errorString);
         }
 
         [TestMethod]
@@ -10149,24 +10209,25 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
-        [Ignore]
         public void CreatetVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
 
             // Create common vehicle
-            VehicleV4Parameters commonVehicleParams = new VehicleV4Parameters()
+            var commonVehicleParams = new VehicleV4Parameters()
             {
+                VehicleName = "Ford Transit Test 6",
                 VehicleAlias = "Ford Transit Test 6"
             };
 
-            VehicleV4Response commonVehicle = CreateVehicle(commonVehicleParams);
+            var commonVehicle = CreateVehicle(commonVehicleParams);
 
             Assert.IsNotNull(commonVehicle, "Creating of the commomVehicle failed");
 
             // Create a truck belonging to the class 6
-            VehicleV4Parameters class6TruckParams = new VehicleV4Parameters()
+            var class6TruckParams = new VehicleV4Parameters()
             {
+                VehicleName = "GMC TopKick C5500",
                 VehicleAlias = "GMC TopKick C5500",
                 VehicleVin = "SAJXA01A06FN08012",
                 VehicleLicensePlate = "CVH4561",
@@ -10196,13 +10257,14 @@ namespace Route4MeSDKUnitTest
                 TruckConfig = "FULLSIZEVAN"
             };
 
-            VehicleV4Response class6Truck = CreateVehicle(class6TruckParams);
+            var class6Truck = CreateVehicle(class6TruckParams);
 
             Assert.IsNotNull(class6Truck, "Creating of the class6Truck failed");
 
             // Create a truck belonging to the class 7
-            VehicleV4Parameters class7TruckParams = new VehicleV4Parameters()
+            var class7TruckParams = new VehicleV4Parameters()
             {
+                VehicleName = "FORD F750",
                 VehicleAlias = "FORD F750",
                 VehicleVin = "1NPAX6EX2YD550743",
                 VehicleLicensePlate = "FFV9547",
@@ -10235,13 +10297,14 @@ namespace Route4MeSDKUnitTest
                 PurchasedNew = true
             };
 
-            VehicleV4Response class7Truck = CreateVehicle(class7TruckParams);
+            var class7Truck = CreateVehicle(class7TruckParams);
 
             Assert.IsNotNull(class7Truck, "Creating of the class7Truck failed");
 
             // Create a truck belonging to the class 8
-            VehicleV4Parameters class8TruckParams = new VehicleV4Parameters()
+            var class8TruckParams = new VehicleV4Parameters()
             {
+                VehicleName = "Peterbilt 579",
                 VehicleAlias = "Peterbilt 579",
                 VehicleVin = "1NP5DB9X93N507873",
                 VehicleLicensePlate = "PPV7516",
@@ -10251,7 +10314,7 @@ namespace Route4MeSDKUnitTest
                 VehicleRegCountryId = 223,
                 VehicleMake = "Peterbilt",
                 VehicleTypeID = "tractor_trailer",
-                VehicleAxleCount = 5,
+                VehicleAxleCount = 4,
                 MpgCity = 6,
                 MpgHighway = 12,
                 FuelType = "diesel",
@@ -10274,16 +10337,16 @@ namespace Route4MeSDKUnitTest
                 PurchasedNew = true
             };
 
-            VehicleV4Response class8Truck = CreateVehicle(class8TruckParams);
+            var class8Truck = CreateVehicle(class8TruckParams);
 
             Assert.IsNotNull(class8Truck, "Creating of the class8Truck failed");
         }
 
         public VehicleV4Response CreateVehicle(VehicleV4Parameters vehicleParams)
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            VehicleV4Response result = route4Me.CreateVehicle(vehicleParams, out string errorString);
+            var result = route4Me.CreateVehicle(vehicleParams, out string errorString);
 
             Assert.IsNotNull(result, "CreatetVehiclTest failed... " + errorString);
 
@@ -10306,7 +10369,6 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
-        [Ignore]
         public void UpdateVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
@@ -10327,21 +10389,17 @@ namespace Route4MeSDKUnitTest
             // TO DO: on this stage specifying of the parameter vehicle_alias is mandatory. Will be checked later
             VehicleV4Parameters vehicleParams = new VehicleV4Parameters()
             {
-                VehicleId = lsVehicleIDs[lsVehicleIDs.Count - 1],
-                VehicleAlias = "Ford Transit Test 4",
                 VehicleModelYear = 1995,
                 VehicleRegCountryId = 223,
                 VehicleMake = "Ford",
                 VehicleAxleCount = 2,
-                MpgCity = 8,
-                MpgHighway = 14,
                 FuelType = "unleaded 93",
                 HeightInches = 72,
                 WeightLb = 2000
             };
 
             // Run the query
-            VehicleV4Response vehicles = route4Me.UpdateVehicle(vehicleParams, out string errorString);
+            var vehicles = route4Me.UpdateVehicle(vehicleParams, lsVehicleIDs[lsVehicleIDs.Count - 1], out string errorString);
 
             Assert.IsInstanceOfType(vehicles, typeof(VehicleV4Response), "updateVehicleTest failed... " + errorString);
         }
