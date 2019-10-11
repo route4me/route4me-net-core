@@ -967,14 +967,30 @@ namespace Route4MeSDK
             return GetJsonObjectFromAPI<FindAssetResponse>(request, R4MEInfrastructureSettings.AssetTracking, HttpMethodType.Get, false, out errorString);
 		}
 
-		#endregion
+        /// <summary>
+        /// Get user locations
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="errorString"></param>
+        /// <returns></returns>
+        public Dictionary<string, UserLocation> GetUserLocations(GenericParameters parameters, out string errorString)
+        {
+            var userLocations = GetJsonObjectFromAPI<Dictionary<string, UserLocation>>(parameters,
+                R4MEInfrastructureSettings.UserLocation,
+                HttpMethodType.Get,
+                false, out errorString);
 
-		#region Users
+            return userLocations;
+        }
+
+        #endregion
+
+        #region Users
 
         /// <summary>
         /// The response for the get users process
         /// </summary>
-		[DataContract]
+        [DataContract]
 		public sealed class GetUsersResponse
 		{
             /// <value>The array of the User objects</value>
@@ -1158,6 +1174,19 @@ namespace Route4MeSDK
             confParams.PrepareForSerialization();
             return GetJsonObjectFromAPI<MemberConfigurationResponse>(confParams, R4MEInfrastructureSettings.UserConfiguration, HttpMethodType.Post, out errorString);
 		}
+
+        public MemberConfigurationResponse CreateNewConfigurationKey(MemberConfigurationParameters[] confParams, out string errorString)
+        {
+            GenericParameters genParams = new GenericParameters();
+
+            var httpContent = new StringContent(fastJSON.JSON.ToJSON(confParams), System.Text.Encoding.UTF8, "application/json");
+
+            var response = GetJsonObjectFromAPI<MemberConfigurationResponse>
+                (genParams, R4MEInfrastructureSettings.UserConfiguration,
+                HttpMethodType.Post, httpContent, out errorString);
+
+            return response;
+        }
 
         /// <summary>
         /// Removes a user's configuration key
@@ -2324,13 +2353,27 @@ namespace Route4MeSDK
             //return (response != null) ? response.Results : null;
 		}
 
-		/// <summary>
-		/// Creates an order
-		/// </summary>
-		/// <param name="order"> The Order type object as the request payload </param>
-		/// <param name="errorString"> out: Error as string </param>
-		/// <returns> Order object </returns>
-		public Order AddOrder(Order order, out string errorString)
+        /// <summary>
+        /// Filter for the orders filtering
+        /// </summary>
+        /// <param name="orderFilter">The OrderFilterParameters object as a HTTP request payload</param>
+        /// <param name="errorString">out: Error as string</param>
+        /// <returns>Array of the Order type objects</returns>
+        public Order[] FilterOrders(OrderFilterParameters orderFilter, out string errorString)
+        {
+            GetOrdersResponse response = GetJsonObjectFromAPI<GetOrdersResponse>(orderFilter,
+                R4MEInfrastructureSettings.Order, HttpMethodType.Post, out errorString);
+
+            return (response != null) ? response.Results : null;
+        }
+
+        /// <summary>
+        /// Creates an order
+        /// </summary>
+        /// <param name="order"> The Order type object as the request payload </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> Order object </returns>
+        public Order AddOrder(Order order, out string errorString)
 		{
 			order.PrepareForSerialization();
 
