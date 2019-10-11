@@ -21,7 +21,7 @@ namespace Route4MeSDKUnitTest
 {
     public class ApiKeys
     {
-        public const string ActualApiKey = "51d0c0701ce83855c9f62d0440096e7c";
+        public const string ActualApiKey = "11111111111111111111111111111111";
         public const string DemoApiKey = "11111111111111111111111111111111";
     }
 
@@ -201,6 +201,55 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void UpdateRouteCustomDataTest()
+        {
+            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+
+            string routeId = tdr.SD10Stops_route_id;
+            var routeDestionationId = tdr.SD10Stops_route.Addresses[3].RouteDestinationId;
+
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+
+            var parameters = new RouteParametersQuery()
+            {
+                RouteId = routeId,
+                RouteDestinationId = routeDestionationId
+            };
+
+            var customData = new Dictionary<string, string>()
+            {
+                {"animal", "lion" },
+                {"bird", "budgie" }
+            };
+
+            var result = route4Me.UpdateRouteCustomData(parameters, customData, out string errorString);
+
+            Assert.IsNotNull(result, "UpdateRouteCustomDataTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void RouteOriginParameterTest()
+        {
+            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+
+            string routeId = tdr.SD10Stops_route_id;
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+
+            var routeParameters = new RouteParametersQuery()
+            {
+                RouteId = routeId,
+                Original = true
+            };
+
+            string errorString;
+            var route = route4Me.GetRoute(routeParameters, out errorString);
+
+            Assert.IsNotNull(route, "RouteOriginParameterTest failed. " + errorString);
+            Assert.IsNotNull(route.OriginalRoute, "RouteOriginParameterTest failed. " + errorString);
+            Assert.IsInstanceOfType(route.OriginalRoute, typeof(DataObjectRoute), "RouteOriginParameterTest failed. " + errorString);
+        }
+
+        [TestMethod]
         public void ReoptimizeRouteTest()
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
@@ -237,6 +286,29 @@ namespace Route4MeSDKUnitTest
             string routeId_DuplicateRoute = route4Me.DuplicateRoute(routeParameters, out string errorString);
 
             Assert.IsNotNull(routeId_DuplicateRoute, "DuplicateRouteTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void ShareRouteTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            string routeId = tdr.SD10Stops_route_id;
+            Assert.IsNotNull(routeId, "routeId is null...");
+
+            var routeParameters = new RouteParametersQuery()
+            {
+                RouteId = routeId,
+                ResponseFormat = "json"
+            };
+
+            string email = "regression.autotests+testcsharp123@gmail.com";
+
+            // Run the query
+            string errorString;
+            var result = route4Me.RouteSharing(routeParameters, email, out errorString);
+
+            Assert.IsTrue(result, "ShareRouteTest failed... " + errorString);
         }
 
         [TestMethod]
@@ -8098,6 +8170,31 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void GetOrdersByScheduleFilter()
+        {
+            if (skip == "yes") return;
+
+            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+
+            string startDate = (DateTime.Now + (new TimeSpan(1, 0, 0, 0))).ToString("yyyy-MM-dd");
+            string endDate = (DateTime.Now + (new TimeSpan(31, 0, 0, 0))).ToString("yyyy-MM-dd");
+
+            var oParams = new OrderFilterParameters()
+            {
+                Filter = new FilterDetails()
+                {
+                    Display = "all",
+                    Limit = 10,
+                    Scheduled_for_YYMMDD = new string[] { startDate, endDate }
+                }
+            };
+
+            Order[] orders = route4Me.FilterOrders(oParams, out string errorString);
+
+            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrdersByScheduleFilter failed... " + errorString);
+        }
+
+        [TestMethod]
         public void GetOrdersBySpecifiedTextTest()
         {
             if (skip == "yes") return;
@@ -8493,27 +8590,36 @@ namespace Route4MeSDKUnitTest
 
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            var orderCustomFieldParams = new OrderCustomFieldParameters()
+            var orderCustomUserFields = route4Me.GetOrderCustomUserFields(out string errorString);
+
+            int customFieldId;
+
+            if (orderCustomUserFields.Where(x => x.OrderCustomFieldName == "CustomField33").Count() > 0)
             {
-                OrderCustomFieldName = "CustomField33",
-                OrderCustomFieldLabel = "Custom Field 33",
-                OrderCustomFieldType = "checkbox",
-                OrderCustomFieldTypeInfo = new Dictionary<string, object>()
+                customFieldId = orderCustomUserFields.Where(x => x.OrderCustomFieldName == "CustomField33")
+                    .FirstOrDefault().OrderCustomFieldId;
+            }
+            else
+            {
+                var orderCustomFieldParams = new OrderCustomFieldParameters()
+                {
+                    OrderCustomFieldName = "CustomField33",
+                    OrderCustomFieldLabel = "Custom Field 33",
+                    OrderCustomFieldType = "checkbox",
+                    OrderCustomFieldTypeInfo = new Dictionary<string, object>()
                 {
                     {"short_label", "cFl33" },
                     {"description", "This is test order custom field" },
                     {"custom field no", 10 }
                 }
-            };
+                };
 
-            var createdCustomField = route4Me.CreateOrderCustomUserField(orderCustomFieldParams, out string errorString);
+                var createdCustomField = route4Me.CreateOrderCustomUserField(orderCustomFieldParams, out errorString);
+                Assert.IsInstanceOfType(createdCustomField, typeof(OrderCustomFieldCreateResponse), "Cannot initialize the class OrderCustomUserFieldsGroup. " + errorString);
+                customFieldId = createdCustomField.Data.OrderCustomFieldId;
+            }
 
-            Assert.IsInstanceOfType(createdCustomField, typeof(OrderCustomFieldCreateResponse), "Cannot initialize the class OrderCustomUserFieldsGroup. " + errorString);
-
-            lsOrderCustomUserFieldIDs = new List<int>()
-            {
-                createdCustomField.Data.OrderCustomFieldId
-            };
+            lsOrderCustomUserFieldIDs = new List<int>() { customFieldId };
         }
 
         [TestMethod]
@@ -9514,6 +9620,44 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(dataObject, "TrackDeviceLastLocationHistoryTest failed... " + errorString);
         }
 
+        [TestMethod]
+        public void GetAllUserLocationsTest()
+        {
+            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+
+            var genericParameters = new GenericParameters();
+
+            var userLocations = route4Me.GetUserLocations(genericParameters, out string errorString);
+
+            Assert.IsNotNull(userLocations, "GetAllUserLocationsTest failed... " + errorString);
+        }
+
+        [TestMethod]
+        public void QueryUserLocationsTest()
+        {
+            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+
+            var genericParameters = new GenericParameters();
+
+            var userLocations = route4Me.GetUserLocations(genericParameters, out string errorString);
+
+            Assert.IsNotNull(userLocations, "GetAllUserLocationsTest failed... " + errorString);
+
+            var userLocation = userLocations.Where(x => x.Value.UserTracking != null).FirstOrDefault().Value;
+
+            if (userLocation == null) userLocation = userLocations[userLocations.Keys.First()];
+
+            string email = userLocation.MemberData.MemberEmail;
+
+            genericParameters.ParametersCollection.Add("query", email);
+
+            var queriedUserLocations = route4Me.GetUserLocations(genericParameters, out errorString);
+
+            Assert.IsNotNull(queriedUserLocations, "QueryUserLocationsTest failed... " + errorString);
+
+            Assert.IsTrue(queriedUserLocations.Count() == 1, "QueryUserLocationsTest failed... " + errorString);
+        }
+
         [ClassCleanup()]
         public static void TrackingGroupCleanup()
         {
@@ -9792,24 +9936,37 @@ namespace Route4MeSDKUnitTest
     public class MemberConfigurationGroup
     {
         static readonly string c_ApiKey = ApiKeys.ActualApiKey;
+        static List<string> lsConfigurationKeys;
 
         [ClassInitialize()]
         public static void MemberConfigurationGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class MemberConfigurationGroup failed.");
-
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberConfigurationParameters memberConfigParameters = new MemberConfigurationParameters
+            lsConfigurationKeys = new List<string>();
+
+            MemberConfigurationParameters @params = new MemberConfigurationParameters
             {
-                ConfigKey = "My height",
-                ConfigValue = "value"
+                ConfigKey = "Test My height",
+                ConfigValue = "180"
             };
 
             // Run the query
-            MemberConfigurationResponse result = route4Me.CreateNewConfigurationKey(memberConfigParameters, out string errorString);
-
+            var result = route4Me.CreateNewConfigurationKey(@params, out string errorString);
             Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed... " + errorString);
+
+            lsConfigurationKeys.Add("Test My height");
+
+            MemberConfigurationParameters keyrParams = new MemberConfigurationParameters
+            {
+                ConfigKey = "Test Remove Key",
+                ConfigValue = "remove"
+            };
+
+            var result2 = route4Me.CreateNewConfigurationKey(keyrParams, out errorString);
+            Assert.IsNotNull(result2, "AddNewConfigurationKeyTest failed... " + errorString);
+
+            lsConfigurationKeys.Add("Test Remove Key");
         }
 
         [TestMethod]
@@ -9819,14 +9976,44 @@ namespace Route4MeSDKUnitTest
 
             MemberConfigurationParameters @params = new MemberConfigurationParameters
             {
-                ConfigKey = "destination_icon_uri",
-                ConfigValue = "value"
+                ConfigKey = "Test My weight",
+                ConfigValue = "100"
             };
 
             // Run the query
-            MemberConfigurationResponse result = route4Me.CreateNewConfigurationKey(@params, out string errorString);
+            var result = route4Me.CreateNewConfigurationKey(@params, out string errorString);
 
             Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed... " + errorString);
+
+            lsConfigurationKeys.Add("Test My weight");
+        }
+
+        [TestMethod]
+        public void AddConfigurationKeyArrayTest()
+        {
+            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+
+            MemberConfigurationParameters[] parametersArray = new MemberConfigurationParameters[]
+                {
+                    new MemberConfigurationParameters
+                    {
+                        ConfigKey = "Test My Height",
+                        ConfigValue = "185"
+                    },
+                    new MemberConfigurationParameters
+                    {
+                        ConfigKey = "Test My Weight",
+                        ConfigValue = "110"
+                    },
+                };
+
+            // Run the query
+            var result = route4Me.CreateNewConfigurationKey(parametersArray, out string errorString);
+
+            Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed... " + errorString);
+
+            lsConfigurationKeys.Add("Test My Height");
+            lsConfigurationKeys.Add("Test My Weight");
         }
 
         [TestMethod]
@@ -9847,10 +10034,10 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberConfigurationParameters @params = new MemberConfigurationParameters { ConfigKey = "destination_icon_uri" };
+            var @params = new MemberConfigurationParameters { ConfigKey = "Test My height" };
 
             // Run the query
-            MemberConfigurationDataResponse result = route4Me.GetConfigurationData(@params, out string errorString);
+            var result = route4Me.GetConfigurationData(@params, out string errorString);
 
             Assert.IsNotNull(result, "GetSpecificConfigurationKeyDataTest failed... " + errorString);
         }
@@ -9860,14 +10047,14 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberConfigurationParameters @params = new MemberConfigurationParameters
+            var @params = new MemberConfigurationParameters
             {
-                ConfigKey = "destination_icon_uri",
-                ConfigValue = "444"
+                ConfigKey = "Test My height",
+                ConfigValue = "190"
             };
 
             // Run the query
-            MemberConfigurationResponse result = route4Me.UpdateConfigurationKey(@params, out string errorString);
+            var result = route4Me.UpdateConfigurationKey(@params, out string errorString);
 
             Assert.IsNotNull(result, "UpdateConfigurationKeyTest failed... " + errorString);
         }
@@ -9877,12 +10064,14 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberConfigurationParameters @params = new MemberConfigurationParameters { ConfigKey = "My height" };
+            var @params = new MemberConfigurationParameters { ConfigKey = "Test Remove Key" };
 
             // Run the query
-            MemberConfigurationResponse result = route4Me.RemoveConfigurationKey(@params, out string errorString);
+            var result = route4Me.RemoveConfigurationKey(@params, out string errorString);
 
             Assert.IsNotNull(result, "RemoveConfigurationKeyTest failed... " + errorString);
+
+            lsConfigurationKeys.Remove("Test Remove Key");
         }
 
         [ClassCleanup()]
@@ -9890,12 +10079,12 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            MemberConfigurationParameters @params = new MemberConfigurationParameters { ConfigKey = "destination_icon_uri" };
-
-            // Run the query
-            MemberConfigurationResponse result = route4Me.RemoveConfigurationKey(@params, out string errorString);
-
-            Assert.IsNotNull(result, "MemberConfigurationGroupCleanup failed. " + errorString);
+            foreach (var testKey in lsConfigurationKeys)
+            {
+                var @params = new MemberConfigurationParameters { ConfigKey = testKey };
+                var result = route4Me.RemoveConfigurationKey(@params, out string errorString);
+                Assert.IsNotNull(result, "MemberConfigurationGroupCleanup failed...");
+            }
         }
     }
 
@@ -9960,6 +10149,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        [Ignore]
         public void CreatetVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
@@ -10116,6 +10306,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        [Ignore]
         public void UpdateVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
