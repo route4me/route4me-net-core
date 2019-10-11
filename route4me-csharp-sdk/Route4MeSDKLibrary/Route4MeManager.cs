@@ -2906,8 +2906,8 @@ namespace Route4MeSDK
         /// <returns>The created vehicle </returns>
         public VehicleV4Response CreateVehicle(VehicleV4Parameters vehicle, out string errorString)
 		{
-            return GetJsonObjectFromAPI<VehicleV4Response>(vehicle, R4MEInfrastructureSettings.Vehicle_V4, HttpMethodType.Post, out errorString);
-		}
+            return GetJsonObjectFromAPI<VehicleV4Response>(vehicle, R4MEInfrastructureSettings.Vehicle_V4_API, HttpMethodType.Post, out errorString);
+        }
 
         /// <summary>
         /// Returns the VehiclesPaginated type object containing an array of the vehicles
@@ -2940,15 +2940,16 @@ namespace Route4MeSDK
         /// Updates a vehicle
         /// </summary>
         /// <param name="vehParams">The VehicleV4Parameters type object as the request payload</param>
+        /// <param name="vehicleId">Vehicle ID</param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The updated vehicle</returns>
-		public VehicleV4Response UpdateVehicle(VehicleV4Parameters vehParams, out string errorString)
+		public VehicleV4Response UpdateVehicle(VehicleV4Parameters vehParams, string vehicleId, out string errorString)
 		{
 
-            return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, R4MEInfrastructureSettings.Vehicle_V4 + "/" + vehParams.VehicleId, 
-															                      HttpMethodType.Put,
-															                      out errorString);
-		}
+            return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, R4MEInfrastructureSettings.Vehicle_V4 + @"/" + vehicleId,
+                                                                                  HttpMethodType.Put,
+                                                                                  out errorString);
+        }
 
         /// <summary>
         /// Removes a vehicle from a user's account
