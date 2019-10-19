@@ -7372,11 +7372,11 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(addressBookParameters, out uint total, out string errorString);
+            var response = route4Me.SearchAddressBookLocation(addressBookParameters,out string errorString);
 
-            Assert.IsInstanceOfType(contacts, typeof(AddressBookContact[]), "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
+            Assert.IsInstanceOfType(response.Total, typeof(uint), "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
 
-            Assert.IsNotNull(total, "GetSpecifiedFieldsSearchTextTest failed.");
+            Assert.IsNotNull(response, "GetSpecifiedFieldsSearchTextTest failed.");
         }
 
         [TestMethod]
