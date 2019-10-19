@@ -9302,6 +9302,7 @@ namespace Route4MeSDKUnitTest
         static readonly string c_ApiKey = ApiKeys.ActualApiKey;
         static TestDataRepository tdr;
         static List<string> lsOptimizationIDs;
+        static int removedAddressId;
 
         [ClassInitialize()]
         public static void AddressGroupInitialize(TestContext context)
@@ -9319,6 +9320,8 @@ namespace Route4MeSDKUnitTest
             Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
+
+            removedAddressId = -1;
         }
 
         [TestMethod]
@@ -9386,7 +9389,9 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void RemoveDestinationFromOptimizationTest()
         {
-            Address destinationToRemove = (tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 0) ? tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1] : null;
+            int delta = removedAddressId == tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId ? 2 : 1;
+
+            Address destinationToRemove = (tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 0) ? tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - delta] : null;
 
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
@@ -9400,6 +9405,8 @@ namespace Route4MeSDKUnitTest
             bool removed = route4Me.RemoveDestinationFromOptimization(OptimizationProblemId, destinationId, out string errorString);
 
             Assert.IsTrue(removed, "RemoveDestinationFromOptimizationTest failed... " + errorString);
+
+            removedAddressId = destinationId;
         }
 
         [TestMethod]
@@ -9472,7 +9479,9 @@ namespace Route4MeSDKUnitTest
             string route_id = tdr.SDRT_route_id; ;
             Assert.IsNotNull(route_id, "rote_id is null...");
 
-            object oDestinationId = tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId;
+            int delta = removedAddressId == tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId ? 2 : 1;
+
+            object oDestinationId = tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - delta].RouteDestinationId;
 
             int destination_id = oDestinationId != null ? Convert.ToInt32(oDestinationId) : -1;
             Assert.IsNotNull(oDestinationId, "destination_id is null...");
@@ -9481,6 +9490,8 @@ namespace Route4MeSDKUnitTest
             bool deleted = route4Me.RemoveRouteDestination(route_id, destination_id, out string errorString);
 
             Assert.IsTrue(deleted, "RemoveRouteDestinationTest failed. " + errorString);
+
+            removedAddressId = destination_id;
         }
 
         [TestMethod]
