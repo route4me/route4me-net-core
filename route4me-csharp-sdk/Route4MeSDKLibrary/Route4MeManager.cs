@@ -2024,7 +2024,7 @@ namespace Route4MeSDK
         /// The response from the address book locations searching process.
         /// </summary>
 		[DataContract()]
-		private sealed class SearchAddressBookLocationResponse
+		public sealed class SearchAddressBookLocationResponse
 		{
             /// <value>The list of the selected fields values</value>
 			[DataMember(Name = "results")]
@@ -2046,7 +2046,7 @@ namespace Route4MeSDK
         /// <param name="total">out: Number of the returned contacts</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>List of the selected fields values</returns>
-		public List<object[]> SearchAddressBookLocation(AddressBookParameters addressBookParameters, out uint total, out string errorString)
+		public SearchAddressBookLocationResponse SearchAddressBookLocation(AddressBookParameters addressBookParameters,out string errorString)
 		{
 			SearchAddressBookLocationRequest request = new SearchAddressBookLocationRequest
 			{
@@ -2058,11 +2058,7 @@ namespace Route4MeSDK
 
 			var response = GetJsonObjectFromAPI<SearchAddressBookLocationResponse>(request, R4MEInfrastructureSettings.AddressBook, HttpMethodType.Get, out errorString);
 
-            total = response?.Total ?? 0;
-            //total = (response != null) ? response.Total : 0;
-
-            return response?.Results ?? null;
-            //return (response != null) ? response.Results : null;
+            return response?? null;
 		}
 
         /// <summary>
