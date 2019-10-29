@@ -36,7 +36,7 @@ namespace Route4MeSDK.DataTypes
         /// Last name of the user.
         /// </summary>
         [DataMember(Name = "member_last_name")]
-        public string MemberLasttName { get; set; }
+        public string MemberLastName { get; set; }
 
         /// <summary>
         ///User email.
@@ -60,6 +60,6 @@ namespace Route4MeSDK.DataTypes
         /// If true, the superuser's addresses are visible to the user.
         /// </summary>
         [DataMember(Name = "show_superuser_addresses", EmitDefaultValue = false)]
-        public bool? ShowSuperuserAddresses { get; set; }
+        public bool? ShowSuperUserAddresses { get; set; }
     }
 }

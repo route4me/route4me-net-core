@@ -239,26 +239,26 @@ namespace Route4MeSDK.DataTypes
         /// The address cargo weight
         /// </summary>
         [DataMember(Name = "weight", EmitDefaultValue = false)]
-        public decimal? Weight { get; set; }
+        public double? Weight { get; set; }
 
         /// <summary>
         /// The address cost
         /// </summary>
         [DataMember(Name = "cost", EmitDefaultValue = false)]
-        public decimal? Cost { get; set; }
+        public double? Cost { get; set; }
 
         /// <summary>
         /// The address revenue
         /// </summary>
         [DataMember(Name = "revenue", EmitDefaultValue = false)]
-        public decimal? Revenue { get; set; }
+        public double? Revenue { get; set; }
 
         /// <summary>
         /// The cubic volume that this destination/order/line-item consumes/contains.
         /// This is how much space it will take up on a vehicle.
         /// </summary>
         [DataMember(Name = "cube", EmitDefaultValue = false)]
-        public decimal? Cube { get; set; }
+        public double? Cube { get; set; }
 
         /// <summary>
         /// The number of pieces/palllets that this destination/order/line-item consumes/contains on a vehicle.
@@ -316,7 +316,7 @@ namespace Route4MeSDK.DataTypes
         /// Server-side generated amount of seconds that it will take to get to the next location.
         /// </summary>
         [DataMember(Name = "distance_to_next_destination", EmitDefaultValue = false)]
-        public decimal? DistanceToNextDestination { get; set; }
+        public double? DistanceToNextDestination { get; set; }
 
         /// <summary>
         /// Generated time window start.
@@ -470,13 +470,13 @@ namespace Route4MeSDK.DataTypes
         /// System-wide unique code, which permits end-users (recipients) to track the status of their order.
         /// </summary>
         [DataMember(Name = "tracking_number", EmitDefaultValue = false)]
-        public string tracking_number { get; set; }
+        public string TrackingNumber { get; set; }
 
         /// <summary>
         /// Server-side generated amount of seconds that it will take to get to the next location.
         /// </summary>
         [DataMember(Name = "udu_distance_to_next_destination", EmitDefaultValue = false)]
-        public decimal? UduDistanceToNextDestination { get; set; }
+        public double? UduDistanceToNextDestination { get; set; }
 
         /// <summary>
         /// Wait time to next destination.

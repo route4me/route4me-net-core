@@ -235,11 +235,14 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string errorString;
-            var members = route4Me.GetUsers(new GenericParameters(), out errorString);
+            var members = route4Me.GetUsers(new GenericParameters(), out string errorString);
 
             int randomNumber = (new Random()).Next(0, members.Results.Length - 1);
-            var memberId = members.Results[randomNumber].member_id;
+            var memberId = members.Results[randomNumber].MemberId != null 
+                ? Convert.ToInt32(members.Results[randomNumber].MemberId) 
+                : -1;
+
+            Assert.IsTrue(memberId != -1, "AssignMemberToRouteTest failed - cannot retrieve random member ID");
 
             string routeId = tdr.SD10Stops_route_id;
             Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
@@ -301,8 +304,7 @@ namespace Route4MeSDKUnitTest
                 Original = true
             };
 
-            string errorString;
-            var route = route4Me.GetRoute(routeParameters, out errorString);
+            var route = route4Me.GetRoute(routeParameters, out string errorString);
 
             Assert.IsNotNull(route, "RouteOriginParameterTest failed. " + errorString);
             Assert.IsNotNull(route.OriginalRoute, "RouteOriginParameterTest failed. " + errorString);
@@ -365,8 +367,7 @@ namespace Route4MeSDKUnitTest
             string email = "regression.autotests+testcsharp123@gmail.com";
 
             // Run the query
-            string errorString;
-            var result = route4Me.RouteSharing(routeParameters, email, out errorString);
+            var result = route4Me.RouteSharing(routeParameters, email, out string errorString);
 
             Assert.IsTrue(result, "ShareRouteTest failed... " + errorString);
         }
@@ -525,27 +526,31 @@ namespace Route4MeSDKUnitTest
                 ActivityType = StatusUpdateType.DropOff.Description()
             };
 
-            string tempFilePath = null;
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceStream = assembly.GetManifestResourceStream("Route4MeSDKUnitTest.Resources.test.png");
 
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Route4MeSDKUnitTest.Resources.test.png"))
+            using (Stream stream = resourceStream)
             {
-                var tempFiles = new TempFileCollection();
+                string tempFilePath = null;
 
+                using (var tempFiles = new TempFileCollection())
                 {
-                    tempFilePath = tempFiles.AddExtension("png");
-                    System.Console.WriteLine(tempFilePath);
-                    using (Stream fileStream = File.OpenWrite(tempFilePath))
                     {
-                        stream.CopyTo(fileStream);
+                        tempFilePath = tempFiles.AddExtension("png");
+                        System.Console.WriteLine(tempFilePath);
+                        using (Stream fileStream = File.OpenWrite(tempFilePath))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
                     }
-                }
+
+                    // Run the query
+                    string contents = "Test Note Contents with Attachment " + DateTime.Now.ToString();
+                    AddressNote note = route4Me.AddAddressNote(noteParameters, contents, tempFilePath, out string errorString);
+
+                    Assert.IsNotNull(note, "AddAddressNoteWithFileTest failed... " + errorString);
+                };
             }
-
-            // Run the query
-            string contents = "Test Note Contents with Attachment " + DateTime.Now.ToString();
-            AddressNote note = route4Me.AddAddressNote(noteParameters, contents, tempFilePath, out string errorString);
-
-            Assert.IsNotNull(note, "AddAddressNoteWithFileTest failed... " + errorString);
         }
 
         [TestMethod]
@@ -7085,10 +7090,10 @@ namespace Route4MeSDKUnitTest
 
             AddressBookContact contact = new AddressBookContact()
             {
-                first_name = "Test FirstName " + (new Random()).Next().ToString(),
-                address_1 = "Test Address1 " + (new Random()).Next().ToString(),
-                cached_lat = 38.024654,
-                cached_lng = -77.338814
+                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
+                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                CachedLat = 38.024654,
+                CachedLng = -77.338814
             };
 
             // Run the query
@@ -7096,7 +7101,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(contact1, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location1 = contact1.address_id != null ? Convert.ToInt32(contact1.address_id) : -1;
+            int location1 = contact1.AddressId != null ? Convert.ToInt32(contact1.AddressId) : -1;
 
             if (location1 > 0) lsRemoveContacts.Add(location1);
 
@@ -7107,18 +7112,18 @@ namespace Route4MeSDKUnitTest
             };
             contact = new AddressBookContact()
             {
-                first_name = "Test FirstName " + (new Random()).Next().ToString(),
-                address_1 = "Test Address1 " + (new Random()).Next().ToString(),
-                cached_lat = 38.024654,
-                cached_lng = -77.338814,
-                address_custom_data = dCustom
+                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
+                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                CachedLat = 38.024654,
+                CachedLng = -77.338814,
+                AddressCustomData = dCustom
             };
 
             contact2 = route4Me.AddAddressBookContact(contact, out errorString);
 
             Assert.IsNotNull(contact2, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location2 = contact2.address_id != null ? Convert.ToInt32(contact2.address_id) : -1;
+            int location2 = contact2.AddressId != null ? Convert.ToInt32(contact2.AddressId) : -1;
 
             if (location2 > 0) lsRemoveContacts.Add(location2);
         }
@@ -7138,25 +7143,25 @@ namespace Route4MeSDKUnitTest
 
             scheduledContact1 = new AddressBookContact()
             {
-                address_1 = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
-                address_alias = "1604 PARKRIDGE PKWY 40214",
-                address_group = "Scheduled daily",
-                first_name = "Peter",
-                last_name = "Newman",
-                address_email = "pnewman6564@yahoo.com",
-                address_phone_number = "65432178",
-                cached_lat = 38.141598,
-                cached_lng = -85.793846,
-                address_city = "Louisville",
-                address_custom_data = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "publishing" } },
-                schedule = new List<Schedule>() { sched1 }
+                Address1 = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                AddressAlias = "1604 PARKRIDGE PKWY 40214",
+                AddressGroup = "Scheduled daily",
+                FirstName = "Peter",
+                LastName = "Newman",
+                AddressEmail = "pnewman6564@yahoo.com",
+                AddressPhoneNumber = "65432178",
+                CachedLat = 38.141598,
+                CachedLng = -85.793846,
+                AddressCity = "Louisville",
+                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "publishing" } },
+                Schedule = new List<Schedule>() { sched1 }
             };
 
             scheduledContact1Response = route4Me.AddAddressBookContact(scheduledContact1, out string errorString);
 
             Assert.IsNotNull(scheduledContact1Response, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location1 = scheduledContact1Response.address_id != null ? Convert.ToInt32(scheduledContact1Response.address_id) : -1;
+            int location1 = scheduledContact1Response.AddressId != null ? Convert.ToInt32(scheduledContact1Response.AddressId) : -1;
 
             if (location1 > 0) lsRemoveContacts.Add(location1);
             #endregion
@@ -7170,25 +7175,25 @@ namespace Route4MeSDKUnitTest
 
             scheduledContact2 = new AddressBookContact()
             {
-                address_1 = "1407 MCCOY, Louisville, KY, 40215",
-                address_alias = "1407 MCCOY 40215",
-                address_group = "Scheduled weekly",
-                first_name = "Bart",
-                last_name = "Douglas",
-                address_email = "bdouglas9514@yahoo.com",
-                address_phone_number = "95487454",
-                cached_lat = 38.202496,
-                cached_lng = -85.786514,
-                address_city = "Louisville",
-                service_time = 600,
-                schedule = new List<Schedule>() { sched2 }
+                Address1 = "1407 MCCOY, Louisville, KY, 40215",
+                AddressAlias = "1407 MCCOY 40215",
+                AddressGroup = "Scheduled weekly",
+                FirstName = "Bart",
+                LastName = "Douglas",
+                AddressEmail = "bdouglas9514@yahoo.com",
+                AddressPhoneNumber = "95487454",
+                CachedLat = 38.202496,
+                CachedLng = -85.786514,
+                AddressCity = "Louisville",
+                ServiceTime = 600,
+                Schedule = new List<Schedule>() { sched2 }
             };
 
             scheduledContact2Response = route4Me.AddAddressBookContact(scheduledContact2, out errorString);
 
             Assert.IsNotNull(scheduledContact2Response, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location2 = scheduledContact2Response.address_id != null ? Convert.ToInt32(scheduledContact2Response.address_id) : -1;
+            int location2 = scheduledContact2Response.AddressId != null ? Convert.ToInt32(scheduledContact2Response.AddressId) : -1;
 
             if (location2 > 0) lsRemoveContacts.Add(location2);
 
@@ -7203,30 +7208,30 @@ namespace Route4MeSDKUnitTest
 
             scheduledContact3 = new AddressBookContact()
             {
-                address_1 = "4805 BELLEVUE AVE, Louisville, KY, 40215",
-                address_2 = "4806 BELLEVUE AVE, Louisville, KY, 40215",
-                address_alias = "4805 BELLEVUE AVE 40215",
-                address_group = "Scheduled monthly",
-                first_name = "Bart",
-                last_name = "Douglas",
-                address_email = "bdouglas9514@yahoo.com",
-                address_phone_number = "95487454",
-                cached_lat = 38.178844,
-                cached_lng = -85.774864,
-                address_country_id = "US",
-                address_state_id = "KY",
-                address_zip = "40215",
-                address_city = "Louisville",
-                service_time = 750,
-                schedule = new List<Schedule>() { sched3 },
-                color = "red"
+                Address1 = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                Address2 = "4806 BELLEVUE AVE, Louisville, KY, 40215",
+                AddressAlias = "4805 BELLEVUE AVE 40215",
+                AddressGroup = "Scheduled monthly",
+                FirstName = "Bart",
+                LastName = "Douglas",
+                AddressEmail = "bdouglas9514@yahoo.com",
+                AddressPhoneNumber = "95487454",
+                CachedLat = 38.178844,
+                CachedLng = -85.774864,
+                AddressCountryId = "US",
+                AddressStateId = "KY",
+                AddressZip = "40215",
+                AddressCity = "Louisville",
+                ServiceTime = 750,
+                Schedule = new List<Schedule>() { sched3 },
+                Color = "red"
             };
 
             scheduledContact3Response = route4Me.AddAddressBookContact(scheduledContact3, out errorString);
 
             Assert.IsNotNull(scheduledContact3Response, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location3 = scheduledContact3Response.address_id != null ? Convert.ToInt32(scheduledContact3Response.address_id) : -1;
+            int location3 = scheduledContact3Response.AddressId != null ? Convert.ToInt32(scheduledContact3Response.AddressId) : -1;
 
             if (location3 > 0) lsRemoveContacts.Add(location3);
             #endregion
@@ -7240,27 +7245,27 @@ namespace Route4MeSDKUnitTest
 
             scheduledContact4 = new AddressBookContact()
             {
-                address_1 = "730 CECIL AVENUE, Louisville, KY, 40211",
-                address_alias = "730 CECIL AVENUE 40211",
-                address_group = "Scheduled monthly",
-                first_name = "David",
-                last_name = "Silvester",
-                address_email = "dsilvester5874@yahoo.com",
-                address_phone_number = "36985214",
-                cached_lat = 38.248684,
-                cached_lng = -85.821121,
-                address_city = "Louisville",
-                service_time = 450,
-                address_custom_data = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "library" } },
-                schedule = new List<Schedule>() { sched4 },
-                address_icon = "emoji/emoji-bus"
+                Address1 = "730 CECIL AVENUE, Louisville, KY, 40211",
+                AddressAlias = "730 CECIL AVENUE 40211",
+                AddressGroup = "Scheduled monthly",
+                FirstName = "David",
+                LastName = "Silvester",
+                AddressEmail = "dsilvester5874@yahoo.com",
+                AddressPhoneNumber = "36985214",
+                CachedLat = 38.248684,
+                CachedLng = -85.821121,
+                AddressCity = "Louisville",
+                ServiceTime = 450,
+                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "library" } },
+                Schedule = new List<Schedule>() { sched4 },
+                AddressIcon = "emoji/emoji-bus"
             };
 
             scheduledContact4Response = route4Me.AddAddressBookContact(scheduledContact4, out errorString);
 
             Assert.IsNotNull(scheduledContact4Response, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location4 = scheduledContact4Response.address_id != null ? Convert.ToInt32(scheduledContact4Response.address_id) : -1;
+            int location4 = scheduledContact4Response.AddressId != null ? Convert.ToInt32(scheduledContact4Response.AddressId) : -1;
 
             if (location4 > 0) lsRemoveContacts.Add(location4);
             #endregion
@@ -7275,27 +7280,27 @@ namespace Route4MeSDKUnitTest
 
             scheduledContact5 = new AddressBookContact()
             {
-                address_1 = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
-                address_alias = "4629 HILLSIDE DRIVE 40216",
-                address_group = "Scheduled daily",
-                first_name = "Kim",
-                last_name = "Shandor",
-                address_email = "kshand8524@yahoo.com",
-                address_phone_number = "9874152",
-                cached_lat = 38.176067,
-                cached_lng = -85.824638,
-                address_city = "Louisville",
-                address_custom_data = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "appliance" } },
-                schedule = new List<Schedule>() { sched5 },
-                schedule_blacklist = new string[] { "2017-12-22", "2017-12-23" },
-                service_time = 300
+                Address1 = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                AddressAlias = "4629 HILLSIDE DRIVE 40216",
+                AddressGroup = "Scheduled daily",
+                FirstName = "Kim",
+                LastName = "Shandor",
+                AddressEmail = "kshand8524@yahoo.com",
+                AddressPhoneNumber = "9874152",
+                CachedLat = 38.176067,
+                CachedLng = -85.824638,
+                AddressCity = "Louisville",
+                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "appliance" } },
+                Schedule = new List<Schedule>() { sched5 },
+                ScheduleBlacklist = new string[] { "2017-12-22", "2017-12-23" },
+                ServiceTime = 300
             };
 
             scheduledContact5Response = route4Me.AddAddressBookContact(scheduledContact5, out errorString);
 
             Assert.IsNotNull(scheduledContact5Response, "AddAddressBookContactsTest failed... " + errorString);
 
-            int location5 = scheduledContact5Response.address_id != null ? Convert.ToInt32(scheduledContact5Response.address_id) : -1;
+            int location5 = scheduledContact5Response.AddressId != null ? Convert.ToInt32(scheduledContact5Response.AddressId) : -1;
 
             if (location5 > 0) lsRemoveContacts.Add(location5);
             #endregion
@@ -7308,7 +7313,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(contact1, "contact1 is null..");
 
-            contact1.address_group = "Updated";
+            contact1.AddressGroup = "Updated";
             // Run the query
             AddressBookContact updatedContact = route4Me.UpdateAddressBookContact(contact1, out string errorString);
 
@@ -7343,7 +7348,7 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(contact1, "contact1 is null...");
             Assert.IsNotNull(contact2, "contact2 is null...");
 
-            string addresses = contact1.address_id + "," + contact2.address_id;
+            string addresses = contact1.AddressId + "," + contact2.AddressId;
 
             AddressBookParameters addressBookParameters = new AddressBookParameters
             {
@@ -7425,7 +7430,7 @@ namespace Route4MeSDKUnitTest
                 Assert.IsInstanceOfType(contacts, typeof(AddressBookContact[]), "Getting of the contacts failed..." + errorString);
                 Assert.IsNotNull(total, "RemoveAllAddressbookContactsTest failed.");
 
-                foreach (AddressBookContact contact in contacts) lsAddresses.Add(contact.address_id.ToString());
+                foreach (AddressBookContact contact in contacts) lsAddresses.Add(contact.AddressId.ToString());
 
                 tdr.RemoveAddressBookContacts(lsAddresses, ApiKey);
 
@@ -7493,7 +7498,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(group2, "AddressBookGroupsInitialize failed... " + errorString);
 
-            lsGroups.Add(group2.groupID);
+            lsGroups.Add(group2.GroupId);
         }
 
         [TestMethod]
@@ -7520,7 +7525,7 @@ namespace Route4MeSDKUnitTest
 
             AddressBookGroupParameters addressBookGroupParameters = new AddressBookGroupParameters()
             {
-                GroupId = group2.groupID
+                GroupId = group2.GroupId
             };
 
             // Run the query
@@ -7536,7 +7541,7 @@ namespace Route4MeSDKUnitTest
 
             AddressBookGroupParameters addressBookGroupParameters = new AddressBookGroupParameters()
             {
-                groupID = group2.groupID
+                groupID = group2.GroupId
             };
 
             // Run the query
@@ -7591,8 +7596,8 @@ namespace Route4MeSDKUnitTest
 
             AddressBookGroup addressBookGroupParameters = new AddressBookGroup()
             {
-                groupID = group2.groupID,
-                groupColor = "cd74e6",
+                GroupId = group2.GroupId,
+                GroupColor = "cd74e6",
                 Filter = addressBookGroupFilter
             };
 
@@ -7609,7 +7614,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(addressBookGroup, "AddAddreessBookGroupTest failed... " + errorString);
 
-            lsGroups.Add(addressBookGroup.groupID);
+            lsGroups.Add(addressBookGroup.GroupId);
         }
 
         private static AddressBookGroup CreateAddreessBookGroup(out string errorString)
@@ -7632,8 +7637,8 @@ namespace Route4MeSDKUnitTest
 
             AddressBookGroup addressBookGroupParameters = new AddressBookGroup()
             {
-                groupName = "All Group",
-                groupColor = "92e1c0",
+                GroupName = "All Group",
+                GroupColor = "92e1c0",
                 Filter = addressBookGroupFilter
             };
 
@@ -7659,9 +7664,9 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void RemoveAddressBookGroupTest()
         {
-            StatusResponse response = DeleteAddreessBookGroup(group1.groupID, out string errorString);
+            StatusResponse response = DeleteAddreessBookGroup(group1.GroupId, out string errorString);
 
-            Assert.IsTrue(response.status, "RemoveAddressBookGroupTest failed... " + errorString);
+            Assert.IsTrue(response.Status, "RemoveAddressBookGroupTest failed... " + errorString);
         }
 
         [ClassCleanup()]
@@ -7671,7 +7676,7 @@ namespace Route4MeSDKUnitTest
             {
                 StatusResponse resposne = DeleteAddreessBookGroup(curGroupID, out string errorString);
 
-                Assert.IsTrue(resposne.status, "Removing of the address book group with group ID = "+curGroupID +" failed.");
+                Assert.IsTrue(resposne.Status, "Removing of the address book group with group ID = "+curGroupID +" failed.");
             }
         }
     }
@@ -8105,8 +8110,8 @@ namespace Route4MeSDKUnitTest
         static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey; //
         static TestDataRepository tdr;
         static List<string> lsOptimizationIDs;
-        static List<string> lsOrderIds = new List<string>();
-        static List<Order> lsOrders = new List<Order>();
+        static readonly List<string> lsOrderIds = new List<string>();
+        static readonly List<Order> lsOrders = new List<Order>();
 
         [ClassInitialize()]
         public static void CreateOrderTest(TestContext context)
@@ -8132,11 +8137,11 @@ namespace Route4MeSDKUnitTest
             DateTime dtTomorrow = DateTime.Now + (new TimeSpan(1, 0, 0, 0));
             Order order = new Order()
             {
-                address_1 = "Test Address1 " + (new Random()).Next().ToString(),
-                address_alias = "Test AddressAlias " + (new Random()).Next().ToString(),
-                cached_lat = 37.773972,
-                cached_lng = -122.431297,
-                day_scheduled_for_YYMMDD = dtTomorrow.ToString("yyyy-MM-dd")
+                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                AddressAlias = "Test AddressAlias " + (new Random()).Next().ToString(),
+                CachedLat = 37.773972,
+                CachedLng = -122.431297,
+                DayScheduledFor_YYMMDD = dtTomorrow.ToString("yyyy-MM-dd")
             };
 
             if (c_ApiKey != c_ApiKey_1)
@@ -8146,7 +8151,7 @@ namespace Route4MeSDKUnitTest
 
                 Assert.IsNotNull(resultOrder, "CreateOrderTest failed... " + errorString);
 
-                lsOrderIds.Add(resultOrder.order_id.ToString());
+                lsOrderIds.Add(resultOrder.OrderId.ToString());
             }
             else
             {
@@ -8319,7 +8324,7 @@ namespace Route4MeSDKUnitTest
 
             if (orders.Length > 0) order = orders[0];
 
-            order.EXT_FIELD_last_name = "Updated " + (new Random()).Next().ToString();
+            order.ExtFieldLastName = "Updated " + (new Random()).Next().ToString();
 
             // Run the query
             Order updatedOrder = route4Me.UpdateOrder(order, out errorString);
@@ -8336,25 +8341,25 @@ namespace Route4MeSDKUnitTest
 
             Order orderParams = new Order()
             {
-                address_1 = "318 S 39th St, Louisville, KY 40212, USA",
-                cached_lat = 38.259326,
-                cached_lng = -85.814979,
-                curbside_lat = 38.259326,
-                curbside_lng = -85.814979,
-                address_alias = "318 S 39th St 40212",
-                address_city = "Louisville",
-                EXT_FIELD_first_name = "Lui",
-                EXT_FIELD_last_name = "Carol",
-                EXT_FIELD_email = "lcarol654@yahoo.com",
-                EXT_FIELD_phone = "897946541",
-                EXT_FIELD_custom_data = new Dictionary<string, string>() { { "order_type", "scheduled order" } },
-                day_scheduled_for_YYMMDD = "2017-12-20",
-                local_time_window_end = 39000,
-                local_time_window_end_2 = 46200,
-                local_time_window_start = 37800,
-                local_time_window_start_2 = 45000,
-                local_timezone_string = "America/New_York",
-                order_icon = "emoji/emoji-bank"
+                Address1 = "318 S 39th St, Louisville, KY 40212, USA",
+                CachedLat = 38.259326,
+                CachedLng = -85.814979,
+                CurbsideLat = 38.259326,
+                CurbsideLng = -85.814979,
+                AddressAlias = "318 S 39th St 40212",
+                AddressCity = "Louisville",
+                ExtFieldFirstName = "Lui",
+                ExtFieldLastName = "Carol",
+                ExtFieldEmail = "lcarol654@yahoo.com",
+                ExtFieldPhone = "897946541",
+                ExtFieldCustomData = new Dictionary<string, string>() { { "order_type", "scheduled order" } },
+                DayScheduledFor_YYMMDD = "2017-12-20",
+                LocalTimeWindowEnd = 39000,
+                LocalTimeWindowEnd2 = 46200,
+                LocalTimeWindowStart = 37800,
+                LocalTimeWindowStart2 = 45000,
+                LocalTimezoneString = "America/New_York",
+                OrderIcon = "emoji/emoji-bank"
             };
 
             var newOrder = route4Me.AddOrder(orderParams, out string errorString);
@@ -8459,7 +8464,6 @@ namespace Route4MeSDKUnitTest
                 RouteDate = 1465948800,
                 RouteTime = 14400,
                 Optimize = "Time",
-                RouteType = "single",
                 AlgorithmType = AlgorithmType.TSP,
                 RT = false,
                 LockLast = false,
@@ -8481,11 +8485,11 @@ namespace Route4MeSDKUnitTest
 
             var orderParams = new Order()
             {
-                address_1 = "1358 E Luzerne St, Philadelphia, PA 19124, US",
-                cached_lat = 48.335991,
-                cached_lng = 31.18287,
-                day_scheduled_for_YYMMDD = "2019-10-11",
-                address_alias = "Auto test address",
+                Address1 = "1358 E Luzerne St, Philadelphia, PA 19124, US",
+                CachedLat = 48.335991,
+                CachedLng = 31.18287,
+                DayScheduledFor_YYMMDD = "2019-10-11",
+                AddressAlias = "Auto test address",
                 CustomUserFields = new OrderCustomField[]
                 {
                     new OrderCustomField()
@@ -8500,7 +8504,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(result, "AddOrdersToRouteTest failed... " + errorString);
 
-            lsOrderIds.Add(result.order_id.ToString());
+            lsOrderIds.Add(result.OrderId.ToString());
 
             lsOrders.Add(result);
         }
@@ -8617,8 +8621,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             // Run the query
-            string errorString;
-            bool removed = route4Me.RemoveOrders(lsOrderIds.ToArray(), out errorString);
+            bool removed = route4Me.RemoveOrders(lsOrderIds.ToArray(), out string errorString);
 
             lsOrders.Clear();
             lsOrderIds.Clear();
@@ -8637,8 +8640,8 @@ namespace Route4MeSDKUnitTest
     public class OrderCustomUserFieldsGroup
     {
         static string skip;
-        static string c_ApiKey = ApiKeys.ActualApiKey; // This group allowed only for business and higher account types --- put in the parameter an appropriate API key
-        static string c_ApiKey_1 = ApiKeys.DemoApiKey; //
+        static readonly string c_ApiKey = ApiKeys.ActualApiKey; // This group allowed only for business and higher account types --- put in the parameter an appropriate API key
+        static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey; //
         static List<int> lsOrderCustomUserFieldIDs = new List<int>();
 
         [ClassInitialize()]
@@ -8689,8 +8692,7 @@ namespace Route4MeSDKUnitTest
 
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            string errorString;
-            var orderCustomUserFields = route4Me.GetOrderCustomUserFields(out errorString);
+            var orderCustomUserFields = route4Me.GetOrderCustomUserFields(out string errorString);
 
             Assert.IsInstanceOfType(orderCustomUserFields, typeof(OrderCustomField[]), "GetOrderCustomUserFieldsTest failed. " + errorString);
         }
@@ -8893,22 +8895,20 @@ namespace Route4MeSDKUnitTest
             {
             };
 
-            string userErrorString;
-            var response = route4Me.GetUsers(parameters, out userErrorString);
+            var response = route4Me.GetUsers(parameters, out string userErrorString);
 
-            Assert.IsInstanceOfType(response.Results, typeof(MemberResponseV4[]), "GetActivitiesByMemberTest failed - cannot get users");
+            Assert.IsInstanceOfType(response.Results, typeof(MemberResponseV4[]), "GetActivitiesByMemberTest failed - cannot get users. "+ userErrorString);
             Assert.IsTrue(response.Results.Length > 1, "Cannot retrieve more than 1 users");
 
             ActivityParameters activityParameters = new ActivityParameters()
             {
-                MemberId = response.Results[1].member_id != null ? Convert.ToInt32(response.Results[1].member_id) : -1,
+                MemberId = response.Results[1].MemberId != null ? Convert.ToInt32(response.Results[1].MemberId) : -1,
                 Offset = 0,
                 Limit = 10
             };
 
             // Run the query
-            string errorString;
-            Activity[] activities = route4Me.GetActiviies(activityParameters, out errorString);
+            Activity[] activities = route4Me.GetActiviies(activityParameters, out string errorString);
 
             Assert.IsInstanceOfType(activities, typeof(Activity[]), "GetActivitiesByMemberTest failed... " + errorString);
         }
@@ -9611,7 +9611,7 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            string tracking = tdr.SDRT_route != null ? (tdr.SDRT_route.Addresses.Length > 1 ? (tdr.SDRT_route.Addresses[1]?.tracking_number ?? "") : "") : "";
+            string tracking = tdr.SDRT_route != null ? (tdr.SDRT_route.Addresses.Length > 1 ? (tdr.SDRT_route.Addresses[1]?.TrackingNumber ?? "") : "") : "";
 
             Assert.IsTrue(tracking != "", "Can not find valid tracking number in the newly generated route's second destination...");
 
@@ -9747,7 +9747,7 @@ namespace Route4MeSDKUnitTest
 
         static List<string> lsMembers;
 
-        int? createdMemberID;
+        readonly int? createdMemberID;
 
         [ClassInitialize()]
         public static void UserGroupInitialize(TestContext context)
@@ -9758,17 +9758,17 @@ namespace Route4MeSDKUnitTest
 
             lsMembers = new List<string>();
 
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            //Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            GenericParameters parameters = new GenericParameters();
+            //GenericParameters parameters = new GenericParameters();
 
             var dispetcher = (new UsersGroup()).CreateUser("SUB_ACCOUNT_DISPATCHER", out string errorString);
             Assert.IsInstanceOfType(dispetcher, typeof(MemberResponseV4), "Cannot create dispetcher. " + errorString);
-            lsMembers.Add(dispetcher.member_id);
+            lsMembers.Add(dispetcher.MemberId);
 
             var driver = (new UsersGroup()).CreateUser("SUB_ACCOUNT_DRIVER", out errorString);
             Assert.IsInstanceOfType(driver, typeof(MemberResponseV4), "Cannot create driver. " + errorString);
-            lsMembers.Add(driver.member_id);
+            lsMembers.Add(driver.MemberId);
         }
 
         [TestMethod]
@@ -9776,16 +9776,18 @@ namespace Route4MeSDKUnitTest
         {
             if (skip == "yes") return;
 
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            //Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
             var dispetcher = this.CreateUser("SUB_ACCOUNT_DISPATCHER", out string errorString);
 
             //For successful testing of an user creating, you shuld provide valid email address, otherwise you'll get error "Email is used in system"
-            string rightResponse = dispetcher != null ? "ok" : ((errorString == "Email is used in system" || errorString == "Registration: The e-mail address is missing or invalid.") ? "ok" : "");
+            string rightResponse = dispetcher != null 
+                ? "ok" 
+                : ((errorString == "Email is used in system" || errorString == "Registration: The e-mail address is missing or invalid.") ? "ok" : "");
 
             Assert.IsTrue(rightResponse == "ok", "CreateUserTest failed... " + errorString);
 
-            lsMembers.Add(dispetcher.member_id);
+            lsMembers.Add(dispetcher.MemberId);
         }
 
         public MemberResponseV4 CreateUser(string memberType, out string errorString)
@@ -9852,7 +9854,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsTrue(result2!=null, "UpdateUserTest failed... " + errorString);
 
-            Dictionary<string, string> customData = result2.custom_data;
+            Dictionary<string, string> customData = result2.CustomData;
 
             Assert.IsTrue(customData.Keys.ElementAt(0) == "Custom Key 2", "Custom Key is not 'Custom Key 2'");
 
@@ -9992,13 +9994,13 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
             var parameters = new MemberParametersV4();
-            string errorString = "";
+
             bool result;
 
             foreach (var memberId in lsMembers)
             {
                 parameters.member_id = Convert.ToInt32(memberId);
-                result = route4Me.UserDelete(parameters, out errorString);
+                result = route4Me.UserDelete(parameters, out string errorString);
             }
         }
     }
@@ -10530,7 +10532,7 @@ namespace Route4MeSDKUnitTest
                 if (e.LsAddressesChunkGeocoded != null)
                 {
                     foreach (var addr1 in e.LsAddressesChunkGeocoded)
-                        lsAddresses.Add(addr1.geocodedAddress.AddressString);
+                        lsAddresses.Add(addr1.GeocodedAddress.AddressString);
                 }
                     
                 Console.WriteLine("Total Geocoded Addresses -> " + lsAddresses.Count);
@@ -11211,11 +11213,11 @@ namespace Route4MeSDKUnitTest
 
                         AddressBookContact newLocation = new AddressBookContact();
 
-                        if (lng != null) newLocation.cached_lng = Convert.ToDouble(lng);
-                        if (lat != null) newLocation.cached_lat = Convert.ToDouble(lat);
-                        if (alias != null) newLocation.address_alias = alias.ToString().Trim();
-                        newLocation.address_1 = sAddress;
-                        if (phone != null) newLocation.address_phone_number = phone.ToString().Trim();
+                        if (lng != null) newLocation.CachedLng = Convert.ToDouble(lng);
+                        if (lat != null) newLocation.CachedLat = Convert.ToDouble(lat);
+                        if (alias != null) newLocation.AddressAlias = alias.ToString().Trim();
+                        newLocation.Address1 = sAddress;
+                        if (phone != null) newLocation.AddressPhoneNumber = phone.ToString().Trim();
 
                         //newLocation.schedule = new Schedule[]{};
                         if (!sched0.ValidateScheduleMode(sched_mode)) continue;
@@ -11322,7 +11324,7 @@ namespace Route4MeSDKUnitTest
                                 }
                             }
                         }
-                        newLocation.schedule = (new List<Schedule>() { schedule }).ToArray();
+                        newLocation.Schedule = (new List<Schedule>() { schedule }).ToArray();
                         //}
 
                         //string errorString;
@@ -11332,7 +11334,7 @@ namespace Route4MeSDKUnitTest
 
                         if (resultContact != null)
                         {
-                            string AddressId = resultContact.address_id != null ? resultContact.address_id.ToString() : "";
+                            string AddressId = resultContact.AddressId != null ? resultContact.AddressId.ToString() : "";
 
                             if (AddressId != "") lsAddressbookContacts.Add(AddressId);
                         }
@@ -11504,11 +11506,11 @@ namespace Route4MeSDKUnitTest
 
                         Order newOrder = new Order();
 
-                        if (lng != null) newOrder.cached_lat = Convert.ToDouble(lng);
-                        if (lat != null) newOrder.cached_lng = Convert.ToDouble(lat);
-                        if (alias != null) newOrder.address_alias = alias.ToString().Trim();
-                        newOrder.address_1 = sAddress;
-                        if (phone != null) newOrder.EXT_FIELD_phone = phone.ToString().Trim();
+                        if (lng != null) newOrder.CachedLat = Convert.ToDouble(lng);
+                        if (lat != null) newOrder.CachedLng = Convert.ToDouble(lat);
+                        if (alias != null) newOrder.AddressAlias = alias.ToString().Trim();
+                        newOrder.Address1 = sAddress;
+                        if (phone != null) newOrder.ExtFieldPhone = phone.ToString().Trim();
 
                         DateTime dt = DateTime.Now;
 
@@ -11517,7 +11519,7 @@ namespace Route4MeSDKUnitTest
                             if (DateTime.TryParse(sched_date.ToString(), out dt))
                             {
                                 dt = Convert.ToDateTime(sched_date);
-                                newOrder.day_scheduled_for_YYMMDD = dt.ToString("yyyy-MM-dd");
+                                newOrder.DayScheduledFor_YYMMDD = dt.ToString("yyyy-MM-dd");
                             }
                         }
 
@@ -11526,7 +11528,7 @@ namespace Route4MeSDKUnitTest
 
                         if (resultOrder != null)
                         {
-                            string OrderId = resultOrder.order_id != null ? resultOrder.order_id.ToString() : "";
+                            string OrderId = resultOrder.OrderId != null ? resultOrder.OrderId.ToString() : "";
 
                             if (OrderId != "") lsOrders.Add(OrderId);
                         }

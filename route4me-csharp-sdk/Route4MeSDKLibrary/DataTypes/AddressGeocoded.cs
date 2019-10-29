@@ -12,7 +12,7 @@ namespace Route4MeSDK.DataTypes
         /// The geocoded address name
         /// </summary>
         [DataMember(Name = "address", EmitDefaultValue = false)]
-        public Address geocodedAddress { get; set; }
+        public Address GeocodedAddress { get; set; }
 
         /// <summary>
         /// A member ID the geocoded address belongs
@@ -24,37 +24,37 @@ namespace Route4MeSDK.DataTypes
         /// The member type ID
         /// </summary>
         [DataMember(Name = "member_type_id", EmitDefaultValue = false)]
-        public int memberTypeID { get; set; }
+        public int MemberTypeID { get; set; }
 
         /// <summary>
         /// The user's position latitude
         /// </summary>
         [DataMember(Name = "userLat")]
-        public double? userLatitude { get; set; }
+        public double? UserLatitude { get; set; }
 
         /// <summary>
         /// The user's position longitude
         /// </summary>
         [DataMember(Name = "userLng")]
-        public double? userLongitude { get; set; }
+        public double? UserLongitude { get; set; }
 
         /// <summary>
         /// The user's IP
         /// </summary>
         [DataMember(Name = "intUserIP", EmitDefaultValue = false)]
-        public uint intUserIP { get; set; }
+        public uint IntUserIP { get; set; }
 
         /// <summary>
         /// The geocoding method
         /// </summary>
         [DataMember(Name = "strGeocodingMethod", EmitDefaultValue = false)]
-        public string strGeocodingMethod { get; set; }
+        public string StrGeocodingMethod { get; set; }
 
         /// <summary>
         /// Get the geocoded address curbside
         /// </summary>
         [DataMember(Name = "getCurbside", EmitDefaultValue = false)]
-        public bool getCurbside { get; set; }
+        public bool GetCurbside { get; set; }
 
         /// <summary>
         /// The geocoded address priority

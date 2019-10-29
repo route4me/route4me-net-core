@@ -15,7 +15,7 @@ namespace Route4MeSDK.DataTypes
         /// from a file upload within your environment (for analytics).
         /// </summary>
         [DataMember(Name = "is_upload", EmitDefaultValue = false)]
-        public string IsUpload { get; set; }
+        public bool? IsUpload { get; set; }
 
         /// <summary>
         /// The tour type of this route. rt is short for round trip, 
@@ -49,7 +49,7 @@ namespace Route4MeSDK.DataTypes
         /// Offset in seconds relative to the route start date (i.e. 9AM would be 60 * 60 * 9)
         /// </summary>
         [DataMember(Name = "route_time", EmitDefaultValue = false)]
-        public object RouteTime { get; set; }
+        public int? RouteTime { get; set; }
 
         /// <summary>
         /// Specify if the route can be viewed by unauthenticated users.
@@ -228,7 +228,7 @@ namespace Route4MeSDK.DataTypes
         /// </remarks>
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public string MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// Specify the ip address of the remote user making this optimization request.
@@ -277,7 +277,7 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [Obsolete("Always null")]
         [DataMember(Name = "device_id", EmitDefaultValue = false)]
-        public object DeviceID { get; set; }
+        public string DeviceID { get; set; }
 
         /// <summary>
         /// The type of device making this request.
@@ -292,7 +292,7 @@ namespace Route4MeSDK.DataTypes
         public string DeviceType { get; set; }
 
         /// <summary>
-        /// If true, the vehicle has a trailer.
+        /// If "1", the vehicle has a trailer.
         /// <remarks>
         /// <para>For routes that have trucking directions enabled, directions generated
         /// will ensure compliance so that road directions generated do not take the vehicle
@@ -491,13 +491,13 @@ namespace Route4MeSDK.DataTypes
         /// Route travel time slowdown (e.g. 25 (means 25% slowdown))
         /// </summary>
         [DataMember(Name = "route_time_multiplier", EmitDefaultValue = false)]
-        public decimal? RouteTimeMultiplier { get; set; }
+        public double? RouteTimeMultiplier { get; set; }
 
         /// <summary>
         /// Route service time slowdown (e.g. 10 (means 10% slowdown))
         /// </summary>
         [DataMember(Name = "route_service_time_multiplier", EmitDefaultValue = false)]
-        public decimal? RoutServiceTimeMultiplier { get; set; }
+        public double? RoutServiceTimeMultiplier { get; set; }
 
         /// <summary>
         /// Optimization engine (e.g. '1','2' etc)
@@ -510,7 +510,7 @@ namespace Route4MeSDK.DataTypes
         /// See <see cref="OverrideAddresses"/>
         /// </summary>
         [DataMember(Name = "override_addresses", EmitDefaultValue = false)]
-        public OverrideAddresses overrideAddresses { get; set; }
+        public OverrideAddresses OverrideAddresses { get; set; }
 
     }
 
