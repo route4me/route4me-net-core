@@ -29,7 +29,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// The member ID
         /// </summary>
         [Column("member_id")]
-        public int MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         [Column("created_timestamp")]
         public Int64 CreatedTimestamp { get; set; }
@@ -93,7 +93,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// If true, route is unrouted.
         /// </summary>
         [Column("is_unrouted")]
-        public bool IsUnrouted { get; set; }
+        public bool? IsUnrouted { get; set; }
 
         /// <summary>
         /// Counter of the approved revisions
@@ -117,31 +117,31 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Cost of the route
         /// </summary>
         [Column("route_cost")]
-        public decimal? RouteCost { get; set; }
+        public double? RouteCost { get; set; }
 
         /// <summary>
         /// Total route revenue
         /// </summary>
         [Column("route_revenue")]
-        public decimal? RouteRevenue { get; set; }
+        public double? RouteRevenue { get; set; }
 
         /// <summary>
         /// Net revenue per distance unit
         /// </summary>
         [Column("net_revenue_per_distance_unit")]
-        public decimal? NetRevenuePerDistanceUnit { get; set; }
+        public double? NetRevenuePerDistanceUnit { get; set; }
 
         [Column("udu_distance_unit", TypeName = "varchar(8)")]
         public string UduDistanceUnit { get; set; }
 
         [Column("udu_actual_travel_distance")]
-        public decimal? UduActualTravelDistance { get; set; }
+        public double? UduActualTravelDistance { get; set; }
 
         [Column("total_wait_time")]
         public int? TotalWaitTime { get; set; }
 
         [Column("udu_trip_distance")]
-        public decimal? UduTripDistance { get; set; }
+        public double? UduTripDistance { get; set; }
 
         /// <summary>
         /// Miles per gallon
@@ -153,13 +153,13 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Total route's trip distance
         /// </summary>
         [Column("trip_distance")]
-        public decimal? TripDistance { get; set; }
+        public double? TripDistance { get; set; }
 
         /// <summary>
         /// Gas price
         /// </summary>
         [Column("gas_price")]
-        public decimal? GasPrice { get; set; }
+        public double? GasPrice { get; set; }
 
         /// <summary>
         /// Total route duration (seconds)
@@ -180,7 +180,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Actual travel distance.
         /// </summary>
         [Column("actual_travel_distance")]
-        public decimal? ActualTravelDistance { get; set; }
+        public double? ActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel time.
@@ -216,7 +216,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Paying miles
         /// </summary>
         [Column("paying_miles")]
-        public decimal? PayingMiles { get; set; }
+        public double? PayingMiles { get; set; }
 
         /// <summary>
         /// Channel name.
@@ -299,25 +299,11 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         [Column("tracking_history")]
         public List<TrackingHistory> TrackingHistories { get; set; }
 
-        //[NotMapped]
-        //public TrackingHistory[] TrackingHistoryObj
-        //{
-        //    get { return TrackingHistory == null ? null : JsonConvert.DeserializeObject<TrackingHistory[]>(TrackingHistory); }
-        //    set { TrackingHistory = JsonConvert.SerializeObject(value); }
-        //}
-
         [Column("path")]
         public List<Path> Pathes { get; set; }
 
-        //[NotMapped]
-        //public GeoPoint[] PathArray
-        //{
-        //    get { return Path == null ? null : JsonConvert.DeserializeObject<GeoPoint[]>(Path); }
-        //    set { Path = JsonConvert.SerializeObject(value); }
-        //}
-
         public string OptimizationProblemDbId { get; set; }
         [ForeignKey("OptimizationProblemDbId")]
-        public OptimizationProblem optimizationProblem { get; set; }
+        public OptimizationProblem OptimizationProblem { get; set; }
     }
 }

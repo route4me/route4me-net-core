@@ -38,9 +38,6 @@ namespace Route4MeDB.Route4MeDbLibrary
                 case DatabaseProviders.Sqlexpress:
                     
                     break;
-                case DatabaseProviders.SqlCompact40:
-                    
-                    break;
                 case DatabaseProviders.SQLite:
                     
                     break;
