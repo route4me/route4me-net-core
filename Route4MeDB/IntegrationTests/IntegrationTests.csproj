@@ -15,4 +15,16 @@
     <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\mdmd_optimization_24stops_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\route_plain_with_10_stops.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\sd_optimization_10stops_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
