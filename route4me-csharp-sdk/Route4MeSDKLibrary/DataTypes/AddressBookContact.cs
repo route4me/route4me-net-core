@@ -16,145 +16,151 @@ namespace Route4MeSDK.DataTypes
         /// A territory shape name the contact belongs.
         /// </summary>
         [DataMember(Name = "territory_name", EmitDefaultValue = false)]
-        public string territory_name { get; set; }
+        public string TerritoryName { get; set; }
 
         /// <summary>
         /// Time when the contact was created.
         /// </summary>
         [DataMember(Name = "created_timestamp", EmitDefaultValue = false)]
-        public int created_timestamp { get; set; }
+        public int CreatedTimestamp { get; set; }
 
         /// <summary>
         /// Unique ID of the contact.
         /// </summary>
         [DataMember(Name = "address_id", EmitDefaultValue = false)]
-        public int? address_id { get; set; }
+        public int? AddressId { get; set; }
 
         /// <summary>
         /// The geographic address of the contact.
         /// </summary>
         [DataMember(Name = "address_1")]
-        public string address_1 { get; set; }
+        public string Address1 { get; set; }
 
         /// <summary>
         /// Second geographic address of the contact.
         /// </summary>
         [DataMember(Name = "address_2", EmitDefaultValue = false)]
-        public string address_2 { get; set; }
+        public string Address2 { get; set; }
+
+        /// <summary>
+        /// Unique ID of the member.
+        /// </summary>
+        [DataMember(Name = "member_id", EmitDefaultValue = false)]
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// The contact's alias.
         /// </summary>
         [DataMember(Name = "address_alias", EmitDefaultValue = false)]
-        public string address_alias { get; set; }
+        public string AddressAlias { get; set; }
 
         /// <summary>
         /// A group the contact belongs.
         /// </summary>
         [DataMember(Name = "address_group", EmitDefaultValue = false)]
-        public string address_group { get; set; }
+        public string AddressGroup { get; set; }
 
         /// <summary>
         /// The first name of the contact person.
         /// </summary>
         [DataMember(Name = "first_name", EmitDefaultValue = false)]
-        public string first_name { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// The last name of the contact person.
         /// </summary>
         [DataMember(Name = "last_name", EmitDefaultValue = false)]
-        public string last_name { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Start of the contact's local time window.
         /// </summary>
         [DataMember(Name = "local_time_window_start", EmitDefaultValue = false)]
-        public int? local_time_window_start { get; set; }
+        public int? LocalTimeWindowStart { get; set; }
 
         /// <summary>
         /// End of the contact's local time window.
         /// </summary>
         [DataMember(Name = "local_time_window_end", EmitDefaultValue = false)]
-        public int? local_time_window_end { get; set; }
+        public int? LocalTimeWindowEnd { get; set; }
 
         /// <summary>
         /// Start of the contact's second local time window.
         /// </summary>
         [DataMember(Name = "local_time_window_start_2", EmitDefaultValue = false)]
-        public int? local_time_window_start_2 { get; set; }
+        public int? LocalTimeWindowStart2 { get; set; }
 
         /// <summary>
         /// End of the contact's second local time window.
         /// </summary>
         [DataMember(Name = "local_time_window_end_2", EmitDefaultValue = false)]
-        public int? local_time_window_end_2 { get; set; }
+        public int? LocalTimeWindowEnd2 { get; set; }
 
         /// <summary>
         /// The contact's email.
         /// </summary>
         [DataMember(Name = "address_email", EmitDefaultValue = false)]
-        public string address_email { get; set; }
+        public string AddressEmail { get; set; }
 
         /// <summary>
         /// The contact's phone number.
         /// </summary>
         [DataMember(Name = "address_phone_number", EmitDefaultValue = false)]
-        public string address_phone_number { get; set; }
+        public string AddressPhoneNumber { get; set; }
 
         /// <summary>
         /// A latitude of the contact's cached position.
         /// </summary>
         [DataMember(Name = "cached_lat")]
-        public double cached_lat { get; set; }
+        public double CachedLat { get; set; }
 
         /// <summary>
         /// A longitude of the contact's cached position.
         /// </summary>
         [DataMember(Name = "cached_lng")]
-        public double cached_lng { get; set; }
+        public double CachedLng { get; set; }
 
         /// <summary>
         /// A latitude of the contact's curbside.
         /// </summary>
         [DataMember(Name = "curbside_lat")]
-        public double? curbside_lat { get; set; }
+        public double? CurbsideLat { get; set; }
 
         /// <summary>
         /// A longitude of the contact's curbside.
         /// </summary>
         [DataMember(Name = "curbside_lng")]
-        public double? curbside_lng { get; set; }
+        public double? CurbsideLng { get; set; }
         
         /// <summary>
         /// A city the contact belongs.
         /// </summary>
         [DataMember(Name = "address_city", EmitDefaultValue = false)]
-        public string address_city { get; set; }
+        public string AddressCity { get; set; }
 
         /// <summary>
         /// The ID of the state the contact belongs.
         /// </summary>
         [DataMember(Name = "address_state_id", EmitDefaultValue = false)]
-        public string address_state_id { get; set; }
+        public string AddressStateId { get; set; }
 
         /// <summary>
         /// The ID of the country the contact belongs.
         /// </summary>
         [DataMember(Name = "address_country_id", EmitDefaultValue = false)]
-        public string address_country_id { get; set; }
+        public string AddressCountryId { get; set; }
 
         /// <summary>
         /// The contact's ZIP code.
         /// </summary>
         [DataMember(Name = "address_zip", EmitDefaultValue = false)]
-        public string address_zip { get; set; }
+        public string AddressZip { get; set; }
 
         /// <summary>
         /// An array of the contact's custom field-value pairs.
         /// </summary>
         [DataMember(Name = "address_custom_data", EmitDefaultValue = false)]
-        public Dictionary<string, string> address_custom_data
+        public Dictionary<string, string> AddressCustomData
         {
             get
             {
@@ -207,37 +213,61 @@ namespace Route4MeSDK.DataTypes
         /// An array of the contact's schedules.
         /// </summary>
         [DataMember(Name = "schedule", EmitDefaultValue = false)]
-        public IList<Schedule> schedule { get; set; }
+        public IList<Schedule> Schedule { get; set; }
 
         /// <summary>
         /// The list of dates that should be omitted from the schedules.
         /// </summary>
         [DataMember(Name = "schedule_blacklist", EmitDefaultValue = false)]
-        public string[] schedule_blacklist { get; set; }
+        public string[] ScheduleBlacklist { get; set; }
+
+        /// <summary>
+        /// Number of the routes containing the contact.
+        /// </summary>
+        [DataMember(Name = "in_route_count", EmitDefaultValue = false)]
+        public int? InRouteCount { get; set; }
+
+        /// <summary>
+        /// Number of the visits to the contact.
+        /// </summary>
+        [DataMember(Name = "visited_count", EmitDefaultValue = false)]
+        public int? VisitedCount { get; set; }
+
+        /// <summary>
+        /// When the contact was last visited.
+        /// </summary>
+        [DataMember(Name = "last_visited_timestamp", EmitDefaultValue = false)]
+        public int? LastVisitedTimestamp { get; set; }
+
+        /// <summary>
+        /// When the contact was last routed.
+        /// </summary>
+        [DataMember(Name = "last_routed_timestamp", EmitDefaultValue = false)]
+        public int? LastRoutedTimestamp { get; set; }
 
         /// <summary>
         /// The service time at the contact's address.
         /// </summary>
         [DataMember(Name = "service_time", EmitDefaultValue = false)]
-        public int? service_time { get; set; }
+        public int? ServiceTime { get; set; }
 
         /// <summary>
         /// The contact's local timezone.
         /// </summary>
         [DataMember(Name = "local_timezone_string", EmitDefaultValue = false)]
-        public string local_timezone_string { get; set; }
+        public string LocalTimezoneString { get; set; }
 
         /// <summary>
         /// The contact's color on the map.
         /// </summary>
         [DataMember(Name = "color", EmitDefaultValue = false)]
-        public string color { get; set; }
+        public string Color { get; set; }
 
         /// <summary>
         /// The contact's icon on the map.
         /// </summary>
         [DataMember(Name = "address_icon", EmitDefaultValue = false)]
-        public string address_icon { get; set; }
+        public string AddressIcon { get; set; }
 
         /// <summary>
         /// The contact's stop type.

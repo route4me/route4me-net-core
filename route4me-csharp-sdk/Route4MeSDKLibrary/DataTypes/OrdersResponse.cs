@@ -13,12 +13,12 @@ namespace Route4MeSDK.DataTypes
         /// An array of the Order type objects
         /// </summary>
         [DataMember(Name = "results", EmitDefaultValue = false)]
-        public Order[] results { get; set; }
+        public Order[] Results { get; set; }
 
         /// <summary>
         /// Total number of the returned orders
         /// </summary>
         [DataMember(Name = "total", EmitDefaultValue = false)]
-        public int? total { get; set; }
+        public int? Total { get; set; }
     }
 }
