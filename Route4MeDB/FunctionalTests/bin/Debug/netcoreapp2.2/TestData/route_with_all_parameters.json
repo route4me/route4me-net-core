@@ -309,8 +309,21 @@
       "geocoded":false,
       "preferred_geocoding":null,
       "failed_geocoding":false,
-      "geocodings":[
-      ],
+      "geocodings": [{
+		"key": "e3a482116903c99b657a9425e1a4ad39",
+		"name": "G51 4BT, Glasgow, City of Glasgow, United Kingdom",
+		"bbox": [55.874195, -4.359231, 55.874195, -4.359231],
+		"lat": 55.874195,
+		"lng": -4.359231,
+		"confidence": "high",
+		"type": "",
+		"postalCode": "",
+		"countryRegion": "",
+		"curbside_coordinates": {
+			"lat": 55.874195,
+			"lng": -4.359231
+		}
+		}],
       "contact_id":null,
       "order_id":null,
       "address_stop_type":"DELIVERY",

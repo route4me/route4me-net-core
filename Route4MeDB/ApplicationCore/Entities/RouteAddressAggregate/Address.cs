@@ -262,26 +262,26 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// The address cargo weight
         /// </summary>
         [Column("weight")]
-        public decimal? Weight { get; set; }
+        public double? Weight { get; set; }
 
         /// <summary>
         /// The address cost
         /// </summary>
         [Column("cost")]
-        public decimal? Cost { get; set; }
+        public double? Cost { get; set; }
 
         /// <summary>
         /// The address revenue
         /// </summary>
         [Column("revenue")]
-        public decimal? Revenue { get; set; }
+        public double? Revenue { get; set; }
 
         /// <summary>
         /// The cubic volume that this destination/order/line-item consumes/contains.
         /// This is how much space it will take up on a vehicle.
         /// </summary>
         [Column("cube")]
-        public decimal? Cube { get; set; }
+        public double? Cube { get; set; }
 
         /// <summary>
         /// The number of pieces/palllets that this destination/order/line-item consumes/contains on a vehicle.
@@ -339,7 +339,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// Server-side generated amount of seconds that it will take to get to the next location.
         /// </summary>
         [Column("distance_to_next_destination")]
-        public decimal? DistanceToNextDestination { get; set; }
+        public double? DistanceToNextDestination { get; set; }
 
         /// <summary>
         /// Generated time window start.
