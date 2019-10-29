@@ -27,7 +27,7 @@ namespace Route4MeSDK.DataTypes
         /// The member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public string MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// The member's email
@@ -111,7 +111,7 @@ namespace Route4MeSDK.DataTypes
         /// Miles per gallon
         /// </summary>
         [DataMember(Name = "mpg", EmitDefaultValue = false)]
-        public string mpg { get; set; }
+        public double? Mpg { get; set; }
 
         /// <summary>
         /// Total route's trip distance
@@ -167,13 +167,13 @@ namespace Route4MeSDK.DataTypes
         /// UDU Actual travel distance.
         /// </summary>
         [DataMember(Name = "udu_actual_travel_distance", EmitDefaultValue = false)]
-        public decimal? UduActualTravelDistance { get; set; }
+        public double? UduActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel distance.
         /// </summary>
         [DataMember(Name = "actual_travel_distance", EmitDefaultValue = false)]
-        public decimal? ActualTravelDistance { get; set; }
+        public double? ActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel time (seconds).
@@ -209,7 +209,7 @@ namespace Route4MeSDK.DataTypes
         /// Idling time.
         /// </summary>
         [DataMember(Name = "paying_miles", EmitDefaultValue = false)]
-        public decimal? PayingMiles { get; set; }
+        public double? PayingMiles { get; set; }
 
         /// <summary>
         /// Geofence polygon type.

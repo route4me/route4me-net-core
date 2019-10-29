@@ -30,6 +30,6 @@ namespace Route4MeSDK.DataTypes
         /// Feature group.
         /// </summary>
         [DataMember(Name = "feature_group", EmitDefaultValue = false)]
-        public string featureGroup { get; set; }
+        public string FeatureGroup { get; set; }
     }
 }

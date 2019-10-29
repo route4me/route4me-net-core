@@ -348,8 +348,8 @@ namespace Route4MeSDK.FastProcessing
         public void Download(int start)
         {
             int bufferFailSafeMaxAddresses = 100;
-            int chunkSize = (int)Math.Round((decimal)(Math.Min(200, Math.Max(10, (requestedAddresses!=null ? (int)requestedAddresses : 0) / 100))));
-            int chunksLimit = (int)Math.Ceiling(((decimal)(bufferFailSafeMaxAddresses / chunkSize)));
+            int chunkSize = (int)Math.Round((double)(Math.Min(200, Math.Max(10, (requestedAddresses!=null ? (int)requestedAddresses : 0) / 100))));
+            int chunksLimit = (int)Math.Ceiling(((double)(bufferFailSafeMaxAddresses / chunkSize)));
 
             int maxAddressesToBeDownloaded = chunkSize * chunksLimit;
             nextDownloadStage = loadedAddressesCount + maxAddressesToBeDownloaded;

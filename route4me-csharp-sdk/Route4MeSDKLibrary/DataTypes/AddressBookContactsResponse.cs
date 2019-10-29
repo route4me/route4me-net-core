@@ -13,24 +13,24 @@ namespace Route4MeSDK.DataTypes
         /// An array of the AddressBookContact type objects
         /// </summary>
         [DataMember(Name = "results", EmitDefaultValue = false)]
-        public AddressBookContact[] results { get; set; }
+        public AddressBookContact[] Results { get; set; }
 
         /// <summary>
         /// Total number of the returned contacts
         /// </summary>
         [DataMember(Name = "total", EmitDefaultValue = false)]
-        public int? total { get; set; }
+        public int? Total { get; set; }
 
         /// <summary>
         /// The contacts query in the JSON format
         /// </summary>
         [DataMember(Name = "index_query", EmitDefaultValue = false)]
-        public string index_query { get; set; }
+        public string IndexQuery { get; set; }
 
         /// <summary>
         /// An array of the field names to be shown
         /// </summary>
         [DataMember(Name = "fields", EmitDefaultValue = false)]
-        public string[] fields { get; set; }
+        public string[] Fields { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Route4MeSDK.DataTypes
         /// The member's configutration data. See <see cref="MemberConfigurationData"/>
         /// </summary>
         [DataMember(Name = "data", EmitDefaultValue = false)]
-        public MemberConfigurationData[] data { get; set; }
+        public MemberConfigurationData[] Data { get; set; }
 
         /// <summary>
         /// Number of the affected member configuration records.

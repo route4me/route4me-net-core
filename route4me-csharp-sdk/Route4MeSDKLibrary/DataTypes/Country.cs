@@ -19,12 +19,12 @@ namespace Route4MeSDK.DataTypes
         /// Country code
         /// </summary>
         [DataMember(Name = "country_code", EmitDefaultValue = false)]
-        public string countryCcode { get; set; }
+        public string CountryCode { get; set; }
 
         /// <summary>
         /// Country name
         /// </summary>
         [DataMember(Name = "country_name", EmitDefaultValue = false)]
-        public string countryName { get; set; }
+        public string CountryName { get; set; }
     }
 }

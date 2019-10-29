@@ -118,7 +118,7 @@ namespace Route4MeSDK.DataTypes
         /// A cost of the new vehicle.
         /// </summary>
         [DataMember(Name = "vehicle_cost_new", EmitDefaultValue = false)]
-        public decimal? VehicleCostNew { get; set; }
+        public double? VehicleCostNew { get; set; }
 
         /// <summary>
         /// If true, the vehicle was purchased new.
@@ -188,10 +188,10 @@ namespace Route4MeSDK.DataTypes
         public string Route4meTelematicsInternalApiKey { get; set; }
 
         /// <summary>
-        /// If true, the vehicle is operational.
+        /// If "1", the vehicle is operational.
         /// </summary>
         [DataMember(Name = "is_operational", EmitDefaultValue = false)]
-        public bool? IsOperational { get; set; }
+        public string IsOperational { get; set; }
 
         /// <summary>
         /// External telematics vehicle ID.
@@ -218,10 +218,10 @@ namespace Route4MeSDK.DataTypes
         public string R4mTelematicsGatewayVehicleId { get; set; }
 
         /// <summary>
-        /// If true, the vehicle has trailer.
+        /// If "1", the vehicle has trailer.
         /// </summary>
         [DataMember(Name = "has_trailer", EmitDefaultValue = false)]
-        public bool HasTrailer { get; set; }
+        public string HasTrailer { get; set; }
 
         /// <summary>
         /// Vehicle height in inches.
@@ -381,31 +381,31 @@ namespace Route4MeSDK.DataTypes
         /// Vehicle height in metric unit.
         /// </summary>
         [DataMember(Name = "height_metric", EmitDefaultValue = false)]
-        public decimal? HeightMetric { get; set; }
+        public double? HeightMetric { get; set; }
 
         /// <summary>
         /// Vehicle length in metric unit.
         /// </summary>
         [DataMember(Name = "length_metric", EmitDefaultValue = false)]
-        public decimal? LengthMetric { get; set; }
+        public double? LengthMetric { get; set; }
 
         /// <summary>
         /// Vehicle width in metric unit.
         /// </summary>
         [DataMember(Name = "width_metric", EmitDefaultValue = false)]
-        public decimal? WidthMetric { get; set; }
+        public double? WidthMetric { get; set; }
 
         /// <summary>
         /// Vehicle weight in metric unit.
         /// </summary>
         [DataMember(Name = "weight_metric", EmitDefaultValue = false)]
-        public decimal? WeightMetric { get; set; }
+        public double? WeightMetric { get; set; }
 
         /// <summary>
         /// Maximum weight per axle group in metric unit.
         /// </summary>
         [DataMember(Name = "max_weight_per_axle_group_metric", EmitDefaultValue = false)]
-        public decimal? MaxWeightPerAxleGroupMetric { get; set; }
+        public double? MaxWeightPerAxleGroupMetric { get; set; }
 
         /// <summary>
         /// When the vehicle was removed.

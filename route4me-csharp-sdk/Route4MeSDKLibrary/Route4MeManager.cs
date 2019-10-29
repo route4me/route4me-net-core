@@ -288,7 +288,7 @@ namespace Route4MeSDK
 															out errorString);
 
             return (result != null) ? (result.GetType() == typeof(StatusResponse) 
-                ? ((StatusResponse)result).status : false) : false;
+                ? ((StatusResponse)result).Status : false) : false;
 		}
 
         #endregion
@@ -481,7 +481,7 @@ namespace Route4MeSDK
                     (roParames, R4MEInfrastructureSettings.MergeRoutes,
                     HttpMethodType.Post, httpContent, out errorString);
 
-                return (response != null && response.status) ? true : false;
+                return (response != null && response.Status) ? true : false;
             };
  		}
 
@@ -502,7 +502,7 @@ namespace Route4MeSDK
 
 			StatusResponse response = GetJsonObjectFromAPI<StatusResponse>(request, R4MEInfrastructureSettings.RouteReoptimize, HttpMethodType.Get, out errorString);
 
-			return (response != null && response.status) ? true : false;
+			return (response != null && response.Status) ? true : false;
 		}
 
         /// <summary>
@@ -603,7 +603,7 @@ namespace Route4MeSDK
             {
                 StatusResponse response = GetJsonObjectFromAPI<StatusResponse>(roParames, R4MEInfrastructureSettings.RouteSharing, HttpMethodType.Post, httpContent, out errorString);
 
-                return (response != null && response.status) ? true : false;
+                return (response != null && response.Status) ? true : false;
             };
 		}
 
@@ -1035,7 +1035,7 @@ namespace Route4MeSDK
 		{
 			StatusResponse response = GetJsonObjectFromAPI<StatusResponse>(memParams, R4MEInfrastructureSettings.GetUsersHost, HttpMethodType.Delete, out errorString);
 
-            return (response == null) ? false : ((response.status) ? true : false);
+            return (response == null) ? false : ((response.Status) ? true : false);
 		}
 
         /// <summary>
@@ -1179,13 +1179,14 @@ namespace Route4MeSDK
         {
             GenericParameters genParams = new GenericParameters();
 
-            var httpContent = new StringContent(fastJSON.JSON.ToJSON(confParams), System.Text.Encoding.UTF8, "application/json");
+            using (var httpContent = new StringContent(fastJSON.JSON.ToJSON(confParams), System.Text.Encoding.UTF8, "application/json"))
+            {
+                var response = GetJsonObjectFromAPI<MemberConfigurationResponse>
+                    (genParams, R4MEInfrastructureSettings.UserConfiguration,
+                    HttpMethodType.Post, httpContent, out errorString);
 
-            var response = GetJsonObjectFromAPI<MemberConfigurationResponse>
-                (genParams, R4MEInfrastructureSettings.UserConfiguration,
-                HttpMethodType.Post, httpContent, out errorString);
-
-            return response;
+                return response;
+            };
         }
 
         /// <summary>
@@ -1313,15 +1314,13 @@ namespace Route4MeSDK
 				attachmentFileStream = File.OpenRead(attachmentFilePath);
 				attachmentStreamContent = new StreamContent(attachmentFileStream);
 
-				var multipartFormDataContent = new MultipartFormDataContent
+                httpContent = new MultipartFormDataContent
                 {
                     { attachmentStreamContent, "strFilename", Path.GetFileName(attachmentFilePath) },
                     { new StringContent(strUpdateType), "strUpdateType" },
                     { new StringContent(noteContents), "strNoteContents" }
                 };
-
-                httpContent = multipartFormDataContent;
-			}
+            }
 			else
 			{
 				var keyValues = new List<KeyValuePair<string, string>>()
@@ -1333,21 +1332,19 @@ namespace Route4MeSDK
 				httpContent = new FormUrlEncodedContent(keyValues);
 			}
 
-                AddAddressNoteResponse response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
-                                                                 R4MEInfrastructureSettings.AddRouteNotesHost,
-                                                                 HttpMethodType.Post,
-                                                                 httpContent,
-                                                                 out errorString);
+            AddAddressNoteResponse response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
+                                                                R4MEInfrastructureSettings.AddRouteNotesHost,
+                                                                HttpMethodType.Post,
+                                                                httpContent,
+                                                                out errorString);
 
+            if (attachmentStreamContent != null) attachmentStreamContent.Dispose();
+            if (attachmentFileStream != null) attachmentFileStream.Dispose();
 
-                if (attachmentStreamContent != null) attachmentStreamContent.Dispose();
-                if (attachmentFileStream != null) attachmentFileStream.Dispose();
+            if (response != null && response.Note == null && response.Status == false)
+                errorString = "Note not added";
 
-                if (response != null && response.Note == null && response.Status == false)
-                    errorString = "Note not added";
-
-                return response?.Note ?? null;
-
+            return response?.Note ?? null;
 		}
 
         /// <summary>
@@ -1558,7 +1555,7 @@ namespace Route4MeSDK
                                                                  HttpMethodType.Get,
                                                                  out errorString);
 
-            return (response != null) ? response.Results : null;
+            return response?.Results;
         }
 
         /// <summary>
@@ -1576,7 +1573,7 @@ namespace Route4MeSDK
 																   HttpMethodType.Post,
 																   out errorString);
 
-			return (response != null && response.status) ? true : false;
+			return (response != null && response.Status) ? true : false;
 		}
 
         /// <summary>
@@ -2120,7 +2117,7 @@ namespace Route4MeSDK
 																   HttpMethodType.Delete,
 																   out errorString);
 
-			return (response != null && response.status) ? true : false;
+			return (response != null && response.Status) ? true : false;
 		}
 
 		#endregion
@@ -2274,7 +2271,7 @@ namespace Route4MeSDK
 																 HttpMethodType.Delete,
 																 out errorString);
 
-			return result.status;
+			return result.Status;
 		}
 
 		#endregion
@@ -2360,7 +2357,7 @@ namespace Route4MeSDK
             GetOrdersResponse response = GetJsonObjectFromAPI<GetOrdersResponse>(orderFilter,
                 R4MEInfrastructureSettings.Order, HttpMethodType.Post, out errorString);
 
-            return (response != null) ? response.Results : null;
+            return response?.Results;
         }
 
         /// <summary>
@@ -2423,7 +2420,7 @@ namespace Route4MeSDK
 																   HttpMethodType.Delete,
 																   out errorString);
 
-			return (response != null && response.status) ? true : false;
+			return (response != null && response.Status) ? true : false;
 		}
 
         /// <summary>
@@ -3027,7 +3024,7 @@ namespace Route4MeSDK
 		{
 			var result = GetJsonObjectFromAPI<StatusResponse>(territoryQuery, R4MEInfrastructureSettings.Territory, HttpMethodType.Delete, out errorString);
 
-			return result.status;
+			return result.Status;
 		}
 
         /// <summary>
