@@ -878,9 +878,9 @@ namespace Route4MeSDK
         /// </param>
         /// <param name="errorString">Returned error string in case of the processs failing</param>
         /// <returns>An optimization with the tracking data</returns>
-        public DataObject GetLastLocation(GenericParameters parameters, out string errorString)
+        public DataObjectRoute GetLastLocation(GenericParameters parameters, out string errorString)
 		{
-			var result = GetJsonObjectFromAPI<DataObject>(parameters,
+			var result = GetJsonObjectFromAPI<DataObjectRoute>(parameters,
 														  R4MEInfrastructureSettings.RouteHost,
 														  HttpMethodType.Get,
 														  false,
