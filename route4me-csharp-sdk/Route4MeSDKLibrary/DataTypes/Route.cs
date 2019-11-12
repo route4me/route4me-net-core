@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Route4MeSDK.DataTypes
@@ -8,7 +7,7 @@ namespace Route4MeSDK.DataTypes
     /// The route data structure
     /// </summary>
     [DataContract]
-    public sealed class DataObjectRoute : DataObject
+    public sealed class DataObjectRoute : DataObjectBase
     {
         /// <summary>
         /// The route ID
@@ -111,7 +110,7 @@ namespace Route4MeSDK.DataTypes
         /// Miles per gallon
         /// </summary>
         [DataMember(Name = "mpg", EmitDefaultValue = false)]
-        public double? Mpg { get; set; }
+        public string mpg { get; set; }
 
         /// <summary>
         /// Total route's trip distance
@@ -155,7 +154,7 @@ namespace Route4MeSDK.DataTypes
         /// Planned total route duration (seconds).
         /// </summary>
         [DataMember(Name = "planned_total_route_duration", EmitDefaultValue = false)]
-        public int? PlannedTotalRrouteDuration { get; set; }
+        public int? PlannedTotalRouteDuration { get; set; }
 
         /// <summary>
         /// Total wait time (seconds).
@@ -167,13 +166,13 @@ namespace Route4MeSDK.DataTypes
         /// UDU Actual travel distance.
         /// </summary>
         [DataMember(Name = "udu_actual_travel_distance", EmitDefaultValue = false)]
-        public double? UduActualTravelDistance { get; set; }
+        public decimal? UduActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel distance.
         /// </summary>
         [DataMember(Name = "actual_travel_distance", EmitDefaultValue = false)]
-        public double? ActualTravelDistance { get; set; }
+        public decimal? ActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel time (seconds).
@@ -209,7 +208,7 @@ namespace Route4MeSDK.DataTypes
         /// Idling time.
         /// </summary>
         [DataMember(Name = "paying_miles", EmitDefaultValue = false)]
-        public double? PayingMiles { get; set; }
+        public decimal? PayingMiles { get; set; }
 
         /// <summary>
         /// Geofence polygon type.
@@ -241,6 +240,25 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "notes", EmitDefaultValue = false)]
         public AddressNote[] Notes { get; set; }
+
+        /// <summary>
+        /// Edge by edge turn-by-turn directions. See <see cref="Direction"/>
+        /// </summary>
+        [DataMember(Name = "directions")]
+        public Direction[] Directions { get; set; }
+
+        /// <summary>
+        /// Edge-wise path to be drawn on the map See <see cref="DirectionPathPoint"/>
+        /// </summary>
+        [DataMember(Name = "path")]
+        public DirectionPathPoint[] Path { get; set; }
+
+        /// <summary>
+        /// A collection of device tracking data with coordinates, speed, and timestamps.
+        /// <para>See <see cref="TrackingHistory"/></para>
+        /// </summary>
+        [DataMember(Name = "tracking_history")]
+        public TrackingHistory[] TrackingHistory { get; set; }
 
         /// <summary>
         /// A vehicle assigned to the route.

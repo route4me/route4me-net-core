@@ -7129,6 +7129,25 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void AddCustomDataToContactTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            contact1.AddressCustomData = new Dictionary<string, string>()
+            {
+                {"Service type", "publishing"},
+                {"Facilities", "storage" },
+                {"Parking", "temporarry" }
+            };
+
+            // Run the query
+            string errorString;
+            var updatedContact = route4Me.UpdateAddressBookContact(contact1, out errorString);
+
+            Assert.IsNotNull(updatedContact.AddressCustomData, "AddCustomDataToContactTest failed... " + errorString);
+        }
+
+        [TestMethod]
         public void AddScheduledAddressBookContactsTest()
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
