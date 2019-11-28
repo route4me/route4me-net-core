@@ -18,7 +18,7 @@ using Route4MeDB.ApplicationCore.Services;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using Route4MeSDK.DataTypes;
+using Route4Me = Route4MeSDK.DataTypes;
 using RouteTable = Route4MeSDK.DataTypes.DataObjectRoute;
 using AddressTable = Route4MeSDK.DataTypes.Address;
 using AddressNoteTable = Route4MeSDK.DataTypes.AddressNote;
@@ -61,7 +61,7 @@ namespace Route4MeDB.UnitTests.Builders
             settings.TypeNameHandling = TypeNameHandling.Auto;
             settings.NullValueHandling = NullValueHandling.Ignore;
 
-            var importedOptimization = JsonConvert.DeserializeObject<DataObject>(jsonContent);
+            var importedOptimization = JsonConvert.DeserializeObject<Route4Me.DataObject>(jsonContent);
 
             _optimization = getOptimizationEntity(importedOptimization);
 
@@ -80,7 +80,7 @@ namespace Route4MeDB.UnitTests.Builders
             settings.TypeNameHandling = TypeNameHandling.Auto;
             settings.NullValueHandling = NullValueHandling.Ignore;
 
-            var importedOptimization = JsonConvert.DeserializeObject<DataObject>(jsonContent);
+            var importedOptimization = JsonConvert.DeserializeObject<Route4Me.DataObject>(jsonContent);
 
             _optimization = getOptimizationEntity(importedOptimization);
 
@@ -100,7 +100,7 @@ namespace Route4MeDB.UnitTests.Builders
             settings.NullValueHandling = NullValueHandling.Ignore;
             //string jsonContent = File.ReadAllText(testDataFile);
 
-            var importedOptimization = JsonConvert.DeserializeObject<DataObject>(jsonContent);
+            var importedOptimization = JsonConvert.DeserializeObject<Route4Me.DataObject>(jsonContent);
 
             _optimization = getOptimizationEntity(importedOptimization);
 
@@ -120,20 +120,20 @@ namespace Route4MeDB.UnitTests.Builders
             settings.NullValueHandling = NullValueHandling.Ignore;
             //string jsonContent = File.ReadAllText(testDataFile);
 
-            var importedOptimization = JsonConvert.DeserializeObject<DataObjectRoute>(jsonContent);
+            var importedOptimization = JsonConvert.DeserializeObject<Route4Me.DataObjectRoute>(jsonContent);
 
             _optimization = getOptimizationEntity(importedOptimization);
 
             return _optimization;
         }
 
-        private OptimizationProblem getOptimizationEntity(DataObject optimizationObject)
+        private OptimizationProblem getOptimizationEntity(Route4Me.DataObject optimizationObject)
         {
             var optimization = new OptimizationProblem();
 
             var optimizationEntityProperties = typeof(OptimizationProblem).GetProperties().Select(x => x.Name);
 
-            foreach (PropertyInfo prop in typeof(DataObject).GetProperties())
+            foreach (PropertyInfo prop in typeof(Route4Me.DataObject).GetProperties())
             {
                 if (optimizationEntityProperties.Contains(prop.Name))
                 {
@@ -169,9 +169,6 @@ namespace Route4MeDB.UnitTests.Builders
                             {
                                 optimization.Routes.Add(getRouteEntity(route));
                             }
-                            break;
-                        case "Directions":
-                            continue; // TO DO: optimization hasn't Directions - remove from ROute4MeSDK / Optimization
                             break;
                         default:
                             typeof(OptimizationProblem).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
@@ -284,7 +281,7 @@ namespace Route4MeDB.UnitTests.Builders
                             route.MemberConfigStorage = JsonConvert.SerializeObject(routeObject.MemberConfigStorage, settings);
                             break;
                         case "Vehicle":
-                            route.Vehicle = JsonConvert.SerializeObject(routeObject.Vehicle, settings);
+                            route.Vehicle = JsonConvert.SerializeObject(routeObject.Vehilce, settings);
                             break;
                         case "GeofencePolygonType":
                             EnumR4M.TerritoryType geofencePolygonType;
@@ -439,13 +436,13 @@ namespace Route4MeDB.UnitTests.Builders
             return addressNote;
         }
 
-        public GeocodingEntity getGeocodingEntity(Geocoding geocodingObject)
+        public GeocodingEntity getGeocodingEntity(Route4Me.Geocoding geocodingObject)
         {
             var geocoding = new GeocodingEntity();
 
             var geocodingEntityProperties = typeof(GeocodingEntity).GetProperties().Select(x => x.Name);
 
-            foreach (PropertyInfo prop in typeof(Geocoding).GetProperties())
+            foreach (PropertyInfo prop in typeof(Route4Me.Geocoding).GetProperties())
             {
                 if (prop.GetValue(geocodingObject) == null) continue;
 

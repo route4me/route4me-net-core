@@ -27,7 +27,7 @@ namespace Route4MeDB.Infrastructure.Data
 
             builder
                 .HasMany(o => o.Routes)
-                .WithOne(r => r.optimizationProblem)
+                .WithOne(r => r.OptimizationProblem)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder

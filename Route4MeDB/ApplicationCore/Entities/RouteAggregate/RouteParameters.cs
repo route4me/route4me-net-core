@@ -240,13 +240,13 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// </remarks>
         /// </summary>
         [Column("member_id")]
-        public string MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// Specify the ip address of the remote user making this optimization request.
         /// </summary>
         [Column("ip")]
-        public string Ip { get; set; }
+        public int? Ip { get; set; }
 
         /// <summary>
         /// The method to use when compute the distance between the points in a route.

@@ -57,8 +57,8 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         }
     }
 
-    public class OptimizationParent
-    {
-        public OptimizationProblemForJsonImport optimizationParent { get; set; }
-    }
+    //public class OptimizationParent
+    //{
+    //    public OptimizationProblemForJsonImport optimizationParentForJson { get; set; }
+    //}
 }
