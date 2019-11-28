@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-//using AutotrackEntityChange.DBContext;
-using Route4MeDB.Infrastructure;
-using Route4MeDB.Infrastructure.Data;
+﻿using Route4MeDB.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-//using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
 using System.IO;
 
 namespace Route4MeDB.Route4MeDbLibrary
 {
+    /// <summary>
+    /// Enumeration of the database providers supported by Route4MeDbLibrary.
+    /// </summary>
     public enum DatabaseProviders
     {
         LocalDb,
         MsSql,
         Sqlexpress,
-        SqlCompact40,
         SQLite,
         PostgreSql,
         MySql,
@@ -36,6 +27,21 @@ namespace Route4MeDB.Route4MeDbLibrary
         {
             var curPath = Directory.GetCurrentDirectory();
             Config = configuration;
+            _route4meDbContext = Route4MeContext;
+        }
+
+        public Route4MeDbManager(DatabaseProviders databaseProvider)
+        {
+            //var dbProvider = DatabaseProviders.PostgreSql;
+            var curPath = Directory.GetCurrentDirectory();
+            var configBuilder = new ConfigurationBuilder()
+               .SetBasePath(curPath)
+               .AddJsonFile("appsettings.json", optional: true);
+            var config = configBuilder.Build();
+
+            DatabaseProvider = databaseProvider;
+
+            Config = config;
             _route4meDbContext = Route4MeContext;
         }
 
@@ -85,11 +91,6 @@ namespace Route4MeDB.Route4MeDbLibrary
                         .UseSqlServer(Config.GetConnectionString("SqlExpressConnection"))
                         .Options;
                     break;
-                case DatabaseProviders.SqlCompact40:
-                    //_options = new DbContextOptionsBuilder<Route4MeDbContext>()
-                    //    .UseSqlCe(Config.GetConnectionString("SqlCompact40Connection"))
-                    //    .Options;
-                    break;
                 case DatabaseProviders.SQLite:
                     _options = new DbContextOptionsBuilder<Route4MeDbContext>()
                         .UseSqlite(Config.GetConnectionString("SQLiteConnection"))
@@ -134,10 +135,6 @@ namespace Route4MeDB.Route4MeDbLibrary
                     services.AddDbContext<Route4MeDbContext>(options =>
                     options.UseSqlServer(Config.GetConnectionString("SqlExpressConnection")));
                     break;
-                case DatabaseProviders.SqlCompact40:
-                    //services.AddDbContext<Route4MeDbContext>(options =>
-                    //options.UseSqlServer(Config.GetConnectionString("SqlCompact40Connection")));
-                    break;
                 case DatabaseProviders.SQLite:
                     services.AddDbContext<Route4MeDbContext>(options =>
                     options.UseSqlite(Config.GetConnectionString("SQLiteConnection")));
@@ -166,15 +163,6 @@ namespace Route4MeDB.Route4MeDbLibrary
         {
             _route4meDbContext.Database.Migrate();
             _route4meDbContext.SaveChanges();
-            //using (var serviceScope = app.ApplicationServices
-            //.GetRequiredService<IServiceScopeFactory>()
-            //.CreateScope())
-            //{
-            //    using (var context = serviceScope.ServiceProvider.GetService<Route4MeDbContext>())
-            //    {
-            //        context.Database.Migrate();
-            //    }
-            //}
         }
 
         public void CreateRoute4MeDB()
