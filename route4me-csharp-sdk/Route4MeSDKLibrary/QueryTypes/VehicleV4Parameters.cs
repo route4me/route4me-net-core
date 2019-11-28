@@ -207,11 +207,11 @@ namespace Route4MeSDK.QueryTypes
         public Nullable<int> WeightLb { get; set; }
 
         /// <summary>
-        /// If true, the vehicle is operational.
+        /// If "1", the vehicle is operational.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "is_operational", EmitDefaultValue = false)]
-        public Nullable<bool> IsOperational { get; set; }
+        public string IsOperational { get; set; }
 
         /// <summary>
         /// External telematics vehicle ID.
@@ -221,11 +221,11 @@ namespace Route4MeSDK.QueryTypes
         public string ExternalTelematicsVehicleID { get; set; }
 
         /// <summary>
-        /// If true, the vehicle has trailer.
+        /// If "1", the vehicle has trailer.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "has_trailer", EmitDefaultValue = false)]
-        public bool HasTrailer { get; set; }
+        public string HasTrailer { get; set; }
 
         /// <summary>
         /// Vehicle height in inches.

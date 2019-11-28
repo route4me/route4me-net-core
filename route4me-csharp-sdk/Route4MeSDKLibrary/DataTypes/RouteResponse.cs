@@ -60,6 +60,30 @@ namespace Route4MeSDK.DataTypes
         public string ChannelName { get; set; }
 
         /// <summary>
+        /// URL to a member picture
+        /// </summary>
+        [DataMember(Name = "member_picture", EmitDefaultValue = false)]
+        public string MemberPicture { get; set; }
+
+        /// <summary>
+        /// Member tracking subheadline
+        /// </summary>
+        [DataMember(Name = "member_tracking_subheadline", EmitDefaultValue = false)]
+        public string MemberTrackingSubheadline { get; set; }
+
+        /// <summary>
+        /// If true, the order is approved for execution
+        /// </summary>
+        [DataMember(Name = "approved_for_execution")]
+        public bool ApprovedForExecution { get; set; }
+
+        /// <summary>
+        /// Counter of the approved revisions
+        /// </summary>
+        [DataMember(Name = "approved_revisions_counter", EmitDefaultValue = false)]
+        public int? ApprovedRevisionsCounter { get; set; }
+
+        /// <summary>
         /// Vehicle alias.
         /// </summary>
         [DataMember(Name = "vehicle_alias")]
@@ -76,6 +100,20 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "trip_distance")]
         public Nullable<double> TripDistance { get; set; }
+
+        /// <summary>
+        /// The UDU distance measurement unit for the route.
+        /// enum: ["mi", "km"]
+        /// </summary>
+        /// <remarks>km or mi, the route4me api will convert all measurements into these units</remarks>
+        [DataMember(Name = "udu_distance_unit", EmitDefaultValue = false)]
+        public string UduDistanceUnit { get; set; }
+
+        /// <summary>
+        /// Total route's UDU trip distance
+        /// </summary>
+        [DataMember(Name = "udu_trip_distance", EmitDefaultValue = false)]
+        public double? UduTripDistance { get; set; }
 
         /// <summary>
         /// If true, route is unrouted.
@@ -111,7 +149,7 @@ namespace Route4MeSDK.DataTypes
         /// Miles per gallon.
         /// </summary>
         [DataMember(Name = "mpg")]
-        public Nullable<double> Mpg { get; set; }
+        public Nullable<double> mpg { get; set; }
 
         /// <summary>
         /// Gas price.
@@ -136,6 +174,18 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "planned_total_route_duration")]
         public Nullable<int> PlannedTotalRouteDuration { get; set; }
+
+        /// <summary>
+        /// Total wait time (seconds).
+        /// </summary>
+        [DataMember(Name = "total_wait_time", EmitDefaultValue = false)]
+        public int? TotalWaitTime { get; set; }
+
+        /// <summary>
+        /// UDU Actual travel distance.
+        /// </summary>
+        [DataMember(Name = "udu_actual_travel_distance", EmitDefaultValue = false)]
+        public decimal? UduActualTravelDistance { get; set; }
 
         /// <summary>
         /// Actual travel distance.
@@ -194,13 +244,13 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         /// Destination count.
         /// </summary>
-        [DataMember(Name = "destination_count")]
+        [DataMember(Name = "destination_count", EmitDefaultValue = false)]
         public int? DestinationCount { get; set; }
 
         /// <summary>
         /// Notes count in the route.
         /// </summary>
-        [DataMember(Name = "notes_count")]
+        [DataMember(Name = "notes_count", EmitDefaultValue = false)]
         public int? NotesCount { get; set; }
 
         /// <summary>
@@ -223,12 +273,6 @@ namespace Route4MeSDK.DataTypes
         public Links Links { get; set; }
 
         /// <summary>
-        /// Member config key-value pairs.
-        /// </summary>
-        [DataMember(Name = "member_config_storage")]
-        public Dictionary<String, String> MemberConfigStorage { get; set; }
-
-        /// <summary>
         /// An array of the AddressNote type objects. 
         /// See <see cref="DataTypes.AddressNote"/>
         /// </summary>
@@ -248,5 +292,23 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "directions")]
         public Direction[] Directions { get; set; }
+
+        /// <summary>
+        /// A vehicle assigned to the route.
+        /// </summary>
+        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        public VehicleV4Response Vehilce { get; set; }
+
+        /// <summary>
+        /// Member config key-value pairs.
+        /// </summary>
+        [DataMember(Name = "member_config_storage", EmitDefaultValue = false)]
+        public Dictionary<string, string> MemberConfigStorage { get; set; }
+
+        /// <summary>
+        /// Original route.
+        /// </summary>
+        [DataMember(Name = "original_route", EmitDefaultValue = false)]
+        public DataObjectRoute OriginalRoute { get; set; }
     }
 }

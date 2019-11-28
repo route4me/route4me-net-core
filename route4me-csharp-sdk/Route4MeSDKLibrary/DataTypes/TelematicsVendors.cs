@@ -30,12 +30,12 @@ namespace Route4MeSDK.DataTypes
         /// URL to the telematics vendor's logo.
         /// </summary>
         [DataMember(Name = "logo_url", EmitDefaultValue = false)]
-        public string logoURL { get; set; }
+        public string LogoURL { get; set; }
 
         /// <summary>
         /// Whether, the vendor is or not integrated into the Route4Me system.
         /// </summary>
         [DataMember(Name = "is_integrated", EmitDefaultValue = false)]
-        public string isIntegrated { get; set; }
+        public string IsIntegrated { get; set; }
     }
 }

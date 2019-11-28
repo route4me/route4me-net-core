@@ -33,11 +33,12 @@ namespace Route4MeSDK
         /// </summary>
         public static string ReadString(this Stream stream)
         {
-            StreamReader reader = new StreamReader(stream);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string result = reader.ReadToEnd();
 
-            string result = reader.ReadToEnd();
-
-            return result;
+                return result;
+            };
         }
 
         /// <summary>
@@ -71,11 +72,8 @@ namespace Route4MeSDK
         {
             FieldInfo field = enumValue.GetType().GetField(enumValue.ToString());
 
-            var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-
-            string result = attribute == null ? enumValue.ToString() : attribute.Description;
-
-            return result;
+            return !(Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute) 
+                ? enumValue.ToString() : attribute.Description;
         }
 
         /// <summary>
@@ -124,32 +122,23 @@ namespace Route4MeSDK
             switch (objectType)
             {
                 case "Int16":
-                    Int16 i16;
-                    return Int16.TryParse(value.ToString(), out i16);
+                    return Int16.TryParse(value.ToString(), out _);
                 case "Int32":
-                    Int32 i32;
-                    return Int32.TryParse(value.ToString(), out i32);
+                    return Int32.TryParse(value.ToString(), out _);
                 case "Int64":
-                    Int64 i64;
-                    return Int64.TryParse(value.ToString(), out i64);
+                    return Int64.TryParse(value.ToString(), out _);
                 case "UInt16":
-                    UInt16 ui64;
-                    return UInt16.TryParse(value.ToString(), out ui64);
+                    return UInt16.TryParse(value.ToString(), out _);
                 case "UInt32":
-                    UInt32 ui32;
-                    return UInt32.TryParse(value.ToString(), out ui32);
+                    return UInt32.TryParse(value.ToString(), out _);
                 case "Decimal":
-                    Decimal dc;
-                    return Decimal.TryParse(value.ToString(), out dc);
+                    return Decimal.TryParse(value.ToString(), out _);
                 case "Double":
-                    Double dbl;
-                    return Double.TryParse(value.ToString(), out dbl);
+                    return Double.TryParse(value.ToString(), out _);
                 case "Boolean":
-                    Boolean bl;
-                    return Boolean.TryParse(value.ToString(), out bl);
+                    return Boolean.TryParse(value.ToString(), out _);
                 case "DateTime":
-                    DateTime dt;
-                    return DateTime.TryParse(value.ToString(), out dt);
+                    return DateTime.TryParse(value.ToString(), out _);
             }
 
             return false;
