@@ -2,6 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Authors>Oleg Guchashvili</Authors>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>Route4Me Route Optimization SaaS C# SDK (.net core framework).
+
+This SDK makes it easier for you use the Route4Me API, which creates optimally sequenced driving routes for many drivers.
+
+The service is typically used by organizations who must route many drivers to many destinations. In addition to route optimization for new (future) routes, the API can also be used to analyze historical routes, and to distribute routes to field personnel.</Description>
+    <Copyright>Copyright (C) 2019 - 2019 Route4Me</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://route4me.io/</PackageProjectUrl>
+    <PackageIconUrl>C:\Oleg_Route4Me\route4me-net-core\route4me-csharp-sdk\r4m_icon_rounded_corners.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>Route4Me, Route Optimization</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +36,13 @@
     <Reference Include="SocketIoClientDotNet.core_2.2">
       <HintPath>lib\SocketIoClientDotNet.core_2.2.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

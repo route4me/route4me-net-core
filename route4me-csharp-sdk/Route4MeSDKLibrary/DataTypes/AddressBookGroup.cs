@@ -14,31 +14,31 @@ namespace Route4MeSDK.DataTypes
         /// An unique ID of the group
         /// </summary>
         [DataMember(Name = "group_id", EmitDefaultValue = false)]
-        public string groupID { get; set; }
+        public string GroupId { get; set; }
 
         /// <summary>
         /// The group name
         /// </summary>
         [DataMember(Name = "group_name", EmitDefaultValue = false)]
-        public string groupName { get; set; }
+        public string GroupName { get; set; }
 
         /// <summary>
         /// The group color
         /// </summary>
         [DataMember(Name = "group_color", EmitDefaultValue = false)]
-        public string groupColor { get; set; }
+        public string GroupColor { get; set; }
 
         /// <summary>
         /// The group icon
         /// </summary>
         [DataMember(Name = "group_icon", EmitDefaultValue = false)]
-        public string groupIcon { get; set; }
+        public string GroupIcon { get; set; }
 
         /// <summary>
         /// A member ID the group belongs
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public string memberId { get; set; }
+        public string MemberId { get; set; }
 
         /// <summary>
         /// The AddressBookGroupFilter type object as a group filter for the address book contacs
