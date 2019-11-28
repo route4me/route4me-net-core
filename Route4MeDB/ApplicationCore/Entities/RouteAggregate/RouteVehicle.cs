@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Route4MeDB.ApplicationCore.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Route4MeDB.ApplicationCore.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Route4MeDB.ApplicationCore.Enum;
-using Route4MeDB.ApplicationCore.Entities.GeocodingAggregate;
-using Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
 {
@@ -176,10 +168,10 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public int? WeightLb { get; set; }
 
         /// <summary>
-        /// If true, the vehicle is operational.
+        /// If "1", the vehicle is operational.
         /// </summary>
         [Column("is_operational")]
-        public bool? IsOperational { get; set; }
+        public string IsOperational { get; set; }
 
         /// <summary>
         /// External telematics vehicle ID.
@@ -188,16 +180,16 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public string ExternalTelematicsVehicleID { get; set; }
 
         /// <summary>
-        /// If true, the vehicle has trailer.
+        /// If "1", the vehicle has trailer.
         /// </summary>
         [Column("has_trailer")]
-        public bool HasTrailer { get; set; }
+        public string HasTrailer { get; set; }
 
         /// <summary>
         /// Vehicle height in inches.
         /// </summary>
         [Column("heightInInches")]
-        public string HeightInInches { get; set; }
+        public int? HeightInInches { get; set; }
 
         /// <summary>
         /// Vehicle length in inches.

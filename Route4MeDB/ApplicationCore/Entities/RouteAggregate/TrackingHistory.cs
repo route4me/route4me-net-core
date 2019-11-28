@@ -15,31 +15,37 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Speed at the time of the location transaction event.
         /// </summary>
         [Column("s")]
-        public decimal? Speed { get; set; }
+        public string Speed { get; set; }
 
         /// <summary>
         /// Latitude at the time of the location transaction event.
         /// </summary>
         [Column("lt")]
-        public double? Latitude { get; set; }
+        public string Latitude { get; set; }
+
+        /// <summary>
+        /// MemberID.
+        /// </summary>
+        [Column("m")]
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// Longitude at the time of the location transaction event.
         /// </summary>
         [Column("lg")]
-        public double? Longitude { get; set; }
+        public string Longitude { get; set; }
 
         /// <summary>
         /// Direction/heading at the time of the location transaction event.
         /// </summary>
         [Column("d")]
-        public decimal? Direction { get; set; }
+        public double? Direction { get; set; }
 
         /// <summary>
         /// The original timestamp in unix timestamp format at the moment location transaction event.
         /// </summary>
         [Column("ts")]
-        public long? TimeStamp { get; set; }
+        public string TimeStamp { get; set; }
 
         /// <summary>
         /// The original timestamp in a human readable timestamp format at the moment location transaction event.
