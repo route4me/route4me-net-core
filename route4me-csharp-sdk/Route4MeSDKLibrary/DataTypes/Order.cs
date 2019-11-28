@@ -14,151 +14,151 @@ namespace Route4MeSDK.DataTypes
         /// Order ID
         /// </summary>
         [DataMember(Name = "order_id", EmitDefaultValue = false)]
-        public int? order_id { get; set; }
+        public int? OrderId { get; set; }
 
         /// <summary>
         /// Address 1 field. Required
         /// </summary>
         [DataMember(Name = "address_1")]
-        public string address_1 { get; set; }
+        public string Address1 { get; set; }
 
         /// <summary>
         /// Address 2 field
         /// </summary>
         [DataMember(Name = "address_2", EmitDefaultValue = false)]
-        public string address_2 { get; set; }
+        public string Address2 { get; set; }
 
         /// <summary>
         /// Geo latitude. Required
         /// </summary>
         [DataMember(Name = "cached_lat")]
-        public double cached_lat { get; set; }
+        public double CachedLat { get; set; }
 
         /// <summary>
         /// Geo longitude. Required
         /// </summary>
         [DataMember(Name = "cached_lng")]
-        public double cached_lng { get; set; }
+        public double CachedLng { get; set; }
 
         /// <summary>
         /// Generate optimal routes and driving directions to this curbside latitude
         /// </summary>
         [DataMember(Name = "curbside_lat", EmitDefaultValue = false)]
-        public double? curbside_lat { get; set; }
+        public double? CurbsideLat { get; set; }
 
         /// <summary>
         /// Generate optimal routes and driving directions to the curbside langitude
         /// </summary>
         [DataMember(Name = "curbside_lng", EmitDefaultValue = false)]
-        public double? curbside_lng { get; set; }
+        public double? CurbsideLng { get; set; }
 
         /// <summary>
         /// Scheduled day
         /// </summary>
         [DataMember(Name = "day_scheduled_for_YYMMDD", EmitDefaultValue = false)]
-        public string day_scheduled_for_YYMMDD { get; set; }
+        public string DayScheduledFor_YYMMDD { get; set; }
 
         /// <summary>
         /// Address Alias. Required
         /// </summary>
         [DataMember(Name = "address_alias")]
-        public string address_alias { get; set; }
+        public string AddressAlias { get; set; }
 
         /// <summary>
         /// Local time window start
         /// </summary>
         [DataMember(Name = "local_time_window_start", EmitDefaultValue = false)]
-        public int? local_time_window_start { get; set; }
+        public int? LocalTimeWindowStart { get; set; }
 
         /// <summary>
         /// Local time window end
         /// </summary>
         [DataMember(Name = "local_time_window_end", EmitDefaultValue = false)]
-        public int? local_time_window_end { get; set; }
+        public int? LocalTimeWindowEnd { get; set; }
 
         /// <summary>
         /// Second Local time window start
         /// </summary>
         [DataMember(Name = "local_time_window_start_2", EmitDefaultValue = false)]
-        public int? local_time_window_start_2 { get; set; }
+        public int? LocalTimeWindowStart2 { get; set; }
 
         /// <summary>
         /// Second local time window end
         /// </summary>
         [DataMember(Name = "local_time_window_end_2", EmitDefaultValue = false)]
-        public int? local_time_window_end_2 { get; set; }
+        public int? LocalTimeWindowEnd2 { get; set; }
 
         /// <summary>
         /// Service time
         /// </summary>
         [DataMember(Name = "service_time", EmitDefaultValue = false)]
-        public int? service_time { get; set; }
+        public int? ServiceTime { get; set; }
 
         /// <summary>
         /// Address City
         /// </summary>
         [DataMember(Name = "address_city", EmitDefaultValue = false)]
-        public string address_city { get; set; }
+        public string AddressCity { get; set; }
 
         /// <summary>
         /// Address state ID
         /// </summary>
         [DataMember(Name = "address_state_id", EmitDefaultValue = false)]
-        public string address_state_id { get; set; }
+        public string AddressStateId { get; set; }
 
         /// <summary>
         /// Address country ID
         /// </summary>
         [DataMember(Name = "address_country_id", EmitDefaultValue = false)]
-        public string address_country_id { get; set; }
+        public string AddressCountryId { get; set; }
 
         /// <summary>
         /// Address ZIP code
         /// </summary>
         [DataMember(Name = "address_zip", EmitDefaultValue = false)]
-        public string address_zip { get; set; }
+        public string AddressZip { get; set; }
 
         /// <summary>
         /// Order status ID
         /// </summary>
         [DataMember(Name = "order_status_id", EmitDefaultValue = false)]
-        public int order_status_id { get; set; }
+        public int OrderStatusId { get; set; }
 
         /// <summary>
         /// The id of the member inside the route4me system
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int member_id { get; set; }
+        public int MemberId { get; set; }
 
         /// <summary>
         /// First name
         /// </summary>
         [DataMember(Name = "EXT_FIELD_first_name", EmitDefaultValue = false)]
-        public string EXT_FIELD_first_name { get; set; }
+        public string ExtFieldFirstName { get; set; }
 
         /// <summary>
         /// Last name
         /// </summary>
         [DataMember(Name = "EXT_FIELD_last_name", EmitDefaultValue = false)]
-        public string EXT_FIELD_last_name { get; set; }
+        public string ExtFieldLastName { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
         [DataMember(Name = "EXT_FIELD_email", EmitDefaultValue = false)]
-        public string EXT_FIELD_email { get; set; }
+        public string ExtFieldEmail { get; set; }
 
         /// <summary>
         /// Phone number
         /// </summary>
         [DataMember(Name = "EXT_FIELD_phone", EmitDefaultValue = false)]
-        public string EXT_FIELD_phone { get; set; }
+        public string ExtFieldPhone { get; set; }
 
         /// <summary>
         /// Custom data
         /// </summary>
         [DataMember(Name = "EXT_FIELD_custom_data", EmitDefaultValue = false)]
-        public object EXT_FIELD_custom_data
+        public object ExtFieldCustomData
         {
             get { return _ext_field_custom_data; }
             set
@@ -172,13 +172,13 @@ namespace Route4MeSDK.DataTypes
         /// Local timezone string
         /// </summary>
         [DataMember(Name = "local_timezone_string", EmitDefaultValue = false)]
-        public string local_timezone_string { get; set; }
+        public string LocalTimezoneString { get; set; }
 
         /// <summary>
         /// Order icon
         /// </summary>
         [DataMember(Name = "order_icon", EmitDefaultValue = false)]
-        public string order_icon { get; set; }
+        public string OrderIcon { get; set; }
         
         /// <summary>
         /// Custom user field of the order

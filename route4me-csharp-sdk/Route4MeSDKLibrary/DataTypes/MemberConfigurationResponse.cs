@@ -12,13 +12,13 @@ namespace Route4MeSDK.DataTypes
         /// Configuration result
         /// </summary>
         [DataMember(Name = "result")]
-        public string result { get; set; }
+        public string Result { get; set; }
 
         /// <summary>
         /// How many configuration key -> data pairs affected
         /// </summary>
         [DataMember(Name = "affected")]
-        public int affected { get; set; }
+        public int Affected { get; set; }
 
     }
 }

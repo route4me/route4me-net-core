@@ -12,19 +12,19 @@ namespace Route4MeSDK.DataTypes
         /// Address name
         /// </summary>
         [DataMember(Name = "address", EmitDefaultValue = false)]
-        public string address { get; set; }
+        public string Address { get; set; }
 
         /// <summary>
         /// Latitude
         /// </summary>
         [DataMember(Name = "lat", EmitDefaultValue = false)]
-        public double lat { get; set; }
+        public double Lat { get; set; }
 
         /// <summary>
         /// Longitude
         /// </summary>
         [DataMember(Name = "lng", EmitDefaultValue = false)]
-        public double lng { get; set; }
+        public double Lng { get; set; }
 
         /// <summary>
         /// The address geocoding type. Available values:
@@ -34,19 +34,19 @@ namespace Route4MeSDK.DataTypes
         /// <para>political, country, political</para>
         /// </summary>
         [DataMember(Name = "type", EmitDefaultValue = false)]
-        public string type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Confidence level in the address geocoding.
         /// <para>Available values: high, medium, low</para>
         /// </summary>
         [DataMember(Name = "confidence", EmitDefaultValue = false)]
-        public string confidence { get; set; }
+        public string Confidence { get; set; }
 
         /// <summary>
         /// Original address string
         /// </summary>
         [DataMember(Name = "original", EmitDefaultValue = false)]
-        public string original { get; set; }
+        public string Original { get; set; }
     }
 }

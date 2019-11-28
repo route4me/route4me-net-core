@@ -16,24 +16,24 @@ namespace Route4MeSDK.DataTypes
         /// The member ID
         /// </summary>
         [DataMember(Name = "member_id")]
-        public string member_id { get; set; }
+        public string MemberId { get; set; }
 
         /// <summary>
         /// User's first name
         /// </summary>
         [DataMember(Name = "member_first_name")]
-        public string member_first_name { get; set; }
+        public string MemberFirstName { get; set; }
 
         /// <summary>
         /// User's last name
         /// </summary>
         [DataMember(Name = "member_last_name")]
-        public string member_last_name { get; set; }
+        public string MemberLastName { get; set; }
 
         /// <summary>
         /// User's email
         /// </summary>
         [DataMember(Name = "member_email")]
-        public string member_email { get; set; }
+        public string MemberEmail { get; set; }
     }
 }
