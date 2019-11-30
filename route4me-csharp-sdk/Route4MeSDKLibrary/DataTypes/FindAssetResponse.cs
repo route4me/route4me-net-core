@@ -58,7 +58,7 @@ namespace Route4MeSDK.DataTypes
         public string DriverPhone { get; set; }
 
         /// <summary>
-        /// Route started timestamp
+        /// True if the route started
         /// </summary>
         [DataMember(Name = "route_started")]
         public bool? RouteStarted { get; set; }
@@ -133,13 +133,13 @@ namespace Route4MeSDK.DataTypes
         /// UNIX timestamp when a geofence visited event was triggered.
         /// </summary>
         [DataMember(Name = "timestamp_geofence_visited")]
-        public int? TimestampGeofenceVisited { get; set; }
+        public long? TimestampGeofenceVisited { get; set; }
 
         /// <summary>
         /// UNIX timestamp of a last visited event.
         /// </summary>
         [DataMember(Name = "timestamp_last_visited")]
-        public int? TimestampLastVisited { get; set; }
+        public long? TimestampLastVisited { get; set; }
     }
 
     /// <summary>
@@ -213,13 +213,13 @@ namespace Route4MeSDK.DataTypes
         /// Start of the arrival time
         /// </summary>
         [DataMember(Name = "from_unix_timestamp")]
-        public System.Nullable<int> FromUnixTimestamp { get; set; }
+        public long? FromUnixTimestamp { get; set; }
 
         /// <summary>
         /// End of the arrival time
         /// </summary>
         [DataMember(Name = "to_unix_timestamp")]
-        public System.Nullable<int> ToUnixTimestamp { get; set; }
+        public long? ToUnixTimestamp { get; set; }
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ namespace Route4MeSDK.DataTypes
         /// Status getting timestamp
         /// </summary>
         [DataMember(Name = "unix_timestamp")]
-        public int? UnixTimestamp { get; set; }
+        public long? UnixTimestamp { get; set; }
 
         /// <summary>
         /// nformation about a shipped package.

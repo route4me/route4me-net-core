@@ -105,7 +105,7 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [IgnoreDataMember()]
         [HttpQueryMemberAttribute(Name = "disable_optimization", EmitDefaultValue = false)]
-        public Nullable<bool> DisableOptimization { get; set; }
+        public bool? DisableOptimization { get; set; }
 
         /// <summary>
         /// The driving directions will be generated biased for this selection. This has no impact on route sequencing.
@@ -144,7 +144,7 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [IgnoreDataMember()]
         [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-        public Nullable<int> RouteDestinationId { get; set; }
+        public int? RouteDestinationId { get; set; }
 
         /// <summary>
         /// If true, HTTP request will be redirected.
@@ -152,7 +152,7 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [IgnoreDataMember()]
         [HttpQueryMemberAttribute(Name = "redirect", EmitDefaultValue = false)]
-        public Nullable<bool> Redirect { get; set; }
+        public bool? Redirect { get; set; }
 
         /// <summary>
         /// Route Parameters to update. See <see cref="RouteParameters"/>

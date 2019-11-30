@@ -13,7 +13,7 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vendor_id", EmitDefaultValue = false)]
-        public Nullable<uint> vendorID { get; set; }
+        public uint? vendorID { get; set; }
 
         /// <summary>
         /// Specifies if a vendor is integrated in the Route4Me system.
@@ -21,21 +21,21 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "is_integrated", EmitDefaultValue = false)]
-        public Nullable<uint> isIntegrated { get; set; }
+        public uint? isIntegrated { get; set; }
 
         /// <summary>
         /// Filter vendors by page.
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "page", EmitDefaultValue = false)]
-        public Nullable<uint> Page { get; set; }
+        public uint? Page { get; set; }
 
         /// <summary>
         /// The number of records (vendors) to display per page.
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "per_page", EmitDefaultValue = false)]
-        public Nullable<uint> perPage { get; set; }
+        public uint? perPage { get; set; }
 
         /// <summary>
         /// Filter vendors by country code.

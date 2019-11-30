@@ -49,7 +49,7 @@ namespace Route4MeSDK.DataTypes
         /// Offset in seconds relative to the route start date (i.e. 9AM would be 60 * 60 * 9)
         /// </summary>
         [DataMember(Name = "route_time", EmitDefaultValue = false)]
-        public int? RouteTime { get; set; }
+        public long? RouteTime { get; set; }
 
         /// <summary>
         /// Specify if the route can be viewed by unauthenticated users.
@@ -185,7 +185,7 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         /// <value>The maximum duration of the route.</value>
         [DataMember(Name = "route_max_duration", EmitDefaultValue = false)]
-        public int? RouteMaxDuration { get; set; }
+        public long? RouteMaxDuration { get; set; }
 
         /// <summary>The email address to notify upon completion of an optimization request</summary>
         /// <value>The route email.</value>
@@ -234,7 +234,7 @@ namespace Route4MeSDK.DataTypes
         /// Specify the ip address of the remote user making this optimization request.
         /// </summary>
         [DataMember(Name = "ip", EmitDefaultValue = false)]
-        public int? Ip { get; set; }
+        public long Ip { get; set; }
 
         /// <summary>
         /// The method to use when compute the distance between the points in a route.
@@ -523,7 +523,7 @@ namespace Route4MeSDK.DataTypes
         /// The service time specified or all the addresses in the route.
         /// </summary>
         [DataMember(Name = "time", EmitDefaultValue = false), CustomValidation(typeof(PropertyValidation), "ValidateEpochTime")]
-        public int? Time { get; set; }
+        public long? Time { get; set; }
     }
 
 
