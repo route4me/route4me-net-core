@@ -17,14 +17,14 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "page", EmitDefaultValue = false)]
-        public Nullable<uint> Page { get; set; }
+        public uint? Page { get; set; }
 
         /// <summary>
         /// Returned vehicles number per page.
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "perPage", EmitDefaultValue = false)]
-        public Nullable<uint> PerPage { get; set; }
+        public uint? PerPage { get; set; }
 
         /// <summary>
         /// Unique ID of a Vehicle.

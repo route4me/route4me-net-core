@@ -25,7 +25,7 @@ namespace Route4MeSDK.QueryTypes
         /// Unique ID of a member.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public Nullable<int> MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// The plan type that the user selected.
@@ -38,7 +38,7 @@ namespace Route4MeSDK.QueryTypes
         /// The plan type that the user selected.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_type", EmitDefaultValue = false)]
-        public Nullable<int> MemberType { get; set; }
+        public int? MemberType { get; set; }
 
         /// <summary>
         /// Member email
@@ -97,7 +97,7 @@ namespace Route4MeSDK.QueryTypes
         /// <para>Available values: <value>1, 0.</value></para>
         /// </summary>
         [DataMember(Name = "chkTerms", EmitDefaultValue = false)]
-        public Nullable<int> ChkTerms { get; set; }
+        public int? ChkTerms { get; set; }
 
         /// <summary>
         /// The type of device making this request.

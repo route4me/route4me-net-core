@@ -68,31 +68,31 @@ namespace Route4MeSDK.DataTypes
         /// Local time window start
         /// </summary>
         [DataMember(Name = "local_time_window_start", EmitDefaultValue = false)]
-        public int? LocalTimeWindowStart { get; set; }
+        public long? LocalTimeWindowStart { get; set; }
 
         /// <summary>
         /// Local time window end
         /// </summary>
         [DataMember(Name = "local_time_window_end", EmitDefaultValue = false)]
-        public int? LocalTimeWindowEnd { get; set; }
+        public long? LocalTimeWindowEnd { get; set; }
 
         /// <summary>
         /// Second Local time window start
         /// </summary>
         [DataMember(Name = "local_time_window_start_2", EmitDefaultValue = false)]
-        public int? LocalTimeWindowStart2 { get; set; }
+        public long? LocalTimeWindowStart2 { get; set; }
 
         /// <summary>
         /// Second local time window end
         /// </summary>
         [DataMember(Name = "local_time_window_end_2", EmitDefaultValue = false)]
-        public int? LocalTimeWindowEnd2 { get; set; }
+        public long? LocalTimeWindowEnd2 { get; set; }
 
         /// <summary>
         /// Service time
         /// </summary>
         [DataMember(Name = "service_time", EmitDefaultValue = false)]
-        public int? ServiceTime { get; set; }
+        public long? ServiceTime { get; set; }
 
         /// <summary>
         /// Address City

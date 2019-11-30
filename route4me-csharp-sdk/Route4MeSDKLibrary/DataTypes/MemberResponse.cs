@@ -66,7 +66,7 @@ namespace Route4MeSDK.DataTypes
         /// Geofence onsite trigger time (seconds)
         /// </summary>
         [DataMember(Name = "geofence_time_onsite_trigger_secs")]
-        public int? GeofenceTimeOnsiteTriggerSecs { get; set; }
+        public long? GeofenceTimeOnsiteTriggerSecs { get; set; }
 
         /// <summary>
         /// Geofence's minimum trigger speed
@@ -165,7 +165,7 @@ namespace Route4MeSDK.DataTypes
         /// Time in seconds. A user will be logged out after been inactive during specified by this parameter seconds.
         /// </summary>
         [DataMember(Name = "auto_logout_ts")]
-        public int? AutoLogoutTs { get; set; }
+        public long? AutoLogoutTs { get; set; }
 
     }
 }

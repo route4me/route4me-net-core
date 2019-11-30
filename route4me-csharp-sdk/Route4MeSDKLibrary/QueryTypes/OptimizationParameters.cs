@@ -33,7 +33,7 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [IgnoreDataMember()]
         [HttpQueryMemberAttribute(Name = "redirect", EmitDefaultValue = false)]
-        public Nullable<bool> Redirect { get; set; }
+        public bool? Redirect { get; set; }
 
         /// <summary>
         /// If true, the route directions will be visible.

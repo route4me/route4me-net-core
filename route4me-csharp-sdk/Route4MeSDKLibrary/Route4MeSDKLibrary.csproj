@@ -12,10 +12,11 @@ The service is typically used by organizations who must route many drivers to ma
     <Copyright>Copyright (C) 2019 - 2019 Route4Me</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://route4me.io/</PackageProjectUrl>
-    <PackageIconUrl>C:\Oleg_Route4Me\route4me-net-core\route4me-csharp-sdk\r4m_icon_rounded_corners.ico</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/route4me/route4me-net-core/master/route4me-csharp-sdk/r4m_icon_rounded_corners.ico</PackageIconUrl>
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
+    <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization</PackageTags>
+    <Version>1.0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
