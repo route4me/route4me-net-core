@@ -31,7 +31,7 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "is_deleted", EmitDefaultValue = false)]
-        public Nullable<bool> IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
 
         /// <summary>
         /// Required for a vehicle creating.
@@ -72,7 +72,7 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "vehicle_reg_country_id", EmitDefaultValue = false)]
-        public Nullable<int> VehicleRegCountryId { get; set; }
+        public int? VehicleRegCountryId { get; set; }
 
         /// <summary>
         /// Vehicle registration country ID.
@@ -117,7 +117,7 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "vehicle_model_year", EmitDefaultValue = false)]
-        public Nullable<int> VehicleModelYear { get; set; }
+        public int? VehicleModelYear { get; set; }
 
         /// <summary>
         /// A model of the vehicle.
@@ -131,21 +131,21 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "vehicle_year_acquired", EmitDefaultValue = false)]
-        public Nullable<int> VehicleYearAcquired { get; set; }
+        public int? VehicleYearAcquired { get; set; }
 
         /// <summary>
         /// A cost of the new vehicle.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "vehicle_cost_new", EmitDefaultValue = false)]
-        public Nullable<double> VehicleCostNew { get; set; }
+        public double? VehicleCostNew { get; set; }
 
         /// <summary>
         /// If true, the vehicle was purchased new.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "purchased_new", EmitDefaultValue = false)]
-        public Nullable<bool> PurchasedNew { get; set; }
+        public bool? PurchasedNew { get; set; }
 
         /// <summary>
         /// Start date of the license.
@@ -166,21 +166,21 @@ namespace Route4MeSDK.QueryTypes
         /// Available values: 2,3,4
         /// </summary>
         [DataMember(Name = "vehicle_axle_count", EmitDefaultValue = false)]
-        public Nullable<int> VehicleAxleCount { get; set; }
+        public int? VehicleAxleCount { get; set; }
 
         /// <summary>
         /// Miles per gallon in the city area.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "mpg_city", EmitDefaultValue = false)]
-        public Nullable<int> MpgCity { get; set; }
+        public int? MpgCity { get; set; }
 
         /// <summary>
         /// Miles per gallon in the highway area.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "mpg_highway", EmitDefaultValue = false)]
-        public Nullable<int> MpgHighway { get; set; }
+        public int? MpgHighway { get; set; }
 
         /// <summary>
         /// A type of the fuel.
@@ -197,14 +197,14 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "height_inches", EmitDefaultValue = false)]
-        public Nullable<int> HeightInches { get; set; }
+        public int? HeightInches { get; set; }
 
         /// <summary>
         /// A weight of the vehicle in the pounds.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "weight_lb", EmitDefaultValue = false)]
-        public Nullable<int> WeightLb { get; set; }
+        public int? WeightLb { get; set; }
 
         /// <summary>
         /// If "1", the vehicle is operational.
@@ -239,35 +239,35 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "lengthInInches", EmitDefaultValue = false)]
-        public Nullable<int> LengthInInches { get; set; }
+        public int? LengthInInches { get; set; }
 
         /// <summary>
         /// Vehicle width in inches.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "widthInInches", EmitDefaultValue = false)]
-        public Nullable<int> WidthInInches { get; set; }
+        public int? WidthInInches { get; set; }
 
         /// <summary>
         /// Maximum weight per axle group in pounds.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "maxWeightPerAxleGroupInPounds", EmitDefaultValue = false)]
-        public Nullable<int> MaxWeightPerAxleGroupInPounds { get; set; }
+        public int? MaxWeightPerAxleGroupInPounds { get; set; }
 
         /// <summary>
         /// Number of the axles.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "numAxles", EmitDefaultValue = false)]
-        public Nullable<int> NumAxles { get; set; }
+        public int? NumAxles { get; set; }
 
         /// <summary>
         /// Weight in pounds.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "weightInPounds", EmitDefaultValue = false)]
-        public Nullable<int> WeightInPounds { get; set; }
+        public int? WeightInPounds { get; set; }
 
         /// <summary>
         /// Hazardous materials type.
@@ -397,35 +397,35 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "height_metric", EmitDefaultValue = false)]
-        public Nullable<float> HeightMetric { get; set; }
+        public float? HeightMetric { get; set; }
 
         /// <summary>
         /// Vehicle length in metric unit.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "length_metric", EmitDefaultValue = false)]
-        public Nullable<float> LengthMetric { get; set; }
+        public float? LengthMetric { get; set; }
 
         /// <summary>
         /// Vehicle width in metric unit.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "width_metric", EmitDefaultValue = false)]
-        public Nullable<float> WidthMetric { get; set; }
+        public float? WidthMetric { get; set; }
 
         /// <summary>
         /// Vehicle weight in metric unit.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "weight_metric", EmitDefaultValue = false)]
-        public System.Nullable<float> WeightMetric { get; set; }
+        public float? WeightMetric { get; set; }
 
         /// <summary>
         /// Maximum weight per axle group in metric unit.
         /// <remarks><para>Data member parameter.</para></remarks>
         /// </summary>
         [DataMember(Name = "max_weight_per_axle_group_metric", EmitDefaultValue = false)]
-        public Nullable<float> MaxWeightPerAxleGroupMetric { get; set; }
+        public float? MaxWeightPerAxleGroupMetric { get; set; }
 
         /// <summary>
         /// When he vehicle was removed.

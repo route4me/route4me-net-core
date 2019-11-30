@@ -15,7 +15,7 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public Nullable<int> member_id { get; set; }
+        public int? member_id { get; set; }
 
         /// <summary>
         /// Unique ID of a device.
@@ -176,7 +176,7 @@ namespace Route4MeSDK.QueryTypes
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "route_count", EmitDefaultValue = false)]
-        public Nullable<int> route_count { get; set; }
+        public int? route_count { get; set; }
 
         /// <summary>
         /// Member email.

@@ -60,7 +60,7 @@ namespace Route4MeSDK.DataTypes
         /// Direction step duration(seconds)
         ///</summary>
         [DataMember(Name = "duration_sec")]
-        public int DurationSec { get; set; }
+        public long DurationSec { get; set; }
 
         ///<summary>
         /// Maneuver Point. See <see cref="DirectionPathPoint"/>

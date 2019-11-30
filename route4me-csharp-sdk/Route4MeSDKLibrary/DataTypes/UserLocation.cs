@@ -145,6 +145,6 @@ namespace Route4MeSDK.DataTypes
         /// Timestamp of a last known location.
         /// </summary>
         [DataMember(Name = "LAST_KNOWN", EmitDefaultValue = false)]
-        public int? LastKnown { get; set; }
+        public long? LastKnown { get; set; }
     }
 }
