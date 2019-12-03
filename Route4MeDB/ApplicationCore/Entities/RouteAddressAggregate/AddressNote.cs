@@ -52,7 +52,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// When the note was added
         /// </summary>
         [Column("ts_added")]
-        public uint? TimestampAdded { get; set; }
+        public long? TimestampAdded { get; set; }
 
         /// <summary>
         /// The position latitude where the address note was added

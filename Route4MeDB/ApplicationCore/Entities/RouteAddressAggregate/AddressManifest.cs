@@ -13,19 +13,19 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
     public class AddressManifest : IAggregateRoot
     {
         [Column("running_service_time")]
-        public int? RunningServiceTime { get; set; }
+        public long? RunningServiceTime { get; set; }
 
         /// <summary>
         /// How much time is spent driving from the start in seconds.
         /// </summary>
         [Column("running_travel_time")]
-        public int? RunningTravelTime { get; set; }
+        public long? RunningTravelTime { get; set; }
 
         /// <summary>
         /// Running wait time.
         /// </summary>
         [Column("running_wait_time")]
-        public int? RunningWaitTime { get; set; }
+        public long? RunningWaitTime { get; set; }
 
         /// <summary>
         /// Distance traversed before reaching this address.
@@ -49,45 +49,45 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// Projected arrival time UTC unixtime.
         /// </summary>
         [Column("projected_arrival_time_ts")]
-        public int? ProjectedArrivalTimeTs { get; set; }
+        public long? ProjectedArrivalTimeTs { get; set; }
 
         /// <summary>
         /// Estimated departure time UTC unixtime.
         /// </summary>
         [Column("projected_departure_time_ts")]
-        public int? ProjectedDepartureTimeTs { get; set; }
+        public long? ProjectedDepartureTimeTs { get; set; }
 
         /// <summary>
         /// Time when the address was marked as visited UTC unixtime. 
         /// This is actually equal to timestamp_last_visited most of the time.
         /// </summary>
         [Column("actual_arrival_time_ts")]
-        public int? ActualArrivalTimeTs { get; set; }
+        public long? ActualArrivalTimeTs { get; set; }
 
         /// <summary>
         /// Time when the address was mared as departed UTC. 
         /// This is actually equal to timestamp_last_departed most of the time.
         /// </summary>
         [Column("actual_departure_time_ts")]
-        public int? ActualDepartureTimeTs { get; set; }
+        public long? ActualDepartureTimeTs { get; set; }
 
         /// <summary>
         /// Estimated arrival time based on the current route progress, 
         /// i.e. based on the last known actual_arrival_time.
         /// </summary>
         [Column("estimated_arrival_time_ts")]
-        public int? EstimatedArrivalTimeTs { get; set; }
+        public long? EstimatedArrivalTimeTs { get; set; }
 
         /// <summary>
         /// Estimated departure time based on the current route progress.
         /// </summary>
         [Column("estimated_departure_time_ts")]
-        public int? EstimatedDepartureTimeTs { get; set; }
+        public long? EstimatedDepartureTimeTs { get; set; }
 
         /// <summary>
         /// This is the difference between the originally projected arrival time and Actual Arrival Time.
         /// </summary>
         [Column("time_impact")]
-        public int? TimeImpact { get; set; }
+        public long? TimeImpact { get; set; }
     }
 }

@@ -16,7 +16,7 @@
           "Route4MeDbLibrary": "1.0.0",
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0",
-          "Route4MeSDKLibrary": "1.0.0.0"
+          "Route4MeSDKLibrary": "1.0.0.1"
         },
         "runtime": {
           "UnitTests.dll": {}
@@ -2884,11 +2884,11 @@
           "Route4MeDbLibrary.dll": {}
         }
       },
-      "Route4MeSDKLibrary/1.0.0.0": {
+      "Route4MeSDKLibrary/1.0.0.1": {
         "runtime": {
           "Route4MeSDKLibrary.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.0.1",
+            "fileVersion": "1.0.0.1"
           }
         }
       },
@@ -4374,7 +4374,7 @@
     "System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vOYy7Jv9KsG3ld2hLt0GoERd82SZi4BelrbXLwI9yFBYX7kpbvUCWYo4eyevk47cuJXZ9ZLVAryANcc7iY71aA==",
+      "sha512": "sha512-h4CEgOgv5PKVF/HwaHzJRiVboL2THYCou97zpmhjghx5frc7fIvlkY1jL+lnIQyChrJDMNEXS6r7byGif8Cy4w==",
       "path": "system.security.cryptography.openssl/4.3.0",
       "hashPath": "system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
@@ -4645,7 +4645,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Route4MeSDKLibrary/1.0.0.0": {
+    "Route4MeSDKLibrary/1.0.0.1": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

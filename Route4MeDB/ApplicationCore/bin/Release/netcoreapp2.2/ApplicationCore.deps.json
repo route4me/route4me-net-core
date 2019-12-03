@@ -1492,13 +1492,13 @@
             "rid": "unix",
             "assetType": "runtime",
             "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.6.24702.1"
+            "fileVersion": "4.6.24705.1"
           },
           "runtimes/win/lib/netstandard1.3/System.Text.Encoding.CodePages.dll": {
             "rid": "win",
             "assetType": "runtime",
             "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.6.24702.1"
+            "fileVersion": "4.6.24705.1"
           }
         }
       },
@@ -2623,7 +2623,7 @@
     "System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vOYy7Jv9KsG3ld2hLt0GoERd82SZi4BelrbXLwI9yFBYX7kpbvUCWYo4eyevk47cuJXZ9ZLVAryANcc7iY71aA==",
+      "sha512": "sha512-h4CEgOgv5PKVF/HwaHzJRiVboL2THYCou97zpmhjghx5frc7fIvlkY1jL+lnIQyChrJDMNEXS6r7byGif8Cy4w==",
       "path": "system.security.cryptography.openssl/4.3.0",
       "hashPath": "system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
@@ -2686,7 +2686,7 @@
     "System.Text.Encoding.CodePages/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6ENnyNU7cdmUVYblQ9GzLuJlLs9HWyoSInm+JZyCBHFUTaSQZolLIdGSZWGw5VOhjbFop+u/pU0AbKiHQKheqw==",
+      "sha512": "sha512-IRiEFUa5b/Gs5Egg8oqBVoywhtOeaO2KOx3j0RfcYY/raxqBuEK7NXRDgOwtYM8qbi+7S4RPXUbNt+ZxyY0/NQ==",
       "path": "system.text.encoding.codepages/4.3.0",
       "hashPath": "system.text.encoding.codepages.4.3.0.nupkg.sha512"
     },
