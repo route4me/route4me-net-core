@@ -32,7 +32,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public int? MemberId { get; set; }
 
         [Column("created_timestamp")]
-        public Int64 CreatedTimestamp { get; set; }
+        public Int64? CreatedTimestamp { get; set; }
 
         [Column("parameters")]
         public string Parameters { get; set; }
@@ -138,7 +138,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public double? UduActualTravelDistance { get; set; }
 
         [Column("total_wait_time")]
-        public int? TotalWaitTime { get; set; }
+        public long? TotalWaitTime { get; set; }
 
         [Column("udu_trip_distance")]
         public double? UduTripDistance { get; set; }
@@ -165,7 +165,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Total route duration (seconds)
         /// </summary>
         [Column("route_duration_sec")]
-        public int? RouteDurationSec { get; set; }
+        public Int64? RouteDurationSec { get; set; }
 
         /// <summary>
         /// Planned total route duration.
@@ -174,7 +174,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// </para></remarks>
         /// </summary>
         [Column("planned_total_route_duration")]
-        public int? PlannedTotalRouteDuration { get; set; }
+        public Int64? PlannedTotalRouteDuration { get; set; }
 
         /// <summary>
         /// Actual travel distance.
@@ -186,7 +186,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Actual travel time.
         /// </summary>
         [Column("actual_travel_time")]
-        public int? ActualTravelTime { get; set; }
+        public Int64? ActualTravelTime { get; set; }
 
         /// <summary>
         /// Actual footsteps.
@@ -198,19 +198,19 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Working time
         /// </summary>
         [Column("working_time")]
-        public int? WorkingTime { get; set; }
+        public Int64? WorkingTime { get; set; }
 
         /// <summary>
         /// Driving time
         /// </summary>
         [Column("driving_time")]
-        public int? DrivingTime { get; set; }
+        public Int64? DrivingTime { get; set; }
 
         /// <summary>
         /// Idling time
         /// </summary>
         [Column("idling_time")]
-        public int? IdlingTime { get; set; }
+        public Int64? IdlingTime { get; set; }
 
         /// <summary>
         /// Paying miles

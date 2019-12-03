@@ -53,7 +53,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Offset in seconds relative to the route start date (i.e. 9AM would be 60 * 60 * 9)
         /// </summary>
         [Column("route_time")]
-        public int? RouteTime { get; set; }
+        public long? RouteTime { get; set; }
 
         /// <summary>
         /// Specify if the route can be viewed by unauthenticated users.
@@ -196,7 +196,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// </summary>
         /// <value>The maximum duration of the route.</value>
         [Column("route_max_duration")]
-        public int? RouteMaxDuration { get; set; }
+        public long? RouteMaxDuration { get; set; }
 
         /// <summary>The email address to notify upon completion of an optimization request</summary>
         /// <value>The route email.</value>

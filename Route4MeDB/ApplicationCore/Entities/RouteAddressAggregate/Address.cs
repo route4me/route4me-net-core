@@ -83,7 +83,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// Timeframe violation time
         /// </summary>
         [Column("timeframe_violation_time")]
-        public int? TimeframeViolationTime { get; set; }
+        public long? TimeframeViolationTime { get; set; }
 
         /// <summary>
         /// Timeframe violation rate
@@ -182,13 +182,13 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// The last known visited timestamp of this address.
         /// </summary>
         [Column("timestamp_last_visited")]
-        public uint? TimestampLastVisited { get; set; }
+        public long? TimestampLastVisited { get; set; }
 
         /// <summary>
         /// The last known departed timestamp of this address.
         /// </summary>
         [Column("timestamp_last_departed")]
-        public uint? TimestampLastDeparted { get; set; }
+        public long? TimestampLastDeparted { get; set; }
 
         /// <summary>
         /// Visited address latitude
@@ -345,13 +345,13 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// Generated time window start.
         /// </summary>
         [Column("generated_time_window_start")]
-        public int? GeneratedTimeWindowStart { get; set; }
+        public long? GeneratedTimeWindowStart { get; set; }
 
         /// <summary>
         /// Estimated time window end based on the optimization engine, after all the sequencing has been completed.
         /// </summary>
         [Column("generated_time_window_end")]
-        public int? GeneratedTimeWindowEnd { get; set; }
+        public long? GeneratedTimeWindowEnd { get; set; }
 
         /// <summary>
         /// The unique socket channel name which should be used to get real time alerts.
@@ -363,43 +363,43 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// The address time window start.
         /// </summary>
         [Column("time_window_start")]
-        public int? TimeWindowStart { get; set; }
+        public long? TimeWindowStart { get; set; }
 
         /// <summary>
         /// The address time window end.
         /// </summary>
         [Column("time_window_end")]
-        public int? TimeWindowEnd { get; set; }
+        public long? TimeWindowEnd { get; set; }
 
         /// <summary>
         /// The address time window start 2.
         /// </summary>
         [Column("time_window_start_2")]
-        public int? TimeWindowStart2 { get; set; }
+        public long? TimeWindowStart2 { get; set; }
 
         /// <summary>
         /// The address time window end 2.
         /// </summary>
         [Column("time_window_end_2")]
-        public int? TimeWindowEnd2 { get; set; }
+        public long? TimeWindowEnd2 { get; set; }
 
         /// <summary>
         /// Geofence detected visited timestamp
         /// </summary>
         [Column("geofence_detected_visited_timestamp")]
-        public int? geofence_detected_visited_timestamp { get; set; }
+        public long? geofence_detected_visited_timestamp { get; set; }
 
         /// <summary>
         /// Geofence detected departed timestamp
         /// </summary>
         [Column("geofence_detected_departed_timestamp")]
-        public int? geofence_detected_departed_timestamp { get; set; }
+        public long? geofence_detected_departed_timestamp { get; set; }
 
         /// <summary>
         /// Geofence detected service time
         /// </summary>
         [Column("geofence_detected_service_time")]
-        public int? geofence_detected_service_time { get; set; }
+        public long? geofence_detected_service_time { get; set; }
 
         /// <summary>
         /// Geofence detected visited latitude

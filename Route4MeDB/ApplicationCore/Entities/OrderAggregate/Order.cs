@@ -81,16 +81,16 @@ namespace Route4MeDB.ApplicationCore.Entities.OrderAggregate
         public int? LocalTimeWindowStart { get; set; }
 
         [Column("local_time_window_end")]
-        public int? LocalTimeWindowEnd { get; set; }
+        public long? LocalTimeWindowEnd { get; set; }
 
         [Column("local_time_window_start_2")]
-        public int? LocalTimeWindowStart2 { get; set; }
+        public long? LocalTimeWindowStart2 { get; set; }
 
         [Column("local_time_window_end_2")]
-        public int? LocalTimeWindowEnd2 { get; set; }
+        public long? LocalTimeWindowEnd2 { get; set; }
 
         [Column("service_time")]
-        public int? ServiceTime { get; set; }
+        public long? ServiceTime { get; set; }
 
         [Column("address_city")]
         public string AddressCity { get; set; }

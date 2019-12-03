@@ -120,7 +120,7 @@ namespace Route4MeDB.UnitTests.Builders
             settings.NullValueHandling = NullValueHandling.Ignore;
             //string jsonContent = File.ReadAllText(testDataFile);
 
-            var importedOptimization = JsonConvert.DeserializeObject<Route4Me.DataObjectRoute>(jsonContent);
+            var importedOptimization = JsonConvert.DeserializeObject<Route4Me.DataObject>(jsonContent);
 
             _optimization = getOptimizationEntity(importedOptimization);
 
@@ -289,8 +289,21 @@ namespace Route4MeDB.UnitTests.Builders
                                 route.GeofencePolygonType = geofencePolygonType;
                             break;
                         default:
-                            typeof(RouteEntity).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
-                            .SetValue(route, prop.GetValue(routeObject));
+                            var pValue = prop.GetValue(routeObject);
+
+                            PropertyInfo propInfo = typeof(RouteEntity).GetProperties()
+                                .Where(x => x.Name == prop.Name).FirstOrDefault();
+
+                            if ((pValue?.GetType() ?? null) != (propInfo?.PropertyType ?? null))
+                            {
+                                var convertedValue = Utils.ConvertObjectToPropertyType(pValue, propInfo);
+                                propInfo.SetValue(route, convertedValue);
+                            }
+                            else
+                            {
+                                propInfo.SetValue(route, pValue);
+                            }
+
                             break;
                     }
                 }
@@ -383,8 +396,21 @@ namespace Route4MeDB.UnitTests.Builders
                                 address.AddressStopType = addressStopType;
                             break;
                         default:
-                            typeof(AddressEntity).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
-                            .SetValue(address, prop.GetValue(addressObject));
+                            var pValue = prop.GetValue(addressObject);
+
+                            PropertyInfo propInfo = typeof(AddressEntity).GetProperties()
+                                .Where(x => x.Name == prop.Name).FirstOrDefault();
+                            
+                            if ((pValue?.GetType() ?? null) != (propInfo?.PropertyType ?? null))
+                            {
+                                var convertedValue = Utils.ConvertObjectToPropertyType(pValue, propInfo);
+                                propInfo.SetValue(address, convertedValue);
+                            }
+                            else
+                            {
+                                propInfo.SetValue(address, pValue);
+                            }
+                            
                             break;
                     }
                 }
@@ -426,8 +452,21 @@ namespace Route4MeDB.UnitTests.Builders
                                 addressNote.DeviceType = devicedType;
                             break;
                         default:
-                            typeof(AddressNoteEntity).GetProperties().Where(x => x.Name == prop.Name).FirstOrDefault()
-                            .SetValue(addressNote, prop.GetValue(addressNoteObject));
+                            var pValue = prop.GetValue(addressNoteObject);
+
+                            PropertyInfo propInfo = typeof(AddressNoteEntity).GetProperties()
+                                .Where(x => x.Name == prop.Name).FirstOrDefault();
+
+                            if ((pValue?.GetType() ?? null) != (propInfo?.PropertyType ?? null))
+                            {
+                                var convertedValue = Utils.ConvertObjectToPropertyType(pValue, propInfo);
+                                propInfo.SetValue(addressNote, convertedValue);
+                            }
+                            else
+                            {
+                                propInfo.SetValue(addressNote, pValue);
+                            }
+
                             break;
                     }
                 }

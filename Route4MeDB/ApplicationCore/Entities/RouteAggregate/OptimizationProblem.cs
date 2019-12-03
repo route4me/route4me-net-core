@@ -102,38 +102,11 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         }
 
         /// <summary>
-        /// A collection of device tracking data with coordinates, speed, and timestamps.
-        /// <para>See <see cref="TrackingHistory"/></para>
-        /// </summary>
-        //[Column("tracking_history")]
-        //public string TrackingHistory { get; set; }
-
-        //[NotMapped]
-        //public TrackingHistory[] TrackingHistoryArray
-        //{
-        //    get { return TrackingHistory == null ? null : JsonConvert.DeserializeObject<TrackingHistory[]>(TrackingHistory); }
-        //    set { TrackingHistory = JsonConvert.SerializeObject(value); }
-        //}
-
-        /// <summary>
         /// Edge by edge turn-by-turn directions. See <see cref="Direction"/>
         /// </summary>
         // TO DO: removing this column causes error - find why.
         [Column("directions")]
         public List<Direction> Directions { get; set; }
-
-        /// <summary>
-        /// Edge-wise path to be drawn on the map See <see cref="DirectionPathPoint"/>
-        /// </summary>
-        //[Column("path", TypeName = "varchar(max)")]
-        //public string Path { get; set; }
-
-        //[NotMapped]
-        //public DirectionPathPoint[] PathArray
-        //{
-        //    get { return Path == null ? null : JsonConvert.DeserializeObject<DirectionPathPoint[]>(Path); }
-        //    set { Path = JsonConvert.SerializeObject(value); }
-        //}
 
         /// <summary>
         /// Total number of the addresses included in the optimization

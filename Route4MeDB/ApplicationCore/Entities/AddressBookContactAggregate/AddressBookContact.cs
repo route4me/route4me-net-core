@@ -55,7 +55,7 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
         }
 
         [Column("created_timestamp")]
-        public int CreatedTimestamp { get; set; }
+        public long CreatedTimestamp { get; set; }
 
         [Key, Column("address_db_id")]
         public int AddressDbId { get; set; }
@@ -85,16 +85,16 @@ namespace Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate
         public string LastName { get; set; }
 
         [Column("local_time_window_start")]
-        public int? LocalTimeWindowStart { get; set; }
+        public long? LocalTimeWindowStart { get; set; }
 
         [Column("local_time_window_end")]
-        public int? LocalTimeWindowEnd { get; set; }
+        public long? LocalTimeWindowEnd { get; set; }
 
         [Column("local_time_window_start_2")]
-        public int? LocalTimeWindowStart2 { get; set; }
+        public long? LocalTimeWindowStart2 { get; set; }
 
         [Column("local_time_window_end_2")]
-        public int? LocalTimeWindowEnd2 { get; set; }
+        public long? LocalTimeWindowEnd2 { get; set; }
 
         [Column("address_email")]
         public string AddressEmail { get; set; }

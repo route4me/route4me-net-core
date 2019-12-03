@@ -11,6 +11,6 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// The service time specified or all the addresses in the route.
         /// </summary>
         [Column("time")]
-        public int? Time { get; set; }
+        public long? Time { get; set; }
     }
 }
