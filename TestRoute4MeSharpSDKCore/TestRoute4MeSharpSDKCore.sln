@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRoute4MeSharpSDKCore", "TestRoute4MeSharpSDKCore.csproj", "{9C2D87C4-4593-4B5B-BC6C-ED82231C796B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C2D87C4-4593-4B5B-BC6C-ED82231C796B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2D87C4-4593-4B5B-BC6C-ED82231C796B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2D87C4-4593-4B5B-BC6C-ED82231C796B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2D87C4-4593-4B5B-BC6C-ED82231C796B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5AEC9F21-82E3-43EE-A671-6F9BD832BA76}
+	EndGlobalSection
+EndGlobal
