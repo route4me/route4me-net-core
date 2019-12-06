@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Data;
-using System.Data.OleDb;
 using System.IO;
 using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,7 +13,6 @@ using System.Reflection;
 using System.CodeDom.Compiler;
 using CsvHelper;
 using System.Linq;
-//using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDKUnitTest
 {
@@ -49,6 +46,14 @@ namespace Route4MeSDKUnitTest
             Assert.IsTrue(tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses...");
 
             lsOptimizationIDs.Add(tdr.SD10Stops_optimization_problem_id);
+
+            bool result1 = tdr.SingleDriverRoundTripTest();
+
+            Assert.IsTrue(result1, "Single Driver Round Trip generation failed...");
+
+            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
+
+            lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
         }
 
         [TestMethod]
@@ -198,6 +203,24 @@ namespace Route4MeSDKUnitTest
             DataObjectRoute dataObject = route4Me.UpdateRoute(routeParameters, out string errorString);
 
             Assert.IsNotNull(dataObject, "UpdateRouteTest failed... " + errorString);
+        }
+
+        [TestMethod, Ignore]
+        public void UpdateWholeRouteTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            string routeId = tdr.SDRT_route_id;
+            Assert.IsNotNull(routeId, "SDRT_route_id is null...");
+
+            tdr.SDRT_route.ApprovedForExecution = true;
+            tdr.SDRT_route.Parameters.RouteName += " Edited";
+            tdr.SDRT_route.Addresses[1].AddressString += " Edited";
+
+            var dataObject = route4Me.UpdateRoute(tdr.SDRT_route, out string errorString);
+
+            Assert.IsNotNull(dataObject, "UpdateRouteTest failed. " + errorString);
+            Assert.IsTrue(dataObject.Parameters.RouteName.Contains("Edited"), "UpdateRouteTest failed, the route name not changed.");
         }
 
         [TestMethod]
@@ -8399,18 +8422,18 @@ namespace Route4MeSDKUnitTest
                 Redirect = false
             };
 
-            List<int> lsTimeWindowStart = new List<int>();
+            List<long> lsTimeWindowStart = new List<long>();
 
             DateTime dtCurDate = DateTime.Now + (new TimeSpan(1, 0, 0, 0));
             dtCurDate = new DateTime(dtCurDate.Year, dtCurDate.Month, dtCurDate.Day, 8, 0, 0);
 
             TimeSpan tsp1000sec = new TimeSpan(0, 0, 1000);
 
-            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add(R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
             dtCurDate += tsp1000sec;
-            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add(R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
             dtCurDate += tsp1000sec;
-            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add(R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
 
             #region Addresses
             Address[] addresses = new Address[] {
@@ -9679,8 +9702,8 @@ namespace Route4MeSDKUnitTest
         {
             Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
 
-            int uStartTime = (int)(DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds - 24 * 60 * 60; ;
-            int uEndTime = (int)(DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds + 24*60*60;
+            long uStartTime = (long)(DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds - 24 * 60 * 60; ;
+            long uEndTime = (long)(DateTime.Now - (new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds + 24*60*60;
 
             GPSParameters gpsParameters = new GPSParameters
             {
