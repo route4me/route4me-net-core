@@ -307,9 +307,9 @@ namespace Route4MeDbExample
 
 5. The module RunExamples contains 4 examlples (methods):
 
-1. CreateRoute4MeDatabase - demonstrates how to create a database with Route4Me data structure in the specified database provider.
-2. CreateAddressBookContact - demonstrates how to initialize and save in the database address book contact.
-3. CopyRouteJsonResponseToDatabase - demonstrates how to import JSON content of the Route4Me route object and save it in the database.
-4. CreateOptimizationAndSaveToDatabase - demonstrates how to create an optimization in the Route4Me account and simultaneously save it in the database.
+- CreateRoute4MeDatabase - demonstrates how to create a database with Route4Me data structure in the specified database provider.
+- CreateAddressBookContact - demonstrates how to initialize and save in the database address book contact.
+- CopyRouteJsonResponseToDatabase - demonstrates how to import JSON content of the Route4Me route object and save it in the database.
+- CreateOptimizationAndSaveToDatabase - demonstrates how to create an optimization in the Route4Me account and simultaneously save it in the database.
 
 Create database in the appropriate database provider if it doesn't exist, set API key and run the project.
