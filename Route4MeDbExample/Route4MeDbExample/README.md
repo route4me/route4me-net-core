@@ -10,7 +10,7 @@ The project is done with the Visual Studio 2019.
 
 1. Create console c# (.net project);
 
-2. Search NuGet for the package Route4MeDbLibrary and install it in the created prohject;
+2. Search NuGet for the package Route4MeDbLibrary and install it in the created project;
 
 3. Add to the project the file [RunExamples.cs](https://github.com/route4me/route4me-net-core/blob/master/Route4MeDbExample/Route4MeDbExample/RunExamples.cs).
 
@@ -54,7 +54,7 @@ namespace Route4MeDbExample
 5. The module RunExamples contains 4 examlples (methods):
 
 - CreateRoute4MeDatabase - demonstrates how to create a database with Route4Me data structure in the specified database provider.
-- CreateAddressBookContact - demonstrates how to initialize and save in the database address book contact.
+- CreateAddressBookContact - demonstrates how to initialize and save in the database an address book contact.
 - CopyRouteJsonResponseToDatabase - demonstrates how to import JSON content of the Route4Me route object and save it in the database.
 - CreateOptimizationAndSaveToDatabase - demonstrates how to create an optimization in the Route4Me account and simultaneously save it in the database.
 
