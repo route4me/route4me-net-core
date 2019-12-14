@@ -1,19 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.IO;
 using Xunit;
 using Xunit.Abstractions;
 using Route4MeDB.Route4MeDbLibrary;
 using Route4MeDB.Infrastructure.Data;
-using Route4MeDB.UnitTests.Builders;
 using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
-using Route4MeDB.ApplicationCore.Specifications;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Threading.Tasks;
 using Route4MeDB.FunctionalTest;
+using Route4MeDB.ApplicationCore.Specifications;
+
 namespace Route4MeDB.FunctionalTests.MySqlDb
 {
     public class DatabaseOrdersFixture : DatabaseFixtureBase
@@ -65,6 +62,33 @@ namespace Route4MeDB.FunctionalTests.MySqlDb
             foreach (var linqOrder in linqOrders)
             {
                 Assert.Contains<int>(linqOrder.OrderDbId, orders.Select(x => x.AddressDbId));
+            }
+        }
+
+        [IgnoreIfNoMySqlDb]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/one_complex_order.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                Order importedOrder = dataExchange.ConvertSdkJsonContentToEntity<Order>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.Orders.Add(importedOrder);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+                int orderDbId = importedOrder.OrderDbId;
+
+                var orderSpec = new OrderSpecification(orderDbId);
+
+                var orderFromRepo = await fixture.r4mdbManager.OrdersRepository.GetByIdAsync(orderSpec);
+
+                Assert.IsType<Order>(orderFromRepo);
             }
         }
 

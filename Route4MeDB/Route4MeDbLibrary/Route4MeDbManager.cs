@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+using System;
 
 namespace Route4MeDB.Route4MeDbLibrary
 {
@@ -21,6 +22,13 @@ namespace Route4MeDB.Route4MeDbLibrary
         MySql,
         InMemory
     }
+
+    public class AppSettingsFileCreatedEventArgs : EventArgs
+    {
+        public bool AppSettingsFileCreated { get; set; }
+        public string MessageText { get; set; }
+    }
+
     public class Route4MeDbManager
     {
         public Route4MeDbManager(IConfiguration configuration)
@@ -30,13 +38,41 @@ namespace Route4MeDB.Route4MeDbLibrary
             _route4meDbContext = Route4MeContext;
         }
 
-        public Route4MeDbManager(DatabaseProviders databaseProvider)
+        public Route4MeDbManager()
         {
-            //var dbProvider = DatabaseProviders.PostgreSql;
+            
+        }
+
+        public void AssignDatabaseProvider(DatabaseProviders databaseProvider)
+        {
+            if (!Utils.CheckIfAppsettingsFileExists())
+            {
+                var eventArgs = new AppSettingsFileCreatedEventArgs();
+
+                bool created = Utils.CreateAppsettingsFileIfNotExists(out string errorString);
+
+                if (created)
+                {
+                    eventArgs.AppSettingsFileCreated = true;
+                    eventArgs.MessageText = "The file appSetings.json was created with the demo connection strings. \n Please, put in it actual connection strings and then try again.";
+                }
+                else
+                {
+                    eventArgs.AppSettingsFileCreated = false;
+                    eventArgs.MessageText = "Cannot create the file appSetings.json with the demo connection strings. \n Create it manually on the project root folder.";
+                }
+
+                OnAppSettingsFileCreated(eventArgs);
+
+                return;
+            }
+
             var curPath = Directory.GetCurrentDirectory();
+
             var configBuilder = new ConfigurationBuilder()
                .SetBasePath(curPath)
                .AddJsonFile("appsettings.json", optional: true);
+
             var config = configBuilder.Build();
 
             DatabaseProvider = databaseProvider;
@@ -45,11 +81,26 @@ namespace Route4MeDB.Route4MeDbLibrary
             _route4meDbContext = Route4MeContext;
         }
 
+
+        #region // AppSettingsFileCreated event handler
+
+        public event EventHandler<AppSettingsFileCreatedEventArgs> AppSettingsFileCreated;
+
+        public void OnAppSettingsFileCreated(AppSettingsFileCreatedEventArgs e)
+        {
+            EventHandler<AppSettingsFileCreatedEventArgs> handler = AppSettingsFileCreated;
+            handler?.Invoke(this, e);
+        }
+
+        #endregion
+
         public IConfiguration Config { get; set; }
 
         private IServiceCollection _services;
 
         private DbContextOptions<Route4MeDbContext> _options;
+
+        private static DatabaseProviders _databaseProvider;
 
         public static DatabaseProviders DatabaseProvider { get; set; }
 

@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Route4MeDB.db" />
+    <None Remove="TestData\route_plain_with_10_stops.json" />
+    <None Remove="TestData\sd_optimization_10stops_RESPONSE.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Route4MeDB.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\route_plain_with_10_stops.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\sd_optimization_10stops_RESPONSE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Route4MeDbLibrary" Version="1.0.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="C:\Users\User\.nuget\packages\route4medblibrary\1.0.0\contentFiles\any\netcoreapp2.2\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

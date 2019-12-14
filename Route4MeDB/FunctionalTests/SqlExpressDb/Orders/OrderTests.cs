@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Route4MeDB.FunctionalTest;
+using Route4MeDB.ApplicationCore.Specifications;
 
 namespace Route4MeDB.FunctionalTests.SqlExpressDb
 {
@@ -85,6 +86,33 @@ namespace Route4MeDB.FunctionalTests.SqlExpressDb
             Assert.Equal(firstOrder.EXT_FIELD_last_name, orderFromRepo.EXT_FIELD_last_name);
             Assert.Equal(firstOrder.EXT_FIELD_first_name, linqOrder.EXT_FIELD_first_name);
             Assert.Equal(firstOrder.EXT_FIELD_last_name, linqOrder.EXT_FIELD_last_name);
+        }
+
+        [IgnoreIfNoSqlexpressDb]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/one_complex_order.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                Order importedOrder = dataExchange.ConvertSdkJsonContentToEntity<Order>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.Orders.Add(importedOrder);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+                int orderDbId = importedOrder.OrderDbId;
+
+                var orderSpec = new OrderSpecification(orderDbId);
+
+                var orderFromRepo = await fixture.r4mdbManager.OrdersRepository.GetByIdAsync(orderSpec);
+
+                Assert.IsType<Order>(orderFromRepo);
+            }
         }
 
         [IgnoreIfNoSqlexpressDb]

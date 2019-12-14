@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Route4MeDbLibrary.QueryTypes
+namespace Route4MeDB.ApplicationCore.Services
 {
     /// <summary>
     /// Helper class for the HTTP query request

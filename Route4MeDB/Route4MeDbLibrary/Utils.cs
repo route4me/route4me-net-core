@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Route4MeDbLibrary
+namespace Route4MeDB.Route4MeDbLibrary
 {
     public static class Utils
     {
@@ -70,7 +70,7 @@ namespace Route4MeDbLibrary
                     if (destinationType == typeof(Boolean))
                     {
                         result = ((IConvertible)value).ToBoolean(CultureInfo.CurrentCulture);
-                    } 
+                    }
                     else if (destinationType == typeof(Byte))
                     {
                         result = ((IConvertible)value).ToByte(CultureInfo.CurrentCulture);
@@ -78,7 +78,7 @@ namespace Route4MeDbLibrary
                     else if (destinationType == typeof(Char))
                     {
                         result = ((IConvertible)value).ToChar(CultureInfo.CurrentCulture);
-                    } 
+                    }
                     else if (destinationType == typeof(DateTime))
                     {
                         result = ((IConvertible)value).ToDateTime(CultureInfo.CurrentCulture);
@@ -136,6 +136,67 @@ namespace Route4MeDbLibrary
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Creates appSettings.json file in the core folder of the consuming project 
+        /// of the Route4MeDbLibrary if it doesn't exist.
+        /// </summary>
+        /// <param name="errorString">Error message in case of failure</param>
+        /// <returns>True, if the file appSettings.json created.</returns>
+        public static bool CreateAppsettingsFileIfNotExists(out string errorString)
+        {
+            errorString = "";
+            //bool fileCreated = false;
+            try
+            {
+                string entryLocation = Assembly.GetEntryAssembly().Location;
+
+                FileInfo dinfo = new FileInfo(entryLocation);
+
+                dinfo = new FileInfo(dinfo.DirectoryName + @"/" + "appSettings.json");
+
+                if (!dinfo.Exists)
+                {
+                    var r4mAssembly = Assembly.LoadFrom("Route4MeDbLibrary");
+                    FileStream[] files = r4mAssembly.GetFiles();
+                    Console.WriteLine(files.Length);
+
+                    string resourceName = r4mAssembly.GetManifestResourceNames()
+                        .Where(str => str.Contains("appsettings.json")).FirstOrDefault();
+
+                    using (Stream stream = r4mAssembly.GetManifestResourceStream(resourceName))
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        string result = reader.ReadToEnd();
+                        File.WriteAllText(dinfo.DirectoryName + @"/" + "appSettings.json", result);
+
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorString = ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks if appSettings.json file exists in the core folder of the consuming project 
+        /// of the Route4MeDbLibrary
+        /// </summary>
+        /// <returns>True, if the file appSettings.json exists</returns>
+        public static bool CheckIfAppsettingsFileExists()
+        {
+            string entryLocation = Assembly.GetEntryAssembly().Location;
+
+            FileInfo dinfo = new FileInfo(entryLocation);
+
+            dinfo = new FileInfo(dinfo.DirectoryName + @"/" + "appSettings.json");
+
+            return dinfo.Exists;
         }
     }
 }

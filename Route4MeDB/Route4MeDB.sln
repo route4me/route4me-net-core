@@ -8,6 +8,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9EEB733F-3695-478A-BA9F-D4B10F753B47}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route4MeDbLibrary", "Route4MeDbLibrary\Route4MeDbLibrary.csproj", "{1D2533B7-B671-4EF0-87F0-016858A4E017}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4C4B9E03-92A0-4E2A-9CA9-2F23510BC3A8} = {4C4B9E03-92A0-4E2A-9CA9-2F23510BC3A8}
+		{9EEB733F-3695-478A-BA9F-D4B10F753B47} = {9EEB733F-3695-478A-BA9F-D4B10F753B47}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{517226A4-0A40-4CF8-857F-3C46B9E0B48F}"
 EndProject
