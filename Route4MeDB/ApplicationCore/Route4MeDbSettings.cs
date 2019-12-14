@@ -1,4 +1,4 @@
-﻿namespace Route4MeDB
+﻿namespace Route4MeDB.ApplicationCore
 {
     public class Route4MeDbSettings
     {

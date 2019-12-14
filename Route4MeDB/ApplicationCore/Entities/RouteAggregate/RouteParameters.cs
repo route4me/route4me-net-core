@@ -382,6 +382,84 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public double? TruckLengthMeters { get; set; }
 
         /// <summary>
+        /// Comma-delimited list of the truck hazardous goods
+        /// </summary>
+        [Column("truck_hazardous_goods")]
+        public string TruckHazardousGoods { get; set; }
+
+        /// <summary>
+        /// Truck axles number.
+        /// </summary>
+        [Column("truck_axles")]
+        public int? TruckAxles { get; set; }
+
+        /// <summary>
+        /// Truck toll road usage. enum: ["YES", "NO"]
+        /// </summary>
+        [Column("truck_toll_road_usage")]
+        public string TruckTollRoadUsage { get; set; }
+
+        /// <summary>
+        /// Truck avoid ferries. enum: ["YES", "NO"]
+        /// </summary>
+        [Column("truck_avoid_ferries")]
+        public string TruckAvoidFerries { get; set; }
+
+        /// <summary>
+        /// Truck highway only. enum: ["YES", "NO"]
+        /// </summary>
+        [Column("truck_hwy_only")]
+        public string TruckHwyOnly { get; set; }
+
+        /// <summary>
+        /// Truck of the type Long Combination Vehicle. enum: ["YES", "NO"]
+        /// </summary>
+        [Column("truck_lcv")]
+        public string TruckLcv { get; set; }
+
+        /// <summary>
+        /// Avoid international borders. enum: ["YES", "NO"]
+        /// </summary>
+        [Column("truck_borders")]
+        public string TruckBorders { get; set; }
+
+        /// <summary>
+        ///Truck side street adherence.
+        /// enum: ["OFF", "MINIMAL","MODERATE","AVERAGE","STRICT","ADHERE","STRONGLYHERE"]
+        /// </summary>
+        [Column("truck_side_street_adherence")]
+        public string TruckSideStreetAdherence { get; set; }
+
+        /// <summary>
+        /// Truck configuration.
+        /// enum: ["NONE","PASSENGER","28_DOUBLETRAILER","48_STRAIGHT_TRUCK",
+        /// "48_SEMI_TRAILER","53_SEMI_TRAILER","FULLSIZEVAN","26_STRAIGHT_TRUCK"]
+        /// </summary>
+        [Column("truck_config")]
+        public string TruckConfig { get; set; }
+
+        /// <summary>
+        /// Truck dimension unit. enum: ["mi","km"]
+        /// </summary>
+        [Column("truck_dim_unit")]
+        public string TruckDimUnit { get; set; }
+
+        /// <summary>
+        /// Truck type. 
+        /// enum: ["suv","pickup_truck","van","18wheeler","cabin","waste_disposal",
+        /// "tree_cutting","bigrig","cement_mixer","livestock_carrier","dairy",
+        /// "tractor_trailer"]
+        /// </summary>
+        [Column("truck_type")]
+        public string TruckType { get; set; }
+
+        /// <summary>
+        /// If travel_mode = 'Trucking', specifies the truck weight (required)
+        /// </summary>
+        [Column("truck_weight")]
+        public double? TruckWeight { get; set; }
+
+        /// <summary>
         /// The minimum number of stops permitted per created subroute.
         /// </summary>
         [Column("min_tour_size")]
@@ -420,6 +498,24 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// </summary>
         [Column("rightturn")]
         public int? RightTurn { get; set; }
+
+        /// <summary>
+        /// Route travel time slowdown (e.g. 25 (means 25% slowdown))
+        /// </summary>
+        [Column("route_time_multiplier")]
+        public double? RouteTimeMultiplier { get; set; }
+
+        /// <summary>
+        /// Route service time slowdown (e.g. 10 (means 10% slowdown))
+        /// </summary>
+        [Column("route_service_time_multiplier")]
+        public double? RoutServiceTimeMultiplier { get; set; }
+
+        /// <summary>
+        /// Optimization engine (e.g. '1','2' etc)
+        /// </summary>
+        [Column("optimization_engine")]
+        public string OptimizationEngine { get; set; }
 
         /// <summary>
         /// If the service time is specified, all the route addresses wil have same service time. 

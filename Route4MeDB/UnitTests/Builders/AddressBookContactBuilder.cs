@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
 using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
-using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
 
 namespace Route4MeDB.UnitTests.Builders
 {
@@ -55,7 +52,6 @@ namespace Route4MeDB.UnitTests.Builders
         {
             _addressBookContact = new AddressBookContact()
             {
-                //Id = new Guid(),
                 Address1 = testData.Address1,
                 AddressAlias = testData.AddressAlias,
                 AddressGroup = testData.AddressGroup,

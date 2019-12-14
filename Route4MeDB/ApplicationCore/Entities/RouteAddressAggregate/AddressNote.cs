@@ -117,7 +117,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         }
 
         public int RouteDestinationDbId { get; set; }
-        [ForeignKey("FK_AddressNotes_Addresses_RouteDestinationDbId")]
+        [ForeignKey("FK_AddressNotes_RouteDestinationDbId")]
         public Address address { get; set; }
 
         public string RouteDbId { get; set; }

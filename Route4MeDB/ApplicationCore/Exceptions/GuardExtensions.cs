@@ -1,7 +1,7 @@
 ﻿//using Route4MeDB.ApplicationCore.Exceptions;
 //using Route4MeDB.ApplicationCore.Entities.BasketAggregate;
 
-namespace Ardalis.GuardClauses
+namespace Ardalis.GuardClauses.Exceptions
 {
     public static class BasketGuards
     {

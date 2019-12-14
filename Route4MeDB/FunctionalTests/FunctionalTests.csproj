@@ -9,6 +9,8 @@
   <ItemGroup>
     <None Remove="App.config" />
     <None Remove="appsettings.json" />
+    <None Remove="TestData\one_complex_contact.json" />
+    <None Remove="TestData\one_complex_order.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,22 +20,42 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\one_complex_contact.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\one_complex_order.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="Pomelo.Extensions.Caching.MySql" Version="2.0.2" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Route4MeDbLibrary\Route4MeDbLibrary.csproj" />
     <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestData\" />
     <Folder Include="SqlServerDb\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Infrastructure">
+      <HintPath>..\Infrastructure\bin\Debug\netcoreapp2.2\Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Route4MeDbLibrary">
+      <HintPath>..\Route4MeDbLibrary\bin\Debug\netcoreapp2.2\Route4MeDbLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

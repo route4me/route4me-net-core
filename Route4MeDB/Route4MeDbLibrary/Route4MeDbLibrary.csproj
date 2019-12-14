@@ -4,9 +4,26 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <Company>Route4Me</Company>
     <Authors>Oleg Guchashvili</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
+    <Version>1.0.0.1</Version>
+    <Description>The library enables to create/use different engine databases for consuming Route4Me system.
+
+Supported database engines:
+- MsSql (SqlExpress, LocalDb)
+- MySql
+- PostgrSql
+- SQLite
+
+The library is done in the c# (.net core) envirnoment and it's platform-independent.</Description>
+    <Copyright>Copyright (C) 2019 - 2019 Route4Me</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://route4me.io/</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/route4me/route4me-net-core/master/route4me-csharp-sdk/r4m_icon_rounded_corners.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/Route4MeDB</RepositoryUrl>
+    <RepositoryType>GIt</RepositoryType>
+    <PackageTags>Database, SQL, MsSql, MySql, PostgreSql, SQLite, Route4Me, Route Optimization</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -14,16 +31,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="lib\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <None Remove="lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.json" />
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="Pomelo.Extensions.Caching.MySql" Version="2.0.2" />
+    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.0.2" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

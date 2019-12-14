@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
-using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
+﻿using Route4MeDB.ApplicationCore.Entities.OrderAggregate;
 using System.Collections.Generic;
 
 namespace Route4MeDB.UnitTests.Builders

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Route4MeDB.FunctionalTest;
+using Route4MeDB.ApplicationCore.Specifications;
 
 namespace Route4MeDB.FunctionalTests.PostgreSqlDb
 {
@@ -61,6 +62,33 @@ namespace Route4MeDB.FunctionalTests.PostgreSqlDb
             foreach (var linqOrder in linqOrders)
             {
                 Assert.Contains<int>(linqOrder.OrderDbId, orders.Select(x => x.AddressDbId));
+            }
+        }
+
+        [IgnoreIfNoPostgreSqlDb]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/one_complex_order.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                Order importedOrder = dataExchange.ConvertSdkJsonContentToEntity<Order>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.Orders.Add(importedOrder);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+                int orderDbId = importedOrder.OrderDbId;
+
+                var orderSpec = new OrderSpecification(orderDbId);
+
+                var orderFromRepo = await fixture.r4mdbManager.OrdersRepository.GetByIdAsync(orderSpec);
+
+                Assert.IsType<Order>(orderFromRepo);
             }
         }
 

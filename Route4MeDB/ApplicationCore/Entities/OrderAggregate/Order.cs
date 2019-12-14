@@ -138,5 +138,15 @@ namespace Route4MeDB.ApplicationCore.Entities.OrderAggregate
 
         [Column("order_icon")]
         public string OrderIcon { get; set; }
+
+        [Column("custom_user_fields")]
+        public string CustomUserFields { get; set; }
+
+        [NotMapped]
+        public OrderCustomField[] CustomFieldsObj
+        {
+            get { return CustomUserFields == null ? null : JsonConvert.DeserializeObject<OrderCustomField[]>(CustomUserFields); }
+            set { CustomUserFields = JsonConvert.SerializeObject(value); }
+        }
     }
 }

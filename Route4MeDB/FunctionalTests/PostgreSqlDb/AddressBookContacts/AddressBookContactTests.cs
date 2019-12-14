@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Route4MeDB.FunctionalTest;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using Route4MeDB.ApplicationCore.Specifications;
 
 namespace Route4MeDB.FunctionalTests.PostgreSqlDb
 {
@@ -70,6 +72,33 @@ namespace Route4MeDB.FunctionalTests.PostgreSqlDb
             foreach (var linqContact in linqContacts)
             {
                 Assert.Contains(linqContact, contacts);
+            }
+        }
+
+        [IgnoreIfNoPostgreSqlDb]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/one_complex_contact.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                AddressBookContact importedContact = dataExchange.ConvertSdkJsonContentToEntity<AddressBookContact>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.AddressBookContacts.Add(importedContact);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+                int addressDbId = importedContact.AddressDbId;
+
+                var addressSpec = new AddressBookContactSpecification(addressDbId);
+
+                var addressBookContactFromRepo = await fixture.r4mdbManager.ContactsRepository.GetByIdAsync(addressSpec);
+
+                Assert.IsType<AddressBookContact>(addressBookContactFromRepo);
             }
         }
 
