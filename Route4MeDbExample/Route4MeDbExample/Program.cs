@@ -22,7 +22,9 @@ namespace Route4MeDbExample
 
             // runExample.CopyRouteJsonResponseToDatabase();
 
-             runExample.CreateOptimizationAndSaveToDatabase();
+            // runExample.CreateOptimizationAndSaveToDatabase();
+
+            runExample.ExportOrderEntityToSdkOrderObject();
             #endregion
 
             Console.ReadKey();

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Route4MeDB.FunctionalTest;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Route4MeDB.FunctionalTests.PostgreSqlDb
 {
@@ -110,6 +111,48 @@ namespace Route4MeDB.FunctionalTests.PostgreSqlDb
             Assert.Equal(firstOptimization.Addresses.Count, optimizationFromRepo.Addresses.Count);
             Assert.Equal(firstOptimization.CreatedTimestamp, linqOPtimization.CreatedTimestamp);
             Assert.Equal(firstOptimization.Links, linqOPtimization.Links);
+        }
+
+        [IgnoreIfNoPostgreSqlDb]
+        public async void ExportOptimizationEntityToSdkOptimizationObject()
+        {
+            var firstOptimization = fixture.optimizationBuilder.OptimizationWith24Stops();
+            var optimization = await fixture._route4meDbContext.Optimizations.AddAsync(firstOptimization);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            var sdkOptimization = dataExchange.ConvertEntityToSDK<Route4MeSDK.DataTypes.DataObject>(optimization.Entity, out string errorString);
+
+            Assert.IsType<Route4MeSDK.DataTypes.DataObject>(sdkOptimization);
+        }
+
+        [IgnoreIfNoPostgreSqlDb]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/sd_optimization_10stops_RESPONSE.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                var importedOptimization = dataExchange.ConvertSdkJsonContentToEntity<OptimizationProblem>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.Optimizations.Add(importedOptimization);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+                string optimizationDbId = importedOptimization.OptimizationProblemDbId;
+
+                var optimizationSpec = new OptimizationSpecification(optimizationDbId);
+
+                var optimizationFromRepo = await fixture.r4mdbManager.OptimizationsRepository.GetByIdAsync(optimizationSpec);
+
+                Assert.IsType<OptimizationProblem>(optimizationFromRepo);
+            }
         }
 
         [IgnoreIfNoPostgreSqlDb]

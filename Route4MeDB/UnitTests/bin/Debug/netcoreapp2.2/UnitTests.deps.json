@@ -19,7 +19,7 @@
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0",
           "Infrastructure": "1.0.0.1",
-          "Route4MeDbLibrary": "1.0.0.1"
+          "Route4MeDbLibrary": "1.0.0.2"
         },
         "runtime": {
           "UnitTests.dll": {}
@@ -2455,11 +2455,11 @@
           }
         }
       },
-      "Route4MeDbLibrary/1.0.0.1": {
+      "Route4MeDbLibrary/1.0.0.2": {
         "runtime": {
           "Route4MeDbLibrary.dll": {
-            "assemblyVersion": "1.0.0.1",
-            "fileVersion": "1.0.0.1"
+            "assemblyVersion": "1.0.0.2",
+            "fileVersion": "1.0.0.2"
           }
         }
       }
@@ -3986,7 +3986,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Route4MeDbLibrary/1.0.0.1": {
+    "Route4MeDbLibrary/1.0.0.2": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

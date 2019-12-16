@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.2": {
-      "Route4MeDbLibrary/1.0.0.1": {
+      "Route4MeDbLibrary/1.0.0.2": {
         "dependencies": {
           "ApplicationCore": "1.0.0.1",
           "Infrastructure": "1.0.0.1",
@@ -21,7 +21,7 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "2.2.4",
           "Pomelo.EntityFrameworkCore.MySql": "2.2.0",
           "Pomelo.Extensions.Caching.MySql": "2.0.2",
-          "Route4MeSDKLibrary": "1.0.0.2",
+          "Route4MeSDKLibrary": "1.0.0.3",
           "System.Collections": "4.3.0"
         },
         "runtime": {
@@ -1269,7 +1269,7 @@
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.0.2": {
+      "Route4MeSDKLibrary/1.0.0.3": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
@@ -1281,8 +1281,8 @@
         },
         "runtime": {
           "lib/netcoreapp2.2/Route4MeSDKLibrary.dll": {
-            "assemblyVersion": "1.0.0.2",
-            "fileVersion": "1.0.0.2"
+            "assemblyVersion": "1.0.0.3",
+            "fileVersion": "1.0.0.3"
           }
         }
       },
@@ -2206,7 +2206,7 @@
     }
   },
   "libraries": {
-    "Route4MeDbLibrary/1.0.0.1": {
+    "Route4MeDbLibrary/1.0.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2925,12 +2925,12 @@
       "path": "remotion.linq/2.2.0",
       "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.0.2": {
+    "Route4MeSDKLibrary/1.0.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3EhxxvutdUWQdYFZS3pZEai/t5usItyvxIvjAnjG4XJWnKs5GwRsJMPgsXWHotjRlPaQKb71y2x1jv11wtk8Qg==",
-      "path": "route4mesdklibrary/1.0.0.2",
-      "hashPath": "route4mesdklibrary.1.0.0.2.nupkg.sha512"
+      "sha512": "sha512-UJSdV+KvSOPHIk/FxrdTM2P/C7VHDZEHfbh2rySsFiV3EpINceoxGdAIWYQk6QtWRu/P8Av1n6d8hN92865MGg==",
+      "path": "route4mesdklibrary/1.0.0.3",
+      "hashPath": "route4mesdklibrary.1.0.0.3.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

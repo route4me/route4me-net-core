@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Route4MeDB.FunctionalTest;
+using System.IO;
 
 namespace Route4MeDB.FunctionalTests.SqlExpressDb
 {
@@ -105,6 +106,49 @@ namespace Route4MeDB.FunctionalTests.SqlExpressDb
             Assert.Equal(firstRoute.Addresses.Count, routeFromRepo.Addresses.Count);
             Assert.Equal(firstRoute.CreatedTimestamp, linqRoute.CreatedTimestamp);
             Assert.Equal(firstRoute.Links, linqRoute.Links);
+        }
+
+        [IgnoreIfNoSqlexpressDb]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/route_with_all_parameters.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                var importedRoute = dataExchange.ConvertSdkJsonContentToEntity<Route>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.Routes.Add(importedRoute);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+
+                string routeDbId = importedRoute.RouteDbId;
+
+                var routeSpec = new RouteSpecification(routeDbId);
+
+                var routeFromRepo = await fixture.r4mdbManager.RoutesRepository.GetByIdAsync(routeSpec);
+
+                Assert.IsType<Route>(routeFromRepo);
+            }
+        }
+
+        [IgnoreIfNoSqlexpressDb]
+        public async void ExportRouteEntityToSdkRouteObject()
+        {
+            var firstRoute = fixture.routeBuilder.RouteWith10Stops();
+            var route = await fixture._route4meDbContext.Routes.AddAsync(firstRoute);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            var sdkRoute = dataExchange.ConvertEntityToSDK<Route4MeSDK.DataTypes.DataObjectRoute>(route.Entity, out string errorString);
+
+            Assert.IsType<Route4MeSDK.DataTypes.DataObjectRoute>(sdkRoute);
         }
 
         [IgnoreIfNoSqlexpressDb]
