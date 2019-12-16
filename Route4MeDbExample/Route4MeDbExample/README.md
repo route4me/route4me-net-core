@@ -1,4 +1,4 @@
-# Usage Example of the Route4MeDbLibary package (.net core)
+# Usage Example of the Route4MeDbLibrary package (.net core)
 
 
 This simple console c# (.net core) project demonstrates the functionalities of the Route4MeDbLibrary package.
@@ -8,7 +8,7 @@ The project is done with the Visual Studio 2019.
 
 ### Project Implementation Steps
 
-1. Create console c# (.net project);
+1. Create console c# (.net core) project;
 
 2. Search NuGet for the package Route4MeDbLibrary and install it in the created project;
 
