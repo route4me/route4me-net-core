@@ -13,8 +13,7 @@ namespace Route4MeDbExample
         {
             var runExample = new RunExamples(Route4MeDB.Route4MeDbLibrary.DatabaseProviders.InMemory);
 
-
-            runExample.c_ApiKey = "51d0c0701ce83855c9f62d0440096e7c";
+            runExample.c_ApiKey = "11111111111111111111111111111111";
 
             #region // Run the examples. Note: uncomment a line for executing.
             // runExample.CreateRoute4MeDatabase();
