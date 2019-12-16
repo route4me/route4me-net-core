@@ -32,7 +32,7 @@ namespace Route4MeDB.FunctionalTest
                 if (!_route4meDbContext.Database.CanConnect())
                 {
                     Skip = "Cannot find "+ dbProvider + " server";
-                    return;
+                    //return;
                 }
                 if (!(_route4meDbContext.Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
                 {

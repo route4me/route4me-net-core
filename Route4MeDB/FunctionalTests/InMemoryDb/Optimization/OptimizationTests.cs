@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Route4MeDB.Route4MeDbLibrary;
+using System.IO;
+using Route4MeDB.ApplicationCore.Specifications;
 
 namespace Route4MeDB.FunctionalTests.InMemoryDb
 {
@@ -83,6 +85,48 @@ namespace Route4MeDB.FunctionalTests.InMemoryDb
             {
                 Assert.Contains(linqOptimizationId, optimizationIds);
             }
+        }
+
+        [Fact]
+        public async void ImportJsonDataToDataBaseTest()
+        {
+            string testDataFile = @"TestData/sd_optimization_10stops_RESPONSE.json";
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            using (StreamReader reader = new StreamReader(testDataFile))
+            {
+                var jsonContent = reader.ReadToEnd();
+                reader.Close();
+
+                var importedOptimization = dataExchange.ConvertSdkJsonContentToEntity<OptimizationProblem>(jsonContent, out string errorString);
+
+                fixture._route4meDbContext.Optimizations.Add(importedOptimization);
+
+                await fixture._route4meDbContext.SaveChangesAsync();
+                string optimizationDbId = importedOptimization.OptimizationProblemDbId;
+
+                var optimizationSpec = new OptimizationSpecification(optimizationDbId);
+
+                var optimizationFromRepo = await fixture.r4mdbManager.OptimizationsRepository.GetByIdAsync(optimizationSpec);
+
+                Assert.IsType<OptimizationProblem>(optimizationFromRepo);
+            }
+        }
+
+        [Fact]
+        public async void ExportOptimizationEntityToSdkOptimizationObject()
+        {
+            var firstOptimization = fixture.optimizationBuilder.OptimizationWith24Stops();
+            var optimization = await fixture._route4meDbContext.Optimizations.AddAsync(firstOptimization);
+
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            var sdkOptimization = dataExchange.ConvertEntityToSDK<Route4MeSDK.DataTypes.DataObject>(optimization.Entity, out string errorString);
+
+            Assert.IsType<Route4MeSDK.DataTypes.DataObject>(sdkOptimization);
         }
 
         [Fact]

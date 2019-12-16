@@ -120,6 +120,16 @@ namespace Route4MeDB.Route4MeDbLibrary
             get { return new OrderRepository(Route4MeContext); }
         }
 
+        public OptimizationRepository OptimizationsRepository
+        {
+            get { return new OptimizationRepository(Route4MeContext); }
+        }
+
+        public RouteRepository RoutesRepository
+        {
+            get { return new RouteRepository(Route4MeContext); }
+        }
+
         public DbContextOptions<Route4MeDbContext> GetOptions(DatabaseProviders databaseProvider)
         {
             _options = new DbContextOptionsBuilder<Route4MeDbContext>()

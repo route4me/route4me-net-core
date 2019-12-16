@@ -70,6 +70,20 @@ namespace Route4MeDB.FunctionalTests.LocalDb
         }
 
         [IgnoreIfNoLocalDb]
+        public async void ExportOrderEntityToSdkOrderObject()
+        {
+            var order = fixture.orderBuilder.WithDefaultValues();
+            var createdOrder = await fixture._route4meDbContext.Orders.AddAsync(order);
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            var sdkOrder = dataExchange.ConvertEntityToSDK<Route4MeSDK.DataTypes.Order>(createdOrder.Entity, out string errorString);
+
+            Assert.IsType<Route4MeSDK.DataTypes.Order>(sdkOrder);
+        }
+
+        [IgnoreIfNoLocalDb]
         public async void ImportJsonDataToDataBaseTest()
         {
             string testDataFile = @"TestData/one_complex_order.json";

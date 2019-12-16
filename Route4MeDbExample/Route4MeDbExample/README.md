@@ -32,7 +32,6 @@ namespace Route4MeDbExample
         {
             var runExample = new RunExamples(Route4MeDB.Route4MeDbLibrary.DatabaseProviders.InMemory);
 
-
             runExample.c_ApiKey = "11111111111111111111111111111111";
 
             #region // Run the examples. Note: uncomment a line for executing.
@@ -42,20 +41,23 @@ namespace Route4MeDbExample
 
             // runExample.CopyRouteJsonResponseToDatabase();
 
-             runExample.CreateOptimizationAndSaveToDatabase();
+            // runExample.CreateOptimizationAndSaveToDatabase();
+
+            runExample.ExportOrderEntityToSdkOrderObject();
             #endregion
 
             Console.ReadKey();
-        }
-    }
+		}
+	}
 }
 ```
 
-5. The module RunExamples contains 4 examlples (methods):
+5. The module RunExamples contains 5 examlples (methods):
 
 - CreateRoute4MeDatabase - demonstrates how to create a database with Route4Me data structure in the specified database provider.
 - CreateAddressBookContact - demonstrates how to initialize and save in the database an address book contact.
 - CopyRouteJsonResponseToDatabase - demonstrates how to import JSON content of the Route4Me route object and save it in the database.
 - CreateOptimizationAndSaveToDatabase - demonstrates how to create an optimization in the Route4Me account and simultaneously save it in the database.
+- ExportOrderEntityToSdkOrderObject - demonstrates how to initialize and save the order to the order entity and export it to the SDK order object.
 
 Create database in the appropriate database provider if it doesn't exist, set API key and run the project.

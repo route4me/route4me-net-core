@@ -284,5 +284,40 @@ namespace Route4MeDbExample
             #endregion
         }
 
+        /// <summary>
+        /// Exports an order entity to the order sdk object.
+        /// </summary>
+        public async void ExportOrderEntityToSdkOrderObject()
+        {
+            if (!AppSetingsFileExists) return;
+
+            #region // Create an order in the order entity
+            DateTime dtTomorrow = DateTime.Now + (new TimeSpan(1, 0, 0, 0));
+
+            var order = new Route4MeDB.ApplicationCore.Entities.OrderAggregate.Order()
+            {
+                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                AddressAlias = "Test AddressAlias " + (new Random()).Next().ToString(),
+                CachedLat = 37.773972,
+                CachedLng = -122.431297,
+                DayScheduledForYyMmDd = dtTomorrow.ToString("yyyy-MM-dd")
+            };
+
+            var orderRepo = new OrderRepository(route4MeDb.Route4MeContext);
+
+            var createdOrder = await orderRepo.AddAsync(order);
+
+            Console.WriteLine("Created order DB ID = " + createdOrder.OrderDbId);
+
+            route4MeDb.Route4MeContext.SaveChangesAsync();
+            #endregion
+
+            #region // Export the order from order entity to the SDK order object
+            var sdkOrder = exchangeHelper
+                .ConvertEntityToSDK<Route4MeSDK.DataTypes.Order>(createdOrder, out string errorString);
+
+            Console.WriteLine("Exported SDK order ID = " + createdOrder.OrderDbId);
+            #endregion
+        }
     }
 }
