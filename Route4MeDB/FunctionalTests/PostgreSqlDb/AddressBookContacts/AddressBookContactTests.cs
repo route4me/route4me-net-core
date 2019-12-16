@@ -76,6 +76,20 @@ namespace Route4MeDB.FunctionalTests.PostgreSqlDb
         }
 
         [IgnoreIfNoPostgreSqlDb]
+        public async void ExportContactEntityToSdkContactObject()
+        {
+            var addressBookContact = fixture.addressBookContactBuilder.WithDefaultValues();
+            var CreatedContact = await fixture._route4meDbContext.AddressBookContacts.AddAsync(addressBookContact);
+            await fixture._route4meDbContext.SaveChangesAsync();
+
+            DataExchangeHelper dataExchange = new DataExchangeHelper();
+
+            var sdkContact = dataExchange.ConvertEntityToSDK<Route4MeSDK.DataTypes.AddressBookContact>(CreatedContact.Entity, out string errorString);
+
+            Assert.IsType<Route4MeSDK.DataTypes.AddressBookContact>(sdkContact);
+        }
+
+        [IgnoreIfNoPostgreSqlDb]
         public async void ImportJsonDataToDataBaseTest()
         {
             string testDataFile = @"TestData/one_complex_contact.json";

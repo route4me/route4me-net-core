@@ -9,7 +9,7 @@
       "Route4MeDbExample/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Json": "2.2.0",
-          "Route4MeDbLibrary": "1.0.0.1"
+          "Route4MeDbLibrary": "1.0.0.2"
         },
         "runtime": {
           "Route4MeDbExample.dll": {}
@@ -1306,7 +1306,7 @@
           }
         }
       },
-      "Route4MeDbLibrary/1.0.0.1": {
+      "Route4MeDbLibrary/1.0.0.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.2.0",
@@ -1319,7 +1319,7 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "2.2.4",
           "Pomelo.EntityFrameworkCore.MySql": "2.2.0",
           "Pomelo.Extensions.Caching.MySql": "2.0.2",
-          "Route4MeSDKLibrary": "1.0.0.2",
+          "Route4MeSDKLibrary": "1.0.0.3",
           "System.Collections": "4.3.0"
         },
         "runtime": {
@@ -1332,12 +1332,12 @@
             "fileVersion": "1.0.0.1"
           },
           "lib/netcoreapp2.2/Route4MeDbLibrary.dll": {
-            "assemblyVersion": "1.0.0.1",
-            "fileVersion": "1.0.0.1"
+            "assemblyVersion": "1.0.0.2",
+            "fileVersion": "1.0.0.2"
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.0.2": {
+      "Route4MeSDKLibrary/1.0.0.3": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
@@ -1349,8 +1349,8 @@
         },
         "runtime": {
           "lib/netcoreapp2.2/Route4MeSDKLibrary.dll": {
-            "assemblyVersion": "1.0.0.2",
-            "fileVersion": "1.0.0.2"
+            "assemblyVersion": "1.0.0.3",
+            "fileVersion": "1.0.0.3"
           }
         }
       },
@@ -3094,19 +3094,19 @@
       "path": "remotion.linq/2.2.0",
       "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
     },
-    "Route4MeDbLibrary/1.0.0.1": {
+    "Route4MeDbLibrary/1.0.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fx159unFQk57o4jdbrablKo0XTP6e3b/+iwU7wsrNVEFS9kqJvdv9x02KVDypk0XFKPKo68wSm9qPfO/qolkOA==",
-      "path": "route4medblibrary/1.0.0.1",
-      "hashPath": "route4medblibrary.1.0.0.1.nupkg.sha512"
+      "sha512": "sha512-BeHlJla66aBhtZTCVGEQG8konvklgU+SN5s6ariIlkPW+agl9N/cny/iF3x/ceJseTx4UTohuzvbNKPo4Lz9gw==",
+      "path": "route4medblibrary/1.0.0.2",
+      "hashPath": "route4medblibrary.1.0.0.2.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.0.2": {
+    "Route4MeSDKLibrary/1.0.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3EhxxvutdUWQdYFZS3pZEai/t5usItyvxIvjAnjG4XJWnKs5GwRsJMPgsXWHotjRlPaQKb71y2x1jv11wtk8Qg==",
-      "path": "route4mesdklibrary/1.0.0.2",
-      "hashPath": "route4mesdklibrary.1.0.0.2.nupkg.sha512"
+      "sha512": "sha512-UJSdV+KvSOPHIk/FxrdTM2P/C7VHDZEHfbh2rySsFiV3EpINceoxGdAIWYQk6QtWRu/P8Av1n6d8hN92865MGg==",
+      "path": "route4mesdklibrary/1.0.0.3",
+      "hashPath": "route4mesdklibrary.1.0.0.3.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

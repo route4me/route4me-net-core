@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.0.2</Version>
     <Description>The library enables to create/use different engine databases for consuming Route4Me system.
 
 Supported database engines:
@@ -62,7 +62,7 @@ The library is done in the c# (.net core) envirnoment and it's platform-independ
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
     <PackageReference Include="Pomelo.Extensions.Caching.MySql" Version="2.0.2" />
-    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.0.2" />
+    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.0.3" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
