@@ -52,7 +52,7 @@ namespace Route4MeDbExample
 }
 ```
 
-5. The module RunExamples contains 5 examlples (methods):
+5. The module RunExamples contains 5 examples (methods):
 
 - CreateRoute4MeDatabase - demonstrates how to create a database with Route4Me data structure in the specified database provider.
 - CreateAddressBookContact - demonstrates how to initialize and save in the database an address book contact.

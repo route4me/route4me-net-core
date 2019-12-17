@@ -316,7 +316,7 @@ namespace Route4MeDbExample
             var sdkOrder = exchangeHelper
                 .ConvertEntityToSDK<Route4MeSDK.DataTypes.Order>(createdOrder, out string errorString);
 
-            Console.WriteLine("Exported SDK order ID = " + createdOrder.OrderDbId);
+            Console.WriteLine("Exported SDK order ID = " + sdkOrder.OrderId);
             #endregion
         }
     }
