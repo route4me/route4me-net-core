@@ -247,6 +247,7 @@ namespace Route4MeSDK.DataTypes
         /// <para><value>6 = TRUCKING</value></para>
         /// </summary>
         [DataMember(Name = "dm", EmitDefaultValue = false)]
+        [Range(1, 12)]
         public int? DM { get; set; }
 
         /// <summary>
@@ -258,6 +259,7 @@ namespace Route4MeSDK.DataTypes
         /// <para><value>4 = DEPRECATED</value></para>
         /// </summary>
         [DataMember(Name = "dirm", EmitDefaultValue = false)]
+        [Range(1, 10)]
         public int? Dirm { get; set; }
 
         /// <summary>
