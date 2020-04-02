@@ -15,8 +15,10 @@ The service is typically used by organizations who must route many drivers to ma
     <PackageIconUrl>https://raw.githubusercontent.com/route4me/route4me-net-core/master/route4me-csharp-sdk/r4m_icon_rounded_corners.ico</PackageIconUrl>
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Route4Me, Route Optimization</PackageTags>
-    <Version>1.0.0.1</Version>
+    <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
+    <Version>1.0.0.4</Version>
+    <PackageReleaseNotes>Changed the type of the AddressNote property 'CustomTypes'
+from 'CustomNoteType[]' to 'AddressCustomNote[]'</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

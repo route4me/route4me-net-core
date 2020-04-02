@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.2": {
-      "Route4MeSDKLibrary/1.0.0.1": {
+      "Route4MeSDKLibrary/1.0.0.4": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
@@ -619,7 +619,7 @@
     }
   },
   "libraries": {
-    "Route4MeSDKLibrary/1.0.0.1": {
+    "Route4MeSDKLibrary/1.0.0.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
