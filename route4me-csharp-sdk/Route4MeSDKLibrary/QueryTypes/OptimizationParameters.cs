@@ -75,6 +75,14 @@ namespace Route4MeSDK.QueryTypes
         [HttpQueryMemberAttribute(Name = "offset", EmitDefaultValue = false)]
         public uint? Offset { get; set; }
 
+        [IgnoreDataMember]
+        [HttpQueryMemberAttribute(Name = "start_date", EmitDefaultValue = false)]
+        public string StartDate { get; set; }
+
+        [IgnoreDataMember]
+        [HttpQueryMemberAttribute(Name = "end_date", EmitDefaultValue = false)]
+        public string EndDate { get; set; }
+
         /// <summary>
         /// The optimization state.
         /// <para>Available values: </para>

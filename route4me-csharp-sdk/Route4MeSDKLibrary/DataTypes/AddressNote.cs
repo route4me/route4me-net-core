@@ -88,10 +88,10 @@ namespace Route4MeSDK.DataTypes
         public string DeviceType { get; set; }
 
         /// <summary>
-        /// Custom address botes
+        /// Custom address notes
         /// </summary>
         [DataMember(Name = "custom_types")]
-        public CustomNoteType[] CustomTypes { get; set; }
+        public AddressCustomNote[] CustomTypes { get; set; }
 
     }
 }
