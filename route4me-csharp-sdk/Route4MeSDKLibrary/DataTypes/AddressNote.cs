@@ -92,6 +92,5 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "custom_types")]
         public AddressCustomNote[] CustomTypes { get; set; }
-
     }
 }

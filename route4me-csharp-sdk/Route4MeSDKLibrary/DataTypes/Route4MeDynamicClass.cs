@@ -12,6 +12,8 @@ namespace Route4MeSDK.DataTypes
     /// </summary>
     public class Route4MeDynamicClass : DynamicObject
     {
+        private readonly Dictionary<string, object> _dynamicProperties = new Dictionary<string, object>();
+
         /// <summary>
         /// Tries to set member
         /// </summary>
@@ -20,7 +22,7 @@ namespace Route4MeSDK.DataTypes
         /// <returns>True, if a member binded successfully</returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            DynamicProperties.Add(binder.Name, value);
+            _dynamicProperties.Add(binder.Name, value);
 
             // additional error checking code omitted
 
@@ -30,12 +32,15 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         /// Getter of the dynamic properties
         /// </summary>
-        public Dictionary<string, object> DynamicProperties { get; } = new Dictionary<string, object>();
+        public Dictionary<string, object> DynamicProperties
+        {
+            get { return _dynamicProperties; }
+        }
 
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            return DynamicProperties.TryGetValue(binder.Name, out result);
+            return _dynamicProperties.TryGetValue(binder.Name, out result);
         }
 
         /// <summary>
@@ -46,7 +51,7 @@ namespace Route4MeSDK.DataTypes
         {
             var sb = new StringBuilder();
 
-            foreach (var property in DynamicProperties)
+            foreach (var property in _dynamicProperties)
             {
                 sb.AppendLine($"Property '{property.Key}' = '{property.Value}'");
             }
@@ -77,8 +82,8 @@ namespace Route4MeSDK.DataTypes
 
                 if (typedValue == "IgnoreDataMemberAttribute") continue;
 
-                if (!DynamicProperties.ContainsKey(typedValue))
-                    DynamicProperties.Add(typedValue, r4mObject.GetType().GetProperty(propertyName).GetValue(r4mObject));
+                if (!_dynamicProperties.ContainsKey(typedValue))
+                    _dynamicProperties.Add(typedValue, r4mObject.GetType().GetProperty(propertyName).GetValue(r4mObject));
             }
         }
     }

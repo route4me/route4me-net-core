@@ -1,4 +1,6 @@
-﻿namespace Route4MeSDK.QueryTypes
+﻿using System.Collections.Generic;
+
+namespace Route4MeSDK.QueryTypes
 {
     /// <summary>
     /// Parameters for the address note(s) request.
@@ -53,14 +55,6 @@
         public string DeviceType { get; set; }
 
         /// <summary>
-        /// Update type of a note file.
-        /// <para>Available values:</para>
-        /// <value>'DRIVER_IMG', 'VEHICLE_IMG', 'ADDRESS_IMG', 'CSV_FILE', 'XLS_FILE', 'ANY_FILE'</value>, 
-        /// </summary>
-        [HttpQueryMemberAttribute(Name = "strUpdateType")]
-        public string ActivityType { get; set; }
-
-        /// <summary>
         /// Response format.
         /// <para>Available values:</para>
         /// <value>json, xml</value>, 
@@ -68,7 +62,30 @@
         [HttpQueryMemberAttribute(Name = "format")]
         public string Format { get; set; }
 
-        //[HttpQueryMemberAttribute(Name = "strNoteContents", EmitDefaultValue = false)]
-        //public string StrNoteContents { get; set; }
+        /// <summary>
+        /// Update type of a note file.
+        /// <para>Available values:</para>
+        /// <value>'DRIVER_IMG', 'VEHICLE_IMG', 'ADDRESS_IMG', 'CSV_FILE', 'XLS_FILE', 'ANY_FILE'</value>, 
+        /// </summary>
+        public string ActivityType { get; set; }
+
+        /// <summary>
+        /// Text content of the note.
+        /// API equivalent: strNoteContents.
+        /// </summary>
+        public string StrNoteContents { get; set; }
+
+        /// <summary>
+        /// A temporary filename of a prepared for uploading file.
+        /// API equivalent: strFileName.
+        /// </summary>
+        public string StrFileName { get; set; }
+
+        /// <summary>
+        /// Form data parameter. 
+        /// Example item: "custom_note_type[412]": "do a service", 
+        /// where 412 is "note_custom_type_id"
+        /// </summary>
+        public Dictionary<string, string> CustomNoteTypes { get; set; }
     }
 }
