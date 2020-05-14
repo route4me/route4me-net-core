@@ -139,7 +139,7 @@ namespace Route4MeSDK
 																   HttpMethodType.Get,
 																   out errorString);
 
-            return dataObjectOptimizations?.Optimizations ?? null;
+			return dataObjectOptimizations != null ? dataObjectOptimizations.Optimizations : null;
 		}
 
 		/// <summary>
@@ -366,6 +366,23 @@ namespace Route4MeSDK
 			return result;
 		}
 
+		private DataObjectRoute RemoveDuplicatedAddressesFromRoute(DataObjectRoute route)
+		{
+			var lsAddress = new List<Address>();
+
+			foreach (var addr1 in route.Addresses)
+			{
+				if (!lsAddress.Contains(addr1) &&
+					lsAddress
+					.Where(x => x.RouteDestinationId == addr1.RouteDestinationId)
+					.FirstOrDefault() == null) lsAddress.Add(addr1);
+			}
+
+			route.Addresses = lsAddress.ToArray();
+
+			return route;
+		}
+
 		/// <summary>
 		/// Update route by changed DataObjectRoute object directly.
 		/// </summary>
@@ -384,6 +401,77 @@ namespace Route4MeSDK
 				return null;
 			}
 
+			route = RemoveDuplicatedAddressesFromRoute(route);
+			initialRoute = RemoveDuplicatedAddressesFromRoute(initialRoute);
+
+			#region // ApprovedForExecution
+			string approvedForExecution = "";
+
+			if (initialRoute.ApprovedForExecution != route.ApprovedForExecution)
+			{
+				approvedForExecution = String.Concat("{\"approved_for_execution\": ", route.ApprovedForExecution ? "true" : "false", "}");
+
+				var genParams = new RouteParametersQuery()
+				{
+					RouteId = initialRoute.RouteId
+				};
+
+				var content = new StringContent(approvedForExecution, System.Text.Encoding.UTF8, "application/json");
+
+				initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
+						(genParams, R4MEInfrastructureSettings.RouteHost,
+						HttpMethodType.Put, content, out errorString);
+
+				if (initialRoute == null) return null;
+			}
+
+			#endregion
+
+			#region // Resequence if sequence was changed
+			string resequenceJson = "";
+
+			foreach (var addr1 in initialRoute.Addresses)
+			{
+				var addr = route.Addresses.Where(x => x.RouteDestinationId == addr1.RouteDestinationId).FirstOrDefault();
+
+				if (addr1 != null && (addr.SequenceNo != addr1.SequenceNo || addr.IsDepot != addr1.IsDepot))
+				{
+					resequenceJson += "{\"route_destination_id\":" + addr1.RouteDestinationId;
+
+					if (addr.SequenceNo != addr1.SequenceNo)
+					{
+						resequenceJson += "," + "\"sequence_no\":" + addr.SequenceNo;
+					}
+					else if (addr.IsDepot != addr1.IsDepot)
+					{
+						resequenceJson += "," + "\"is_depot\":" + addr.IsDepot.ToString().ToLower();
+					}
+
+					resequenceJson += "},";
+				}
+			}
+
+			if (resequenceJson.Length > 10)
+			{
+				resequenceJson = resequenceJson.TrimEnd(',');
+				resequenceJson = "{\"addresses\": [" + resequenceJson + "]}";
+
+				var genParams = new RouteParametersQuery()
+				{
+					RouteId = initialRoute.RouteId
+				};
+
+				var content = new StringContent(resequenceJson, System.Text.Encoding.UTF8, "application/json");
+
+				initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
+						(genParams, R4MEInfrastructureSettings.RouteHost,
+						HttpMethodType.Put, content, out errorString);
+
+				if (initialRoute == null) return null;
+			}
+
+			#endregion
+
 			#region // Update Route Parameters
 
 			if ((route?.Parameters ?? null) != null)
@@ -391,7 +479,7 @@ namespace Route4MeSDK
 				var updatableRouteParametersProperties = R4MeUtils
 					.GetPropertiesWithDifferentValues(route.Parameters, initialRoute.Parameters, out errorString);
 
-				if (updatableRouteParametersProperties != null)
+				if (updatableRouteParametersProperties != null && updatableRouteParametersProperties.Count > 0)
 				{
 					var dynamicRouteProperties = new Route4MeDynamicClass();
 
@@ -430,18 +518,28 @@ namespace Route4MeSDK
 						.Where(x => x.RouteDestinationId == address.RouteDestinationId)
 						.FirstOrDefault();
 
+					if (initialAddress == null)
+					{
+						initialAddress = initialRoute.Addresses
+						.Where(x => x.AddressString == address.AddressString)
+						.FirstOrDefault();
+					}
+
 					if (initialAddress == null) continue;
 
 					var updatableAddressProperties = R4MeUtils
 					.GetPropertiesWithDifferentValues(address, initialAddress, out errorString);
+
+					if (updatableAddressProperties.Contains("IsDepot")) updatableAddressProperties.Remove("IsDepot");
+					if (updatableAddressProperties.Contains("SequenceNo")) updatableAddressProperties.Remove("SequenceNo");
+					if (updatableAddressProperties.Contains("OptimizationProblemId")
+						&& updatableAddressProperties.Count == 1) updatableAddressProperties.Remove("OptimizationProblemId");
 
 					if (updatableAddressProperties != null && updatableAddressProperties.Count > 0)
 					{
 						var dynamicAddressProperties = new Route4MeDynamicClass();
 
 						dynamicAddressProperties.CopyPropertiesFromClass(address, updatableAddressProperties, out string errorString0);
-
-						//var addressParamsJsonString = fastJSON.JSON.ToJSON(dynamicAddressProperties.DynamicProperties, jsonParameters);
 
 						var addressParamsJsonString = R4MeUtils.SerializeObjectToJson(dynamicAddressProperties.DynamicProperties, true);
 
@@ -456,6 +554,63 @@ namespace Route4MeSDK
 						var updatedAddress = GetJsonObjectFromAPI<Address>
 							(genParams, R4MEInfrastructureSettings.GetAddress,
 							HttpMethodType.Put, content, out errorString);
+
+						updatedAddress.IsDepot = initialAddress.IsDepot;
+						updatedAddress.SequenceNo = initialAddress.SequenceNo;
+
+						if ((address?.Notes?.Length ?? -1) > 0)
+						{
+							var addressNotes = new List<AddressNote>();
+
+							foreach (AddressNote note1 in address.Notes)
+							{
+								if ((note1?.NoteId ?? null) == -1)
+								{
+									var noteParameters = new NoteParameters()
+									{
+										RouteId = initialRoute.RouteId,
+										AddressId = updatedAddress.RouteDestinationId != null ? (int)updatedAddress.RouteDestinationId : note1.RouteDestinationId,
+										Latitude = note1.Latitude,
+										Longitude = note1.Longitude
+									};
+
+									if (note1.ActivityType != null) noteParameters.ActivityType = note1.ActivityType;
+									if (note1.DeviceType != null) noteParameters.DeviceType = note1.DeviceType;
+
+									string noteContent = note1.Contents != null ? note1.Contents : null;
+
+									if (noteContent != null) noteParameters.StrNoteContents = noteContent;
+
+									Dictionary<string, string> customNotes = null;
+
+									if ((note1?.CustomTypes?.Length ?? -1) > 0)
+									{
+										customNotes = new Dictionary<string, string>();
+
+										foreach (AddressCustomNote customNote in note1.CustomTypes)
+										{
+											customNotes.Add("custom_note_type[" + customNote.NoteCustomTypeID + "]", customNote.NoteCustomValue);
+										}
+									}
+
+									if (customNotes != null) noteParameters.CustomNoteTypes = customNotes;
+
+									if (note1.UploadUrl != null) noteParameters.StrFileName = note1.UploadUrl;
+
+									AddressNote addedNote = AddAddressNote(noteParameters, out string errorString3);
+									if (errorString3 != "") errorString += "\nNote Adding Error: " + errorString3;
+
+									if (addedNote != null) addressNotes.Add(addedNote);
+								}
+								else
+								{
+									addressNotes.Add(note1);
+								}
+							}
+
+							address.Notes = addressNotes.ToArray();
+							updatedAddress.Notes = addressNotes.ToArray();
+						}
 
 						if (updatedAddress != null && updatedAddress.GetType() == typeof(Address))
 						{
@@ -956,8 +1111,8 @@ namespace Route4MeSDK
 				RouteDestinationId = addressParameters.RouteDestinationId,
 			};
 
-            foreach (PropertyInfo propInfo in typeof(Address).GetProperties())
-            {
+			foreach (var propInfo in typeof(Address).GetProperties())
+			{
 				propInfo.SetValue(request, propInfo.GetValue(addressParameters));
 			}
 
@@ -980,7 +1135,6 @@ namespace Route4MeSDK
 			foreach (var propInfo in typeof(Address).GetProperties())
 			{
 				propInfo.SetValue(request, propInfo.GetValue(addressParameters));
-
 			}
 
 			var dataObject = GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put, out errorString);
@@ -1309,7 +1463,7 @@ namespace Route4MeSDK
         /// <returns>An object of the type MemberConfigurationResponse</returns>
 		public MemberConfigurationResponse CreateNewConfigurationKey(MemberConfigurationParameters confParams, out string errorString)
 		{
-            confParams.PrepareForSerialization();
+            //confParams.PrepareForSerialization();
             return GetJsonObjectFromAPI<MemberConfigurationResponse>(confParams, R4MEInfrastructureSettings.UserConfiguration, HttpMethodType.Post, out errorString);
 		}
 
@@ -1485,13 +1639,65 @@ namespace Route4MeSDK
             return response?.Note ?? null;
 		}
 
-        /// <summary>
-        /// Adds an address note to the route destination.
-        /// </summary>
-        /// <param name="noteParameters">The NoteParameters type object</param>
-        /// <param name="noteContents">The note content text</param>
-        /// <param name="errorString">Error message text</param>
-        /// <returns>An AddressNote type object</returns>
+		/// <summary>
+		/// The method offers ability to send a complex note at once,
+		/// with text content, uploading file, custom notes.
+		/// </summary>
+		/// <param name="noteParameters">The note parameters of the type NoteParameters
+		/// Note: contains form data elemets too</param>
+		/// <param name="errorString">Error string</param>
+		/// <returns>Created address note</returns>
+		public AddressNote AddAddressNote(NoteParameters noteParameters, out string errorString)
+		{
+			//HttpContent httpContent = null;
+			FileStream attachmentFileStream = null;
+			StreamContent attachmentStreamContent = null;
+
+			var multipartFormDataContent = new MultipartFormDataContent();
+
+			if (noteParameters.StrFileName != null)
+			{
+				attachmentFileStream = File.OpenRead(noteParameters.StrFileName);
+				attachmentStreamContent = new StreamContent(attachmentFileStream);
+				multipartFormDataContent.Add(attachmentStreamContent, "strFilename", Path.GetFileName(noteParameters.StrFileName));
+			}
+
+			multipartFormDataContent.Add(new StringContent(noteParameters.ActivityType), "strUpdateType");
+			multipartFormDataContent.Add(new StringContent(noteParameters.StrNoteContents), "strNoteContents");
+
+			if (noteParameters.CustomNoteTypes != null && noteParameters.CustomNoteTypes.Count > 0)
+			{
+				foreach (KeyValuePair<string, string> customNote in noteParameters.CustomNoteTypes)
+				{
+					multipartFormDataContent.Add(new StringContent(customNote.Value), customNote.Key);
+				}
+			}
+
+			HttpContent httpContent = multipartFormDataContent;
+
+			var response = GetJsonObjectFromAPI<AddAddressNoteResponse>(noteParameters,
+										R4MEInfrastructureSettings.AddRouteNotesHost,
+										HttpMethodType.Post,
+										httpContent,
+										out errorString);
+
+
+			if (attachmentStreamContent != null) attachmentStreamContent.Dispose();
+			if (attachmentFileStream != null) attachmentFileStream.Dispose();
+
+			if (response != null && response.Note == null && response.Status == false)
+				errorString = "Note not added";
+
+			return (response != null) ? (response.Note != null ? response.Note : null) : null;
+		}
+
+		/// <summary>
+		/// Adds an address note to the route destination.
+		/// </summary>
+		/// <param name="noteParameters">The NoteParameters type object</param>
+		/// <param name="noteContents">The note content text</param>
+		/// <param name="errorString">Error message text</param>
+		/// <returns>An AddressNote type object</returns>
 		public AddressNote AddAddressNote(NoteParameters noteParameters, string noteContents, out string errorString)
 		{
 			return this.AddAddressNote(noteParameters, noteContents, null, out errorString);
@@ -2240,10 +2446,10 @@ namespace Route4MeSDK
 			parseWithNewtonJson = true;
 			var response = GetJsonObjectFromAPI<SearchAddressBookLocationResponse>(request, R4MEInfrastructureSettings.AddressBook, HttpMethodType.Get, out string errorString0);
 
-			var orderedPropertyNames = R4MeUtils.OrderPropertiesByPosition<AddressBookContact>(response.Fields.ToList(), out errorString);
-
 			if (response != null && response.Total > 0)
 			{
+				var orderedPropertyNames = R4MeUtils.OrderPropertiesByPosition<AddressBookContact>(response.Fields.ToList(), out errorString);
+
 				foreach (object[] contactObjects in response.Results)
 				{
 					var contactFromObject = new AddressBookContact();
@@ -2252,31 +2458,50 @@ namespace Route4MeSDK
 						var value = contactObjects[orderedPropertyNames.IndexOf(propertyName)];
 
 						var valueType = value != null ? value.GetType().Name : "";
-						Console.WriteLine(valueType);
+
+						PropertyInfo propInfo = typeof(AddressBookContact).GetProperty(propertyName);
+						//Console.WriteLine(valueType);
 
 						switch (propertyName)
 						{
 							case "address_custom_data":
 								//var customData = R4MeUtils.ToDictionary<string>(value);
-								var customData = R4MeUtils.ToObject<Dictionary<string, string>>(value);
-								typeof(AddressBookContact).GetProperty(propertyName).SetValue(contactFromObject, customData);
+								var customData = R4MeUtils.ToObject<Dictionary<string, string>>(value, out string errorString1);
+								if (errorString1 == "")
+									propInfo.SetValue(contactFromObject, customData);
+								else
+									propInfo.SetValue(contactFromObject,
+										new Dictionary<string, string>() { { "<WRONG DATA>", "<WRONG DATA>" } });
 								break;
 							case "schedule":
-								var schedules = R4MeUtils.ToObject<Schedule[]>(value);
-								typeof(AddressBookContact).GetProperty(propertyName).SetValue(contactFromObject, schedules);
+								var schedules = R4MeUtils.ToObject<Schedule[]>(value, out string errorString2);
+								if (errorString2 == "")
+									propInfo.SetValue(contactFromObject, schedules);
+								else
+									propInfo.SetValue(contactFromObject, null);
 								break;
 							case "schedule_blacklist":
-								var scheduleBlackList = R4MeUtils.ToObject<string[]>(value);
-								typeof(AddressBookContact).GetProperty(propertyName).SetValue(contactFromObject, scheduleBlackList);
+								var scheduleBlackList = R4MeUtils.ToObject<string[]>(value, out string errorString3);
+								if (errorString3 == "")
+									propInfo.SetValue(contactFromObject, scheduleBlackList);
+								else
+									propInfo.SetValue(contactFromObject, new string[] { "<WRONG DATA>" });
 								break;
 							default:
-								typeof(AddressBookContact).GetProperty(propertyName).SetValue(contactFromObject, value);
+								var convertedValue = valueType != ""
+									? R4MeUtils.ConvertObjectToPropertyType(value, propInfo)
+									: value;
+								propInfo.SetValue(contactFromObject, convertedValue);
 								break;
 						}
 					}
 
 					contactsFromObjects.Add(contactFromObject);
 				}
+			}
+			else
+			{
+				errorString = errorString0;
 			}
 
 			return response;
