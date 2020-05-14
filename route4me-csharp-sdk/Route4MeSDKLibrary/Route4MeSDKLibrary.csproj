@@ -19,6 +19,8 @@ The service is typically used by organizations who must route many drivers to ma
     <Version>1.0.0.4</Version>
     <PackageReleaseNotes>Changed the type of the AddressNote property 'CustomTypes'
 from 'CustomNoteType[]' to 'AddressCustomNote[]'</PackageReleaseNotes>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
