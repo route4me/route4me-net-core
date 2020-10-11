@@ -9,6 +9,8 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Collections;
 using System.Globalization;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Route4MeSDK
 {
@@ -715,6 +717,19 @@ namespace Route4MeSDK
             }
 
             return result;
+        }
+
+        public static string ReadSetting(string key)
+        {
+            var curPath = Directory.GetCurrentDirectory();
+            var configBuilder = new ConfigurationBuilder()
+               .SetBasePath(curPath)
+               .AddJsonFile("appsettings.json", optional: true);
+            var config = configBuilder.Build();
+
+            Dictionary<string, string> apiKeys = config.GetSection("settings").Get(typeof(Dictionary<string,string>)) as Dictionary<string, string>;
+
+            return apiKeys.ContainsKey(key) ? apiKeys[key] : null;
         }
     }
 }
