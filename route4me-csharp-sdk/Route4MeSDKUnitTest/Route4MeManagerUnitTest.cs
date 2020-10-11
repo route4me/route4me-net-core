@@ -18,8 +18,8 @@ namespace Route4MeSDKUnitTest
 {
     public class ApiKeys
     {
-        public const string ActualApiKey = "51d0c0701ce83855c9f62d0440096e7c";
-        public const string DemoApiKey = "11111111111111111111111111111111";
+        public static string ActualApiKey = R4MeUtils.ReadSetting("actualApiKey");
+        public static string DemoApiKey = R4MeUtils.ReadSetting("demoApiKey");
     }
 
     [TestClass]
@@ -38,8 +38,8 @@ namespace Route4MeSDKUnitTest
 
             lsOptimizationIDs = new List<string>();
 
-            tdr = new TestDataRepository(c_ApiKey);
-            tdr2 = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
+            tdr2 = new TestDataRepository();
 
             bool result = tdr.RunOptimizationSingleDriverRoute10Stops();
             bool result2 = tdr2.RunOptimizationSingleDriverRoute10Stops();
@@ -662,7 +662,7 @@ namespace Route4MeSDKUnitTest
 
             lsOptimizationIDs = new List<string>();
 
-            tdr = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
             bool result = tdr.RunSingleDriverRoundTrip();
 
             Assert.IsTrue(result, "Single Driver Round Trip generation failed...");
@@ -976,7 +976,7 @@ namespace Route4MeSDKUnitTest
         static readonly string c_ApiKey = ApiKeys.ActualApiKey; // The optimizations with the Trucking, Multiple Depots, Multiple Drivers allowed only for business and higher account types --- put in the parameter an appropriate API key
         static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey;
 
-        static readonly TestDataRepository tdr = new TestDataRepository(c_ApiKey);
+        static readonly TestDataRepository tdr = new TestDataRepository();
 
         static DataObject dataObject, dataObjectMDMD24;
 
@@ -4300,7 +4300,7 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void SingleDriverRoundTripGenericTest()
         {
-            const string myApiKey = ApiKeys.ActualApiKey;
+            string myApiKey = ApiKeys.ActualApiKey;
 
             // Create the manager with the api key
             var route4Me = new Route4MeManager(myApiKey);
@@ -7870,7 +7870,7 @@ namespace Route4MeSDKUnitTest
             string ApiKey = ApiKeys.ActualApiKey;
 
             var route4Me = new Route4MeManager(ApiKey);
-            var tdr = new TestDataRepository(c_ApiKey);
+            var tdr = new TestDataRepository();
 
             bool blContinue = true;
 
@@ -8585,7 +8585,7 @@ namespace Route4MeSDKUnitTest
 
             lsOptimizationIDs = new List<string>();
             context.Properties.Add("Categ", "Ignorable");
-            tdr = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
@@ -8657,19 +8657,14 @@ namespace Route4MeSDKUnitTest
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string orderIds = "";
-
-            foreach (string ord1 in lsOrderIds) orderIds += ord1 + ",";
-            orderIds = orderIds.TrimEnd(',');
-
             var orderParameters = new OrderParameters()
             {
-                order_id = orderIds
+                order_id = lsOrderIds[0]
             };
 
-            Order[] orders = route4Me.GetOrderByID(orderParameters, out string errorString);
+            Order order = route4Me.GetOrderByID(orderParameters, out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrderByIDTest failed... " + errorString);
+            Assert.IsInstanceOfType(order, typeof(Order), "GetOrderByIDTest failed... " + errorString);
         }
 
         [TestMethod]
@@ -8778,7 +8773,7 @@ namespace Route4MeSDKUnitTest
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            Order order = null;
+            //Order order = null;
             string orderId = lsOrderIds.Count > 0 ? lsOrderIds[0] : "";
 
             Assert.IsFalse(orderId == "", "There is no order for updating...");
@@ -8788,11 +8783,11 @@ namespace Route4MeSDKUnitTest
                 order_id = orderId
             };
 
-            Order[] orders = route4Me.GetOrderByID(orderParameters, out string errorString);
+            Order order = route4Me.GetOrderByID(orderParameters, out string errorString);
 
-            Assert.IsTrue(orders.Length > 0, "There is no order for updating... " + errorString);
+            Assert.IsTrue(order!=null, "There is no order for updating... " + errorString);
 
-            if (orders.Length > 0) order = orders[0];
+            //if (orders.Length > 0) order = orders[0];
 
             order.ExtFieldLastName = "Updated " + (new Random()).Next().ToString();
 
@@ -9280,7 +9275,7 @@ namespace Route4MeSDKUnitTest
 
             lsOptimizationIDs = new List<string>();
 
-            tdr = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
 
             bool result = tdr.RunOptimizationSingleDriverRoute10Stops();
 
@@ -9779,7 +9774,7 @@ namespace Route4MeSDKUnitTest
 
             lsOptimizationIDs = new List<string>();
 
-            tdr = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
@@ -10058,7 +10053,7 @@ namespace Route4MeSDKUnitTest
 
             lsOptimizationIDs = new List<string>();
 
-            tdr = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
@@ -11162,7 +11157,7 @@ namespace Route4MeSDKUnitTest
             lsAddressbookContacts = new List<string>();
             lsOrders = new List<string>();
 
-            tdr = new TestDataRepository(c_ApiKey);
+            tdr = new TestDataRepository();
 
             bool result = tdr.RunOptimizationSingleDriverRoute10Stops();
 
@@ -11881,9 +11876,9 @@ namespace Route4MeSDKUnitTest
     {
         private readonly string c_ApiKey = ApiKeys.ActualApiKey;
 
-        public TestDataRepository(String apiKey = ApiKeys.ActualApiKey)
+        public TestDataRepository()
         {
-            c_ApiKey = apiKey;
+            c_ApiKey = ApiKeys.ActualApiKey;
         }
 
         public DataObject DataObjectSD10Stops { get; set; }

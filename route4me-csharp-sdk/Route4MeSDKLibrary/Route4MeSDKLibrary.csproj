@@ -11,14 +11,18 @@ This SDK makes it easier for you use the Route4Me API, which creates optimally s
 The service is typically used by organizations who must route many drivers to many destinations. In addition to route optimization for new (future) routes, the API can also be used to analyze historical routes, and to distribute routes to field personnel.</Description>
     <Copyright>Copyright (C) 2019 - 2019 Route4Me</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageProjectUrl>https://route4me.io/</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/route4me/route4me-net-core/master/route4me-csharp-sdk/r4m_icon_rounded_corners.ico</PackageIconUrl>
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
-    <Version>1.0.0.4</Version>
-    <PackageReleaseNotes>Changed the type of the AddressNote property 'CustomTypes'
-from 'CustomNoteType[]' to 'AddressCustomNote[]'</PackageReleaseNotes>
+    <Version>1.0.0.5</Version>
+    <PackageReleaseNotes>Summary of changes made in this release of the package.
+- Converting a value to the specified type;
+- Searching the locations with showing specified fields;
+- Added algorithm of managing wrong contact data;
+- Improved complex route updating algorithm;
+- Improved algorithm for adding complex address note (send text content, custom note, file at once).</PackageReleaseNotes>
     <AssemblyVersion>1.0.0.5</AssemblyVersion>
     <FileVersion>1.0.0.5</FileVersion>
   </PropertyGroup>
@@ -32,6 +36,7 @@ from 'CustomNoteType[]' to 'AddressCustomNote[]'</PackageReleaseNotes>
     <PackageReference Include="Microsoft.AspNetCore.Http.Connections.Client" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
     <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.5.4" />
