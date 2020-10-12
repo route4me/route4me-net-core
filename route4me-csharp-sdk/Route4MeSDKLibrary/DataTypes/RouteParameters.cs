@@ -49,7 +49,7 @@ namespace Route4MeSDK.DataTypes
         /// Offset in seconds relative to the route start date (i.e. 9AM would be 60 * 60 * 9)
         /// </summary>
         [DataMember(Name = "route_time", EmitDefaultValue = false)]
-        public long? RouteTime { get; set; }
+        public int? RouteTime { get; set; }
 
         /// <summary>
         /// Specify if the route can be viewed by unauthenticated users.
@@ -186,6 +186,27 @@ namespace Route4MeSDK.DataTypes
         /// <value>The maximum duration of the route.</value>
         [DataMember(Name = "route_max_duration", EmitDefaultValue = false)]
         public long? RouteMaxDuration { get; set; }
+
+        /// <summary>
+        /// The parameter specifies fine-tuning of an optimization process
+        /// by route duration.
+        /// </summary>
+        [DataMember(Name = "target_duration", EmitDefaultValue = false)]
+        public double? TargetDuration { get; set; }
+
+        /// <summary>
+        /// The parameter specifies fine-tuning of an optimization process 
+        /// by route distance.
+        /// </summary>
+        [DataMember(Name = "target_distance", EmitDefaultValue = false)]
+        public double? TargetDistance { get; set; }
+
+        /// <summary>
+        /// The parameter specifies fine-tuning of an optimization process 
+        /// by waiting time.
+        /// </summary>
+        [DataMember(Name = "target_wait_by_tail_size", EmitDefaultValue = false)]
+        public double? WaitingTime { get; set; }
 
         /// <summary>The email address to notify upon completion of an optimization request</summary>
         /// <value>The route email.</value>
