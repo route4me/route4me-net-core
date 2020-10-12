@@ -1400,13 +1400,14 @@
           "Newtonsoft.Json": "12.0.2",
           "System.Configuration.ConfigurationManager": "4.5.0",
           "System.Net.Http.WinHttpHandler": "4.5.4",
-          "fastJSON": "2.2.4"
+          "fastJSON": "2.2.4",
+          "SocketIoClientDotNet.core_2.2": "1.0.0.0"
         },
         "runtime": {
           "Route4MeSDKLibrary.dll": {}
         }
       },
-      "SocketIoClientDotNet.core_2.2/1.0.0.0": {
+      "SocketIoClientDotNet.core_2.2.Reference/1.0.0.0": {
         "runtime": {
           "SocketIoClientDotNet.core_2.2.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -2246,7 +2247,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "SocketIoClientDotNet.core_2.2/1.0.0.0": {
+    "SocketIoClientDotNet.core_2.2.Reference/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
