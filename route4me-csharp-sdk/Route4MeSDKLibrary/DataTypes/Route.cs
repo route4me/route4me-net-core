@@ -50,6 +50,7 @@ namespace Route4MeSDK.DataTypes
         /// Channel name.
         /// </summary>
         [DataMember(Name = "channel_name", EmitDefaultValue = false)]
+        [ReadOnly(true)]
         public string ChannelName { get; set; }
 
         /// <summary>
