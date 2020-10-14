@@ -443,7 +443,7 @@ namespace Route4MeSDK.DataTypes
         public AddressNote[] Notes { get; set; }
 
         /// <summary>
-        /// The route path point.
+        /// The route path points to the next address.
         /// </summary>
         [DataMember(Name = "path_to_next", EmitDefaultValue = false)]
         [ReadOnly(true)]
@@ -498,14 +498,16 @@ namespace Route4MeSDK.DataTypes
         public string CustomFieldsConfigStrJson { get; set; }
 
         /// <summary>
-        /// System-wide unique code, which permits end-users (recipients) to track the status of their order.
+        /// System-wide unique code, which permits end-users (recipients) 
+        /// to track the status of their order.
         /// </summary>
         [DataMember(Name = "tracking_number", EmitDefaultValue = false)]
         [ReadOnly(true)]
         public string TrackingNumber { get; set; }
 
         /// <summary>
-        /// Server-side generated amount of seconds that it will take to get to the next location.
+        /// Server-side generated amount of seconds that it will take to get 
+        /// to the next location.
         /// </summary>
         [DataMember(Name = "udu_distance_to_next_destination", EmitDefaultValue = false)]
         [ReadOnly(true)]
