@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes
 {
@@ -514,13 +515,13 @@ namespace Route4MeSDK.DataTypes
         /// Route travel time slowdown (e.g. 25 (means 25% slowdown))
         /// </summary>
         [DataMember(Name = "route_time_multiplier", EmitDefaultValue = false)]
-        public double? RouteTimeMultiplier { get; set; }
+        public int? RouteTimeMultiplier { get; set; }
 
         /// <summary>
         /// Route service time slowdown (e.g. 10 (means 10% slowdown))
         /// </summary>
         [DataMember(Name = "route_service_time_multiplier", EmitDefaultValue = false)]
-        public double? RoutServiceTimeMultiplier { get; set; }
+        public int? RouteServiceTimeMultiplier { get; set; }
 
         /// <summary>
         /// Optimization engine (e.g. '1','2' etc)
@@ -535,6 +536,15 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "override_addresses", EmitDefaultValue = false)]
         public OverrideAddresses OverrideAddresses { get; set; }
 
+        /// <summary>
+        /// Slowdown of the optimization parameters.
+        /// </summary>
+        /// <remarks>
+        /// <para>This is only query parameter.</para>
+        /// <para>This parameter is used in the optimization creation/generation process. </para>
+        /// </remarks>
+        [DataMember(Name = "slowdowns", EmitDefaultValue = false)]
+        public SlowdownParams Slowdowns { get; set; }
     }
 
     /// <summary>
@@ -549,5 +559,41 @@ namespace Route4MeSDK.DataTypes
         public long? Time { get; set; }
     }
 
+    /// <summary>
+    /// Slowdown parameters for the optimization creating process.
+    /// </summary>
+    [DataContract]
+    public class SlowdownParams : GenericParameters
+    {
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="serviceTime">Service time slowdown (percent)</param>
+        /// <param name="travelTime">Travel time slowdown (percent)</param>
+        public SlowdownParams(int? serviceTime, int? travelTime)
+        {
+            ServiceTime = serviceTime;
+            TravelTime = travelTime;
+        }
 
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        public SlowdownParams()
+        {
+
+        }
+
+        /// <summary>
+        /// Service time slowdowon (percent)
+        /// </summary>
+        [DataMember(Name = "service_time", EmitDefaultValue = false)]
+        public int? ServiceTime { get; set; }
+
+        /// <summary>
+        /// Travel time slowdowon (percent)
+        /// </summary>
+        [DataMember(Name = "travel_time", EmitDefaultValue = false)]
+        public int? TravelTime { get; set; }
+    }
 }
