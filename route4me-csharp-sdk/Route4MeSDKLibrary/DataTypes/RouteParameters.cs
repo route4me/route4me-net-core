@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System;
 using Route4MeSDK.QueryTypes;
+using System.ComponentModel;
 
 namespace Route4MeSDK.DataTypes
 {
@@ -530,6 +531,12 @@ namespace Route4MeSDK.DataTypes
         public string OptimizationEngine { get; set; }
 
         /// <summary>
+        /// If true, the time windows ignored.
+        /// </summary>
+        [DataMember(Name = "ignore_tw", EmitDefaultValue = false)]
+        public bool? IgnoreTw { get; set; }
+
+        /// <summary>
         /// If the service time is specified, all the route addresses wil have same service time. 
         /// See <see cref="OverrideAddresses"/>
         /// </summary>
@@ -545,6 +552,20 @@ namespace Route4MeSDK.DataTypes
         /// </remarks>
         [DataMember(Name = "slowdowns", EmitDefaultValue = false)]
         public SlowdownParams Slowdowns { get; set; }
+
+        /// <summary>
+        /// TO DO: adjust description
+        /// </summary>
+        [DataMember(Name = "is_dynamic_start_time", EmitDefaultValue = false)]
+        [DefaultValue(false)]
+        public bool is_dynamic_start_time { get; set; }
+
+        /// <summary>
+        /// Address bundling rules
+        /// </summary>
+        [DataMember(Name = "bundling", EmitDefaultValue = false)]
+        [DefaultValue(false)]
+        public AddressBundling Bundling { get; set; }
     }
 
     /// <summary>

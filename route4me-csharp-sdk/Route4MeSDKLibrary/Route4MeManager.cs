@@ -1530,20 +1530,32 @@ namespace Route4MeSDK
             return GetJsonObjectFromAPI<MemberConfigurationResponse>(confParams, R4MEInfrastructureSettings.UserConfiguration, HttpMethodType.Put, out errorString);
 		}
 
-        #endregion
+		public MemberCapabilities GetMemberCapabilities(out string errorString)
+		{
+			var parameters = new GenericParameters();
 
-        #region Address Notes
+			var result = GetJsonObjectFromAPI<MemberCapabilities>(parameters,
+								R4MEInfrastructureSettings.MemberCapabilities,
+								HttpMethodType.Get,
+								out errorString);
 
-        /// <summary>
-        /// Returns an array of the address notes
-        /// </summary>
-        /// <param name="noteParameters">An object of the type NoteParameters containing the parameters:
-        /// <para>RouteId: a route ID</para>
-        /// <para>AddressId: a route destination ID</para>
-        /// </param>
-        /// <param name="errorString">Error message text</param>
-        /// <returns>An array of the AddressNote type objects </returns>
-        public AddressNote[] GetAddressNotes(NoteParameters noteParameters, out string errorString)
+			return result;
+		}
+
+		#endregion
+
+		#region Address Notes
+
+		/// <summary>
+		/// Returns an array of the address notes
+		/// </summary>
+		/// <param name="noteParameters">An object of the type NoteParameters containing the parameters:
+		/// <para>RouteId: a route ID</para>
+		/// <para>AddressId: a route destination ID</para>
+		/// </param>
+		/// <param name="errorString">Error message text</param>
+		/// <returns>An array of the AddressNote type objects </returns>
+		public AddressNote[] GetAddressNotes(NoteParameters noteParameters, out string errorString)
 		{
 			var addressParameters = new AddressParameters()
 			{
@@ -2313,7 +2325,7 @@ namespace Route4MeSDK
         /// The response from the getting process of the address book contacts
         /// </summary>
 		[DataContract]
-		private sealed class GetAddressBookContactsResponse : GenericParameters
+		public sealed class GetAddressBookContactsResponse : GenericParameters
 		{
             /// <value>Array of the AddressBookContact type objects</value>
 			[DataMember(Name = "results", IsRequired = false)]
