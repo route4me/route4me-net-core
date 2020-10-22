@@ -1,5 +1,6 @@
 ﻿using Route4MeSDK.QueryTypes;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace Route4MeSDK.DataTypes
@@ -519,6 +520,15 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "wait_time_to_next_destination", EmitDefaultValue = false)]
         [ReadOnly(true)]
         public long? WaitTimeToNextDestination { get; set; }
+
+        [DataMember(Name = "bundle_count", EmitDefaultValue = true)]
+        [DefaultValue(0)]
+        [ReadOnly(true)]
+        public int BundleCount { get; set; }
+
+        [DataMember(Name = "bundle_items", EmitDefaultValue = true)]
+        [ReadOnly(true)]
+        public BundledItemResponse[] BundleItems { get; set; }
 
         /// <summary>
         /// Manifest of a route address.

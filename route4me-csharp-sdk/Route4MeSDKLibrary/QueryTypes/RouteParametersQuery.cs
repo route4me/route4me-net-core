@@ -163,6 +163,13 @@ namespace Route4MeSDK.QueryTypes
         public bool? Redirect { get; set; }
 
         /// <summary>
+        /// If true, the address bundling info is included into route response.
+        /// </summary>
+        [IgnoreDataMember()]
+        [HttpQueryMemberAttribute(Name = "bundling_items", EmitDefaultValue = false)]
+        public bool? BundlingItems { get; set; }
+
+        /// <summary>
         /// Route Parameters to update. See <see cref="RouteParameters"/>
         /// <remarks><para>
         /// After a PUT there is no guarantee that the route_destination_id values are preserved! 

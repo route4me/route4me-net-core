@@ -11,6 +11,8 @@ using System.Collections;
 using System.Globalization;
 using System.Configuration;
 using Microsoft.Extensions.Configuration;
+using System.Text.RegularExpressions;
+using static Route4MeSDK.Route4MeManager;
 
 namespace Route4MeSDK
 {
@@ -53,6 +55,21 @@ namespace Route4MeSDK
 
             StreamReader reader = new StreamReader(stream);
             string text = reader.ReadToEnd();
+
+            if (typeof(T) == typeof(GetAddressBookContactsResponse))
+            {
+                string pattern = String.Concat(
+                    "\\\"schedule\\\"",
+                    @":({[\s\S\n\d\w]*}),",
+                    "\"");
+                Regex rgx = new Regex(pattern);
+                Match rslt = rgx.Match(text);
+
+                if (rslt.Success)
+                {
+                    text = text.Replace(rslt.Groups[1].ToString(), "[" + rslt.Groups[1] + "]");
+                }
+            }
 
             return JsonConvert.DeserializeObject<T>(text, jsonSettings);
         }
