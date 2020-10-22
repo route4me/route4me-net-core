@@ -45,7 +45,7 @@ namespace Route4MeSDK.DataTypes
         /// The value for the operator
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
-        public string Value { get; set; }
+        public object Value { get; set; }
 
         /// <summary>
         /// The class constructor
