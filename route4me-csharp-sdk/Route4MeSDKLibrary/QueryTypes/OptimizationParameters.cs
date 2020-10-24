@@ -105,5 +105,11 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [DataMember(Name = "addresses", EmitDefaultValue = false)]
         public Address[] Addresses { get; set; }
+
+        /// <summary>
+        /// Array of the depots
+        /// </summary>
+        [DataMember(Name = "depots", EmitDefaultValue = false)]
+        public Address[] Depots { get; set; }
     }
 }
