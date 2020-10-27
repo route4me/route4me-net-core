@@ -1142,6 +1142,21 @@ namespace Route4MeSDK
 			return dataObject?.Addresses?.Where(x => x.RouteDestinationId == addressParameters.RouteDestinationId).FirstOrDefault() ?? null;
 		}
 
+		/// <summary>
+		/// Get schedule calendar from the user's account.
+		/// </summary>
+		/// <param name="scheduleCalendarParams">Query parameters</param>
+		/// <param name="errorString">Error string</param>
+		/// <returns>Schedule calendar of the member</returns>
+		public ScheduleCalendarResponse GetScheduleCalendar(ScheduleCalendarQuery scheduleCalendarParams, out string errorString)
+		{
+			var response = GetJsonObjectFromAPI<ScheduleCalendarResponse>(scheduleCalendarParams,
+																   R4MEInfrastructureSettings.ScheduleCalendar,
+																   HttpMethodType.Get,
+																   out errorString);
+
+			return response;
+		}
 		#endregion
 
 		#region Tracking
@@ -1542,6 +1557,37 @@ namespace Route4MeSDK
 			return result;
 		}
 
+		/// <summary>
+		/// Check if the member with the actualApiKey has commercial member capability.
+		/// </summary>
+		/// <param name="actualApiKey">Actual API key</param>
+		/// <param name="demoApiKey">Demo API key</param>
+		/// <param name="errorString">Error message text</param>
+		/// <returns>True, if the member has commercial capability</returns>
+		public bool MemberHasCommercialCapability(string actualApiKey, string demoApiKey, out string errorString)
+		{
+			try
+			{
+				var memberCapabilities = this.GetMemberCapabilities(out errorString);
+
+				if (actualApiKey == demoApiKey || memberCapabilities == null) return false;
+
+				var commercialSubscription = memberCapabilities
+					.GetType()
+					.GetProperties()
+					.Where(x => x.Name == "Commercial")
+					.FirstOrDefault();
+
+				if (commercialSubscription == null) return false;
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				errorString = ex.Message;
+				return false;
+			}
+		}
 		#endregion
 
 		#region Address Notes
