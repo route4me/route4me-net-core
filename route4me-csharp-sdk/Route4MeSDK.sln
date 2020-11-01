@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route4MeSDKLibrary", "Route4MeSDKLibrary\Route4MeSDKLibrary.csproj", "{1A2843FD-EE69-4B82-91D2-C778C5C3A633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route4MeSDKUnitTest", "Route4MeSDKUnitTest\Route4MeSDKUnitTest.csproj", "{4859A13B-54E6-4424-8764-9D00D68EE023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Route4MeSDKUnitTest", "Route4MeSDKUnitTest\Route4MeSDKUnitTest.csproj", "{4859A13B-54E6-4424-8764-9D00D68EE023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route4MeSDKTest", "Route4MeSDKTest\Route4MeSDKTest.csproj", "{6106DCBB-8D94-46F0-B02D-17E13E662EF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4859A13B-54E6-4424-8764-9D00D68EE023}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4859A13B-54E6-4424-8764-9D00D68EE023}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4859A13B-54E6-4424-8764-9D00D68EE023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6106DCBB-8D94-46F0-B02D-17E13E662EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6106DCBB-8D94-46F0-B02D-17E13E662EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6106DCBB-8D94-46F0-B02D-17E13E662EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6106DCBB-8D94-46F0-B02D-17E13E662EF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
