@@ -2061,21 +2061,21 @@ namespace Route4MeSDK
 							HttpMethodType.Put,
 							out errorString);
 
-            var arrDestinationIds = new List<int>();
+			var arrDestinationIds = new List<int>();
 
-            if (response != null && response.Addresses != null)
+			if (response != null && response.Addresses != null)
 			{
-                addresses.ForEach(addressNew =>
-                {
-                    response.Addresses.Where(addressResp => (
-                        addressResp.AddressString == addressNew.AddressString &&
-                        addressResp.Latitude == addressNew.Latitude && 
-                        addressResp.Longitude == addressNew.Longitude && 
-                        addressResp.RouteDestinationId != null
-                    )).ForEach(addrResp => {
-                        arrDestinationIds.Add((int)addrResp.RouteDestinationId);
-                    });
-                });
+				addresses.ForEach(addressNew =>
+				{
+					response.Addresses.Where(addressResp => (
+						addressResp.AddressString == addressNew.AddressString &&
+						Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
+						Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
+						addressResp.RouteDestinationId != null
+					)).ForEach(addrResp => {
+						arrDestinationIds.Add((int)addrResp.RouteDestinationId);
+					});
+				});
 			}
 
 			return arrDestinationIds.ToArray();
@@ -2292,14 +2292,15 @@ namespace Route4MeSDK
 			{
 				RouteId = aParams.RouteId,
 				AddressId = aParams.AddressId,
-				IsDeparted = aParams.IsDeparted,
-				MemberId = 1
+				IsDeparted = aParams.IsDeparted
 			};
 
-			var response = GetJsonObjectFromAPI<MarkAddressDepartedResponse>(request, 
-                R4MEInfrastructureSettings.MarkAddressDeparted, HttpMethodType.Get, out errorString);
+			var response = GetJsonObjectFromAPI<MarkAddressDepartedResponse>(
+				request,
+				R4MEInfrastructureSettings.MarkAddressDeparted,
+				HttpMethodType.Get, out errorString);
 
-            return (response != null) ? (response.Status ? 1 : 0) : 0;
+			return (response != null) ? (response.Status ? 1 : 0) : 0;
 		}
 
         /// <summary>
