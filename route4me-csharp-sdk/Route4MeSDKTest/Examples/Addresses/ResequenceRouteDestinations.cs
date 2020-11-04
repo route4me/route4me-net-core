@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -8,48 +7,65 @@ namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public void ResequenceRouteDestinations(DataObjectRoute route)
+        /// <summary>
+        /// Resequence the route destinations.
+        /// </summary>
+        /// <param name="route">A route object</param>
+        public void ResequenceRouteDestinations(DataObjectRoute route = null)
         {
-            if (route.Addresses == null && route.Addresses.Length < 3)
+            bool isInnerExample = route == null ? true : false;
+
+            if (isInnerExample)
             {
-                Console.WriteLine("ResequenceRouteDestinations error {0}", "route.Addresses == null && route.Addresses.Length < 3. Number of addresses should be >= 3");
-                return;
+                RunOptimizationSingleDriverRoute10Stops();
+                OptimizationsToRemove = new List<string>() { SD10Stops_optimization_problem_id };
+
+                route = SD10Stops_route;
             }
 
             // Create the manager with the api key
-            Route4MeManager route4Me = new Route4MeManager(ActualApiKey);
+            var route4Me = new Route4MeManager(ActualApiKey);
 
             // Switch 2 addresses after departure address:
 
             AddressesOrderInfo addressesOrderInfo = new AddressesOrderInfo();
             addressesOrderInfo.RouteId = route.RouteId;
             addressesOrderInfo.Addresses = new AddressInfo[0];
+
             for (int i = 0; i < route.Addresses.Length; i++)
             {
                 Address address = route.Addresses[i];
                 AddressInfo addressInfo = new AddressInfo();
+
                 addressInfo.DestinationId = address.RouteDestinationId.Value;
+
                 addressInfo.SequenceNo = i;
-                if (i == 1)
-                    addressInfo.SequenceNo = 2;
-                else if (i == 2)
-                    addressInfo.SequenceNo = 1;
+
+                addressInfo.SequenceNo = i == 1 ? 2 : 1;
+
                 addressInfo.IsDepot = (addressInfo.SequenceNo == 0);
-                List<AddressInfo> addressesList = new List<AddressInfo>(addressesOrderInfo.Addresses);
+
+                var addressesList = new List<AddressInfo>(addressesOrderInfo.Addresses);
+
                 addressesList.Add(addressInfo);
+
                 addressesOrderInfo.Addresses = addressesList.ToArray();
             }
 
             // Run the query
-            string errorString1 = "";
-            DataObjectRoute route1 = route4Me.GetJsonObjectFromAPI<DataObjectRoute>(addressesOrderInfo,
-                                                                                                R4MEInfrastructureSettings.RouteHost,
-                                                                                                HttpMethodType.Put,
-                                                                                                out errorString1);
+            DataObjectRoute route1 = route4Me
+                .GetJsonObjectFromAPI<DataObjectRoute>(addressesOrderInfo,
+                                    R4MEInfrastructureSettings.RouteHost,
+                                    HttpMethodType.Put,
+                                    out string errorString1);
 
             // Output the result
-            PrintExampleOptimizationResult("ResequenceRouteDestinations, switch 2 addresses.", route1, errorString1);
-            Console.WriteLine("");
+            PrintExampleRouteResult(
+                "ResequenceRouteDestinations, switch 2 addresses.",
+                route1,
+                errorString1);
+
+            if (isInnerExample) RemoveTestOptimizations();
         }
 
         [DataContract]
