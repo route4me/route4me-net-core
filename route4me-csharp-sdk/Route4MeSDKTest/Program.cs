@@ -75,15 +75,7 @@ namespace Route4MeSDKTest
 
             examples.GetOptimizations();
 
-            if (optimizationProblemID != null)
-            {
-                dataObject = examples.AddDestinationToOptimization(optimizationProblemID, true);
-            }
-            else
-            {
-                Console.WriteLine("AddDestinationToOptimization not called. optimizationProblemID == null.");
-                dataObject = null;
-            }
+            examples.AddDestinationToOptimization();
 
             if (optimizationProblemID != null)
             {
