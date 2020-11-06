@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -10,10 +9,18 @@ namespace Route4MeSDK.Examples
         /// Update Avoidance Zone
         /// </summary>
         /// <param name="territoryId"> Avoidance Zone Id </param>
-        public void UpdateAvoidanceZone(string territoryId)
+        public void UpdateAvoidanceZone(string territoryId = null)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
+
+            bool isInnerExample = territoryId == null ? true : false;
+
+            if (isInnerExample)
+            {
+                CreateAvoidanceZone();
+                territoryId = this.avoidanceZone.TerritoryId;
+            }
 
             var avoidanceZoneParameters = new AvoidanceZoneParameters()
             {
@@ -29,20 +36,13 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            AvoidanceZone avoidanceZone = route4Me.UpdateAvoidanceZone(avoidanceZoneParameters, out string errorString);
+            AvoidanceZone avoidanceZone = route4Me.UpdateAvoidanceZone(
+                avoidanceZoneParameters,
+                out string errorString);
 
-            Console.WriteLine("");
+            PrintExampleAvoidanceZone(avoidanceZone, errorString);
 
-            if (avoidanceZone != null)
-            {
-                Console.WriteLine("UpdateAvoidanceZone executed successfully");
-
-                Console.WriteLine("Territory ID: {0}", avoidanceZone.TerritoryId);
-            }
-            else
-            {
-                Console.WriteLine("UpdateAvoidanceZone error: {0}", errorString);
-            }
+            if (isInnerExample) RemoveAvidanceZone(territoryId);
         }
     }
 }

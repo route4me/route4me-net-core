@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -10,7 +9,7 @@ namespace Route4MeSDK.Examples
         /// Add Polygon Avoidance Zone
         /// </summary>
         /// <returns> Id of added territory </returns>
-        public string AddPolygonAvoidanceZone()
+        public string AddPolygonAvoidanceZone(bool removeAvoidanceZone = true)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -37,24 +36,19 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            AvoidanceZone avoidanceZone = route4Me.AddAvoidanceZone(avoidanceZoneParameters, out string errorString);
+            AvoidanceZone avoidanceZone = route4Me.AddAvoidanceZone(
+                avoidanceZoneParameters,
+                out string errorString);
 
-            Console.WriteLine("");
+            PrintExampleAvoidanceZone(avoidanceZone, errorString);
 
-            if (avoidanceZone != null)
-            {
-                Console.WriteLine("AddPolygonAvoidanceZone executed successfully");
+            string avZoneId = avoidanceZone != null && avoidanceZone.GetType() == typeof(AvoidanceZone)
+                ? avoidanceZone.TerritoryId
+                : null;
 
-                Console.WriteLine("Territory ID: {0}", avoidanceZone.TerritoryId);
+            if (removeAvoidanceZone) RemoveAvidanceZone(avZoneId);
 
-                return avoidanceZone.TerritoryId;
-            }
-            else
-            {
-                Console.WriteLine("AddPolygonAvoidanceZone error: {0}", errorString);
-
-                return null;
-            }
+            return removeAvoidanceZone ? null : avZoneId;
         }
     }
 }

@@ -16,7 +16,9 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            if (routeId == null)
+            bool isInnerExample = routeId == null ? true : false;
+
+            if (isInnerExample)
             {
                 RunOptimizationSingleDriverRoute10Stops();
                 OptimizationsToRemove = new List<string>() { SD10Stops_optimization_problem_id };
@@ -36,7 +38,7 @@ namespace Route4MeSDK.Examples
 
             PrintExampleDestination(destination, errorString);
 
-            if (routeId == null) RemoveTestOptimizations();
+            if (isInnerExample) RemoveTestOptimizations();
         }
     }
 }
