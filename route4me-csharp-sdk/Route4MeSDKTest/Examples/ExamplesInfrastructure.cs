@@ -466,6 +466,32 @@ namespace Route4MeSDK.Examples
             }
         }
 
+        /// <summary>
+        /// Console print of a scheduled contact response.
+        /// </summary>
+        /// <param name="contactResponse">Scheduled contact</param>
+        /// <param name="scheduleType">Schedule type: 'daily', 'weekly', monthly'</param>
+        private void PrintExampleScheduledContact(
+            AddressBookContact contactResponse,
+            string scheduleType,
+            string errorString = "")
+        {
+            int location1 = contactResponse.AddressId != null
+                ? Convert.ToInt32(contactResponse.AddressId)
+                : -1;
+
+            if (location1 > 0)
+            {
+                ContactsToRemove.Add(location1.ToString());
+                Console.WriteLine("A location with the " + scheduleType + " scheduling was created. AddressId: {0}", location1);
+            }
+            else Console.WriteLine(
+                "Creating of a location with " + scheduleType + " scheduling failed." +
+                Environment.NewLine +
+                errorString
+                );
+        }
+
         public bool RunSingleDriverRoundTrip()
         {
             var route4Me = new Route4MeManager(ActualApiKey);

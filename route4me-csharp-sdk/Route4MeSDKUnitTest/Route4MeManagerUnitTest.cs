@@ -8241,6 +8241,7 @@ namespace Route4MeSDKUnitTest
                 "AddressCustomData", "LocalTimeWindowStart", "LocalTimeWindowEnd",
                 "AddressCube","AddressPieces","AddressRevenue","AddressWeight","AddressPriority"
             };
+
             // Run the query
             var updatedContact = route4Me.UpdateAddressBookContact(contact1, updatableProperties, out string errorString);
 
