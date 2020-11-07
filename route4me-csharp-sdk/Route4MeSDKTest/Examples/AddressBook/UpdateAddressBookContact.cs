@@ -24,8 +24,8 @@ namespace Route4MeSDK.Examples
             {
                 {"key1", "value1" }, {"key2", "value2" }
             };
-            contact1.LocalTimeWindowStart = 25400;
-            contact1.LocalTimeWindowEnd = 26000;
+            contact1.LocalTimeWindowStart = R4MeUtils.DDHHMM2Seconds("7:03", out _);
+            contact1.LocalTimeWindowEnd = R4MeUtils.DDHHMM2Seconds("7:37", out _);
             contact1.AddressCube = 5;
             contact1.AddressPieces = 6;
             contact1.AddressRevenue = 700;
@@ -34,9 +34,9 @@ namespace Route4MeSDK.Examples
 
             var updatableProperties = new List<string>()
             {
-                "AddressId", "AddressGroup", "ScheduleBlacklist",
-                "AddressCustomData", "LocalTimeWindowStart", "LocalTimeWindowEnd",
-                "AddressCube","AddressPieces","AddressRevenue","AddressWeight","AddressPriority"
+                "address_id", "address_group", "schedule_blacklist",
+                "address_custom_data", "local_time_window_start", "local_time_window_end",
+                "AddressCube","AddressPieces","AddressRevenue","AddressWeight","AddressPriority","ConvertBooleansToInteger"
             };
 
             // Run the query
