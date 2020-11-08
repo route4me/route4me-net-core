@@ -31,11 +31,11 @@ namespace Route4MeSDK.Examples
             contact1.AddressRevenue = 700;
             contact1.AddressWeight = 80;
             contact1.AddressPriority = 9;
-
+            
             var updatableProperties = new List<string>()
             {
-                "address_id", "address_group", "schedule_blacklist",
-                "address_custom_data", "local_time_window_start", "local_time_window_end",
+                "AddressId", "AddressGroup", "ScheduleBlacklist",
+                "AddressCustomData", "LocalTimeWindowStart", "LocalTimeWindowEnd",
                 "AddressCube","AddressPieces","AddressRevenue","AddressWeight","AddressPriority","ConvertBooleansToInteger"
             };
 
