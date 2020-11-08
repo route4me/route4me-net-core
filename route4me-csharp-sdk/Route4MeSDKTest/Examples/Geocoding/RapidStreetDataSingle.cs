@@ -1,7 +1,5 @@
 ﻿using Route4MeSDK.QueryTypes;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
@@ -23,23 +21,8 @@ namespace Route4MeSDK.Examples
             // Run the query
             ArrayList result = route4Me.RapidStreetData(geoParams, out string errorString);
 
-            Console.WriteLine("");
-
-            if (result != null)
-            {
-                Console.WriteLine("RapidStreetDataSingle executed successfully");
-
-                foreach (Dictionary<string, string> res1 in result)
-                {
-                    Console.WriteLine("Zipcode: " + res1["zipcode"]);
-                    Console.WriteLine("Street name: " + res1["street_name"]);
-                    Console.WriteLine("---------------------------");
-                }
-            }
-            else
-            {
-                Console.WriteLine("RapidStreetDataSingle error: {0}", errorString);
-            }
+            PrintExampleGeocodings(result, GeocodingPrintOption.StreetData, errorString);
         }
     }
 }
+
