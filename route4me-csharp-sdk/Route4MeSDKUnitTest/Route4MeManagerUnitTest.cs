@@ -11543,22 +11543,22 @@ namespace Route4MeSDKUnitTest
 
             fastProcessing.AddressesChunkGeocoded += (object sender, FastBulkGeocoding.AddressesChunkGeocodedArgs e) =>
             {
-                if (e.LsAddressesChunkGeocoded != null)
+                if (e.lsAddressesChunkGeocoded != null)
                 {
-                    foreach (var addr1 in e.LsAddressesChunkGeocoded)
+                    foreach (var addr1 in e.lsAddressesChunkGeocoded)
                         lsAddresses.Add(addr1.GeocodedAddress.AddressString);
                 }
                     
                 Console.WriteLine("Total Geocoded Addresses -> " + lsAddresses.Count);
             };
 
-            fastProcessing.UploadAndGeocodeLargeJsonFile(@"Data\JSON\batch_socket_upload_error_addresses_data_5.json");
+            fastProcessing.uploadAndGeocodeLargeJsonFile(@"Data\JSON\batch_socket_upload_error_addresses_data_5.json");
 
         }
 
         private void FastProcessing_AddressesChunkGeocoded(object sender, FastBulkGeocoding.AddressesChunkGeocodedArgs e)
         {
-            if (e.LsAddressesChunkGeocoded != null) Console.WriteLine("Geocoded addresses " + e.LsAddressesChunkGeocoded.Count);
+            if (e.lsAddressesChunkGeocoded != null) Console.WriteLine("Geocoded addresses " + e.lsAddressesChunkGeocoded.Count);
         }
 
         [TestMethod]

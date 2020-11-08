@@ -1,5 +1,4 @@
 ﻿using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -8,25 +7,25 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Forward Geocoding
         /// </summary>
-        /// <returns> xml object </returns>
-        public void GeocodingForward(GeocodingParameters geoParams)
+        /// <returns> json/xml object </returns>
+        public void GeocodingForward(GeocodingParameters geoParams = null)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
+            if (geoParams == null)
+            {
+                geoParams = new GeocodingParameters()
+                {
+                    Addresses = "Los Angeles International Airport, CA||3495 Purdue St, Cuyahoga Falls, OH 44221",
+                    Format = "json"
+                };
+            }
+
             //Run the query
             string result = route4Me.Geocoding(geoParams, out string errorString);
 
-            Console.WriteLine("");
-
-            if (result != null)
-            {
-                Console.WriteLine("GeocodingForward executed successfully");
-            }
-            else
-            {
-                Console.WriteLine("GeocodingForward error: {0}", errorString);
-            }
+            PrintExampleGeocodings(result, GeocodingPrintOption.Geocodings, errorString);
         }
     }
 }

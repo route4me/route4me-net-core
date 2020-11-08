@@ -17,14 +17,14 @@ namespace Route4MeSDK.FastProcessing
     /// </summary>
     public class FastFileReading
     {
-        //const long offset = 0x10000000; // 256 megabytes
-        //const long length = 0x20000000; // 512 megabytes
+        const long offset = 0x10000000; // 256 megabytes
+        const long length = 0x20000000; // 512 megabytes
 
-        //string jsonFileName;
+        string jsonFileName;
 
-        public int JsonObjectsChunkSize { get; set; }
+        public int jsonObjectsChunkSize { get; set; }
 
-        //private ManualResetEvent manualResetEvent = null;
+        private ManualResetEvent manualResetEvent = null;
 
         #region // Event handler for the JsonFileChunkIsReady event
         public event EventHandler<JsonFileChunkIsReadyArgs> JsonFileChunkIsReady;
@@ -42,24 +42,22 @@ namespace Route4MeSDK.FastProcessing
         {
             EventHandler<JsonFileChunkIsReadyArgs> handler = JsonFileChunkIsReady;
 
-            handler?.Invoke(this, e);
-            //if (handler != null)
-            //{
-            //    handler(this, e);
-            //}
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
         #endregion
 
         #region // Event handler for the JsonFileReadingIsDone event
         protected virtual void OnJsonFileReadingIsDone(JsonFileReadingIsDoneArgs e)
         {
-            EventHandler< JsonFileReadingIsDoneArgs> handler = JsonFileReadingIsDone;
+            EventHandler<JsonFileReadingIsDoneArgs> handler = JsonFileReadingIsDone;
 
-            handler?.Invoke(this, e);
-            //if (handler != null)
-            //{
-            //    handler(this, e);
-            //}
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
 
         public delegate void JsonFileReadingIsDoneEventHandler(object sender, JsonFileReadingIsDoneArgs e);
@@ -71,7 +69,7 @@ namespace Route4MeSDK.FastProcessing
 
         #endregion
 
-        public void FastReadFromFile(String sFileName)
+        public void fastReadFromFile(String sFileName)
         {
             if (sFileName.Substring(1, 1) != ":")
             {
@@ -101,7 +99,7 @@ namespace Route4MeSDK.FastProcessing
                 Console.WriteLine("Error during JSON file readinf. " + ex.Message);
             }
 
-            
+
         }
 
         //static AutoResetEvent autoEvent = new AutoResetEvent(false);
@@ -110,11 +108,18 @@ namespace Route4MeSDK.FastProcessing
         /// Read content from A large JSON file by chunks
         /// </summary>
         /// <param name="fileName">JSON file name</param>
-        public void ReadingChunksFromLargeJsonFile(string fileName)
+        public void readingChunksFromLargeJsonFile(string fileName)
         {
+            //manualResetEvent = new ManualResetEvent(false);
+            //FastBulkGeocoding fbGeocoding = new FastBulkGeocoding("");
+
+            //fbGeocoding.GeocodingIsFinished += FbGeocoding_GeocodingIsFinished;
+
+            //manualResetEvent.WaitOne();
+
             JsonSerializer serializer = new JsonSerializer();
 
-            //AddressField o = null;
+            AddressField o = null;
 
             string sJsonAddressesChunk = "";
             int curJsonObjects = 0;
@@ -122,6 +127,7 @@ namespace Route4MeSDK.FastProcessing
             using (StreamReader sr = new StreamReader(s))
             using (JsonReader reader = new JsonTextReader(sr))
             {
+                //reader.SupportMultipleContent = true;
                 bool blStartAdresses = false;
                 while (reader.Read())
                 {
@@ -129,26 +135,25 @@ namespace Route4MeSDK.FastProcessing
 
                     if (reader.TokenType == JsonToken.StartObject && blStartAdresses)
                     {
-                        AddressField o = serializer.Deserialize<AddressField>(reader);
+                        o = serializer.Deserialize<AddressField>(reader);
 
                         if (o.Address == null) continue;
 
                         sJsonAddressesChunk += JsonConvert.SerializeObject(o, Formatting.None) + ",";
                         curJsonObjects++;
 
-                        if (curJsonObjects >= JsonObjectsChunkSize)
+                        if (curJsonObjects >= jsonObjectsChunkSize)
                         {
                             sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
-                            JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs()
-                            {
-                                AddressesChunk = sJsonAddressesChunk
-                            };
-                            //chunkIsReady.AddressesChunk = sJsonAddressesChunk;
+                            JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
+                            chunkIsReady.AddressesChunk = sJsonAddressesChunk;
                             sJsonAddressesChunk = "";
                             curJsonObjects = 0;
 
+                            //manualResetEvent.Set();
                             OnJsonFileChunkIsReady(chunkIsReady);
                             Thread.Sleep(5000);
+                            //manualResetEvent.WaitOne();
                         }
                     }
                 }
@@ -156,11 +161,8 @@ namespace Route4MeSDK.FastProcessing
                 if (sJsonAddressesChunk != "")
                 {
                     sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
-                    JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs
-                    {
-                        AddressesChunk = sJsonAddressesChunk
-                    };
-                    //chunkIsReady.AddressesChunk = sJsonAddressesChunk;
+                    JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
+                    chunkIsReady.AddressesChunk = sJsonAddressesChunk;
                     sJsonAddressesChunk = "";
                     OnJsonFileChunkIsReady(chunkIsReady);
 
@@ -169,6 +171,7 @@ namespace Route4MeSDK.FastProcessing
 
                 JsonFileReadingIsDoneArgs args = new JsonFileReadingIsDoneArgs() { IsDone = true };
                 OnJsonFileReadingIsDone(args);
+
             }
         }
 
@@ -177,7 +180,7 @@ namespace Route4MeSDK.FastProcessing
             //manualResetEvent.Set();
         }
 
-        public string ReadJsonTextFromFile(String sFileName)
+        public string readJsonTextFromFile(String sFileName)
         {
             if (!File.Exists(sFileName))
             {
@@ -189,18 +192,18 @@ namespace Route4MeSDK.FastProcessing
             return jsonContent;
         }
 
-        public List<T> GetObjectsListfromJsonText<T>(string jsonText)
+        public List<T> getObjectsListfromJsonText<T>(string jsonText)
         {
             List<T> lsObjects = fastJSON.JSON.ToObject<List<T>>(jsonText);
 
             return lsObjects;
         }
 
-        public List<T> GetObjectsListFromJsonFile<T>(String sFileName)
+        public List<T> getObjectsListFromJsonFile<T>(String sFileName)
         {
-            String jsonText = ReadJsonTextFromFile(sFileName);
+            String jsonText = readJsonTextFromFile(sFileName);
 
-            List<T> lsObjects = GetObjectsListfromJsonText<T>(jsonText);
+            List<T> lsObjects = getObjectsListfromJsonText<T>(jsonText);
 
             return lsObjects;
         }
