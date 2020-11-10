@@ -27,6 +27,7 @@ namespace Route4MeSDK.Examples
         public List<string> ContactsToRemove;
         public List<string> RoutesToRemove;
         public List<string> OptimizationsToRemove;
+        public List<string> addressBookGroupsToRemove;
 
         DataObject dataObjectSD10Stops;
         string SD10Stops_optimization_problem_id;
@@ -713,6 +714,79 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine(testName + " error: {0}", errorString);
                     }
                     break;
+            }
+        }
+
+        public void AddAddressBookGroupToRemoveList(string groupId)
+        {
+            if (addressBookGroupsToRemove == null) addressBookGroupsToRemove = new List<string>();
+
+            addressBookGroupsToRemove.Add(groupId);
+        }
+
+        public void CreateAddressBookGroup()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var addressBookGroupRule = new AddressBookGroupRule()
+            {
+                ID = "address_1",
+                Field = "address_1",
+                Operator = "not_equal",
+                Value = "qwerty123456"
+            };
+
+            var addressBookGroupFilter = new AddressBookGroupFilter()
+            {
+                Condition = "AND",
+                Rules = new AddressBookGroupRule[] { addressBookGroupRule }
+            };
+
+            var addressBookGroupParameters = new AddressBookGroup()
+            {
+                GroupName = "All Group",
+                GroupColor = "92e1c0",
+                Filter = addressBookGroupFilter
+            };
+
+            // Run the query
+            var addressBookGroup = route4Me.AddAddressBookGroup(
+                addressBookGroupParameters,
+                out string errorString);
+
+            if (addressBookGroup == null || addressBookGroup.GetType() != typeof(AddressBookGroup))
+            {
+                Console.WriteLine(
+                    "Cannot create an address book group." +
+                    Environment.NewLine +
+                    errorString);
+
+                return;
+            }
+
+            AddAddressBookGroupToRemoveList(addressBookGroup.GroupId);
+        }
+
+        public void RemoveAddressBookGroups()
+        {
+            if (addressBookGroupsToRemove == null || addressBookGroupsToRemove.Count < 1) return;
+
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            foreach (string groupId in addressBookGroupsToRemove)
+            {
+                var addressGroupParams =
+                    new AddressBookGroupParameters() { groupID = groupId };
+
+                var response = route4Me.RemoveAddressBookGroup(
+                    addressGroupParams,
+                    out string errorString);
+
+                Console.WriteLine((response?.Status ?? false)
+                    ? "Removed the address book group " + groupId
+                    : "Cannot removed the address book group " + groupId);
+
+                Console.WriteLine("");
             }
         }
     }
