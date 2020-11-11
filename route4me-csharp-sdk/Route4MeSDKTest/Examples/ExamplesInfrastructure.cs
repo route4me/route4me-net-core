@@ -28,6 +28,7 @@ namespace Route4MeSDK.Examples
         public List<string> RoutesToRemove;
         public List<string> OptimizationsToRemove;
         public List<string> addressBookGroupsToRemove;
+        public List<string> configKeysToRemove = new List<string>();
 
         DataObject dataObjectSD10Stops;
         string SD10Stops_optimization_problem_id;
@@ -48,11 +49,12 @@ namespace Route4MeSDK.Examples
         public DataObjectRoute SDRT_route { get; set; }
         public string SDRT_route_id { get; set; }
 
-        //List<int> lsRemoveContacts = new List<int>();
 
         AddressBookContact contactToRemove;
 
         AvoidanceZone avoidanceZone;
+
+        #region Optimizations, Routes, Destinations
 
         private void PrintExampleRouteResult(string exampleName, DataObjectRoute dataObjectRoute, string errorString)
         {
@@ -106,35 +108,6 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine("{0} error {1}", exampleName, errorString);
             }
         }
-        
-        private void PrintExampleActivities(Activity[] activities, string errorString="")
-        {
-            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
-            testName = testName != null ? testName : "";
-
-            Console.WriteLine("");
-
-            if (activities != null)
-            {
-                Console.WriteLine(
-                    "The test {0} executed successfully, " +
-                    "{1} activities returned",
-                    testName,
-                    activities.Length);
-                Console.WriteLine("");
-
-                activities.ForEach(activity =>
-                {
-                    Console.WriteLine("Activity ID: {0}", activity.ActivityId);
-                });
-
-                Console.WriteLine("");
-            }
-            else
-            {
-                Console.WriteLine("{0} error: {1}", testName,errorString);
-            }
-        }
 
         /// <summary>
         /// Console print of an example results.
@@ -181,28 +154,6 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine((bool)obj
                     ? testName + " executed successfully"
                     : String.Format(testName + " error: {0}", errorString));
-            }
-        }
-
-        private void PrintExampleAvoidanceZone(object avoidanceZone, string errorString = "")
-        {
-            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
-
-            Console.WriteLine("");
-
-            if (avoidanceZone != null)
-            {
-                Console.WriteLine(testName + " executed successfully");
-
-                string avoidanceZoneId = avoidanceZone.GetType() == typeof(AvoidanceZone)
-                    ? ((AvoidanceZone)avoidanceZone).TerritoryId
-                    : avoidanceZone.ToString();
-
-                Console.WriteLine("Territory ID: {0}", avoidanceZoneId);
-            }
-            else
-            {
-                Console.WriteLine(testName + " error: {0}", errorString);
             }
         }
 
@@ -330,90 +281,6 @@ namespace Route4MeSDK.Examples
             }
         }
 
-        public void CreateTestContacts()
-        {
-            var route4Me = new Route4MeManager(ActualApiKey);
-
-            var contact = new AddressBookContact()
-            {
-                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
-                CachedLat = 38.024654,
-                CachedLng = -77.338814
-            };
-
-            // Run the query
-            contact1 = route4Me.AddAddressBookContact(contact, out string errorString);
-
-            Assert.IsNotNull(contact1, "AddAddressBookContactsTest failed... " + errorString);
-
-            int location1 = contact1.AddressId != null ? Convert.ToInt32(contact1.AddressId) : -1;
-
-            ContactsToRemove = new List<string>();
-
-            if (location1 > 0) ContactsToRemove.Add(location1.ToString());
-
-            var dCustom = new Dictionary<string, string>()
-            {
-                {"FirstFieldName1", "FirstFieldValue1"},
-                {"FirstFieldName2", "FirstFieldValue2"}
-            };
-
-            contact = new AddressBookContact()
-            {
-                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
-                CachedLat = 38.024654,
-                CachedLng = -77.338814,
-                AddressCustomData = dCustom
-            };
-
-            contact2 = route4Me.AddAddressBookContact(contact, out errorString);
-
-            Assert.IsNotNull(contact2, "AddAddressBookContactsTest failed... " + errorString);
-
-            int location2 = contact2.AddressId != null ? Convert.ToInt32(contact2.AddressId) : -1;
-
-            if (location2 > 0) ContactsToRemove.Add(location2.ToString());
-
-            var contactParams = new AddressBookContact()
-            {
-                FirstName = "Test FirstName Rem" + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 Rem " + (new Random()).Next().ToString(),
-                CachedLat = 38.02466,
-                CachedLng = -77.33882
-            };
-
-            contactToRemove = route4Me.AddAddressBookContact(contactParams, out errorString);
-
-            if (contactToRemove!=null && contactToRemove.GetType()==typeof(AddressBookContact))
-                ContactsToRemove.Add(contactToRemove.AddressId.ToString());
-        }
-
-        /// <summary>
-        /// Remove the contacts created in an example.
-        /// </summary>
-        private void RemoveTestContacts()
-        {
-            var route4Me = new Route4MeManager(ActualApiKey);
-
-            if (ContactsToRemove.Count > 0)
-            {
-                try
-                {
-                    if (contactToRemove != null) 
-                        ContactsToRemove.Add(contactToRemove.AddressId.ToString());
-                    
-                    bool removed = route4Me.RemoveAddressBookContacts(ContactsToRemove.ToArray(), out string errorString);
-                    ContactsToRemove = new List<string>();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Cannot remove test contacts."+Environment.NewLine+ex.Message);
-                }
-            }
-        }
-
         private void RemoveTestRoutes()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -447,66 +314,6 @@ namespace Route4MeSDK.Examples
                     Console.WriteLine("Cannot remove test routes." + Environment.NewLine + ex.Message);
                 }
             }
-        }
-
-        private void PrintExampleContact(object contacts, uint total, string errorString = "")
-        {
-            if (contacts == null ||
-                (contacts.GetType() != typeof(AddressBookContact) && 
-                contacts.GetType() != typeof(AddressBookContact[])))
-            {
-                Console.WriteLine("Wrong contact(s). Cannot print." + Environment.NewLine + errorString);
-                return;
-            }
-
-            Console.WriteLine("");
-
-            if (contacts.GetType() == typeof(AddressBookContact))
-            {
-                AddressBookContact resultContact = (AddressBookContact)contacts;
-
-                Console.WriteLine("AddAddressBookContact executed successfully");
-
-                Console.WriteLine("AddressId: {0}", resultContact.AddressId);
-
-                Console.WriteLine("Custom data:");
-
-                foreach (var cdata in (Dictionary<string, string>)resultContact.AddressCustomData)
-                {
-                    Console.WriteLine(cdata.Key + ": " + cdata.Value);
-                }
-            }
-            else
-            {
-                Console.WriteLine("GetAddressBookContacts executed successfully, {0} contacts returned, total = {1}", ((AddressBookContact[])contacts).Length, total);
-                Console.WriteLine("");
-            }
-        }
-
-        /// <summary>
-        /// Console print of a scheduled contact response.
-        /// </summary>
-        /// <param name="contactResponse">Scheduled contact</param>
-        /// <param name="scheduleType">Schedule type: 'daily', 'weekly', monthly'</param>
-        private void PrintExampleScheduledContact(
-            AddressBookContact contactResponse,
-            string scheduleType,
-            string errorString = "")
-        {
-            int location1 = contactResponse.AddressId != null
-                ? Convert.ToInt32(contactResponse.AddressId)
-                : -1;
-
-            if (location1 > 0)
-            {
-                ContactsToRemove.Add(location1.ToString());
-                Console.WriteLine("A location with the " + scheduleType + " scheduling was created. AddressId: {0}", location1);
-            }
-            else Console.WriteLine(
-                "Creating of a location with " + scheduleType + " scheduling failed." +
-                Environment.NewLine +
-                errorString
-                );
         }
 
         public bool RunSingleDriverRoundTrip()
@@ -620,6 +427,188 @@ namespace Route4MeSDK.Examples
             }
         }
 
+        #endregion
+
+        private void PrintExampleActivities(Activity[] activities, string errorString = "")
+        {
+            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            Console.WriteLine("");
+
+            if (activities != null)
+            {
+                Console.WriteLine(
+                    "The test {0} executed successfully, " +
+                    "{1} activities returned",
+                    testName,
+                    activities.Length);
+                Console.WriteLine("");
+
+                activities.ForEach(activity =>
+                {
+                    Console.WriteLine("Activity ID: {0}", activity.ActivityId);
+                });
+
+                Console.WriteLine("");
+            }
+            else
+            {
+                Console.WriteLine("{0} error: {1}", testName, errorString);
+            }
+        }
+
+        #region Address Book Contacts
+
+        public void CreateTestContacts()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var contact = new AddressBookContact()
+            {
+                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
+                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                CachedLat = 38.024654,
+                CachedLng = -77.338814
+            };
+
+            // Run the query
+            contact1 = route4Me.AddAddressBookContact(contact, out string errorString);
+
+            Assert.IsNotNull(contact1, "AddAddressBookContactsTest failed... " + errorString);
+
+            int location1 = contact1.AddressId != null ? Convert.ToInt32(contact1.AddressId) : -1;
+
+            ContactsToRemove = new List<string>();
+
+            if (location1 > 0) ContactsToRemove.Add(location1.ToString());
+
+            var dCustom = new Dictionary<string, string>()
+            {
+                {"FirstFieldName1", "FirstFieldValue1"},
+                {"FirstFieldName2", "FirstFieldValue2"}
+            };
+
+            contact = new AddressBookContact()
+            {
+                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
+                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                CachedLat = 38.024654,
+                CachedLng = -77.338814,
+                AddressCustomData = dCustom
+            };
+
+            contact2 = route4Me.AddAddressBookContact(contact, out errorString);
+
+            Assert.IsNotNull(contact2, "AddAddressBookContactsTest failed... " + errorString);
+
+            int location2 = contact2.AddressId != null ? Convert.ToInt32(contact2.AddressId) : -1;
+
+            if (location2 > 0) ContactsToRemove.Add(location2.ToString());
+
+            var contactParams = new AddressBookContact()
+            {
+                FirstName = "Test FirstName Rem" + (new Random()).Next().ToString(),
+                Address1 = "Test Address1 Rem " + (new Random()).Next().ToString(),
+                CachedLat = 38.02466,
+                CachedLng = -77.33882
+            };
+
+            contactToRemove = route4Me.AddAddressBookContact(contactParams, out errorString);
+
+            if (contactToRemove!=null && contactToRemove.GetType()==typeof(AddressBookContact))
+                ContactsToRemove.Add(contactToRemove.AddressId.ToString());
+        }
+
+        /// <summary>
+        /// Remove the contacts created in an example.
+        /// </summary>
+        private void RemoveTestContacts()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            if (ContactsToRemove.Count > 0)
+            {
+                try
+                {
+                    if (contactToRemove != null) 
+                        ContactsToRemove.Add(contactToRemove.AddressId.ToString());
+                    
+                    bool removed = route4Me.RemoveAddressBookContacts(ContactsToRemove.ToArray(), out string errorString);
+                    ContactsToRemove = new List<string>();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Cannot remove test contacts."+Environment.NewLine+ex.Message);
+                }
+            }
+        }
+
+        private void PrintExampleContact(object contacts, uint total, string errorString = "")
+        {
+            if (contacts == null ||
+                (contacts.GetType() != typeof(AddressBookContact) &&
+                contacts.GetType() != typeof(AddressBookContact[])))
+            {
+                Console.WriteLine("Wrong contact(s). Cannot print." + Environment.NewLine + errorString);
+                return;
+            }
+
+            Console.WriteLine("");
+
+            if (contacts.GetType() == typeof(AddressBookContact))
+            {
+                AddressBookContact resultContact = (AddressBookContact)contacts;
+
+                Console.WriteLine("AddAddressBookContact executed successfully");
+
+                Console.WriteLine("AddressId: {0}", resultContact.AddressId);
+
+                Console.WriteLine("Custom data:");
+
+                foreach (var cdata in (Dictionary<string, string>)resultContact.AddressCustomData)
+                {
+                    Console.WriteLine(cdata.Key + ": " + cdata.Value);
+                }
+            }
+            else
+            {
+                Console.WriteLine("GetAddressBookContacts executed successfully, {0} contacts returned, total = {1}", ((AddressBookContact[])contacts).Length, total);
+                Console.WriteLine("");
+            }
+        }
+
+        /// <summary>
+        /// Console print of a scheduled contact response.
+        /// </summary>
+        /// <param name="contactResponse">Scheduled contact</param>
+        /// <param name="scheduleType">Schedule type: 'daily', 'weekly', monthly'</param>
+        private void PrintExampleScheduledContact(
+            AddressBookContact contactResponse,
+            string scheduleType,
+            string errorString = "")
+        {
+            int location1 = contactResponse.AddressId != null
+                ? Convert.ToInt32(contactResponse.AddressId)
+                : -1;
+
+            if (location1 > 0)
+            {
+                ContactsToRemove.Add(location1.ToString());
+                Console.WriteLine("A location with the " + scheduleType + " scheduling was created. AddressId: {0}", location1);
+            }
+            else Console.WriteLine(
+                "Creating of a location with " + scheduleType + " scheduling failed." +
+                Environment.NewLine +
+                errorString
+                );
+        }
+
+        #endregion
+
+        
+        #region Avoidance Zones
+
         /// <summary>
         /// Remove an avoidance zone
         /// </summary>
@@ -671,6 +660,30 @@ namespace Route4MeSDK.Examples
             PrintExampleAvoidanceZone(avoidanceZone);
         }
 
+        private void PrintExampleAvoidanceZone(object avoidanceZone, string errorString = "")
+        {
+            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+
+            Console.WriteLine("");
+
+            if (avoidanceZone != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                string avoidanceZoneId = avoidanceZone.GetType() == typeof(AvoidanceZone)
+                    ? ((AvoidanceZone)avoidanceZone).TerritoryId
+                    : avoidanceZone.ToString();
+
+                Console.WriteLine("Territory ID: {0}", avoidanceZoneId);
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
+
+        #endregion
+
         public void PrintExampleGeocodings(
             object result,
             GeocodingPrintOption printOption,
@@ -716,6 +729,8 @@ namespace Route4MeSDK.Examples
                     break;
             }
         }
+
+        #region Address Book Group
 
         public void AddAddressBookGroupToRemoveList(string groupId)
         {
@@ -789,5 +804,99 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine("");
             }
         }
+
+        #endregion
+
+        #region Member Configuration Group
+
+        public void CreateConfigKey()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var parametersArray = new MemberConfigurationParameters[]
+            {
+                new MemberConfigurationParameters
+                {
+                    ConfigKey = "Test Config Key",
+                    ConfigValue = "Test Config Value"
+                },
+            };
+
+            // Run the query
+            var result = route4Me.
+                CreateNewConfigurationKey(parametersArray, out string errorString);
+
+            Console.WriteLine(
+                result.Result != null
+                    ? "Created config key " + "Test Config Key"
+                    : "Cannot create config key " + "Test Config Key." + Environment.NewLine + errorString
+                );
+
+            if ((result?.Result ?? null) != null) configKeysToRemove.Add("Test Config Key");
+        }
+
+        public void PrintConfigKey(MemberConfigurationResponse configResponse, string errorString = "")
+        {
+            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            Console.WriteLine("");
+
+            if (configResponse != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+                Console.WriteLine("Result: " + configResponse.Result);
+                Console.WriteLine("Affected: " + configResponse.Affected);
+                Console.WriteLine("---------------------------");
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
+
+        public void PrintConfigKey(MemberConfigurationDataResponse configDataResponse, string errorString = "")
+        {
+            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            Console.WriteLine("");
+
+            if (configDataResponse != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+                Console.WriteLine("Result: " + configDataResponse.Result);
+
+                foreach (MemberConfigurationData mc_data in configDataResponse.Data)
+                {
+                    Console.WriteLine("member_id= " + mc_data.MemberId);
+                    Console.WriteLine("config_key= " + mc_data.ConfigKey);
+                    Console.WriteLine("config_value= " + mc_data.ConfigValue);
+                    Console.WriteLine("---------------------------");
+                }
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
+
+        public void RemoveConfigKeys()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            foreach (string configKey in configKeysToRemove)
+            {
+                var @params = new MemberConfigurationParameters { ConfigKey = configKey };
+
+                // Run the query
+                var result = route4Me.RemoveConfigurationKey(@params, out string errorString);
+
+                PrintConfigKey(result, errorString);
+            }
+        }
+
+        #endregion
+
     }
 }
