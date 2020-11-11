@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -14,28 +13,23 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
+            CreateConfigKey();
+
+            string newConfigKey = configKeysToRemove[configKeysToRemove.Count - 1];
+
             var @params = new MemberConfigurationParameters
             {
-                ConfigKey = "destination_icon_uri",
-                ConfigValue = "444"
+                ConfigKey = newConfigKey,
+                ConfigValue = "Test Config Value Updated"
             };
 
             // Run the query
-            MemberConfigurationResponse result = route4Me.UpdateConfigurationKey(@params, out string errorString);
+            MemberConfigurationResponse result = route4Me
+                .UpdateConfigurationKey(@params, out string errorString);
 
-            Console.WriteLine("");
+            PrintConfigKey(result, errorString);
 
-            if (result != null)
-            {
-                Console.WriteLine("UpdateConfigurationKey executed successfully");
-                Console.WriteLine("Result: " + result.Result);
-                Console.WriteLine("Affected: " + result.Affected);
-                Console.WriteLine("---------------------------");
-            }
-            else
-            {
-                Console.WriteLine("UpdateConfigurationKey error: {0}", errorString);
-            }
+            RemoveConfigKeys();
         }
     }
 }
