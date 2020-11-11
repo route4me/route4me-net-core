@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -16,26 +15,20 @@ namespace Route4MeSDK.Examples
 
             var @params = new MemberConfigurationParameters
             {
-                ConfigKey = "destination_icon_uri",
-                ConfigValue = "value"
+                ConfigKey = "Test Config Key 5",
+                ConfigValue = "Test Config Value 5"
             };
 
             // Run the query
-            MemberConfigurationResponse result = route4Me.CreateNewConfigurationKey(@params, out string errorString);
+            MemberConfigurationResponse result = route4Me
+                .CreateNewConfigurationKey(@params, out string errorString);
 
-            Console.WriteLine("");
+            if ((result?.Result ?? null) == "OK" &&
+                (result?.Affected ?? 0) > 0) configKeysToRemove.Add("Test Config Key 5");
 
-            if (result != null)
-            {
-                Console.WriteLine("AddNewConfigurationKey executed successfully");
-                Console.WriteLine("Result: " + result.Result);
-                Console.WriteLine("Affected: " + result.Affected);
-                Console.WriteLine("---------------------------");
-            }
-            else
-            {
-                Console.WriteLine("AddNewConfigurationKey error: {0}", errorString);
-            }
+            PrintConfigKey(result, errorString);
+
+            RemoveConfigKeys();
         }
     }
 }
