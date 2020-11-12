@@ -120,8 +120,8 @@ namespace Route4MeSDKTest
             {
                 examples.GetAddress(routeIdToMoveTo, routeDestinationIdToMove);
 
-                examples.AddAddressNote(routeIdToMoveTo, routeDestinationIdToMove);
-                examples.AddAddressNoteWithFile(routeIdToMoveTo, routeDestinationIdToMove);
+                examples.AddAddressNote();
+                examples.AddAddressNoteWithFile();
                 examples.GetAddressNotes(routeIdToMoveTo, routeDestinationIdToMove);
             }
             else

@@ -4,6 +4,7 @@ using Route4MeSDK.QueryTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Route4MeSDK.Examples
 {
@@ -29,6 +30,7 @@ namespace Route4MeSDK.Examples
         public List<string> OptimizationsToRemove;
         public List<string> addressBookGroupsToRemove;
         public List<string> configKeysToRemove = new List<string>();
+        public List<string> CustomNoteTypesToRemove = new List<string>();
 
         DataObject dataObjectSD10Stops;
         string SD10Stops_optimization_problem_id;
@@ -898,5 +900,162 @@ namespace Route4MeSDK.Examples
 
         #endregion
 
+        #region Address Notes
+
+        private void PrintExampleAddressNote(object note, string errorString = "")
+        {
+            Console.WriteLine("");
+
+            if (note != null && note.GetType() == typeof(AddressNote))
+            {
+                Console.WriteLine("AddAddressNote executed successfully");
+
+                Console.WriteLine("Note ID: {0}", ((AddressNote)note).NoteId);
+            }
+            else
+            {
+                Console.WriteLine("AddAddressNote error: {0}", errorString);
+            }
+        }
+
+        private void CreateAddressNote(out string routeId, out int? destinationId)
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            RunSingleDriverRoundTrip();
+
+            OptimizationsToRemove = new List<string>() { SDRT_optimization_problem_id };
+
+            routeId = SDRT_route_id;
+
+            destinationId = (int)SDRT_route.Addresses[1].RouteDestinationId;
+
+            double lat = SDRT_route.Addresses.Length > 1
+                ? SDRT_route.Addresses[1].Latitude
+                : 33.132675170898;
+            double lng = SDRT_route.Addresses.Length > 1
+                ? SDRT_route.Addresses[1].Longitude
+                : -83.244743347168;
+
+            var noteParameters = new NoteParameters()
+            {
+                RouteId = routeId,
+                AddressId = (int)destinationId,
+                Latitude = lat,
+                Longitude = lng,
+                DeviceType = DeviceType.Web.Description(),
+                ActivityType = StatusUpdateType.DropOff.Description()
+            };
+
+            // Run the query
+            string contents = "Test Note Contents " + DateTime.Now.ToString();
+            var note = route4Me.AddAddressNote(noteParameters, contents, out string errorString);
+
+            PrintExampleAddressNote(note, errorString);
+        }
+
+        private void RemoveCustomNoteTypes()
+        {
+            if (CustomNoteTypesToRemove.Count < 1) return;
+
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var response = route4Me.GetAllCustomNoteTypes(out string _);
+
+            List<CustomNoteType> allCustomNoteTypes =
+                (response != null && response.GetType() == typeof(CustomNoteType[]))
+                ? ((CustomNoteType[])response).ToList()
+                : null;
+
+            if (allCustomNoteTypes == null || allCustomNoteTypes.Count < 1) return;
+
+            foreach (string customNoteType in CustomNoteTypesToRemove)
+            {
+                int? customNoteTypeId = allCustomNoteTypes
+                    .Where(x => x.NoteCustomType == customNoteType)
+                    .FirstOrDefault()
+                    ?.NoteCustomTypeID ?? -1;
+
+                if (customNoteTypeId > 0)
+                {
+                    var removeResult = route4Me
+                    .RemoveCustomNoteType((int)customNoteTypeId, out string errorString);
+
+                    Console.WriteLine(
+                        (removeResult != null && removeResult.GetType() == typeof(int))
+                        ? "The custom note type " + customNoteTypeId + " removed"
+                        : "Cannot remove the custom note type " + customNoteTypeId);
+                }
+
+            }
+        }
+
+        private void PrintExampleCustomNoteType(object response, string errorString = "")
+        {
+            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            Console.WriteLine("");
+
+            if (response != null && response.GetType() == typeof(int))
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                Console.WriteLine("Affected custom note types: {0}", (int)response);
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
+
+        private int? GetCustomNoteIdByName(string customNoteTypeName)
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var response = route4Me.GetAllCustomNoteTypes(out string _);
+
+            List<CustomNoteType> allCustomNoteTypes =
+                (response != null && response.GetType() == typeof(CustomNoteType[]))
+                ? ((CustomNoteType[])response).ToList()
+                : null;
+
+            if (allCustomNoteTypes == null || allCustomNoteTypes.Count < 1) return null;
+
+            int? customNoteTypeId = allCustomNoteTypes
+                    .Where(x => x.NoteCustomType == customNoteTypeName)
+                    .FirstOrDefault()
+                    ?.NoteCustomTypeID ?? null;
+
+            return customNoteTypeId;
+        }
+
+        private void CreateCustomNoteType()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            string customType = "To Do 5";
+
+            string[] customValues = new string[]
+            {
+                "Pass a package 5", "Pickup package", "Do a service"
+            };
+
+            // Run the query
+            var response = route4Me.AddCustomNoteType(
+                    customType,
+                    customValues,
+                    out string errorString
+                );
+
+            PrintExampleCustomNoteType(response, errorString);
+
+            CustomNoteTypesToRemove = new List<string>();
+
+            if (response != null && response.GetType() == typeof(int))
+                CustomNoteTypesToRemove.Add("To Do 5");
+        }
+
+        #endregion
     }
 }
