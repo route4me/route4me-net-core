@@ -6,15 +6,19 @@ namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public void GetAddressNotes(string routeId, int routeDestinationId)
+        public void GetAddressNotes(string routeId = null, int? routeDestinationId = null)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
+            bool isInnerExample = routeId == null ? true : false;
+
+            if (isInnerExample) CreateAddressNote(out routeId, out routeDestinationId);
+
             var noteParameters = new NoteParameters()
             {
                 RouteId = routeId,
-                AddressId = routeDestinationId
+                AddressId = (int)routeDestinationId
             };
 
             // Run the query
@@ -24,7 +28,10 @@ namespace Route4MeSDK.Examples
 
             if (notes != null)
             {
-                Console.WriteLine("GetAddressNotes executed successfully, {0} notes returned", notes.Length);
+                Console.WriteLine(
+                    "GetAddressNotes executed successfully, {0} notes returned",
+                    notes.Length);
+
                 Console.WriteLine("");
             }
             else
@@ -32,7 +39,8 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine("GetAddressNotes error: {0}", errorString);
                 Console.WriteLine("");
             }
+
+            if (isInnerExample) RemoveTestOptimizations();
         }
     }
 }
-
