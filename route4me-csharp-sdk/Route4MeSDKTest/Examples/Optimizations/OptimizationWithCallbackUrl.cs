@@ -175,11 +175,12 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            string errorString;
-            DataObject dataObject = route4Me.RunOptimization(optimizationParameters, out errorString);
+            DataObject dataObject = route4Me.RunOptimization(
+                optimizationParameters,
+                out string errorString);
 
             // Output the result
-            PrintExampleOptimizationResult("SingleDriverMultipleTimeWindows", dataObject, errorString);
+            PrintExampleOptimizationResult(dataObject, errorString);
 
             return dataObject;
         }

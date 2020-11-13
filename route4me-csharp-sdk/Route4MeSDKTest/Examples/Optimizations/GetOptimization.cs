@@ -1,15 +1,29 @@
-﻿using Route4MeSDK.DataTypes;
+﻿using System.Collections.Generic;
+using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public void GetOptimization(string optimizationProblemID)
+        /// <summary>
+        /// Get an optimization problem by ID.
+        /// </summary>
+        /// <param name="optimizationProblemID">Optimization problem ID</param>
+        public void GetOptimization(string optimizationProblemID = null)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
+
+            bool isInnerExample = optimizationProblemID == null ? true : false;
+
+            if (isInnerExample)
+            {
+                RunOptimizationSingleDriverRoute10Stops();
+                optimizationProblemID = SD10Stops_optimization_problem_id;
+                OptimizationsToRemove = new List<string>();
+                OptimizationsToRemove.Add(optimizationProblemID);
+            }
 
             var optimizationParameters = new OptimizationParameters()
             {
@@ -17,21 +31,13 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            DataObject dataObject = route4Me.GetOptimization(optimizationParameters, out string errorString);
+            DataObject dataObject = route4Me.GetOptimization(
+                optimizationParameters,
+                out string errorString);
 
-            Console.WriteLine("");
+            PrintExampleOptimizationResult(dataObject, errorString);
 
-            if (dataObject != null)
-            {
-                Console.WriteLine("GetOptimization executed successfully");
-
-                Console.WriteLine("Optimization Problem ID: {0}", dataObject.OptimizationProblemId);
-                Console.WriteLine("State: {0}", dataObject.State);
-            }
-            else
-            {
-                Console.WriteLine("GetOptimization error: {0}", errorString);
-            }
+            if (isInnerExample) RemoveTestOptimizations();
         }
     }
 }

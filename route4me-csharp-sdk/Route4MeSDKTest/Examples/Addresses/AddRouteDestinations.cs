@@ -50,7 +50,7 @@ namespace Route4MeSDK.Examples
                 optimalPosition,
                 out string errorString);
 
-            PrintExampleRouteResult("AddRouteDestinations", SD10Stops_route, errorString);
+            PrintExampleRouteResult(SD10Stops_route, errorString);
 
             if (isInnerExample)
             {

@@ -10,7 +10,7 @@ namespace Route4MeSDK.Examples
         public async Task<DataObject> AsyncMultipleDepotMultipleDriver()
         {
             // Create the manager with the api key
-            Route4MeManager route4Me = new Route4MeManager(ActualApiKey);
+            var route4Me = new Route4MeManager(ActualApiKey);
 
             // Prepare the addresses
             Address[] addresses = new Address[]
@@ -143,7 +143,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Set parameters
-            RouteParameters parameters = new RouteParameters()
+            var parameters = new RouteParameters()
             {
                 //specify capacitated vehicle routing with time windows and multiple depots, with multiple drivers
                 AlgorithmType = AlgorithmType.CVRP_TW_MD,
@@ -169,7 +169,7 @@ namespace Route4MeSDK.Examples
                 Metric = Metric.Geodesic
             };
 
-            OptimizationParameters optimizationParameters = new OptimizationParameters()
+            var optimizationParameters = new OptimizationParameters()
             {
                 Addresses = addresses,
                 Parameters = parameters
@@ -178,13 +178,13 @@ namespace Route4MeSDK.Examples
             DataObject dataObject = null;
 
             // Run the query
-            string errorString;
-
             await Task<DataObject>.Run(() =>
             {
-                dataObject = route4Me.RunAsyncOptimization(optimizationParameters, out errorString);
+                dataObject = route4Me.RunAsyncOptimization(
+                    optimizationParameters, 
+                    out string errorString);
 
-                PrintExampleOptimizationResult("AsyncMultipleDepotMultipleDriver", dataObject, errorString);
+                PrintExampleOptimizationResult(dataObject, errorString);
 
                 return dataObject;
             });
