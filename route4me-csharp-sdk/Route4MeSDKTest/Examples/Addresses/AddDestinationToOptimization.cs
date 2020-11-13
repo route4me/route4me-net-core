@@ -30,7 +30,7 @@ namespace Route4MeSDK.Examples
             };
 
             //Optionally change any route parameters, such as maximum route duration, maximum cubic constraints, etc.
-            OptimizationParameters optimizationParameters = new OptimizationParameters()
+            var optimizationParameters = new OptimizationParameters()
             {
                 OptimizationProblemID = SD10Stops_optimization_problem_id,
                 Addresses = addresses,
@@ -42,7 +42,7 @@ namespace Route4MeSDK.Examples
                 optimizationParameters,
                 out string errorString);
 
-            PrintExampleOptimizationResult("AddDestinationToOptimization", dataObject, errorString);
+            PrintExampleOptimizationResult(dataObject, errorString);
 
             RemoveTestOptimizations();
         }
