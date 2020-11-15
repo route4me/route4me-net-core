@@ -1,5 +1,4 @@
 ﻿using Route4MeSDK.DataTypes;
-using System;
 using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
@@ -10,12 +9,12 @@ namespace Route4MeSDK.Examples
         /// Add Scheduled Order
         /// </summary>
         /// <returns> Added Order </returns>
-        public Order AddScheduledOrder()
+        public void AddScheduledOrder()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            var order = new Order()
+            var orderParams = new Order()
             {
                 Address1 = "318 S 39th St, Louisville, KY 40212, USA",
                 CachedLat = 38.259326,
@@ -38,25 +37,14 @@ namespace Route4MeSDK.Examples
                 OrderIcon = "emoji/emoji-bank"
             };
 
-            // Run the query
-            Order resultOrder = route4Me.AddOrder(order, out string errorString);
+            var newOrder = route4Me.AddOrder(orderParams, out string errorString);
 
-            Console.WriteLine("");
+            PrintExampleOrder(newOrder, errorString);
 
-            if (resultOrder != null)
-            {
-                Console.WriteLine("AddScheduledOrder executed successfully");
+            if (newOrder != null && newOrder.GetType() == typeof(Order))
+                OrdersToRemove = new List<string>() { newOrder.OrderId.ToString() };
 
-                Console.WriteLine("Order ID: {0}", resultOrder.OrderId);
-
-                return resultOrder;
-            }
-            else
-            {
-                Console.WriteLine("AddScheduledOrder error: {0}", errorString);
-
-                return null;
-            }
+            RemoveTestOrders();
         }
     }
 }
