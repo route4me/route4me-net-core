@@ -2802,10 +2802,13 @@ namespace Route4MeSDK
 		public AddressBookGroup UpdateAddressBookGroup(AddressBookGroup group, out string errorString)
 		{
 			group.PrepareForSerialization();
-			AddressBookGroup result = GetJsonObjectFromAPI<AddressBookGroup>(group,
-																 R4MEInfrastructureSettings.AddressBookGroup,
-																 HttpMethodType.Put,
-																 out errorString);
+
+			AddressBookGroup result = GetJsonObjectFromAPI<AddressBookGroup>(
+				group,
+				R4MEInfrastructureSettings.AddressBookGroup,
+				HttpMethodType.Put,
+				out errorString);
+
 			return result;
 		}
 
@@ -2910,19 +2913,44 @@ namespace Route4MeSDK
 
 		#region Orders
 
-        /// <summary>
-        /// The response for the orders getting process.
-        /// </summary>
+		/// <summary>
+		/// The response for the orders getting process.
+		/// </summary>
 		[DataContract]
-		private sealed class GetOrdersResponse
-        {
-            /// <value>An arrary of the Order type objects </value>
+		public sealed class GetOrdersResponse
+		{
+			/// <value>An arrary of the objects
+			/// Available types of the array item: Order (default), 
+			/// object[] (search by fields)</value>
 			[DataMember(Name = "results")]
 			public Order[] Results { get; set; }
 
-            /// <value>Number of the returned orders</value>
-            [DataMember(Name = "total")]
+			/// <value>Number of the returned orders</value>
+			[DataMember(Name = "total")]
 			public uint Total { get; set; }
+
+			[DataMember(Name = "fields", EmitDefaultValue = false)]
+			public string[] Fields { get; set; }
+		}
+
+		/// <summary>
+		/// The response from the orders searching process (contains specified fields).
+		/// </summary>
+		[DataContract]
+		public sealed class SearchOrdersResponse
+		{
+			/// <value>An arrary of the objects
+			/// Available types of the array item: Order (default), 
+			/// object[] (search by fields)</value>
+			[DataMember(Name = "results")]
+			public IList<object[]> Results { get; set; }
+
+			/// <value>Number of the returned orders</value>
+			[DataMember(Name = "total")]
+			public uint Total { get; set; }
+
+			[DataMember(Name = "fields", EmitDefaultValue = false)]
+			public string[] Fields { get; set; }
 		}
 
 		/// <summary>
@@ -2961,27 +2989,37 @@ namespace Route4MeSDK
 			return response;
 		}
 
-        /// <summary>
-        /// Searches for the orders.
-        /// </summary>
-        /// <param name="orderQuery">The OrderParameters type object as the query parameters</param>
-        /// <param name="errorString">out: Error as string</param>
-        /// <returns>List of the Order type objects</returns>
-		public Order[] SearchOrders(OrderParameters orderQuery, out string errorString)
+		/// <summary>
+		/// Searches for the orders.
+		/// </summary>
+		/// <param name="orderQuery">The OrderParameters type object as the query parameters</param>
+		/// <param name="errorString">out: Error as string</param>
+		/// <returns>List of the Order type objects</returns>
+		public object SearchOrders(OrderParameters orderQuery, out string errorString)
 		{
-			var response = GetJsonObjectFromAPI<GetOrdersResponse>(orderQuery, 
-                R4MEInfrastructureSettings.Order, HttpMethodType.Get, out errorString);
+			bool showFields = (orderQuery?.Fields?.Length ?? 0) < 1
+				? false
+				: true;
 
-            return response?.Results ?? null;
+			if (showFields)
+			{
+				return GetJsonObjectFromAPI<SearchOrdersResponse>(orderQuery,
+				R4MEInfrastructureSettings.Order, HttpMethodType.Get, out errorString);
+			}
+			else
+			{
+				return GetJsonObjectFromAPI<GetOrdersResponse>(orderQuery,
+				R4MEInfrastructureSettings.Order, HttpMethodType.Get, out errorString);
+			}
 		}
 
-        /// <summary>
-        /// Filter for the orders filtering
-        /// </summary>
-        /// <param name="orderFilter">The OrderFilterParameters object as a HTTP request payload</param>
-        /// <param name="errorString">out: Error as string</param>
-        /// <returns>Array of the Order type objects</returns>
-        public Order[] FilterOrders(OrderFilterParameters orderFilter, out string errorString)
+		/// <summary>
+		/// Filter for the orders filtering
+		/// </summary>
+		/// <param name="orderFilter">The OrderFilterParameters object as a HTTP request payload</param>
+		/// <param name="errorString">out: Error as string</param>
+		/// <returns>Array of the Order type objects</returns>
+		public Order[] FilterOrders(OrderFilterParameters orderFilter, out string errorString)
         {
             var response = GetJsonObjectFromAPI<GetOrdersResponse>(orderFilter,
                 R4MEInfrastructureSettings.Order, HttpMethodType.Post, out errorString);

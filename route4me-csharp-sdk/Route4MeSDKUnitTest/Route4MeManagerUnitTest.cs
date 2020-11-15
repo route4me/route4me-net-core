@@ -13,6 +13,7 @@ using System.Reflection;
 using System.CodeDom.Compiler;
 using CsvHelper;
 using System.Linq;
+using static Route4MeSDK.Route4MeManager;
 
 namespace Route4MeSDKUnitTest
 {
@@ -9195,12 +9196,15 @@ namespace Route4MeSDKUnitTest
                 Limit = 10
             };
 
-            //uint total;
-            Order[] orders = route4Me.GetOrders(orderParameters, out uint total, out string errorString);
+            Order[] orders = route4Me.GetOrders(
+                orderParameters,
+                out uint total,
+                out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrdersTest failed... " + errorString);
-
-            Assert.IsNotNull(total, "GetOrdersTest failed.");
+            Assert.IsInstanceOfType(
+                orders, typeof(Order[]), 
+                "GetOrdersTest failed. " + errorString
+            );
         }
 
         [TestMethod]
@@ -9217,7 +9221,10 @@ namespace Route4MeSDKUnitTest
 
             Order order = route4Me.GetOrderByID(orderParameters, out string errorString);
 
-            Assert.IsInstanceOfType(order, typeof(Order), "GetOrderByIDTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                order,
+                typeof(Order),
+                "GetOrderByIDTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9231,9 +9238,13 @@ namespace Route4MeSDKUnitTest
 
             var oParams = new OrderParameters { DayAddedYYMMDD = InsertedDate };
 
-            Order[] orders = route4Me.SearchOrders(oParams, out string errorString);
+            var orders = route4Me.SearchOrders(oParams, out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrderByInsertedDateTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                orders,
+                typeof(GetOrdersResponse),
+                "GetOrderByInsertedDateTest failed. " + errorString
+            );
         }
 
         [TestMethod]
@@ -9245,11 +9256,18 @@ namespace Route4MeSDKUnitTest
 
             var dtTomorrow = DateTime.Now + (new TimeSpan(1, 0, 0, 0));
 
-            var oParams = new OrderParameters { ScheduledForYYMMDD = dtTomorrow.ToString("yyyy-MM-dd") };
+            var oParams = new OrderParameters()
+            {
+                ScheduledForYYMMDD = dtTomorrow.ToString("yyyy-MM-dd")
+            };
 
-            Order[] orders = route4Me.SearchOrders(oParams, out string errorString);
+            var orders = route4Me.SearchOrders(oParams, out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrderByScheduledDateTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                orders,
+                typeof(GetOrdersResponse),
+                "GetOrderByScheduledDateTest failed. " + errorString
+            );
         }
 
         [TestMethod]
@@ -9264,10 +9282,10 @@ namespace Route4MeSDKUnitTest
 
             var oParams = new OrderFilterParameters()
             {
+                Limit = 10,
                 Filter = new FilterDetails()
                 {
                     Display = "all",
-                    Limit = 10,
                     Scheduled_for_YYMMDD = new string[] { startDate, endDate }
                 }
             };
@@ -9293,9 +9311,13 @@ namespace Route4MeSDKUnitTest
                 Limit = 20
             };
 
-            Order[] orders = route4Me.SearchOrders(oParams, out string errorString);
+            var orders = route4Me.SearchOrders(oParams, out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrdersBySpecifiedTextTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                orders,
+                typeof(GetOrdersResponse),
+                "GetOrdersBySpecifiedTextTest failed. " + errorString
+            );
         }
 
         [TestMethod]
@@ -9305,18 +9327,26 @@ namespace Route4MeSDKUnitTest
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string CustomFields = "order_id,member_id";
+            string startDate = (DateTime.Now + (new TimeSpan(1, 0, 0, 0))).ToString("yyyy-MM-dd");
+            string endDate = (DateTime.Now + (new TimeSpan(31, 0, 0, 0))).ToString("yyyy-MM-dd");
 
-            var oParams = new OrderParameters()
+            var oParams = new OrderFilterParameters()
             {
-                Fields = CustomFields,
-                Offset = 0,
-                Limit = 20
+                Limit = 10,
+                Filter = new FilterDetails()
+                {
+                    Display = "all",
+                    Scheduled_for_YYMMDD = new string[] { startDate, endDate }
+                }
             };
 
-            Order[] orders = route4Me.SearchOrders(oParams, out string errorString);
+            Order[] orders = route4Me.FilterOrders(oParams, out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrdersByCustomFieldsTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                orders,
+                typeof(Order[]),
+                "GetOrdersByScheduleFilter failed. " + errorString
+             );
         }
 
         [TestMethod]
@@ -9329,7 +9359,7 @@ namespace Route4MeSDKUnitTest
             //Order order = null;
             string orderId = lsOrderIds.Count > 0 ? lsOrderIds[0] : "";
 
-            Assert.IsFalse(orderId == "", "There is no order for updating...");
+            Assert.IsFalse(orderId == "", "There is no order for updating.");
 
             var orderParameters = new OrderParameters()
             {
@@ -9338,16 +9368,14 @@ namespace Route4MeSDKUnitTest
 
             Order order = route4Me.GetOrderByID(orderParameters, out string errorString);
 
-            Assert.IsTrue(order!=null, "There is no order for updating... " + errorString);
-
-            //if (orders.Length > 0) order = orders[0];
+            Assert.IsTrue(order != null, "There is no order for updating. " + errorString);
 
             order.ExtFieldLastName = "Updated " + (new Random()).Next().ToString();
 
             // Run the query
             var updatedOrder = route4Me.UpdateOrder(order, out errorString);
 
-            Assert.IsNotNull(updatedOrder, "UpdateOrderTest failed... " + errorString);
+            Assert.IsNotNull(updatedOrder, "UpdateOrderTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9388,7 +9416,7 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void AddOrdersToOptimizationTest()
         {
-            if (skip == "yes") return;
+            if(skip == "yes") return;
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -9398,18 +9426,18 @@ namespace Route4MeSDKUnitTest
                 Redirect = false
             };
 
-            var lsTimeWindowStart = new List<long>();
+            var lsTimeWindowStart = new List<int>();
 
             var dtCurDate = DateTime.Now + (new TimeSpan(1, 0, 0, 0));
             dtCurDate = new DateTime(dtCurDate.Year, dtCurDate.Month, dtCurDate.Day, 8, 0, 0);
 
             var tsp1000sec = new TimeSpan(0, 0, 1000);
 
-            lsTimeWindowStart.Add(R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
             dtCurDate += tsp1000sec;
-            lsTimeWindowStart.Add(R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
             dtCurDate += tsp1000sec;
-            lsTimeWindowStart.Add(R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
 
             #region Addresses
             Address[] addresses = new Address[] {
@@ -9489,9 +9517,13 @@ namespace Route4MeSDKUnitTest
                 DisableOptimization = false
             };
 
-            var dataObject = route4Me.AddOrdersToOptimization(rQueryParams, addresses, rParams, out string errorString);
+            var dataObject = route4Me.AddOrdersToOptimization(
+                rQueryParams,
+                addresses,
+                rParams,
+                out string errorString);
 
-            Assert.IsNotNull(dataObject, "AddOrdersToOptimizationTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "AddOrdersToOptimizationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9547,7 +9579,7 @@ namespace Route4MeSDKUnitTest
 
             var result = route4Me.UpdateOrder(order, out string errorString);
 
-            Assert.IsNotNull(result, "AddOrdersToRouteTest failed... " + errorString);
+            Assert.IsNotNull(result, "AddOrdersToRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9625,9 +9657,13 @@ namespace Route4MeSDKUnitTest
                 DisableOptimization = false
             };
 
-            var result = route4Me.AddOrdersToRoute(rQueryParams, addresses, rParams, out string errorString);
+            var result = route4Me.AddOrdersToRoute(
+                rQueryParams,
+                addresses,
+                rParams,
+                out string errorString);
 
-            Assert.IsNotNull(result, "AddOrdersToRouteTest failed... " + errorString);
+            Assert.IsNotNull(result, "AddOrdersToRouteTest failed. " + errorString);
         }
 
         [ClassCleanup]

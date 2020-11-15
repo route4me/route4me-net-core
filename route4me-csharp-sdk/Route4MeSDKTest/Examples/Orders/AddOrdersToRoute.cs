@@ -16,9 +16,12 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
+            RunOptimizationSingleDriverRoute10Stops();
+            OptimizationsToRemove = new List<string>() { SD10Stops_optimization_problem_id };
+
             var rQueryParams = new RouteParametersQuery()
             {
-                RouteId = "F0C842829D8799067F9BF7A495076335",
+                RouteId = SD10Stops_route_id,
                 Redirect = false
             };
 
@@ -71,36 +74,27 @@ namespace Route4MeSDK.Examples
             };
             #endregion
 
-            RouteParameters rParams = new RouteParameters()
+            var rParams = new RouteParameters()
             {
                 RouteName = "Wednesday 15th of June 2016 07:01 PM (+03:00)",
                 RouteDate = 1465948800,
                 RouteTime = 14400,
                 Optimize = "Time",
-                RouteType = "single",
                 AlgorithmType = AlgorithmType.TSP,
                 RT = false,
                 LockLast = false,
-                MemberId = 1,
                 VehicleId = "",
                 DisableOptimization = false
             };
 
-            RouteResponse result = route4Me
-                .AddOrdersToRoute(rQueryParams, addresses, rParams, out string errorString);
+            var result = route4Me.AddOrdersToRoute(
+                rQueryParams,
+                addresses,
+                rParams, out string errorString);
 
-            Console.WriteLine("");
+            PrintExampleRouteResult(result, errorString);
 
-            if (result != null)
-            {
-                Console.WriteLine("AddOrdersToRoute executed successfully");
-
-                Console.WriteLine("Route ID: {0}", result.RouteID);
-            }
-            else
-            {
-                Console.WriteLine("AddOrdersToRoute error: {0}", errorString);
-            }
+            RemoveTestOptimizations();
         }
     }
 }
