@@ -1,10 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Route4MeSDK.DataTypes;
+using R4mActivity = Route4MeSDK.DataTypes.Activity;
 using Route4MeSDK.QueryTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using static Route4MeSDK.Route4MeManager;
 
 namespace Route4MeSDK.Examples
 {
@@ -31,6 +34,9 @@ namespace Route4MeSDK.Examples
         public List<string> addressBookGroupsToRemove;
         public List<string> configKeysToRemove = new List<string>();
         public List<string> CustomNoteTypesToRemove = new List<string>();
+        public List<string> OrdersToRemove = new List<string>();
+
+        Order lastCreatedOrder;
 
         DataObject dataObjectSD10Stops;
         string SD10Stops_optimization_problem_id;
@@ -58,27 +64,49 @@ namespace Route4MeSDK.Examples
 
         #region Optimizations, Routes, Destinations
 
-        private void PrintExampleRouteResult(DataObjectRoute dataObjectRoute, string errorString)
+        private void PrintExampleRouteResult(object dataObjectRoute, string errorString)
         {
-            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
             testName = testName != null ? testName : "";
 
             Console.WriteLine("");
 
             if (dataObjectRoute != null)
             {
+                var route1 = dataObjectRoute.GetType() == typeof(DataObjectRoute)
+                    ? (DataObjectRoute)dataObjectRoute
+                    : null;
+
+                var route2 = dataObjectRoute.GetType() == typeof(RouteResponse)
+                    ? (RouteResponse)dataObjectRoute
+                    : null;
+
                 Console.WriteLine("{0} executed successfully", testName);
                 Console.WriteLine("");
 
-                Console.WriteLine("Optimization Problem ID: {0}", dataObjectRoute.OptimizationProblemId);
+                Console.WriteLine(
+                    "Optimization Problem ID: {0}",
+                    route1 != null ? route1.OptimizationProblemId : route2.OptimizationProblemId
+                    );
 
                 Console.WriteLine("");
 
-                dataObjectRoute.Addresses.ForEach(address =>
+                if (route1 != null)
                 {
-                    Console.WriteLine("Address: {0}", address.AddressString);
-                    Console.WriteLine("Route ID: {0}", address.RouteId);
-                });
+                    route1.Addresses.ForEach(address =>
+                    {
+                        Console.WriteLine("Address: {0}", address.AddressString);
+                        Console.WriteLine("Route ID: {0}", address.RouteId);
+                    });
+                }
+                else
+                {
+                    route2.Addresses.ForEach(address =>
+                    {
+                        Console.WriteLine("Address: {0}", address.AddressString);
+                        Console.WriteLine("Route ID: {0}", address.RouteId);
+                    });
+                }
             }
             else
             {
@@ -460,9 +488,9 @@ namespace Route4MeSDK.Examples
 
         #endregion
 
-        private void PrintExampleActivities(Activity[] activities, string errorString = "")
+        private void PrintExampleActivities(R4mActivity[] activities, string errorString = "")
         {
-            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
             testName = testName != null ? testName : "";
 
             Console.WriteLine("");
@@ -1083,6 +1111,129 @@ namespace Route4MeSDK.Examples
 
             if (response != null && response.GetType() == typeof(int))
                 CustomNoteTypesToRemove.Add("To Do 5");
+        }
+
+        #endregion
+
+        #region Orders
+
+        private void CreateExampleOrder()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var orderParams = new Order()
+            {
+                Address1 = "318 S 39th St, Louisville, KY 40212, USA",
+                CachedLat = 38.259326,
+                CachedLng = -85.814979,
+                CurbsideLat = 38.259326,
+                CurbsideLng = -85.814979,
+                AddressAlias = "318 S 39th St 40212",
+                AddressCity = "Louisville",
+                ExtFieldFirstName = "Lui",
+                ExtFieldLastName = "Carol",
+                ExtFieldEmail = "lcarol654@yahoo.com",
+                ExtFieldPhone = "897946541",
+                ExtFieldCustomData = new Dictionary<string, string>()
+                {
+                    { "order_type", "scheduled order" }
+                },
+                DayScheduledFor_YYMMDD = DateTime.Now.ToString("yyyy-MM-dd"),
+                LocalTimeWindowEnd = 39000,
+                LocalTimeWindowEnd2 = 46200,
+                LocalTimeWindowStart = 37800,
+                LocalTimeWindowStart2 = 45000,
+                LocalTimezoneString = "America/New_York",
+                OrderIcon = "emoji/emoji-bank"
+            };
+
+            var newOrder = route4Me.AddOrder(orderParams, out string errorString);
+
+            if (newOrder != null)
+            {
+                OrdersToRemove.Add(newOrder.OrderId.ToString());
+                lastCreatedOrder = newOrder;
+            }
+        }
+
+        private void PrintExampleOrder(object result, string errorString)
+        {
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            Console.WriteLine("");
+
+            if (result != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                if (result.GetType() == typeof(Order))
+                {
+                    Console.WriteLine("Order ID: {0}", ((Order)result).OrderId);
+                }
+                else if (result.GetType() == typeof(Order[]))
+                {
+                    foreach (Order ord in (Order[])result)
+                    {
+                        Console.WriteLine("Order ID: {0}", ord.OrderId);
+                    }
+                }
+                else
+                {
+                    if (result.GetType() == typeof(GetOrdersResponse))
+                    {
+                        foreach (Order ord in (Order[])((GetOrdersResponse)result).Results)
+                        {
+                            Console.WriteLine("Order ID: {0}", ord.OrderId);
+                        }
+                    }
+                    else if (result.GetType() == typeof(SearchOrdersResponse))
+                    {
+                        var fieldValueList = (object[])((SearchOrdersResponse)result).Results;
+
+                        foreach (object fieldValues in fieldValueList)
+                        {
+                            string fieldValueString = "";
+
+                            foreach (object fieldValue in (object[])fieldValues)
+                            {
+                                fieldValueString += fieldValue.ToString() + ",";
+                            }
+
+                            fieldValueString = fieldValueString.TrimEnd(',');
+
+                            Console.WriteLine("Field values: {0}", fieldValueString);
+                        }
+
+                        Console.WriteLine("");
+
+                        foreach (string fieldName in ((SearchOrdersResponse)result).Fields)
+                        {
+                            Console.WriteLine(fieldName);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong orders search response type");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
+
+        private void RemoveTestOrders()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            // Run the query
+            if (OrdersToRemove == null || OrdersToRemove.Count < 1) return;
+
+            bool removed = route4Me.RemoveOrders(OrdersToRemove.ToArray(), out string errorString);
+
+            lastCreatedOrder = null;
         }
 
         #endregion

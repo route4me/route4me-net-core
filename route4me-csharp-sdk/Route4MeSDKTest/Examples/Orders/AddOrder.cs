@@ -9,12 +9,12 @@ namespace Route4MeSDK.Examples
         /// Add Order
         /// </summary>
         /// <returns> Added Order </returns>
-        public Order AddOrder()
+        public void AddOrder()
         {
             // Create the manager with the api key
-            Route4MeManager route4Me = new Route4MeManager(ActualApiKey);
+            var route4Me = new Route4MeManager(ActualApiKey);
 
-            Order order = new Order()
+            var order = new Order()
             {
                 Address1 = "Test Address1 " + (new Random()).Next().ToString(),
                 AddressAlias = "Test AddressAlias " + (new Random()).Next().ToString(),
@@ -23,25 +23,14 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            string errorString;
-            Order resultOrder = route4Me.AddOrder(order, out errorString);
+            Order resultOrder = route4Me.AddOrder(order, out string errorString);
 
-            Console.WriteLine("");
+            if (resultOrder != null && resultOrder.GetType() == typeof(Order))
+                OrdersToRemove.Add(resultOrder.OrderId.ToString());
 
-            if (resultOrder != null)
-            {
-                Console.WriteLine("AddOrder executed successfully");
+            PrintExampleOrder(resultOrder, errorString);
 
-                Console.WriteLine("Order ID: {0}", resultOrder.OrderId);
-
-                return resultOrder;
-            }
-            else
-            {
-                Console.WriteLine("AddOrder error: {0}", errorString);
-
-                return null;
-            }
+            RemoveTestOrders();
         }
     }
 }
