@@ -1,56 +1,57 @@
-﻿using Route4MeSDK.DataTypes;
+﻿using System.Collections.Generic;
+using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public void GetRoute(string routeId, bool getRouteDirections, bool getRoutePathPoints)
+        /// <summary>
+        /// Get a route by route ID
+        /// </summary>
+        /// <param name="routeId">Route ID</param>
+        /// <param name="getRouteDirections">If true, the directions included in the response</param>
+        /// <param name="getRoutePathPoints">If true, the path points included in the response</param>
+        public void GetRoute(string routeId = null,
+                             bool? getRouteDirections = null,
+                             bool? getRoutePathPoints = null)
         {
             // Create the manager with the api key
-            Route4MeManager route4Me = new Route4MeManager(ActualApiKey);
+            var route4Me = new Route4MeManager(ActualApiKey);
 
-            RouteParametersQuery routeParameters = new RouteParametersQuery()
+            bool isInnerExample = routeId == null ? true : false;
+
+            if (isInnerExample)
             {
-                RouteId = routeId
+                RunOptimizationSingleDriverRoute10Stops();
+                OptimizationsToRemove = new List<string>()
+                {
+                    SD10Stops_optimization_problem_id
+                };
+
+                routeId = SD10Stops_route_id;
+                getRouteDirections = true;
+                getRoutePathPoints = true;
+            }
+
+            var routeParameters = new RouteParametersQuery()
+            {
+                RouteId = routeId,
+                Directions = getRouteDirections,
+                RoutePathOutput = getRoutePathPoints == true
+                    ? RoutePathOutput.Points.ToString()
+                    : ""
             };
 
-            if (getRouteDirections)
-            {
-                routeParameters.Directions = true;
-            }
-
-            if (getRoutePathPoints)
-            {
-                routeParameters.RoutePathOutput = RoutePathOutput.Points.ToString();
-            }
-
             // Run the query
-            string errorString;
-            DataObjectRoute dataObject = route4Me.GetRoute(routeParameters, out errorString);
+            DataObjectRoute dataObject = route4Me.GetRoute(
+                routeParameters,
+                out string errorString
+            );
 
-            Console.WriteLine("");
+            PrintExampleRouteResult(dataObject, errorString);
 
-            if (dataObject != null)
-            {
-                Console.WriteLine("GetRoute executed successfully");
-
-                Console.WriteLine("Route ID: {0}", dataObject.RouteId);
-
-                if (dataObject.Directions != null)
-                {
-                    Console.WriteLine("Directions: lenth = {0}", dataObject.Directions.Length);
-                }
-                if (dataObject.Path != null)
-                {
-                    Console.WriteLine("Path: lenth = {0}", dataObject.Path.Length);
-                }
-            }
-            else
-            {
-                Console.WriteLine("GetRoute error: {0}", errorString);
-            }
+            if (isInnerExample) RemoveTestOptimizations();
         }
     }
 }

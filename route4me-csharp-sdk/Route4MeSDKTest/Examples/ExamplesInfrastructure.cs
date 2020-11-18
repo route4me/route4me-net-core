@@ -28,6 +28,7 @@ namespace Route4MeSDK.Examples
         public string ActualApiKey = R4MeUtils.ReadSetting("actualApiKey");
         public string DemoApiKey = R4MeUtils.ReadSetting("demoApiKey");
 
+        public List<string> AvoidanceZonesToRemove = new List<string>();
         public List<string> ContactsToRemove;
         public List<string> RoutesToRemove;
         public List<string> OptimizationsToRemove;
@@ -72,7 +73,20 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine("");
 
-            if (dataObjectRoute != null)
+            if (dataObjectRoute == null)
+            {
+                Console.WriteLine("{0} error {1}", testName, errorString);
+            }
+            else if (dataObjectRoute.GetType() == typeof(DataObjectRoute[]))
+            {
+                Console.WriteLine("{0} executed successfully", testName);
+
+                foreach (var route in (DataObjectRoute[])dataObjectRoute)
+                {
+                    Console.WriteLine("Route ID: {0}", route.RouteId);
+                }
+            }
+            else
             {
                 var route1 = dataObjectRoute.GetType() == typeof(DataObjectRoute)
                     ? (DataObjectRoute)dataObjectRoute
@@ -99,6 +113,26 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine("Address: {0}", address.AddressString);
                         Console.WriteLine("Route ID: {0}", address.RouteId);
                     });
+
+                    if ((route1?.Directions?.Length ?? 0) > 0)
+                    {
+                        Console.WriteLine("");
+
+                        Console.WriteLine(
+                            String.Format("Directions length: {0}",
+                            route1.Directions.Length)
+                        );
+                    }
+
+                    if ((route1?.Path?.Length ?? 0) > 0)
+                    {
+                        Console.WriteLine("");
+
+                        Console.WriteLine(
+                            String.Format("Path points: {0}",
+                            route1.Path.Length)
+                        );
+                    }
                 }
                 else
                 {
@@ -107,11 +141,27 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine("Address: {0}", address.AddressString);
                         Console.WriteLine("Route ID: {0}", address.RouteId);
                     });
+
+                    if ((route2?.Directions?.Length ?? 0) > 0)
+                    {
+                        Console.WriteLine("");
+
+                        Console.WriteLine(
+                            String.Format("Directions length: {0}",
+                            route2.Directions.Length)
+                        );
+                    }
+
+                    if ((route2?.Path?.Length ?? 0) > 0)
+                    {
+                        Console.WriteLine("");
+
+                        Console.WriteLine(
+                            String.Format("Path points: {0}",
+                            route2.Path.Length)
+                        );
+                    }
                 }
-            }
-            else
-            {
-                Console.WriteLine("{0} error {1}", testName, errorString);
             }
         }
 
@@ -217,7 +267,7 @@ namespace Route4MeSDK.Examples
             }
         }
 
-        private bool RunOptimizationSingleDriverRoute10Stops()
+        private bool RunOptimizationSingleDriverRoute10Stops(string routeName = null)
         {
             var r4mm = new Route4MeManager(ActualApiKey);
 
@@ -296,9 +346,10 @@ namespace Route4MeSDK.Examples
             var parameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.TSP,
-                //StoreRoute = false,
-                RouteName = "SD Route 10 Stops Test "+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-
+                RouteName =
+                    routeName == null
+                    ? "SD Route 10 Stops Test " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                    : routeName,
                 RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
                 RouteTime = 60 * 60 * 7,
                 Optimize = Optimize.Distance.Description(),
@@ -694,6 +745,16 @@ namespace Route4MeSDK.Examples
                 );
 
             return deleted;
+        }
+
+        private void RemoveAvoidanceZones()
+        {
+            if (AvoidanceZonesToRemove != null || AvoidanceZonesToRemove.Count < 1) return;
+
+            foreach (string avZone in AvoidanceZonesToRemove)
+            {
+                RemoveAvidanceZone(avZone);
+            }
         }
 
         public void CreateAvoidanceZone()
