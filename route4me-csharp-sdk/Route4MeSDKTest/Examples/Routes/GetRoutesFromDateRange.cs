@@ -1,30 +1,25 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System.Collections.Generic;
+using System;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// Example refers to the process of searching for the specified text 
-        /// throughout all routes names belonging to the user's account.
+        /// Gets the routes from specified date range.
         /// </summary>
-        /// <param name="query">Query text</param>
-        public void SearchRoutesForText()
+        public void GetRoutesFromDateRange()
         {
-            // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            RunOptimizationSingleDriverRoute10Stops("Nonstandard route name");
-            OptimizationsToRemove = new List<string>()
-            {
-                SD10Stops_optimization_problem_id
-            };
+            TimeSpan t10days = new TimeSpan(10, 0, 0, 0);
+            DateTime dtNow = DateTime.Now;
 
             var routeParameters = new RouteParametersQuery()
             {
-                Query = "Nonstandard"
+                StartDate = (dtNow - t10days).ToString("yyyy-MM-dd"),
+                EndDate = dtNow.ToString("yyyy-MM-dd")
             };
 
             // Run the query
@@ -34,8 +29,6 @@ namespace Route4MeSDK.Examples
             );
 
             PrintExampleRouteResult(dataObjects, errorString);
-
-            RemoveTestOptimizations();
         }
     }
 }

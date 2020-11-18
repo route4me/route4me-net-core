@@ -76,36 +76,12 @@ namespace Route4MeSDKTest
             examples.GetOptimizations();
 
             examples.AddDestinationToOptimization();
+            examples.RemoveDestinationFromOptimization();
+            examples.ReOptimization();
 
-            if (optimizationProblemID != null)
-            {
-                Address destinationToRemove = (dataObject != null && dataObject.Addresses.Length > 0) ? dataObject.Addresses[dataObject.Addresses.Length - 1] : null;
-                if (destinationToRemove != null)
-                    examples.RemoveDestinationFromOptimization(optimizationProblemID, destinationToRemove.RouteDestinationId.Value, false);
-                else
-                    Console.WriteLine("RemoveDestinationFromOptimization not called. destinationToRemove == null.");
-            }
-            else
-                Console.WriteLine("RemoveDestinationFromOptimization not called. optimizationProblemID == null.");
-
-            if (optimizationProblemID != null)
-                examples.ReOptimization(optimizationProblemID);
-            else
-                Console.WriteLine("ReOptimization not called. optimizationProblemID == null.");
-
-            if (routeId_SingleDriverRoute10Stops != null)
-            {
-                examples.UpdateRoute(routeId_SingleDriverRoute10Stops);
-                examples.ReoptimizeRoute(routeId_SingleDriverRoute10Stops);
-                bool getRouteDirections = true;
-                bool getRoutePathPoints = true;
-                examples.GetRoute(routeId_SingleDriverRoute10Stops, getRouteDirections, getRoutePathPoints);
-            }
-            else
-            {
-                Console.WriteLine("UpdateRoute, ReoptimizeRoute, GetRoute not called. routeId_SingleDriverRoute10Stops == null.");
-            }
-
+            examples.UpdateRoute();
+            examples.ReoptimizeRoute();
+            examples.GetRoute();
             examples.GetRoutes();
             examples.GetUsers();
 
@@ -129,19 +105,14 @@ namespace Route4MeSDKTest
                 Console.WriteLine("AddAddressNote, GetAddress, GetAddressNotes not called. routeIdToMoveTo == null || routeDestinationIdToMove == 0.");
             }
 
-            string routeId_DuplicateRoute = null;
-            if (routeId_SingleDriverRoute10Stops != null)
-                routeId_DuplicateRoute = examples.DuplicateRoute(routeId_SingleDriverRoute10Stops);
-            else
-                Console.WriteLine("DuplicateRoute not called. routeId_SingleDriverRoute10Stops == null.");
+            examples.DuplicateRoute();
+
 
             List<string> routeIdsToDelete = new List<string>();
             if (routeId_SingleDriverRoute10Stops != null)
                 routeIdsToDelete.Add(routeId_SingleDriverRoute10Stops);
             if (routeId_SingleDriverRoundTrip != null)
                 routeIdsToDelete.Add(routeId_SingleDriverRoundTrip);
-            if (routeId_DuplicateRoute != null)
-                routeIdsToDelete.Add(routeId_DuplicateRoute);
             if (routeId_MultipleDepotMultipleDriver != null)
                 routeIdsToDelete.Add(routeId_MultipleDepotMultipleDriver);
             if (routeId_MultipleDepotMultipleDriverTimeWindow != null)

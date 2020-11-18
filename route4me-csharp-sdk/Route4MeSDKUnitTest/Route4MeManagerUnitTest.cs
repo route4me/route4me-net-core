@@ -266,7 +266,7 @@ namespace Route4MeSDKUnitTest
                 duplicatedRoute,
                 typeof(DataObjectRoute),
                 "Cannot retrieve the duplicated route.");
-            Assert.IsNotNull(duplicatedRoute.OptimizationProblemId, "Optimization problem ID of the duplicated route is null.");
+            //Assert.IsNotNull(duplicatedRoute.OptimizationProblemId, "Optimization problem ID of the duplicated route is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -4257,24 +4257,28 @@ namespace Route4MeSDKUnitTest
             Assert.IsTrue(result, "MoveDestinationToRouteTest failed... " + errorString);
         }
 
+        [TestMethod]
         public void MergeRoutesTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            Assert.IsNotNull(dataObjectMDMD24, "dataObjectMDMD24 is null...");
+            tdr.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
+            dataObjectMDMD24 = tdr.DataObjectMDMD24;
 
-            Assert.IsTrue(dataObjectMDMD24.Routes.Length >= 2, "There is no 2 routes for moving a destination to other route...");
+            Assert.IsNotNull(dataObjectMDMD24, "dataObjectMDMD24 is null.");
+
+            Assert.IsTrue(dataObjectMDMD24.Routes.Length >= 2, "There is no 2 routes for moving a destination to other route.");
 
             var route1 = dataObjectMDMD24.Routes[0];
 
-            Assert.IsTrue(route1.Addresses.Length >= 2, "There is less than 2 addresses in the generated route...");
+            Assert.IsTrue(route1.Addresses.Length >= 2, "There is less than 2 addresses in the generated route.");
 
             var route2 = dataObjectMDMD24.Routes[1];
 
             var mergeRoutesParameters = new MergeRoutesQuery()
             {
                 RouteIds = route1.RouteId + "," + route2.RouteId,
-                DepotAddress = route1.Addresses[0].AddressString.ToString(),
+                DepotAddress = route1.Addresses[0].AddressString,
                 RemoveOrigin = false,
                 DepotLat = route1.Addresses[0].Latitude,
                 DepotLng = route1.Addresses[0].Longitude
@@ -4282,7 +4286,9 @@ namespace Route4MeSDKUnitTest
 
             bool result = route4Me.MergeRoutes(mergeRoutesParameters, out string errorString);
 
-            Assert.IsTrue(result, "MergeRoutesTest failed... " + errorString);
+            Assert.IsTrue(result, "MergeRoutesTest failed. " + errorString);
+
+            //tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
         }
 
         [TestMethod]
