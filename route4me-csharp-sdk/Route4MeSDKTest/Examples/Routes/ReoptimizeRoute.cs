@@ -1,41 +1,46 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
     /// <summary>
-    /// Update Route Parameters
+    /// Reoptimize a route
     /// </summary>
     public sealed partial class Route4MeExamples
     {
-        public void ReoptimizeRoute(string routeId)
+        public void ReoptimizeRoute(string routeId = null)
         {
             // Create the manager with the api key
-            Route4MeManager route4Me = new Route4MeManager(ActualApiKey);
+            var route4Me = new Route4MeManager(ActualApiKey);
 
-            RouteParametersQuery routeParameters = new RouteParametersQuery()
+            bool isInnerExample = routeId == null ? true : false;
+
+            if (isInnerExample)
+            {
+                RunOptimizationSingleDriverRoute10Stops();
+                OptimizationsToRemove = new System.Collections.Generic.List<string>()
+                {
+                    SD10Stops_optimization_problem_id
+                };
+
+                routeId = SD10Stops_route_id;
+            }
+
+            var routeParameters = new RouteParametersQuery()
             {
                 RouteId = routeId,
                 ReOptimize = true
             };
 
             // Run the query
-            string errorString;
-            DataObjectRoute dataObject = route4Me.UpdateRoute(routeParameters, out errorString);
+            DataObjectRoute dataObject = route4Me.UpdateRoute(
+                routeParameters,
+                out string errorString
+            );
 
-            Console.WriteLine("");
+            PrintExampleRouteResult(dataObject, errorString);
 
-            if (dataObject != null)
-            {
-                Console.WriteLine("ReoptimizeRoute executed successfully");
-
-                Console.WriteLine("Route ID: {0}", dataObject.RouteId);
-            }
-            else
-            {
-                Console.WriteLine("ReoptimizeRoute error: {0}", errorString);
-            }
+            if (isInnerExample) RemoveTestOptimizations();
         }
     }
 }
