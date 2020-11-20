@@ -1,18 +1,23 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public DataObject MultipleDepotMultipleDriver()
+        /// <summary>
+        /// The example refers to the process of creating an optimization 
+        /// with multi-depot, multi-driver options.
+        /// </summary>
+        public void MultipleDepotMultipleDriver()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
             // Prepare the addresses
-            Address[] addresses = new Address[]
+            var addresses = new Address[]
             {
         #region Addresses
 
@@ -176,13 +181,18 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             DataObject dataObject = route4Me.RunOptimization(
-                optimizationParameters, 
-                out string errorString);
+                                        optimizationParameters,
+                                        out string errorString);
+
+            OptimizationsToRemove = new List<string>()
+            {
+                dataObject?.OptimizationProblemId ?? null
+            };
 
             // Output the result
             PrintExampleOptimizationResult(dataObject, errorString);
 
-            return dataObject;
+            RemoveTestOptimizations();
         }
     }
 }

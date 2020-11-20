@@ -4260,6 +4260,8 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void MergeRoutesTest()
         {
+            if (skip == "yes") return;
+
             var route4Me = new Route4MeManager(c_ApiKey);
 
             tdr.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
@@ -4267,11 +4269,11 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(dataObjectMDMD24, "dataObjectMDMD24 is null.");
 
-            Assert.IsTrue(dataObjectMDMD24.Routes.Length >= 2, "There is no 2 routes for moving a destination to other route.");
+            Assert.IsTrue(dataObjectMDMD24.Routes.Length >= 2, "There is no 2 routes for moving a destination to other route...");
 
             var route1 = dataObjectMDMD24.Routes[0];
 
-            Assert.IsTrue(route1.Addresses.Length >= 2, "There is less than 2 addresses in the generated route.");
+            Assert.IsTrue(route1.Addresses.Length >= 2, "There is less than 2 addresses in the generated route...");
 
             var route2 = dataObjectMDMD24.Routes[1];
 
@@ -4284,7 +4286,9 @@ namespace Route4MeSDKUnitTest
                 DepotLng = route1.Addresses[0].Longitude
             };
 
-            bool result = route4Me.MergeRoutes(mergeRoutesParameters, out string errorString);
+            bool result = route4Me.MergeRoutes(
+                                        mergeRoutesParameters, 
+                                        out string errorString);
 
             Assert.IsTrue(result, "MergeRoutesTest failed. " + errorString);
 

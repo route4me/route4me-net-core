@@ -10,68 +10,22 @@ namespace Route4MeSDKTest
     {
         static void Main(string[] args)
         {
-            Route4MeExamples examples = new Route4MeExamples();
+            var examples = new Route4MeExamples();
 
-            DataObject dataObject = null;
-
-            DataObject dataObject1 = examples.SingleDriverRoute10Stops();
-            dataObject = dataObject1;
-            DataObjectRoute routeSingleDriverRoute10Stops = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0] : null;
-            string routeId_SingleDriverRoute10Stops = (routeSingleDriverRoute10Stops != null) ? routeSingleDriverRoute10Stops.RouteId : null;
-
-            if (routeSingleDriverRoute10Stops != null)
-                examples.ResequenceRouteDestinations(routeSingleDriverRoute10Stops);
-            else
-                Console.WriteLine("ResequenceRouteDestinations not called. routeSingleDriverRoute10Stops == null.");
-
-            if (routeSingleDriverRoute10Stops != null)
-                examples.ResequenceReoptimizeRoute(routeId_SingleDriverRoute10Stops);
-            else
-                Console.WriteLine("ResequenceReoptimizeRoute not called. routeSingleDriverRoute10Stops == null.");
-
-            int[] destinationIds = examples.AddRouteDestinations(routeId_SingleDriverRoute10Stops);
-            if (destinationIds != null && destinationIds.Length > 0)
-            {
-                examples.RemoveRouteDestination(routeId_SingleDriverRoute10Stops, destinationIds[0]);
-            }
-
-            DataObject dataObject2 = examples.SingleDriverRoundTrip();
-            dataObject = dataObject2;
-            string routeId_SingleDriverRoundTrip = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0].RouteId : null;
-
-            string routeIdToMoveTo = routeId_SingleDriverRoundTrip;
-            int routeDestinationIdToMove = (dataObject1 != null && dataObject1.Routes != null && dataObject1.Routes.Length > 0 && dataObject1.Routes[0].Addresses.Length > 1 && dataObject1.Routes[0].Addresses[1].RouteDestinationId != null) ? dataObject1.Routes[0].Addresses[1].RouteDestinationId.Value : 0;
-            int afterDestinationIdToMoveAfter = (dataObject2 != null && dataObject2.Routes != null && dataObject2.Routes.Length > 0 && dataObject2.Routes[0].Addresses.Length > 1 && dataObject2.Routes[0].Addresses[0].RouteDestinationId != null) ? dataObject2.Routes[0].Addresses[0].RouteDestinationId.Value : 0;
-            if (routeIdToMoveTo != null && routeDestinationIdToMove != 0 && afterDestinationIdToMoveAfter != 0)
-            {
-                examples.MoveDestinationToRoute(routeIdToMoveTo, routeDestinationIdToMove, afterDestinationIdToMoveAfter);
-            }
-            else
-            {
-                Console.WriteLine("MoveDestinationToRoute not called. routeDestinationId = {0}, afterDestinationId = {1}.", routeDestinationIdToMove, afterDestinationIdToMoveAfter);
-            }
-
-            string optimizationProblemID = examples.SingleDriverRoundTripGeneric();
-
-            dataObject = examples.MultipleDepotMultipleDriver();
-            string routeId_MultipleDepotMultipleDriver = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0].RouteId : null;
-
-            dataObject = examples.MultipleDepotMultipleDriverTimeWindow();
-            string routeId_MultipleDepotMultipleDriverTimeWindow = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0].RouteId : null;
-
-            dataObject = examples.SingleDepotMultipleDriverNoTimeWindow();
-            string routeId_SingleDepotMultipleDriverNoTimeWindow = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0].RouteId : null;
-
-            dataObject = examples.MultipleDepotMultipleDriverWith24StopsTimeWindow();
-            string routeId_MultipleDepotMultipleDriverWith24StopsTimeWindow = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0].RouteId : null;
-
-            dataObject = examples.SingleDriverMultipleTimeWindows();
-            string routeId_SingleDriverMultipleTimeWindows = (dataObject != null && dataObject.Routes != null && dataObject.Routes.Length > 0) ? dataObject.Routes[0].RouteId : null;
-
-            if (optimizationProblemID != null)
-                examples.GetOptimization(optimizationProblemID);
-            else
-                Console.WriteLine("GetOptimization not called. optimizationProblemID == null.");
+            examples.SingleDriverRoute10Stops();
+            examples.ResequenceRouteDestinations();
+            examples.ResequenceReoptimizeRoute();
+            examples.AddRouteDestinations();
+            examples.RemoveRouteDestination();
+            examples.SingleDriverRoundTrip();
+            examples.MoveDestinationToRoute();
+            examples.SingleDriverRoundTripGeneric();
+            examples.MultipleDepotMultipleDriver();
+            examples.MultipleDepotMultipleDriverTimeWindow();
+            examples.SingleDepotMultipleDriverNoTimeWindow();
+            examples.MultipleDepotMultipleDriverWith24StopsTimeWindow();
+            examples.SingleDriverMultipleTimeWindows();
+            examples.GetOptimization();
 
             examples.GetOptimizations();
 
@@ -85,59 +39,19 @@ namespace Route4MeSDKTest
             examples.GetRoutes();
             examples.GetUsers();
 
-            if (routeId_SingleDriverRoute10Stops != null)
-                examples.LogCustomActivity();
-            else
-                Console.WriteLine("LogCustomActivity not called. routeId_SingleDriverRoute10Stops == null.");
-
+            examples.LogCustomActivity();
             examples.GetActivities();
 
-            if (routeIdToMoveTo != null && routeDestinationIdToMove != 0)
-            {
-                examples.GetAddress(routeIdToMoveTo, routeDestinationIdToMove);
+            examples.GetAddress();
 
-                examples.AddAddressNote();
-                examples.AddAddressNoteWithFile();
-                examples.GetAddressNotes(routeIdToMoveTo, routeDestinationIdToMove);
-            }
-            else
-            {
-                Console.WriteLine("AddAddressNote, GetAddress, GetAddressNotes not called. routeIdToMoveTo == null || routeDestinationIdToMove == 0.");
-            }
+            examples.AddAddressNote();
+            examples.AddAddressNoteWithFile();
+            examples.GetAddressNotes();
 
             examples.DuplicateRoute();
+            examples.DeleteRoutes();
 
-
-            List<string> routeIdsToDelete = new List<string>();
-            if (routeId_SingleDriverRoute10Stops != null)
-                routeIdsToDelete.Add(routeId_SingleDriverRoute10Stops);
-            if (routeId_SingleDriverRoundTrip != null)
-                routeIdsToDelete.Add(routeId_SingleDriverRoundTrip);
-            if (routeId_MultipleDepotMultipleDriver != null)
-                routeIdsToDelete.Add(routeId_MultipleDepotMultipleDriver);
-            if (routeId_MultipleDepotMultipleDriverTimeWindow != null)
-                routeIdsToDelete.Add(routeId_MultipleDepotMultipleDriverTimeWindow);
-            if (routeId_SingleDepotMultipleDriverNoTimeWindow != null)
-                routeIdsToDelete.Add(routeId_SingleDepotMultipleDriverNoTimeWindow);
-            if (routeId_MultipleDepotMultipleDriverWith24StopsTimeWindow != null)
-                routeIdsToDelete.Add(routeId_MultipleDepotMultipleDriverWith24StopsTimeWindow);
-            if (routeId_SingleDriverMultipleTimeWindows != null)
-                routeIdsToDelete.Add(routeId_SingleDriverMultipleTimeWindows);
-
-            if (routeIdsToDelete.Count > 0)
-                examples.DeleteRoutes(routeIdsToDelete.ToArray());
-            else
-                Console.WriteLine("routeIdsToDelete.Count == 0. DeleteRoutes not called.");
-
-            // Remove optimization
-            if (optimizationProblemID != null)
-            {
-                List<string> lsOptIDs = new List<string>();
-                lsOptIDs.Add(optimizationProblemID);
-                examples.RemoveOptimization(lsOptIDs.ToArray());
-            }
-            else
-                Console.WriteLine("RemoveOptimization not called. optimizationProblemID == null.");
+            examples.RemoveOptimization();
 
             // Address Book
             examples.CreateTestContacts();
