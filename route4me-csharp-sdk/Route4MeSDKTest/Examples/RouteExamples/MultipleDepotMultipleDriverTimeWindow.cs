@@ -1,18 +1,23 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public DataObject MultipleDepotMultipleDriverTimeWindow()
+        /// <summary>
+        /// The example refers to the process of creating an optimization 
+        /// with multi-depot, multi-driver, time windows options.
+        /// </summary>
+        public void MultipleDepotMultipleDriverTimeWindow()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
             // Prepare the addresses
-            Address[] addresses = new Address[]
+            var addresses = new Address[]
             {
         #region Addresses
 
@@ -664,7 +669,6 @@ namespace Route4MeSDK.Examples
             {
                 AlgorithmType = AlgorithmType.CVRP_TW_MD,
                 RouteName = "Multiple Depot, Multiple Driver, Time Window",
-                //StoreRoute    = false,
 
                 RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
                 RouteTime = 60 * 60 * 7,
@@ -687,12 +691,19 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            var dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
+            var dataObject = route4Me.RunOptimization(
+                                    optimizationParameters,
+                                    out string errorString);
+
+            OptimizationsToRemove = new List<string>()
+            {
+                dataObject?.OptimizationProblemId ?? null
+            };
 
             // Output the result
             PrintExampleOptimizationResult(dataObject, errorString);
 
-            return dataObject;
+            RemoveTestOptimizations();
         }
     }
 }

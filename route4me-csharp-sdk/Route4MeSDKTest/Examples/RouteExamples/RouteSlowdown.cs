@@ -7,14 +7,17 @@ namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public void ExampleOptimization()
+        /// <summary>
+        /// The example refers to the process of creating an optimization 
+        /// with slow-down parameters.
+        /// </summary>
+        public void RouteSlowdown()
         {
-            var Route4Me = new Route4MeManager(ActualApiKey);
+            var route4Me = new Route4MeManager(ActualApiKey);
 
-            var dateWhenTheRouteStart = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1));
-
-            var addresses = new List<Address>()
-            {
+            // Prepare the addresses
+            var addresses = new Address[]
+              {
                 #region Addresses
 
                 new Address() { AddressString = "754 5th Ave New York, NY 10019",
@@ -25,13 +28,13 @@ namespace Route4MeSDK.Examples
                                 Time          = 0 },
 
                 new Address() { AddressString = "717 5th Ave New York, NY 10022",
-                                Alias         = "Giorgio Armani",
+                                //Alias         = "Giorgio Armani",
                                 Latitude      = 40.7669692,
                                 Longitude     = -73.9693864,
                                 Time          = 0 },
 
                 new Address() { AddressString = "888 Madison Ave New York, NY 10014",
-                                Alias         = "Ralph Lauren Women's and Home",
+                                //Alias         = "Ralph Lauren Women's and Home",
                                 Latitude      = 40.7715154,
                                 Longitude     = -73.9669241,
                                 Time          = 0 },
@@ -73,33 +76,36 @@ namespace Route4MeSDK.Examples
                                 Time          = 0 },
 
                 #endregion
-            };
+              };
 
+            // Set parameters
             var parameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.TSP,
+                RouteName = "Single Driver Round Trip",
 
-                RouteName = "Single Driver Round Trip Customer Case",
-
-                RouteDate = dateWhenTheRouteStart,
-
+                RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
                 RouteTime = 60 * 60 * 7,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 1,
+                VehicleMaxDistanceMI = 10000,
 
-                Optimize = Route4MeSDK.DataTypes.Optimize.Distance.Description(),
-
+                Optimize = Optimize.Time.Description(),
                 DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description(),
 
-                DeviceType = DeviceType.Web.Description()
+                Slowdowns = new SlowdownParams(15, 20)
             };
 
             var optimizationParameters = new OptimizationParameters()
             {
-                Addresses = addresses.ToArray(),
-
+                Addresses = addresses,
                 Parameters = parameters
             };
 
-            var dataObject = Route4Me.RunOptimization(
+            // Run the query
+            var dataObject = route4Me.RunOptimization(
                                         optimizationParameters,
                                         out string errorString);
 
@@ -108,11 +114,19 @@ namespace Route4MeSDK.Examples
                 dataObject?.OptimizationProblemId ?? null
             };
 
+            PrintExampleOptimizationResult(dataObject, errorString);
+
+            Console.WriteLine("");
+
             Console.WriteLine(
-                dataObject != null
-                    ? "Optimization Problem ID = " + dataObject.OptimizationProblemId
-                    : "ExampleOptimization failed"
-                );
+                "RouteServiceTimeMultiplier: " +
+                (dataObject?.Parameters?.RouteServiceTimeMultiplier ?? null)
+            );
+
+            Console.WriteLine(
+                "RouteTimeMultiplier: " +
+                (dataObject?.Parameters?.RouteTimeMultiplier ?? null)
+            );
 
             RemoveTestOptimizations();
         }

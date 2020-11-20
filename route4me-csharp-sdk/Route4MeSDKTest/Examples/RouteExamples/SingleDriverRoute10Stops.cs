@@ -7,7 +7,12 @@ namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public DataObject SingleDriverRoute10Stops()
+
+        /// <summary>
+        /// The example refers to the process of creating an optimization 
+        /// with 10 stops and single-driver option.
+        /// </summary>
+        public void SingleDriverRoute10Stops()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -104,13 +109,18 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             DataObject dataObject = route4Me.RunOptimization(
-                optimizationParameters, 
+                optimizationParameters,
                 out string errorString);
+
+            OptimizationsToRemove = new List<string>()
+            {
+                dataObject?.OptimizationProblemId ?? null
+            };
 
             // Output the result
             PrintExampleOptimizationResult(dataObject, errorString);
 
-            return dataObject;
+            RemoveTestOptimizations();
         }
     }
 }
