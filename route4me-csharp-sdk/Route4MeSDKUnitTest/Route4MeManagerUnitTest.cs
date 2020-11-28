@@ -12447,7 +12447,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(vendors, "The test searchVendorsTest failed. " + errorString);
 
-            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsSearchResponse), "The test searchVendorsTest failed. " + errorString);
+            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsResponse), "The test searchVendorsTest failed. " + errorString);
 
         }
 
@@ -12465,7 +12465,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(vendors, "The test vendorsComparisonTest failed. " + errorString);
 
-            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsSearchResponse), "The test vendorsComparisonTest failed. " + errorString);
+            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsResponse), "The test vendorsComparisonTest failed. " + errorString);
         }
 
     }
