@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -29,19 +28,14 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            TerritoryZone territory = route4Me.CreateTerritory(territoryParameters, out string errorString);
+            TerritoryZone territory = route4Me.CreateTerritory(territoryParameters,
+                                                               out string errorString);
 
-            Console.WriteLine("");
+            if ((territory?.TerritoryId ?? null) != null) TerritoryZonesToRemove.Add(territory.TerritoryId);
 
-            if (territory != null)
-            {
-                Console.WriteLine("CreateRectTerritory executed successfully");
-                Console.WriteLine("Territory ID: {0}", territory.TerritoryId);
-            }
-            else
-            {
-                Console.WriteLine("CreateRectTerritory error: {0}", errorString);
-            }
+            PrintExampleTerritory(territory, errorString);
+
+            RemoveTestTerritoryZones();
         }
     }
 }

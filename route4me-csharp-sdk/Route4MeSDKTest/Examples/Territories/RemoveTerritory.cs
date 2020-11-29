@@ -13,25 +13,23 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            string territoryId = "12ABBFA3B5E4FB007BB0ED73291576C2";
+            CreateTerritoryZone();
 
-            var territoryQuery = new AvoidanceZoneQuery { TerritoryId = territoryId };
+            string territoryId = TerritoryZonesToRemove[TerritoryZonesToRemove.Count - 1];
+
+            var territoryQuery = new AvoidanceZoneQuery
+            {
+                TerritoryId = territoryId
+            };
 
             // Run the query
-            route4Me.RemoveTerritory(territoryQuery, out string errorString);
+            bool removed = route4Me.RemoveTerritory(territoryQuery, out string errorString);
 
-            Console.WriteLine("");
-
-            if (string.IsNullOrEmpty(errorString))
-            {
-                Console.WriteLine("RemoveTerritory executed successfully");
-
-                Console.WriteLine("Territory ID: {0}", territoryId);
-            }
-            else
-            {
-                Console.WriteLine("RemoveTerritory error: {0}", errorString);
-            }
+            Console.WriteLine(
+                removed
+                ? String.Format("The territory {0} removed successfully", territoryId)
+                : String.Format("Cannot remove the territory {0}", territoryId) + Environment.NewLine + errorString
+            );
         }
     }
 }

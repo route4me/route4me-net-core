@@ -29,6 +29,7 @@ namespace Route4MeSDK.Examples
         public string DemoApiKey = R4MeUtils.ReadSetting("demoApiKey");
 
         public List<string> AvoidanceZonesToRemove = new List<string>();
+        public List<string> TerritoryZonesToRemove = new List<string>();
         public List<string> ContactsToRemove;
         public List<string> RoutesToRemove;
         public List<string> OptimizationsToRemove;
@@ -63,6 +64,7 @@ namespace Route4MeSDK.Examples
         AddressBookContact contactToRemove;
 
         AvoidanceZone avoidanceZone;
+        TerritoryZone territoryZone;
 
         #region Optimizations, Routes, Destinations
 
@@ -717,8 +719,30 @@ namespace Route4MeSDK.Examples
 
         #endregion
 
-        
+
         #region Avoidance Zones
+
+        private void PrintExampleAvoidanceZone(object avoidanceZone, string errorString = "")
+        {
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+
+            Console.WriteLine("");
+
+            if (avoidanceZone != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                string avoidanceZoneId = avoidanceZone.GetType() == typeof(AvoidanceZone)
+                    ? ((AvoidanceZone)avoidanceZone).TerritoryId
+                    : avoidanceZone.ToString();
+
+                Console.WriteLine("Territory ID: {0}", avoidanceZoneId);
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
 
         /// <summary>
         /// Remove an avoidance zone
@@ -749,7 +773,7 @@ namespace Route4MeSDK.Examples
 
         private void RemoveAvoidanceZones()
         {
-            if (AvoidanceZonesToRemove != null || AvoidanceZonesToRemove.Count < 1) return;
+            if ((AvoidanceZonesToRemove?.Count ?? 0) < 1) return;
 
             foreach (string avZone in AvoidanceZonesToRemove)
             {
@@ -781,26 +805,120 @@ namespace Route4MeSDK.Examples
             PrintExampleAvoidanceZone(avoidanceZone);
         }
 
-        private void PrintExampleAvoidanceZone(object avoidanceZone, string errorString = "")
+        #endregion
+
+
+        #region Territories
+
+        private void PrintExampleTerritory(object territory, string errorString = "")
         {
-            string testName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
 
             Console.WriteLine("");
 
-            if (avoidanceZone != null)
+            if (territory != null)
             {
                 Console.WriteLine(testName + " executed successfully");
 
-                string avoidanceZoneId = avoidanceZone.GetType() == typeof(AvoidanceZone)
-                    ? ((AvoidanceZone)avoidanceZone).TerritoryId
-                    : avoidanceZone.ToString();
+                if (territory.GetType() == typeof(TerritoryZone))
+                {
+                    string territoryZoneId = territory.GetType() == typeof(TerritoryZone)
+                    ? ((TerritoryZone)territory).TerritoryId
+                    : territory.ToString();
 
-                Console.WriteLine("Territory ID: {0}", avoidanceZoneId);
+                    Console.WriteLine("Territory ID: {0}", territoryZoneId);
+                }
+                else if (territory.GetType() == typeof(AvoidanceZone[]))
+                {
+                    var territories = (AvoidanceZone[])territory;
+
+                    foreach (var terr in territories)
+                    {
+                        Console.WriteLine("Territory ID: {0}", terr.TerritoryId);
+                    }
+                }
+                else if (territory.GetType() == typeof(TerritoryZone[]))
+                {
+                    var territories = (TerritoryZone[])territory;
+
+                    foreach (var terr in territories)
+                    {
+                        Console.WriteLine("Territory ID: {0}", terr.TerritoryId);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Unexpected territory type");
+                }
             }
             else
             {
                 Console.WriteLine(testName + " error: {0}", errorString);
             }
+        }
+
+        public bool RemoveTestTerritoryZone(string territoryZoneId)
+        {
+            var terrZoneQuery = new AvoidanceZoneQuery()
+            {
+                TerritoryId = territoryZoneId
+            };
+
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            bool deleted = route4Me.RemoveTerritory(terrZoneQuery, out string errorString);
+
+            Console.WriteLine("");
+
+            Console.WriteLine(
+                deleted
+                ? "The territory zone " + terrZoneQuery.TerritoryId + " removed successfully"
+                : "Cannot remove territory zone " + terrZoneQuery.TerritoryId
+                );
+
+            return deleted;
+        }
+
+        private void RemoveTestTerritoryZones()
+        {
+            if ((TerritoryZonesToRemove?.Count ?? 0) < 1) return;
+
+            foreach (string terrZone in TerritoryZonesToRemove)
+            {
+                RemoveTestTerritoryZone(terrZone);
+            }
+        }
+
+        public void CreateTerritoryZone()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var territoryZoneParameters = new AvoidanceZoneParameters()
+            {
+                TerritoryName = "Test Territory",
+                TerritoryColor = "ff0000",
+                Territory = new Territory()
+                {
+                    Type = TerritoryType.Circle.Description(),
+                    Data = new string[] { "37.569752822786455,-77.47833251953125",
+                                "5000"}
+                }
+            };
+
+            // Run the query
+            territoryZone = route4Me.CreateTerritory(
+                territoryZoneParameters,
+                out string errorString);
+
+            if (territoryZone != null)
+            {
+                if ((TerritoryZonesToRemove?.Count ?? 0) < 1)
+                    TerritoryZonesToRemove = new List<string>();
+
+                TerritoryZonesToRemove.Add(territoryZone.TerritoryId);
+            }
+
+            PrintExampleTerritory(territoryZone, errorString);
         }
 
         #endregion
