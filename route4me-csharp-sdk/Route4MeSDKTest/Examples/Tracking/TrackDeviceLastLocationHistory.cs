@@ -1,21 +1,29 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        public void TrackDeviceLastLocationHistory(string routeId)
+        /// <summary>
+        /// The example refers to the process of getting the last location history of a GPS device.
+        /// </summary>
+        public void TrackDeviceLastLocationHistory()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
+
+            RunOptimizationSingleDriverRoute10Stops();
+            OptimizationsToRemove = new List<string>();
+            OptimizationsToRemove.Add(SD10Stops_optimization_problem_id);
 
             // Create the gps parametes
             var gpsParameters = new GPSParameters()
             {
                 Format = Format.Csv.Description(),
-                RouteId = routeId,
+                RouteId = SD10Stops_route_id,
                 Latitude = 33.14384,
                 Longitude = -83.22466,
                 Course = 1,
@@ -26,7 +34,8 @@ namespace Route4MeSDK.Examples
                 DeviceTimestamp = "2014-06-14 17:43:35"
             };
 
-            var response = route4Me.SetGPS(gpsParameters, out string errorString);
+            string errorString;
+            var response = route4Me.SetGPS(gpsParameters, out errorString);
 
             if (!string.IsNullOrEmpty(errorString))
             {
@@ -36,9 +45,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine("SetGps response: {0}", response.ToString());
 
-            var genericParameters = new GenericParameters();
-
-            genericParameters.ParametersCollection.Add("route_id", routeId);
+            GenericParameters genericParameters = new GenericParameters();
+            genericParameters.ParametersCollection.Add("route_id", SD10Stops_route_id);
             genericParameters.ParametersCollection.Add("device_tracking_history", "1");
 
             var dataObject = route4Me.GetLastLocation(genericParameters, out errorString);
@@ -66,6 +74,8 @@ namespace Route4MeSDK.Examples
             {
                 Console.WriteLine("TrackDeviceLastLocationHistory error: {0}", errorString);
             }
+
+            RemoveTestOptimizations();
         }
     }
 }
