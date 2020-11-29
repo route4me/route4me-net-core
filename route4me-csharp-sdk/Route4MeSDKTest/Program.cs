@@ -16,7 +16,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "UpdateTerritory";
+            string executeOption = "TrackDeviceLastLocationHistory";
 
             if (executeOption.ToLower() == "api4")
             {
@@ -291,8 +291,12 @@ namespace Route4MeSDKTest
 
                 #region ==== Tracking ====
 
-                examples.GetDeviceHistoryTimeRange("814FB49CEA8188D134E9D4D4B8B0DAF7");
                 examples.FindAsset();
+                examples.GetAllUserLocations();
+                examples.GetDeviceHistoryTimeRange();
+                examples.QueryUserLocations();
+                examples.SetGPSPosition();
+                examples.TrackDeviceLastLocationHistory();
 
                 #endregion
 
