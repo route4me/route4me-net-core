@@ -1,6 +1,7 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
@@ -16,10 +17,10 @@ namespace Route4MeSDK.Examples
 
             var @params = new MemberParameters
             {
-                StrEmail = "thewelco@gmail.com",
+                StrEmail = "skrynkovskyy+newdispatcher" + DateTime.Now.ToString("yyMMddHHmmss") + "@gmail.com",
                 StrPassword_1 = "11111111",
                 StrPassword_2 = "11111111",
-                StrFirstName = "Olman",
+                StrFirstName = "Olas",
                 StrLastName = "Progman",
                 StrIndustry = "Transportation",
                 Format = "json",
@@ -28,23 +29,19 @@ namespace Route4MeSDK.Examples
                 Plan = "free",
                 MemberType = 5
             };
+
             // Run the query
             MemberResponse result = route4Me.UserRegistration(@params, out string errorString);
 
-            Console.WriteLine("");
+            if (result != null && result.GetType() == typeof(MemberResponse))
+            {
+                usersToRemove = new List<string>();
+                usersToRemove.Add(result.MemberId.ToString());
+            }
 
-            if (result != null)
-            {
-                Console.WriteLine("UserRegistration executed successfully");
-                Console.WriteLine("status: " + result.Status);
-                Console.WriteLine("api_key: " + result.ApiKey);
-                Console.WriteLine("member_id: " + result.MemberId);
-                Console.WriteLine("---------------------------");
-            }
-            else
-            {
-                Console.WriteLine("UserRegistration error: {0}", errorString);
-            }
+            PrintTestUsers(result, errorString);
+
+            RemoveTestUsers();
         }
     }
 }
