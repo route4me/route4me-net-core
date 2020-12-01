@@ -1,4 +1,5 @@
-﻿using Route4MeSDK.QueryTypes;
+﻿using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 using System;
 
 namespace Route4MeSDK.Examples
@@ -13,22 +14,21 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            var @params = new MemberParametersV4 { member_id = 147824 };
+            CreateTestUser();
+
+            int createdMemberId = Convert.ToInt32(usersToRemove[usersToRemove.Count - 1]);
+
+            var @params = new MemberParametersV4 { member_id = createdMemberId };
 
             // Run the query
             bool result = route4Me.UserDelete(@params, out string errorString);
 
             Console.WriteLine("");
-
-            if (result)
-            {
-                Console.WriteLine("DeleteUser executed successfully");
-                Console.WriteLine("---------------------------");
-            }
-            else
-            {
-                Console.WriteLine("DeleteUser error: {0}", errorString);
-            }
+            Console.WriteLine(
+                    result
+                    ? String.Format("DeleteUser executed successfully")
+                    : String.Format("DeleteUser error: {0}", errorString)
+                );
         }
     }
 }

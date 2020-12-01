@@ -2,6 +2,7 @@
 using Route4MeSDK.Examples;
 using System;
 using System.Collections.Generic;
+//using NUnit.Framework;
 
 namespace Route4MeSDKTest
 {
@@ -15,7 +16,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "TrackDeviceLastLocationHistory";
+            string executeOption = "AddEditCustomDataToUser";
 
             if (executeOption.ToLower() == "api4")
             {
@@ -290,12 +291,15 @@ namespace Route4MeSDKTest
 
                 #region ==== Tracking ====
 
-                examples.FindAsset();
-                examples.GetAllUserLocations();
-                examples.GetDeviceHistoryTimeRange();
-                examples.QueryUserLocations();
-                examples.SetGPSPosition();
-                examples.TrackDeviceLastLocationHistory();
+                examples.AddEditCustomDataToUser();
+                examples.CreateUser();
+                examples.DeleteUser();
+                examples.GetUserById();
+                examples.GetUsers();
+                examples.UpdateUser();
+                examples.UserAuthentication();
+                examples.UserRegistration();
+                examples.ValidateSession();
 
                 #endregion
 

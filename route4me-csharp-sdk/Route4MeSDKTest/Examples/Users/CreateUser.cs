@@ -1,6 +1,7 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
@@ -19,7 +20,7 @@ namespace Route4MeSDK.Examples
                 HIDE_ROUTED_ADDRESSES = "FALSE",
                 member_phone = "571-259-5939",
                 member_zipcode = "22102",
-                member_email = "skrynkovskyy+newdispatcher@gmail.com",
+                member_email = "skrynkovskyy+newdispatcher" + DateTime.Now.ToString("yyMMddHHmmss") + "@gmail.com",
                 HIDE_VISITED_ADDRESSES = "FALSE",
                 READONLY_USER = "FALSE",
                 member_type = "SUB_ACCOUNT_DISPATCHER",
@@ -33,21 +34,16 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            string errorString = "";
-            MemberResponseV4 result = route4Me.CreateUser(@params, out errorString);
+            MemberResponseV4 result = route4Me.CreateUser(@params, out string errorString);
 
-            Console.WriteLine("");
+            PrintTestUsers(result, errorString);
 
-            if (result != null)
+            if (result != null && result.GetType() == typeof(MemberResponseV4))
             {
-                Console.WriteLine("UserRegistration executed successfully");
-                Console.WriteLine("User: " + result.MemberFirstName + " " + result.MemberLastName);
-                Console.WriteLine("member_id: " + result.MemberId);
-                Console.WriteLine("---------------------------");
-            }
-            else
-            {
-                Console.WriteLine("UserRegistration error: {0}", errorString);
+                usersToRemove = new List<string>();
+                usersToRemove.Add(result.MemberId);
+
+                RemoveTestUsers();
             }
         }
     }
