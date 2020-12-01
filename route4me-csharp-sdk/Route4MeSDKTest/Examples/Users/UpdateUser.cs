@@ -14,28 +14,31 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
+            CreateTestUser();
+
+            int memberId = Convert.ToInt32(usersToRemove[usersToRemove.Count - 1]);
+
             var @params = new MemberParametersV4
             {
-                member_id = 220461,
+                member_id = memberId,
                 member_phone = "571-259-5939"
             };
 
             // Run the query
             MemberResponseV4 result = route4Me.UserUpdate(@params, out string errorString);
 
-            Console.WriteLine("");
+            PrintTestUsers(result, errorString);
 
-            if (result != null)
+            if (result != null && result.GetType() == typeof(MemberResponseV4))
             {
-                Console.WriteLine("UpdateUser executed successfully");
-                Console.WriteLine("status: " + result.MemberFirstName + " " + result.MemberLastName);
-                Console.WriteLine("member_id: " + result.MemberId);
-                Console.WriteLine("---------------------------");
+                Console.WriteLine(
+                        result.MemberPhone != "571-259-5939"
+                        ? "The user phone is not '571-259-5939'"
+                        : "The user phone is '571-259-5939'"
+                    );
             }
-            else
-            {
-                Console.WriteLine("UpdateUser error: {0}", errorString);
-            }
+
+            RemoveTestUsers();
         }
     }
 }
