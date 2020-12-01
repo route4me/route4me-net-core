@@ -3616,8 +3616,14 @@ namespace Route4MeSDK
         /// <returns> A vehicle </returns>
         public VehicleV4Response GetVehicle(VehicleParameters vehParams, out string errorString)
 		{
-            return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
-							R4MEInfrastructureSettings.Vehicle_V4,
+			if ((vehParams?.VehicleId?.Length ?? 0) != 32)
+			{
+				errorString = "The vehicle ID is not specified";
+				return null;
+			}
+
+			return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
+							R4MEInfrastructureSettings.Vehicle_V4 + @"/" + vehParams.VehicleId,
 							HttpMethodType.Get,
 							out errorString);
 		}
@@ -3631,8 +3637,13 @@ namespace Route4MeSDK
         /// <returns>The updated vehicle</returns>
 		public VehicleV4Response UpdateVehicle(VehicleV4Parameters vehParams, string vehicleId, out string errorString)
 		{
+			if ((vehicleId?.Length ?? 0) != 32)
+			{
+				errorString = "The vehicle ID is not specified";
+				return null;
+			}
 
-            return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
+			return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
 							R4MEInfrastructureSettings.Vehicle_V4 + @"/" + vehicleId,
                             HttpMethodType.Put,
                             out errorString);
@@ -3646,7 +3657,13 @@ namespace Route4MeSDK
         /// <returns>The removed vehicle</returns>
 		public VehicleV4Response DeleteVehicle(VehicleV4Parameters vehParams, out string errorString)
 		{
-            return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
+			if ((vehParams?.VehicleId?.Length ?? 0) != 32)
+			{
+				errorString = "The vehicle ID is not specified";
+				return null;
+			}
+
+			return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
 							R4MEInfrastructureSettings.Vehicle_V4 + "/" + vehParams.VehicleId, 
 							HttpMethodType.Delete,
 							out errorString);
@@ -3660,8 +3677,14 @@ namespace Route4MeSDK
         /// <returns>The removed vehicle</returns>
 		public VehicleV4Response DeleteVehicle(VehicleParameters vehParams, out string errorString)
 		{
-            return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
-							R4MEInfrastructureSettings.Vehicle_V4,
+			if ((vehParams?.VehicleId?.Length ?? 0) != 32)
+			{
+				errorString = "The vehicle ID is not specified";
+				return null;
+			}
+
+			return GetJsonObjectFromAPI<VehicleV4Response>(vehParams, 
+							R4MEInfrastructureSettings.Vehicle_V4 + "/" + vehParams.VehicleId,
 							HttpMethodType.Get,
 							out errorString);
 		}
