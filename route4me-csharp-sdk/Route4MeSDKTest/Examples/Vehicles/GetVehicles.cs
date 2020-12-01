@@ -1,13 +1,12 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// GEt Vehicles List
+        /// Get Vehicles List
         /// </summary>
         public void GetVehicles()
         {
@@ -24,24 +23,7 @@ namespace Route4MeSDK.Examples
             // Run the query
             VehiclesPaginated vehicles = route4Me.GetVehicles(vehicleParameters, out string errorString);
 
-            Console.WriteLine("");
-
-            if (vehicles != null)
-            {
-                Console.WriteLine("GetVehicles executed successfully, {0} vehicles returned", vehicles.Total);
-                Console.WriteLine("");
-
-                foreach (VehicleV4Response vehicle in vehicles.Data)
-                {
-                    Console.WriteLine("Vehicle ID: {0}", vehicle.VehicleId);
-                }
-
-                Console.WriteLine("");
-            }
-            else
-            {
-                Console.WriteLine("GetVehicles error: {0}", errorString);
-            }
+            PrintTestVehciles(vehicles, errorString);
         }
     }
 }

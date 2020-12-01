@@ -16,7 +16,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "AddEditCustomDataToUser";
+            string executeOption = "GetVehicles";
 
             if (executeOption.ToLower() == "api4")
             {
@@ -274,7 +274,13 @@ namespace Route4MeSDKTest
                 #endregion
 
                 #region ==== Vehicles ====
+
                 examples.GetVehicles();
+                examples.CreatetVehicle();
+                examples.DeleteVehicle();
+                examples.GetVehicle();
+                examples.UpdateVehicle();
+
                 #endregion
 
                 #region ==== Users ====
