@@ -2,7 +2,6 @@
 using Route4MeSDK.Examples;
 using System;
 using System.Collections.Generic;
-//using NUnit.Framework;
 
 namespace Route4MeSDKTest
 {
@@ -16,7 +15,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "GetVehicles";
+            string executeOption = "GetTeamMembers";
 
             if (executeOption.ToLower() == "api4")
             {
@@ -375,28 +374,28 @@ namespace Route4MeSDKTest
 
                 #region Team Management
 
-                //examples.GetTeamMembers();
-                //examples.GetTeamMemberById();
-                //examples.RemoveTeamMember();
-                //examples.UpdateTeamMember();
-                //examples.CreateTeamMember();
-                //examples.BulkCreateTeamMembers();
-                //examples.AddSkillsToDriver();
+                examples.GetTeamMembers();
+                examples.GetTeamMemberById();
+                examples.RemoveTeamMember();
+                examples.UpdateTeamMember();
+                examples.CreateTeamMember();
+                examples.BulkCreateTeamMembers();
+                examples.AddSkillsToDriver();
 
                 #endregion
 
                 #region Driver Rating
 
-                //examples.GetDriverReviewList();
-                //examples.GetDriverReviewById();
-                //examples.CreateDriverReview();
-                //examples.UpdateDriverReview();
+                examples.GetDriverReviewList();
+                examples.GetDriverReviewById();
+                examples.CreateDriverReview();
+                examples.UpdateDriverReview();
 
                 #endregion
 
                 #region Route Types
 
-                //examples.CreateOptimizationWithDriverSkills();
+                examples.CreateOptimizationWithDriverSkills();
 
                 #endregion
 

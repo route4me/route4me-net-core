@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Examples\API5\RouteTypes\CreateOptimizationWithDriverSkills.cs~RF334e06da.TMP" />
     <None Remove="Resources\test.png" />
   </ItemGroup>
 
