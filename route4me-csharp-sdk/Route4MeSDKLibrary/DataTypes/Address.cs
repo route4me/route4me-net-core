@@ -536,5 +536,14 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "manifest", EmitDefaultValue = false)]
         [ReadOnly(true)]
         public AddressManifest Manifest { get; set; }
+
+        /// <summary>
+        /// The driver tags specified in a team member's custom data.
+        /// (e.g. "driver skills": 
+        /// ["Class A CDL", "Class B CDL", "Forklift", "Skid Steer Loader", "Independent Contractor"]
+        /// </summary>
+        [DataMember(Name = "tags", EmitDefaultValue = false)]
+        [DefaultValue(false)]
+        public string[] Tags { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Route4MeSDK.DataTypes
+namespace Route4MeSDK.DataTypes.V5
 {
     /// <summary>
     /// Enumeration of the algorithm types:
@@ -38,7 +38,7 @@ namespace Route4MeSDK.DataTypes
         Driving,
 
         [Description("Walking")]
-        Walking,
+        Walking
     }
 
     /// <summary>
@@ -316,4 +316,34 @@ namespace Route4MeSDK.DataTypes
     }
 
     #endregion
+
+    public enum MemberTypes
+    {
+        [Description("PRIMARY_ACCOUNT")]
+        AccountOwner,
+
+        [Description("SUB_ACCOUNT_ADMIN")]
+        Administrator,
+
+        [Description("SUB_ACCOUNT_REGIONAL_MANAGER")]
+        RegionalManager,
+
+        [Description("SUB_ACCOUNT_DISPATCHER")]
+        Dispatcher,
+
+        [Description("SUB_ACCOUNT_PLANNER")]
+        RoutePlanner,
+
+        [Description("PRIMARY_ACCOUNT")]
+        PrimaryAccount,
+
+        [Description("SUB_ACCOUNT_DRIVER")]
+        Driver,
+
+        [Description("SUB_ACCOUNT_ANALYST")]
+        Analyst,
+
+        [Description("SUB_ACCOUNT_VENDOR")]
+        Vendor
+    }
 }
