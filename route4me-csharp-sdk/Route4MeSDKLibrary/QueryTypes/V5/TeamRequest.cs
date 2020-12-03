@@ -5,6 +5,9 @@ using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.QueryTypes.V5
 {
+    /// <summary>
+    /// Data structure for team management request tasks.
+    /// </summary>
     [DataContract]
     public sealed class TeamRequest : GenericParameters
     {
@@ -145,7 +148,7 @@ namespace Route4MeSDK.QueryTypes.V5
         public int? DisplayMaxRoutesFutureDays { get; set; }
 
         /// <summary>
-        /// User zipcode
+        /// Vendor ID
         /// </summary>
         [DataMember(Name = "vendor_id", EmitDefaultValue = false)]
         public string VendorId { get; set; }
