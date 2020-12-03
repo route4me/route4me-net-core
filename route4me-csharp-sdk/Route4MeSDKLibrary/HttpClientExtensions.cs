@@ -38,6 +38,7 @@ namespace System.Net.Http
         {
             return client.PatchAsync(requestUri, content, CancellationToken.None);
         }
+
         /// <summary>
         /// Send a PATCH request with a cancellation token as an asynchronous operation.
         /// </summary>

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Route4MeSDK.DataTypes.V5
 {
+    /// <summary>
+    /// Advanced constraints for route optimization process.
+    /// Set algorithm type to OPTIMIZATION_STATE_IN_QUEUE (9).
+    /// </summary>
     [DataContract]
     public sealed class RouteAdvancedConstraints
     {
