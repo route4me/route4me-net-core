@@ -46,13 +46,7 @@ namespace Route4MeSDK.Examples
                         TimeWindowEnd   = 30529},
 
         new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
-                        Latitude        = 41.003671512008,
-                        Longitude       = -81.598461046815,
-                        Time            = 300,
-                        TimeWindowStart = 30529,
-                        TimeWindowEnd   = 33779},
-
-        new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
+                        IsDepot         = true,
                         Latitude        = 41.003671512008,
                         Longitude       = -81.598461046815,
                         Time            = 100,
@@ -163,14 +157,14 @@ namespace Route4MeSDK.Examples
 
                 //the maximum duration of a route
                 RouteMaxDuration = 86400,
-                VehicleCapacity = 1,
+                VehicleCapacity = 5,
                 VehicleMaxDistanceMI = 10000,
 
                 Optimize = Optimize.Distance.Description(),
                 DistanceUnit = DistanceUnit.MI.Description(),
                 DeviceType = DeviceType.Web.Description(),
                 TravelMode = TravelMode.Driving.Description(),
-                Metric = Metric.Geodesic
+                Metric = Metric.Matrix
             };
 
             var optimizationParameters = new OptimizationParameters()
