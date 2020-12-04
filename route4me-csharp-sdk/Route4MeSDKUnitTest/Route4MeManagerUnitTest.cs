@@ -4260,6 +4260,8 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void MergeRoutesTest()
         {
+            if (skip == "yes") return;
+
             var route4Me = new Route4MeManager(c_ApiKey);
 
             tdr.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
@@ -4267,11 +4269,15 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(dataObjectMDMD24, "dataObjectMDMD24 is null.");
 
-            Assert.IsTrue(dataObjectMDMD24.Routes.Length >= 2, "There is no 2 routes for moving a destination to other route.");
+            Assert.IsTrue(
+                dataObjectMDMD24.Routes.Length >= 2,
+                "There is no 2 routes for moving a destination to other route.");
 
             var route1 = dataObjectMDMD24.Routes[0];
 
-            Assert.IsTrue(route1.Addresses.Length >= 2, "There is less than 2 addresses in the generated route.");
+            Assert.IsTrue(
+                route1.Addresses.Length >= 2,
+                "There is less than 2 addresses in the generated route.");
 
             var route2 = dataObjectMDMD24.Routes[1];
 
@@ -4287,8 +4293,6 @@ namespace Route4MeSDKUnitTest
             bool result = route4Me.MergeRoutes(mergeRoutesParameters, out string errorString);
 
             Assert.IsTrue(result, "MergeRoutesTest failed. " + errorString);
-
-            //tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
         }
 
         [TestMethod]
@@ -7940,9 +7944,12 @@ namespace Route4MeSDKUnitTest
         [ClassCleanup()]
         public static void RouteTypesGroupCleanup()
         {
-            bool result = tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
+            if ((dataObjectMDMD24?.OptimizationProblemId ?? null)!=null)
+            {
+                bool result = tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
 
-            Assert.IsTrue(result, "Removing of the optimization with 24 stops failed...");
+                Assert.IsTrue(result, "Removing of the optimization with 24 stops failed.");
+            }
         }
     }
 
@@ -12832,7 +12839,7 @@ namespace Route4MeSDKUnitTest
 
             // Prepare the addresses
             Address[] addresses = new Address[]
-              {
+            {
                 #region Addresses
 
                 new Address() { AddressString   = "3634 W Market St, Fairlawn, OH 44333",
@@ -12851,13 +12858,7 @@ namespace Route4MeSDKUnitTest
                                 TimeWindowEnd   = 30529 },
 
                 new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
-                                Latitude        = 41.003671512008,
-                                Longitude       = -81.598461046815,
-                                Time            = 300,
-                                TimeWindowStart = 30529,
-                                TimeWindowEnd   = 33479 },
-
-                new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
+                                IsDepot         = true,
                                 Latitude        = 41.003671512008,
                                 Longitude       = -81.598461046815,
                                 Time            = 300,
@@ -13005,7 +13006,7 @@ namespace Route4MeSDKUnitTest
                                 TimeWindowEnd   = 68545 }
 
                 #endregion
-              };
+            };
 
             // Set parameters
             var parameters = new RouteParameters()
@@ -13016,14 +13017,14 @@ namespace Route4MeSDKUnitTest
                 RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
                 RouteTime = 60 * 60 * 7,
                 RouteMaxDuration = 86400,
-                VehicleCapacity = 1,
+                VehicleCapacity = 5,
                 VehicleMaxDistanceMI = 10000,
 
                 Optimize = Optimize.Distance.Description(),
                 DistanceUnit = DistanceUnit.MI.Description(),
                 DeviceType = DeviceType.Web.Description(),
                 TravelMode = TravelMode.Driving.Description(),
-                Metric = Metric.Geodesic
+                Metric = Metric.Matrix
             };
 
             var optimizationParameters = new OptimizationParameters()

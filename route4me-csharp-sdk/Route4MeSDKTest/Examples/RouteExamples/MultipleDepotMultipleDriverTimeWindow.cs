@@ -86,6 +86,7 @@ namespace Route4MeSDK.Examples
                         TimeWindowEnd   = 46549 },
 
         new Address() { AddressString   = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                        IsDepot         = true,
                         Latitude        = 38.179253,
                         Longitude       = -85.785118,
                         Time            = 300,
@@ -681,7 +682,7 @@ namespace Route4MeSDK.Examples
                 DistanceUnit = DistanceUnit.MI.Description(),
                 DeviceType = DeviceType.Web.Description(),
                 TravelMode = TravelMode.Driving.Description(),
-                Metric = Metric.Geodesic
+                Metric = Metric.Matrix
             };
 
             var optimizationParameters = new OptimizationParameters()
