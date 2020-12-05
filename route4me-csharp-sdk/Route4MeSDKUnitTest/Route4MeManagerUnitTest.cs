@@ -46,11 +46,11 @@ namespace Route4MeSDKUnitTest
             bool result2 = tdr2.RunOptimizationSingleDriverRoute10Stops();
             bool result3 = tdr2.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Single Driver 10 Stops generation failed...");
-            Assert.IsTrue(result2, "Single Driver 10 Stops generation failed...");
+            Assert.IsTrue(result, "Single Driver 10 Stops generation failed.");
+            Assert.IsTrue(result2, "Single Driver 10 Stops generation failed.");
 
-            Assert.IsTrue(tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses...");
-            Assert.IsTrue(tdr2.SD10Stops_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses.");
+            Assert.IsTrue(tdr2.SD10Stops_route.Addresses.Length > 0, "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SD10Stops_optimization_problem_id);
             lsOptimizationIDs.Add(tdr2.SD10Stops_optimization_problem_id);
@@ -58,9 +58,9 @@ namespace Route4MeSDKUnitTest
 
             bool result1 = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result1, "Single Driver Round Trip generation failed...");
+            Assert.IsTrue(result1, "Single Driver Round Trip generation failed.");
 
-            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
         }
@@ -79,7 +79,10 @@ namespace Route4MeSDKUnitTest
             // Run the query
             DataObjectRoute[] dataObjects = route4Me.GetRoutes(routeParameters, out string errorString);
 
-            Assert.IsInstanceOfType(dataObjects, typeof(DataObjectRoute[]), "GetRoutesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                dataObjects, 
+                typeof(DataObjectRoute[]), 
+                "GetRoutesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -95,7 +98,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var dataObject = route4Me.GetRoute(routeParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "GetRouteTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "GetRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -122,7 +125,10 @@ namespace Route4MeSDKUnitTest
             var twoRoutes = route4Me.GetRoutes(routeParameters, out errorString);
             #endregion
 
-            Assert.IsInstanceOfType(twoRoutes, typeof(DataObjectRoute[]), "GetRoutesByIDsTest failed");
+            Assert.IsInstanceOfType(
+                twoRoutes, 
+                typeof(DataObjectRoute[]), 
+                "GetRoutesByIDsTest failed");
 
             Assert.IsTrue(twoRoutes.Length == 2, "GetRoutesByIDsTest failed");
         }
@@ -143,7 +149,10 @@ namespace Route4MeSDKUnitTest
             // Run the query
             DataObjectRoute[] dataObjects = route4Me.GetRoutes(routeParameters, out string errorString);
 
-            Assert.IsInstanceOfType(dataObjects, typeof(DataObjectRoute[]), "GetRoutesFromDateRangeTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                dataObjects, 
+                typeof(DataObjectRoute[]), 
+                "GetRoutesFromDateRangeTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -152,7 +161,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -164,7 +173,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var dataObject = route4Me.GetRoute(routeParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "GetRouteDirectionsTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "GetRouteDirectionsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -173,7 +182,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -185,14 +194,16 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var dataObject = route4Me.GetRoute(routeParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "GetRoutePathPointsTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "GetRoutePathPointsTest failed. " + errorString);
         }
 
         [TestMethod]
         public void ResequenceRouteDestinationsTest()
         {
             var route = tdr.SD10Stops_route;
-            Assert.IsNotNull(route, "Route for the test Route Destinations Resequence is null...");
+            Assert.IsNotNull(
+                route, 
+                "Route for the test Route Destinations Resequence is null.");
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -211,7 +222,10 @@ namespace Route4MeSDKUnitTest
             lsAddresses.Add(address1);
             lsAddresses.Add(address2);
 
-            var route1 = route4Me.ManuallyResequenceRoute(rParams, lsAddresses.ToArray(), out string errorString);
+            var route1 = route4Me.ManuallyResequenceRoute(
+                                            rParams, 
+                                            lsAddresses.ToArray(), 
+                                            out string errorString);
 
             Assert.IsNotNull(route1, "ResequenceRouteDestinationsTest failed. "+errorString);
         }
@@ -223,7 +237,7 @@ namespace Route4MeSDKUnitTest
 
             string route_id = tdr.SD10Stops_route_id;
 
-            Assert.IsNotNull(route_id, "rote_id is null...");
+            Assert.IsNotNull(route_id, "rote_id is null.");
 
             var roParameters = new Dictionary<string, string>()
             {
@@ -252,7 +266,9 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var duplicatedRouteId = route4Me.DuplicateRoute(routeDuplicateParameters, out string errorString);
+            var duplicatedRouteId = route4Me.DuplicateRoute(
+                                                routeDuplicateParameters, 
+                                                out string errorString);
 
             Assert.IsNotNull(duplicatedRouteId, "Cannot duplicate a route. " + errorString);
             Assert.IsTrue(duplicatedRouteId.Length == 32, "Cannot duplicate a route.");
@@ -279,8 +295,12 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var unlinkedRoute = route4Me.UpdateRoute(routeParameters, out errorString);
 
-            Assert.IsNotNull(unlinkedRoute, "UnlinkRouteFromOptimizationTest failed. " + errorString);
-            Assert.IsNull(unlinkedRoute.OptimizationProblemId, "Optimization problem ID of the unlinked route is not null.");
+            Assert.IsNotNull(
+                unlinkedRoute,
+                "UnlinkRouteFromOptimizationTest failed. " + errorString);
+            Assert.IsNull(
+                unlinkedRoute.OptimizationProblemId, 
+                "Optimization problem ID of the unlinked route is not null.");
         }
 
         [TestMethod]
@@ -289,7 +309,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var parametersNew = new RouteParameters()
             {
@@ -305,7 +325,7 @@ namespace Route4MeSDKUnitTest
 
             var dataObject = route4Me.UpdateRoute(routeParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "UpdateRouteTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "UpdateRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -314,15 +334,16 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr2.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var initialRoute = R4MeUtils.ObjectDeepClone<DataObjectRoute>(tdr2.SD10Stops_route);
 
             #region // Notes, Custom Type Notes, Note File Uploading
             var customNotesResponse = route4Me.GetAllCustomNoteTypes(out string errorString5);
 
-            var allCustomNotes = customNotesResponse != null && customNotesResponse.GetType() == typeof(CustomNoteType[])
-                ? (CustomNoteType[])customNotesResponse : null;
+            var allCustomNotes = customNotesResponse != null && customNotesResponse.GetType() == typeof(CustomNoteType[]) 
+                                 ? (CustomNoteType[])customNotesResponse 
+                                 : null;
 
             string tempFilePath = null;
 
@@ -351,27 +372,36 @@ namespace Route4MeSDKUnitTest
                     ActivityType = "dropoff",
                     Contents = "C# SDK Test Content",
                     CustomTypes = allCustomNotes.Length>0
-                    ? new AddressCustomNote[]
-                    {
-                        new AddressCustomNote()
-                        {
-                            NoteCustomTypeID = allCustomNotes[0].NoteCustomTypeID.ToString(),
-                            NoteCustomValue = allCustomNotes[0].NoteCustomTypeValues[0]
-                        }
-                    }
-                    : null,
+                                    ? new AddressCustomNote[]
+                                    {
+                                        new AddressCustomNote()
+                                        {
+                                            NoteCustomTypeID = allCustomNotes[0].NoteCustomTypeID.ToString(),
+                                            NoteCustomValue = allCustomNotes[0].NoteCustomTypeValues[0]
+                                        }
+                                    }
+                                    : null,
                     UploadUrl = tempFilePath
                 }
              };
 
-            var updatedRoute0 = route4Me.UpdateRoute(tdr2.SD10Stops_route, initialRoute, out string errorString0);
+            var updatedRoute0 = route4Me.UpdateRoute(
+                tdr2.SD10Stops_route, 
+                initialRoute, 
+                out string errorString0);
 
-            Assert.IsTrue(updatedRoute0.Addresses[1].Notes.Length == 1, "UpdateRouteTest failed: cannot create a note");
+            Assert.IsTrue(
+                updatedRoute0.Addresses[1].Notes.Length == 1, 
+                "UpdateRouteTest failed: cannot create a note");
 
             if (allCustomNotes.Length > 0)
-                Assert.IsTrue(updatedRoute0.Addresses[1].Notes[0].CustomTypes.Length == 1, "UpdateRouteTest failed: cannot create a custom type note");
+                Assert.IsTrue(
+                    updatedRoute0.Addresses[1].Notes[0].CustomTypes.Length == 1, 
+                    "UpdateRouteTest failed: cannot create a custom type note");
 
-            Assert.IsTrue(updatedRoute0.Addresses[1].Notes[0].UploadId.Length == 32, "UpdateRouteTest failed: cannot create a custom type note");
+            Assert.IsTrue(
+                updatedRoute0.Addresses[1].Notes[0].UploadId.Length == 32, 
+                "UpdateRouteTest failed: cannot create a custom type note");
             #endregion
 
             tdr2.SD10Stops_route.ApprovedForExecution = true;
@@ -402,18 +432,37 @@ namespace Route4MeSDKUnitTest
             var dataObject = route4Me.UpdateRoute(tdr2.SD10Stops_route, initialRoute, out string errorString);
 
             Assert.IsTrue(dataObject.Addresses.Where(x => x.RouteDestinationId == addressID)
-                .FirstOrDefault().SequenceNo == 5, "UpdateWholeRouteTest failed  Cannot resequence addresses");
+                .FirstOrDefault()
+                .SequenceNo == 5, "UpdateWholeRouteTest failed  Cannot resequence addresses");
 
-            Assert.IsTrue(tdr2.SD10Stops_route.ApprovedForExecution, "UpdateRouteTest failed, ApprovedForExecution cannot set to true");
-            Assert.IsNotNull(dataObject, "UpdateRouteTest failed. " + errorString);
-            Assert.IsTrue(dataObject.Parameters.RouteName.Contains("Edited"), "UpdateRouteTest failed, the route name not changed.");
-            Assert.IsTrue(dataObject.Addresses[1].AddressString.Contains("Edited"), "UpdateRouteTest failed, second address name not changed.");
+            Assert.IsTrue(
+                tdr2.SD10Stops_route.ApprovedForExecution,
+                "UpdateRouteTest failed, ApprovedForExecution cannot set to true");
+            Assert.IsNotNull(
+                dataObject, 
+                "UpdateRouteTest failed. " + errorString);
+            Assert.IsTrue(
+                dataObject.Parameters.RouteName.Contains("Edited"), 
+                "UpdateRouteTest failed, the route name not changed.");
+            Assert.IsTrue(
+                dataObject.Addresses[1].AddressString.Contains("Edited"), 
+                "UpdateRouteTest failed, second address name not changed.");
 
-            Assert.IsTrue(dataObject.Addresses[1].Group == "Example Group", "UpdateWholeRouteTest failed.");
-            Assert.IsTrue(dataObject.Addresses[1].CustomerPo == "CPO 456789", "UpdateWholeRouteTest failed.");
-            Assert.IsTrue(dataObject.Addresses[1].InvoiceNo == "INO 789654", "UpdateWholeRouteTest failed.");
-            Assert.IsTrue(dataObject.Addresses[1].ReferenceNo == "RNO 313264", "UpdateWholeRouteTest failed.");
-            Assert.IsTrue(dataObject.Addresses[1].OrderNo == "ONO 654878", "UpdateWholeRouteTest failed.");
+            Assert.IsTrue(
+                dataObject.Addresses[1].Group == "Example Group", 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsTrue(
+                dataObject.Addresses[1].CustomerPo == "CPO 456789", 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsTrue(
+                dataObject.Addresses[1].InvoiceNo == "INO 789654", 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsTrue(
+                dataObject.Addresses[1].ReferenceNo == "RNO 313264", 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsTrue(
+                dataObject.Addresses[1].OrderNo == "ONO 654878", 
+                "UpdateWholeRouteTest failed.");
 
             initialRoute = R4MeUtils.ObjectDeepClone<DataObjectRoute>(tdr2.SD10Stops_route);
 
@@ -426,12 +475,24 @@ namespace Route4MeSDKUnitTest
 
             dataObject = route4Me.UpdateRoute(tdr2.SD10Stops_route, initialRoute, out errorString);
 
-            Assert.IsFalse(tdr2.SD10Stops_route.ApprovedForExecution, "UpdateRouteTest failed, ApprovedForExecution cannot set to false");
-            Assert.IsNull(dataObject.Addresses[1].Group, "UpdateWholeRouteTest failed.");
-            Assert.IsNull(dataObject.Addresses[1].CustomerPo, "UpdateWholeRouteTest failed.");
-            Assert.IsNull(dataObject.Addresses[1].InvoiceNo, "UpdateWholeRouteTest failed.");
-            Assert.IsNull(dataObject.Addresses[1].ReferenceNo, "UpdateWholeRouteTest failed.");
-            Assert.IsNull(dataObject.Addresses[1].OrderNo, "UpdateWholeRouteTest failed.");
+            Assert.IsFalse(
+                tdr2.SD10Stops_route.ApprovedForExecution, 
+                "UpdateRouteTest failed, ApprovedForExecution cannot set to false");
+            Assert.IsNull(
+                dataObject.Addresses[1].Group, 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsNull(
+                dataObject.Addresses[1].CustomerPo, 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsNull(
+                dataObject.Addresses[1].InvoiceNo, 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsNull(
+                dataObject.Addresses[1].ReferenceNo, 
+                "UpdateWholeRouteTest failed.");
+            Assert.IsNull(
+                dataObject.Addresses[1].OrderNo, 
+                "UpdateWholeRouteTest failed.");
         }
 
         [TestMethod]
@@ -440,12 +501,16 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr2.SDRT_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var initialRoute = R4MeUtils.ObjectDeepClone<DataObjectRoute>(tdr2.SDRT_route);
 
-            Assert.IsTrue(tdr2.SDRT_route.Addresses[0].IsDepot == true, "First address is not depot");
-            Assert.IsTrue(tdr2.SDRT_route.Addresses[1].IsDepot == false, "Second address is depot");
+            Assert.IsTrue(
+                tdr2.SDRT_route.Addresses[0].IsDepot == true, 
+                "First address is not depot");
+            Assert.IsTrue(
+                tdr2.SDRT_route.Addresses[1].IsDepot == false, 
+                "Second address is depot");
 
             tdr2.SDRT_route.Addresses[0].IsDepot = false;
             int? addressId0 = tdr2.SDRT_route.Addresses[0].RouteDestinationId;
@@ -456,7 +521,9 @@ namespace Route4MeSDKUnitTest
             tdr2.SDRT_route.Addresses[1].Alias = addressId1.ToString();
             initialRoute.Addresses[1].Alias = addressId1.ToString();
 
-            var dataObject = route4Me.UpdateRoute(tdr2.SDRT_route, initialRoute, out string errorString);
+            var dataObject = route4Me.UpdateRoute(
+                tdr2.SDRT_route, initialRoute, 
+                out string errorString);
 
             var address0 = dataObject.Addresses
                 .Where(x => x.Alias == addressId0.ToString())
@@ -482,7 +549,7 @@ namespace Route4MeSDKUnitTest
             var vehicleId = vehicles.Data[randomNumber].VehicleId;
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -495,7 +562,10 @@ namespace Route4MeSDKUnitTest
 
             var route = route4Me.UpdateRoute(routeParameters, out string errorString);
 
-            Assert.IsInstanceOfType(route.Vehilce, typeof(VehicleV4Response), "AssignVehicleToRouteTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                route.Vehilce, 
+                typeof(VehicleV4Response), 
+                "AssignVehicleToRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -510,10 +580,14 @@ namespace Route4MeSDKUnitTest
                 ? Convert.ToInt32(members.Results[randomNumber].MemberId) 
                 : -1;
 
-            Assert.IsTrue(memberId != -1, "AssignMemberToRouteTest failed - cannot retrieve random member ID");
+            Assert.IsTrue(
+                memberId != -1, 
+                "AssignMemberToRouteTest failed - cannot retrieve random member ID");
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(
+                routeId, 
+                "routeId_SingleDriverRoute10Stops is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -526,9 +600,13 @@ namespace Route4MeSDKUnitTest
 
             route4Me.UpdateRoute(routeParameters, out errorString);
 
-            var route = route4Me.GetRoute(new RouteParametersQuery() { RouteId = routeId }, out errorString);
+            var route = route4Me.GetRoute(
+                                    new RouteParametersQuery() { RouteId = routeId }, 
+                                    out errorString);
 
-            Assert.IsTrue(route.MemberId == memberId, "AssignMemberToRouteTest failed... " + errorString);
+            Assert.IsTrue(
+                route.MemberId == memberId, 
+                "AssignMemberToRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -539,7 +617,7 @@ namespace Route4MeSDKUnitTest
             string routeId = tdr.SD10Stops_route_id;
             var routeDestionationId = tdr.SD10Stops_route.Addresses[3].RouteDestinationId;
 
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var parameters = new RouteParametersQuery()
             {
@@ -555,7 +633,7 @@ namespace Route4MeSDKUnitTest
 
             var result = route4Me.UpdateRouteCustomData(parameters, customData, out string errorString);
 
-            Assert.IsNotNull(result, "UpdateRouteCustomDataTest failed... " + errorString);
+            Assert.IsNotNull(result, "UpdateRouteCustomDataTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -565,22 +643,28 @@ namespace Route4MeSDKUnitTest
 
             string routeId = tdr.SD10Stops_route_id;
 
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null..");
 
             var parameters = new RouteParametersQuery()
             {
                 RouteId = routeId,
                 Parameters = new RouteParameters()
                 {
-                    AvoidanceZones = new string[] { "FAA49711A0F1144CE4E203DC18ABDFFB", "9C48E8008E9865006336B99D3595E66A" }
+                    AvoidanceZones = new string[] 
+                    { 
+                        "FAA49711A0F1144CE4E203DC18ABDFFB", 
+                        "9C48E8008E9865006336B99D3595E66A" 
+                    }
                 }
             };
 
             var result = route4Me.UpdateRoute(parameters, out string errorString);
 
-            Assert.IsNotNull(result, "UpdateRouteAvoidanceZonesTest failed... " + errorString);
+            Assert.IsNotNull(result, "UpdateRouteAvoidanceZonesTest failed. " + errorString);
 
-            Assert.IsTrue(result.Parameters.AvoidanceZones.Length == 2, "UpdateRouteAvoidanceZonesTest failed... " + errorString);
+            Assert.IsTrue(
+                result.Parameters.AvoidanceZones.Length == 2, 
+                "UpdateRouteAvoidanceZonesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -589,7 +673,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -599,9 +683,16 @@ namespace Route4MeSDKUnitTest
 
             var route = route4Me.GetRoute(routeParameters, out string errorString);
 
-            Assert.IsNotNull(route, "RouteOriginParameterTest failed. " + errorString);
-            Assert.IsNotNull(route.OriginalRoute, "RouteOriginParameterTest failed. " + errorString);
-            Assert.IsInstanceOfType(route.OriginalRoute, typeof(DataObjectRoute), "RouteOriginParameterTest failed. " + errorString);
+            Assert.IsNotNull(
+                route, 
+                "RouteOriginParameterTest failed. " + errorString);
+            Assert.IsNotNull(
+                route.OriginalRoute, 
+                "RouteOriginParameterTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                route.OriginalRoute, 
+                typeof(DataObjectRoute), 
+                "RouteOriginParameterTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -610,7 +701,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -621,7 +712,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var dataObject = route4Me.UpdateRoute(routeParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "ReoptimizeRouteTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "ReoptimizeRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -630,7 +721,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId is null...");
+            Assert.IsNotNull(routeId, "routeId is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -638,9 +729,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            string routeId_DuplicateRoute = route4Me.DuplicateRoute(routeParameters, out string errorString);
+            string routeId_DuplicateRoute = route4Me.DuplicateRoute(
+                                                        routeParameters, 
+                                                        out string errorString);
 
-            Assert.IsNotNull(routeId_DuplicateRoute, "DuplicateRouteTest failed... " + errorString);
+            Assert.IsNotNull(
+                routeId_DuplicateRoute, 
+                "DuplicateRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -649,7 +744,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId is null...");
+            Assert.IsNotNull(routeId, "routeId is null.");
 
             var routeParameters = new RouteParametersQuery()
             {
@@ -662,7 +757,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RouteSharing(routeParameters, email, out string errorString);
 
-            Assert.IsTrue(result, "ShareRouteTest failed... " + errorString);
+            Assert.IsTrue(result, "ShareRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -672,7 +767,7 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Single Driver Round Trip generation failed...");
+            Assert.IsTrue(result, "Single Driver Round Trip generation failed.");
 
             if (tdr.SDRT_route_id != null)
                 routeIdsToDelete.Add(tdr.SDRT_route_id);
@@ -680,9 +775,14 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             // Run the query
-            string[] deletedRouteIds = route4Me.DeleteRoutes(routeIdsToDelete.ToArray(), out string errorString);
+            string[] deletedRouteIds = route4Me.DeleteRoutes(
+                                                    routeIdsToDelete.ToArray(), 
+                                                    out string errorString);
 
-            Assert.IsInstanceOfType(deletedRouteIds, typeof(string[]), "DeleteRoutesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                deletedRouteIds, 
+                typeof(string[]), 
+                "DeleteRoutesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -780,12 +880,22 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
+            var dataObject = route4Me.RunOptimization(
+                                        optimizationParameters, 
+                                        out string errorString);
 
-            Assert.IsNotNull(dataObject, "RunSingleDriverRoundTripfailed... " + errorString);
+            Assert.IsNotNull(
+                dataObject, 
+                "RunSingleDriverRoundTripfailed. " + errorString);
 
-            Assert.AreEqual(dataObject.Parameters.RouteServiceTimeMultiplier, 15, "Cannot set service time slowdown");
-            Assert.AreEqual(dataObject.Parameters.RouteTimeMultiplier, 20, "Cannot set route travel time slowdown");
+            Assert.AreEqual(
+                dataObject.Parameters.RouteServiceTimeMultiplier, 
+                15, 
+                "Cannot set service time slowdown");
+            Assert.AreEqual(
+                dataObject.Parameters.RouteTimeMultiplier, 
+                20, 
+                "Cannot set route travel time slowdown");
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -820,19 +930,28 @@ namespace Route4MeSDKUnitTest
             tdr = new TestDataRepository();
             bool result = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Single Driver Round Trip generation failed...");
+            Assert.IsTrue(result, "Single Driver Round Trip generation failed.");
 
-            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
 
             string routeIdToMoveTo = tdr.SDRT_route_id;
-            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null...");
+            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null.");
 
-            int addressId = (tdr.DataObjectSDRT != null && tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 1 && tdr.SDRT_route.Addresses[1].RouteDestinationId != null) ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value : 0;
+            int addressId = (tdr.DataObjectSDRT != null && 
+                                tdr.SDRT_route != null && 
+                                tdr.SDRT_route.Addresses.Length > 1 && 
+                                tdr.SDRT_route.Addresses[1].RouteDestinationId != null) 
+                             ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value 
+                             : 0;
 
-            double lat = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Latitude : 33.132675170898;
-            double lng = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Longitude : -83.244743347168;
+            double lat = tdr.SDRT_route.Addresses.Length > 1 
+                            ? tdr.SDRT_route.Addresses[1].Latitude 
+                            : 33.132675170898;
+            double lng = tdr.SDRT_route.Addresses.Length > 1 
+                            ? tdr.SDRT_route.Addresses[1].Longitude 
+                            : -83.244743347168;
 
             var noteParameters = new NoteParameters()
             {
@@ -847,9 +966,12 @@ namespace Route4MeSDKUnitTest
 
             // Run the query
             string contents = "Test Note Contents " + DateTime.Now.ToString();
-            AddressNote note = route4Me.AddAddressNote(noteParameters, contents, out string errorString);
+            AddressNote note = route4Me.AddAddressNote(
+                                            noteParameters, 
+                                            contents, 
+                                            out string errorString);
 
-            Assert.IsNotNull(note, "AddAddressNoteTest failed... " + errorString);
+            Assert.IsNotNull(note, "AddAddressNoteTest failed. " + errorString);
 
             var response = route4Me.GetAllCustomNoteTypes(out errorString);
 
@@ -859,13 +981,21 @@ namespace Route4MeSDKUnitTest
 
             if (((CustomNoteType[])response).Length < 2)
             {
-                notesGroup.AddCustomNoteType("Conditions at Site", new string[] { "safe", "mild", "dangerous", "slippery" });
-                notesGroup.AddCustomNoteType("To Do", new string[] { "Pass a package", "Pickup package", "Do a service" });
+                notesGroup.AddCustomNoteType(
+                    "Conditions at Site", 
+                    new string[] { "safe", "mild", "dangerous", "slippery" }
+                );
+                notesGroup.AddCustomNoteType(
+                    "To Do", 
+                    new string[] { "Pass a package", "Pickup package", "Do a service" }
+                );
 
                 response = route4Me.GetAllCustomNoteTypes(out errorString);
             }
 
-            Assert.IsTrue(((CustomNoteType[])response).Length > 0, "Can not find custom note type in the account. "+errorString);
+            Assert.IsTrue(
+                ((CustomNoteType[])response).Length > 0, 
+                "Can not find custom note type in the account. "+errorString);
 
             lastCustomNoteTypeID = ((CustomNoteType[])response)[((CustomNoteType[])response).Length - 1].NoteCustomTypeID;
         }
@@ -876,12 +1006,16 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeIdToMoveTo = tdr.SDRT_route_id;
-            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null...");
+            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null.");
 
             int addressId = (tdr.DataObjectSDRT != null && tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 1 && tdr.SDRT_route.Addresses[1].RouteDestinationId != null) ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value : 0;
 
-            double lat = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Latitude : 33.132675170898;
-            double lng = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Longitude : -83.244743347168;
+            double lat = tdr.SDRT_route.Addresses.Length > 1 
+                            ? tdr.SDRT_route.Addresses[1].Latitude 
+                            : 33.132675170898;
+            double lng = tdr.SDRT_route.Addresses.Length > 1 
+                            ? tdr.SDRT_route.Addresses[1].Longitude 
+                            : -83.244743347168;
 
             var customNotesResponse = route4Me.GetAllCustomNoteTypes(out string errorString0);
 
@@ -895,7 +1029,9 @@ namespace Route4MeSDKUnitTest
                 {
                     customNotes = new Dictionary<string, string>()
                     {
-                        {"custom_note_type["+allCustomNotes[0].NoteCustomTypeID+"]", allCustomNotes[0].NoteCustomTypeValues[0] }
+                        {
+                            "custom_note_type["+allCustomNotes[0].NoteCustomTypeID+"]", 
+                            allCustomNotes[0].NoteCustomTypeValues[0] }
                     };
                 }
             }
@@ -934,7 +1070,7 @@ namespace Route4MeSDKUnitTest
 
             var note = route4Me.AddAddressNote(noteParameters, out string errorString);
 
-            Assert.IsNotNull(note, "AddAddressNoteTest failed... " + errorString);
+            Assert.IsNotNull(note, "AddAddressNoteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -943,12 +1079,21 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeIdToMoveTo = tdr.SDRT_route_id;
-            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null...");
+            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null.");
 
-            int addressId = (tdr.DataObjectSDRT != null && tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 1 && tdr.SDRT_route.Addresses[1].RouteDestinationId != null) ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value : 0;
+            int addressId = (tdr.DataObjectSDRT != null && 
+                                tdr.SDRT_route != null && 
+                                tdr.SDRT_route.Addresses.Length > 1 && 
+                                tdr.SDRT_route.Addresses[1].RouteDestinationId != null) 
+                             ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value 
+                             : 0;
 
-            double lat = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Latitude : 33.132675170898;
-            double lng = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Longitude : -83.244743347168;
+            double lat = tdr.SDRT_route.Addresses.Length > 1 
+                        ? tdr.SDRT_route.Addresses[1].Latitude 
+                        : 33.132675170898;
+            double lng = tdr.SDRT_route.Addresses.Length > 1 
+                        ? tdr.SDRT_route.Addresses[1].Longitude 
+                        : -83.244743347168;
 
             var noteParameters = new NoteParameters()
             {
@@ -964,7 +1109,7 @@ namespace Route4MeSDKUnitTest
             string contents = "Test Note Contents " + DateTime.Now.ToString();
             var note = route4Me.AddAddressNote(noteParameters, contents, out string errorString);
 
-            Assert.IsNotNull(note, "AddAddressNoteTest failed... " + errorString);
+            Assert.IsNotNull(note, "AddAddressNoteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -974,12 +1119,21 @@ namespace Route4MeSDKUnitTest
 
             string routeId = tdr.SDRT_route_id;
 
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoundTrip is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoundTrip is null.");
 
-            int addressId = (tdr.DataObjectSDRT != null && tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 1 && tdr.SDRT_route.Addresses[1].RouteDestinationId != null) ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value : 0;
+            int addressId = (tdr.DataObjectSDRT != null && 
+                                tdr.SDRT_route != null && 
+                                tdr.SDRT_route.Addresses.Length > 1 && 
+                                tdr.SDRT_route.Addresses[1].RouteDestinationId != null) 
+                             ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value 
+                             : 0;
 
-            double lat = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Latitude : 33.132675170898;
-            double lng = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Longitude : -83.244743347168;
+            double lat = tdr.SDRT_route.Addresses.Length > 1 
+                            ? tdr.SDRT_route.Addresses[1].Latitude 
+                            : 33.132675170898;
+            double lng = tdr.SDRT_route.Addresses.Length > 1 
+                            ? tdr.SDRT_route.Addresses[1].Longitude 
+                            : -83.244743347168;
 
             var noteParameters = new NoteParameters()
             {
@@ -1011,9 +1165,13 @@ namespace Route4MeSDKUnitTest
 
                     // Run the query
                     string contents = "Test Note Contents with Attachment " + DateTime.Now.ToString();
-                    AddressNote note = route4Me.AddAddressNote(noteParameters, contents, tempFilePath, out string errorString);
+                    AddressNote note = route4Me.AddAddressNote(
+                                                    noteParameters, 
+                                                    contents, 
+                                                    tempFilePath, 
+                                                    out string errorString);
 
-                    Assert.IsNotNull(note, "AddAddressNoteWithFileTest failed... " + errorString);
+                    Assert.IsNotNull(note, "AddAddressNoteWithFileTest failed. " + errorString);
                 };
             }
         }
@@ -1024,9 +1182,14 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SDRT_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoundTrip is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoundTrip is null.");
 
-            int routeDestinationId = (tdr.DataObjectSDRT != null && tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 1 && tdr.SDRT_route.Addresses[1].RouteDestinationId != null) ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value : 0;
+            int routeDestinationId = (tdr.DataObjectSDRT != null && 
+                                        tdr.SDRT_route != null && 
+                                        tdr.SDRT_route.Addresses.Length > 1 && 
+                                        tdr.SDRT_route.Addresses[1].RouteDestinationId != null) 
+                                     ? tdr.SDRT_route.Addresses[1].RouteDestinationId.Value 
+                                     : 0;
 
             var noteParameters = new NoteParameters()
             {
@@ -1037,13 +1200,18 @@ namespace Route4MeSDKUnitTest
             // Run the query
             AddressNote[] notes = route4Me.GetAddressNotes(noteParameters, out string errorString);
 
-            Assert.IsInstanceOfType(notes, typeof(AddressNote[]), "GetAddressNotesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                notes, 
+                typeof(AddressNote[]), 
+                "GetAddressNotesTest failed. " + errorString);
         }
 
         [TestMethod]
         public void AddCustomNoteTypeTest()
         {
-            var response = AddCustomNoteType("To Do", new string[] { "Pass a package", "Pickup package", "Do a service" });
+            var response = AddCustomNoteType(
+                "To Do", 
+                new string[] { "Pass a package", "Pickup package", "Do a service" });
 
             Assert.IsTrue(response.GetType() != typeof(String), response.ToString());
 
@@ -1094,7 +1262,9 @@ namespace Route4MeSDKUnitTest
             var noteParameters = new NoteParameters()
             {
                 RouteId = tdr.SDRT_route.RouteId,
-                AddressId = tdr.SDRT_route.Addresses[1].RouteDestinationId != null ? (int)tdr.SDRT_route.Addresses[1].RouteDestinationId : 0,
+                AddressId = tdr.SDRT_route.Addresses[1].RouteDestinationId != null 
+                                ? (int)tdr.SDRT_route.Addresses[1].RouteDestinationId 
+                                : 0,
                 Format = "json",
                 Latitude = tdr.SDRT_route.Addresses[1].Latitude,
                 Longitude = tdr.SDRT_route.Addresses[1].Longitude
@@ -1108,7 +1278,10 @@ namespace Route4MeSDKUnitTest
                 {"strNoteContents", "test1111"}
             };
 
-            var response = route4Me.AddCustomNoteToRoute(noteParameters, customNotes, out string errorString);
+            var response = route4Me.AddCustomNoteToRoute(
+                                            noteParameters, 
+                                            customNotes, 
+                                            out string errorString);
 
             Assert.IsTrue(response.GetType() != typeof(String), errorString);
 
@@ -1120,7 +1293,7 @@ namespace Route4MeSDKUnitTest
         {
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the optimization with 24 stops failed...");
+            Assert.IsTrue(result, "Removing of the optimization with 24 stops failed.");
         }
     }
 
@@ -1316,7 +1489,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "MultipleDepotMultipleDriverTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "MultipleDepotMultipleDriverTest failed. " + errorString);
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -1484,17 +1657,23 @@ namespace Route4MeSDKUnitTest
             // Run the query
             dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "MultipleSeparateDepostMultipleDriverTest failed. " + errorString);
+            Assert.IsNotNull(
+                dataObject, 
+                "MultipleSeparateDepostMultipleDriverTest failed. " + errorString);
 
             var optimizationDepots = dataObject.Addresses.Where(x => x.IsDepot == true);
 
-            Assert.IsTrue(optimizationDepots.Count() == depots.Length, "The depots number is not " + depots.Length);
+            Assert.IsTrue(
+                optimizationDepots.Count() == depots.Length, 
+                "The depots number is not " + depots.Length);
 
             List<string> depotAddresses = depots.Select(x => x.AddressString).ToList();
 
             foreach (var depot in optimizationDepots)
             {
-                Assert.IsTrue(depotAddresses.Contains(depot.AddressString), "The address " + depot.AddressString + " is not depot");
+                Assert.IsTrue(
+                    depotAddresses.Contains(depot.AddressString), 
+                    "The address " + depot.AddressString + " is not depot");
             }
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
@@ -1505,7 +1684,7 @@ namespace Route4MeSDKUnitTest
         {
             if (skip == "yes") return;
 
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
             // Prepare the addresses
             Address[] addresses = new Address[]
@@ -2184,7 +2363,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "MultipleDepotMultipleDriverTimeWindowTest failed... " + errorString);
+            Assert.IsNotNull(
+                dataObject, 
+                "MultipleDepotMultipleDriverTimeWindowTest failed. " + errorString);
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -3993,7 +4174,9 @@ namespace Route4MeSDKUnitTest
                 // Run the query
                 dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-                Assert.IsNotNull(dataObject, "SingleDepotMultipleDriverNoTimeWindowTest failed... " + errorString);
+                Assert.IsNotNull(
+                    dataObject, 
+                    "SingleDepotMultipleDriverNoTimeWindowTest failed. " + errorString);
 
                 tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
             }
@@ -4210,9 +4393,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            dataObjectMDMD24 = route4Me.RunOptimization(optimizationParameters, out string errorString);
+            dataObjectMDMD24 = route4Me.RunOptimization(
+                                            optimizationParameters, 
+                                            out string errorString);
 
-            Assert.IsNotNull(dataObjectMDMD24, "MultipleDepotMultipleDriverWith24StopsTimeWindowTest failed... " + errorString);
+            Assert.IsNotNull(
+                dataObjectMDMD24, 
+                "MultipleDepotMultipleDriverWith24StopsTimeWindowTest failed.. " + errorString);
 
             MoveDestinationToRouteTest();
 
@@ -4223,24 +4410,34 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            Assert.IsNotNull(dataObjectMDMD24, "dataObjectMDMD24 is null...");
+            Assert.IsNotNull(dataObjectMDMD24, "dataObjectMDMD24 is null.");
 
             var optimizationParameters = new OptimizationParameters()
             {
                 OptimizationProblemID = dataObjectMDMD24.OptimizationProblemId
             };
 
-            var dataObjectDetails = route4Me.GetOptimization(optimizationParameters, out string errorString);
+            var dataObjectDetails = route4Me.GetOptimization(
+                                                    optimizationParameters, 
+                                                    out string errorString);
 
-            Assert.IsNotNull(dataObjectDetails, "Retrieving of the optimizations failed. " + errorString);
+            Assert.IsNotNull(
+                dataObjectDetails, 
+                "Retrieving of the optimizations failed. " + errorString);
 
-            Assert.IsTrue(dataObjectDetails.Routes.Length >= 2, "There is no 2 routes for moving a destination to other route...");
+            Assert.IsTrue(
+                dataObjectDetails.Routes.Length >= 2, 
+                "There is no 2 routes for moving a destination to other route.");
 
             var route1 = dataObjectDetails.Routes[0];
 
-            Assert.IsTrue(route1.Addresses.Length >= 2, "There is less than 2 addresses in the generated route...");
+            Assert.IsTrue(
+                route1.Addresses.Length >= 2, 
+                "There is less than 2 addresses in the generated route..");
 
-            int routeDestinationIdToMove = route1.Addresses[2].RouteDestinationId != null ? Convert.ToInt32(route1.Addresses[1].RouteDestinationId) : -1;
+            int routeDestinationIdToMove = route1.Addresses[2].RouteDestinationId != null 
+                                                ? Convert.ToInt32(route1.Addresses[1].RouteDestinationId) 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                : -1;
 
             Assert.IsTrue(routeDestinationIdToMove > 0, "Wrong destination_id to move: " + routeDestinationIdToMove);
 
@@ -4254,14 +4451,12 @@ namespace Route4MeSDKUnitTest
 
             bool result = route4Me.MoveDestinationToRoute(route2.RouteId, routeDestinationIdToMove, afterDestinationIdToMoveAfter, out errorString);
 
-            Assert.IsTrue(result, "MoveDestinationToRouteTest failed... " + errorString);
+            Assert.IsTrue(result, "MoveDestinationToRouteTest failed." + errorString);
         }
 
         [TestMethod]
         public void MergeRoutesTest()
         {
-            if (skip == "yes") return;
-
             var route4Me = new Route4MeManager(c_ApiKey);
 
             tdr.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
@@ -4276,7 +4471,7 @@ namespace Route4MeSDKUnitTest
             var route1 = dataObjectMDMD24.Routes[0];
 
             Assert.IsTrue(
-                route1.Addresses.Length >= 2,
+                route1.Addresses.Length >= 2, 
                 "There is less than 2 addresses in the generated route.");
 
             var route2 = dataObjectMDMD24.Routes[1];
@@ -4293,6 +4488,8 @@ namespace Route4MeSDKUnitTest
             bool result = route4Me.MergeRoutes(mergeRoutesParameters, out string errorString);
 
             Assert.IsTrue(result, "MergeRoutesTest failed. " + errorString);
+
+            //tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
         }
 
         [TestMethod]
@@ -4454,16 +4651,18 @@ namespace Route4MeSDKUnitTest
                 RT = true
             };
 
-            OptimizationParameters optimizationParameters = new OptimizationParameters()
+            var optimizationParameters = new OptimizationParameters()
             {
                 Addresses = addresses,
                 Parameters = parameters
             };
 
             // Run the query
-            dataObject = route4Me.RunAsyncOptimization(optimizationParameters, out string errorString);
+            dataObject = route4Me.RunAsyncOptimization(
+                                        optimizationParameters, 
+                                        out string errorString);
 
-            Assert.IsNotNull(dataObject, "SingleDriverMultipleTimeWindowsTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "SingleDriverMultipleTimeWindowsTest failed. " + errorString);
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -4636,7 +4835,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "SingleDriverMultipleTimeWindowsTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "SingleDriverMultipleTimeWindowsTest failed. " + errorString);
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -4646,7 +4845,10 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            if (!route4Me.MemberHasCommercialCapability(c_ApiKey, ApiKeys.DemoApiKey, out string errorString0)) return;
+            if (!route4Me.MemberHasCommercialCapability(
+                c_ApiKey, 
+                ApiKeys.DemoApiKey, 
+                out string errorString0)) return;
 
             // Prepare the addresses
             Address[] addresses = new Address[]
@@ -4823,7 +5025,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "SingleDriverMultipleTimeWindowsTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "SingleDriverMultipleTimeWindowsTest failed. " + errorString);
             Assert.IsTrue(dataObject.Routes.Length > 0, "The optimization doesn't contain route");
             var routeId = dataObject.Routes[0].RouteId;
 
@@ -4838,7 +5040,9 @@ namespace Route4MeSDKUnitTest
             var routeBundled = route4Me.GetRoute(routeQueryParameters, out errorString);
 
             Assert.IsNotNull(routeBundled, "Cannot retrieve the route. " + errorString);
-            Assert.IsNotNull(routeBundled.BundleItems, "Cannot retrieve bundled items in the route response.");
+            Assert.IsNotNull(
+                routeBundled.BundleItems, 
+                "Cannot retrieve bundled items in the route response.");
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -5071,7 +5275,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "RunSingleDriverRoundTrip failed... " + errorString);
+            Assert.IsNotNull(dataObject, "RunSingleDriverRoundTrip failed. " + errorString);
 
             tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
         }
@@ -5174,7 +5378,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var dataObject1 = r4mm.RunOptimization(optimizationParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject1, "Run optimization test with Single Driver Route 10 Stops failed... " + errorString);
+            Assert.IsNotNull(
+                dataObject1, 
+                "Run optimization test with Single Driver Route 10 Stops failed. " + errorString);
 
             tdr.RemoveOptimization(new string[] { dataObject1.OptimizationProblemId });
         }
@@ -7944,12 +8150,9 @@ namespace Route4MeSDKUnitTest
         [ClassCleanup()]
         public static void RouteTypesGroupCleanup()
         {
-            if ((dataObjectMDMD24?.OptimizationProblemId ?? null)!=null)
-            {
-                bool result = tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
+            bool result = tdr.RemoveOptimization(new string[] { dataObjectMDMD24.OptimizationProblemId });
 
-                Assert.IsTrue(result, "Removing of the optimization with 24 stops failed.");
-            }
+            Assert.IsTrue(result, "Removing of the optimization with 24 stops failed.");
         }
     }
 
@@ -7973,7 +8176,9 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void AddAddressBookContactsTest(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class AddressbookContactsGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class AddressbookContactsGroup failed.");
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -7988,7 +8193,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             contact1 = route4Me.AddAddressBookContact(contact, out string errorString);
 
-            Assert.IsNotNull(contact1, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(contact1, "AddAddressBookContactsTest failed. " + errorString);
 
             int location1 = contact1.AddressId != null ? Convert.ToInt32(contact1.AddressId) : -1;
 
@@ -8010,7 +8215,7 @@ namespace Route4MeSDKUnitTest
 
             contact2 = route4Me.AddAddressBookContact(contact, out errorString);
 
-            Assert.IsNotNull(contact2, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(contact2, "AddAddressBookContactsTest failed. " + errorString);
 
             int location2 = contact2.AddressId != null ? Convert.ToInt32(contact2.AddressId) : -1;
 
@@ -8045,9 +8250,14 @@ namespace Route4MeSDKUnitTest
                 "AddressId", "AddressCustomData"
             };
 
-            var updatedContact = route4Me.UpdateAddressBookContact(contact1, updatableProperties, out string errorString);
+            var updatedContact = route4Me.UpdateAddressBookContact(
+                                                    contact1, 
+                                                    updatableProperties, 
+                                                    out string errorString);
 
-            Assert.IsNotNull(updatedContact.AddressCustomData, "AddCustomDataToContactTest failed... " + errorString);
+            Assert.IsNotNull(
+                updatedContact.AddressCustomData, 
+                "AddCustomDataToContactTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8075,15 +8285,25 @@ namespace Route4MeSDKUnitTest
                 CachedLat = 38.141598,
                 CachedLng = -85.793846,
                 AddressCity = "Louisville",
-                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "publishing" } },
+                AddressCustomData = new Dictionary<string, string>() 
+                                            { 
+                                                { "scheduled", "yes" }, 
+                                                { "service type", "publishing" } 
+                                            },
                 Schedule = new List<Schedule>() { sched1 }
             };
 
-            scheduledContact1Response = route4Me.AddAddressBookContact(scheduledContact1, out string errorString);
+            scheduledContact1Response = route4Me.AddAddressBookContact(
+                                                        scheduledContact1, 
+                                                        out string errorString);
 
-            Assert.IsNotNull(scheduledContact1Response, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(
+                scheduledContact1Response, 
+                "AddAddressBookContactsTest failed. " + errorString);
 
-            int location1 = scheduledContact1Response.AddressId != null ? Convert.ToInt32(scheduledContact1Response.AddressId) : -1;
+            int location1 = scheduledContact1Response.AddressId != null 
+                            ? Convert.ToInt32(scheduledContact1Response.AddressId) 
+                            : -1;
 
             if (location1 > 0) lsRemoveContacts.Add(location1);
             #endregion
@@ -8113,9 +8333,13 @@ namespace Route4MeSDKUnitTest
 
             scheduledContact2Response = route4Me.AddAddressBookContact(scheduledContact2, out errorString);
 
-            Assert.IsNotNull(scheduledContact2Response, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(
+                scheduledContact2Response, 
+                "AddAddressBookContactsTest failed. " + errorString);
 
-            int location2 = scheduledContact2Response.AddressId != null ? Convert.ToInt32(scheduledContact2Response.AddressId) : -1;
+            int location2 = scheduledContact2Response.AddressId != null 
+                            ? Convert.ToInt32(scheduledContact2Response.AddressId) 
+                            : -1;
 
             if (location2 > 0) lsRemoveContacts.Add(location2);
 
@@ -8125,7 +8349,10 @@ namespace Route4MeSDKUnitTest
             Schedule sched3 = new Schedule("monthly", false)
             {
                 Enabled = true,
-                Monthly = new ScheduleMonthly(_every: 1, _mode: "dates", _dates: new int[] { 20, 22, 23, 24, 25 })
+                Monthly = new ScheduleMonthly(
+                    _every: 1, 
+                    _mode: "dates", 
+                    _dates: new int[] { 20, 22, 23, 24, 25 })
             };
 
             scheduledContact3 = new AddressBookContact()
@@ -8149,20 +8376,30 @@ namespace Route4MeSDKUnitTest
                 Color = "red"
             };
 
-            scheduledContact3Response = route4Me.AddAddressBookContact(scheduledContact3, out errorString);
+            scheduledContact3Response = route4Me.AddAddressBookContact(
+                                                            scheduledContact3, 
+                                                            out errorString);
 
-            Assert.IsNotNull(scheduledContact3Response, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(
+                scheduledContact3Response, 
+                "AddAddressBookContactsTest failed. " + errorString);
 
-            int location3 = scheduledContact3Response.AddressId != null ? Convert.ToInt32(scheduledContact3Response.AddressId) : -1;
+            int location3 = scheduledContact3Response.AddressId != null 
+                            ? Convert.ToInt32(scheduledContact3Response.AddressId) 
+                            : -1;
 
             if (location3 > 0) lsRemoveContacts.Add(location3);
             #endregion
 
             #region // Add a location, scheduled monthly (nth mode).
+
             Schedule sched4 = new Schedule("monthly", false)
             {
                 Enabled = true,
-                Monthly = new ScheduleMonthly(_every: 1, _mode: "nth", _nth: new Dictionary<int, int>() { { 1, 4 } })
+                Monthly = new ScheduleMonthly(
+                    _every: 1, 
+                    _mode: "nth", 
+                    _nth: new Dictionary<int, int>() { { 1, 4 } })
             };
 
             scheduledContact4 = new AddressBookContact()
@@ -8178,21 +8415,33 @@ namespace Route4MeSDKUnitTest
                 CachedLng = -85.821121,
                 AddressCity = "Louisville",
                 ServiceTime = 450,
-                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "library" } },
+                AddressCustomData = new Dictionary<string, string>() 
+                                    { 
+                                        { "scheduled", "yes" }, 
+                                        { "service type", "library" } 
+                                    },
                 Schedule = new List<Schedule>() { sched4 },
                 AddressIcon = "emoji/emoji-bus"
             };
 
-            scheduledContact4Response = route4Me.AddAddressBookContact(scheduledContact4, out errorString);
+            scheduledContact4Response = route4Me.AddAddressBookContact(
+                                                        scheduledContact4, 
+                                                        out errorString);
 
-            Assert.IsNotNull(scheduledContact4Response, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(
+                scheduledContact4Response, 
+                "AddAddressBookContactsTest failed. " + errorString);
 
-            int location4 = scheduledContact4Response.AddressId != null ? Convert.ToInt32(scheduledContact4Response.AddressId) : -1;
+            int location4 = scheduledContact4Response.AddressId != null 
+                            ? Convert.ToInt32(scheduledContact4Response.AddressId) 
+                            : -1;
 
             if (location4 > 0) lsRemoveContacts.Add(location4);
+
             #endregion
 
             #region // Add a location with the daily scheduling and blacklist.
+
             Schedule sched5 = new Schedule("daily", false)
             {
                 Enabled = true,
@@ -8212,17 +8461,27 @@ namespace Route4MeSDKUnitTest
                 CachedLat = 38.176067,
                 CachedLng = -85.824638,
                 AddressCity = "Louisville",
-                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "appliance" } },
+                AddressCustomData = new Dictionary<string, string>() 
+                                    { 
+                                        { "scheduled", "yes" }, 
+                                        { "service type", "appliance" } 
+                                    },
                 Schedule = new List<Schedule>() { sched5 },
                 ScheduleBlacklist = new string[] { "2017-12-22", "2017-12-23" },
                 ServiceTime = 300
             };
 
-            scheduledContact5Response = route4Me.AddAddressBookContact(scheduledContact5, out errorString);
+            scheduledContact5Response = route4Me.AddAddressBookContact(
+                                                            scheduledContact5, 
+                                                            out errorString);
 
-            Assert.IsNotNull(scheduledContact5Response, "AddAddressBookContactsTest failed... " + errorString);
+            Assert.IsNotNull(
+                scheduledContact5Response, 
+                "AddAddressBookContactsTest failed. " + errorString);
 
-            int location5 = scheduledContact5Response.AddressId != null ? Convert.ToInt32(scheduledContact5Response.AddressId) : -1;
+            int location5 = scheduledContact5Response.AddressId != null 
+                            ? Convert.ToInt32(scheduledContact5Response.AddressId) 
+                            : -1;
 
             if (location5 > 0) lsRemoveContacts.Add(location5);
             #endregion
@@ -8233,7 +8492,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            Assert.IsNotNull(contact1, "contact1 is null..");
+            Assert.IsNotNull(contact1, "contact1 is null.");
 
             contact1.AddressGroup = "Updated";
             contact1.ScheduleBlacklist = new string[] { "2020-03-14", "2020-03-15" };
@@ -8257,17 +8516,38 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var updatedContact = route4Me.UpdateAddressBookContact(contact1, updatableProperties, out string errorString);
+            var updatedContact = route4Me.UpdateAddressBookContact(
+                                                contact1, 
+                                                updatableProperties, 
+                                                out string errorString);
 
-            Assert.IsNotNull(updatedContact, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNotNull(updatedContact.ScheduleBlacklist, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNotNull(updatedContact.LocalTimeWindowStart, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNotNull(updatedContact.LocalTimeWindowEnd, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(updatedContact.AddressCube == 5, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(updatedContact.AddressPieces == 6, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(updatedContact.AddressRevenue == 700, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(updatedContact.AddressWeight == 80, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(updatedContact.AddressPriority == 9, "UpdateAddressBookContactTest failed... " + errorString);
+            Assert.IsNotNull(
+                updatedContact, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNotNull(
+                updatedContact.ScheduleBlacklist, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNotNull(
+                updatedContact.LocalTimeWindowStart, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNotNull(
+                updatedContact.LocalTimeWindowEnd, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                updatedContact.AddressCube == 5, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                updatedContact.AddressPieces == 6, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                updatedContact.AddressRevenue == 700, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                updatedContact.AddressWeight == 80, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                updatedContact.AddressPriority == 9, 
+                "UpdateAddressBookContactTest failed. " + errorString);
 
             contact1.ScheduleBlacklist = null;
             contact1.AddressCustomData = null;
@@ -8279,17 +8559,38 @@ namespace Route4MeSDKUnitTest
             contact1.AddressWeight = null;
             contact1.AddressPriority = null;
 
-            var updatedContact1 = route4Me.UpdateAddressBookContact(contact1, updatableProperties, out string errorString1);
+            var updatedContact1 = route4Me.UpdateAddressBookContact(
+                                                    contact1, 
+                                                    updatableProperties, 
+                                                    out string errorString1);
 
-            Assert.IsNotNull(updatedContact1, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.ScheduleBlacklist, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.LocalTimeWindowStart, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.LocalTimeWindowEnd, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.AddressCube, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.AddressPieces, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.AddressRevenue, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.AddressWeight, "UpdateAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(updatedContact1.AddressPriority, "UpdateAddressBookContactTest failed... " + errorString);
+            Assert.IsNotNull(
+                updatedContact1, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.ScheduleBlacklist, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.LocalTimeWindowStart, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.LocalTimeWindowEnd, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.AddressCube, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.AddressPieces, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.AddressRevenue, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.AddressWeight, 
+                "UpdateAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                updatedContact1.AddressPriority, 
+                "UpdateAddressBookContactTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8328,15 +8629,33 @@ namespace Route4MeSDKUnitTest
 
             contact1 = route4Me.UpdateAddressBookContact(contactClone, contact1, out string errorString);
 
-            Assert.IsNotNull(contact1, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNotNull(contact1.ScheduleBlacklist, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNotNull(contact1.LocalTimeWindowStart, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNotNull(contact1.LocalTimeWindowEnd, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(contact1.AddressCube == 5, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(contact1.AddressPieces == 6, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(contact1.AddressRevenue == 700, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(contact1.AddressWeight == 80, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsTrue(contact1.AddressPriority == 9, "UpdateWholeAddressBookContactTest failed... " + errorString);
+            Assert.IsNotNull(
+                contact1, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNotNull(
+                contact1.ScheduleBlacklist, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNotNull(
+                contact1.LocalTimeWindowStart, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNotNull(
+                contact1.LocalTimeWindowEnd, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                contact1.AddressCube == 5, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                contact1.AddressPieces == 6, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                contact1.AddressRevenue == 700, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                contact1.AddressWeight == 80, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsTrue(
+                contact1.AddressPriority == 9, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
 
             contactClone = R4MeUtils.ObjectDeepClone<AddressBookContact>(contact1);
 
@@ -8352,15 +8671,33 @@ namespace Route4MeSDKUnitTest
 
             contact1 = route4Me.UpdateAddressBookContact(contactClone, contact1, out errorString);
 
-            Assert.IsNotNull(contact1, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.ScheduleBlacklist, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.LocalTimeWindowStart, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.LocalTimeWindowEnd, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.AddressCube, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.AddressPieces, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.AddressRevenue, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.AddressWeight, "UpdateWholeAddressBookContactTest failed... " + errorString);
-            Assert.IsNull(contact1.AddressPriority, "UpdateWholeAddressBookContactTest failed... " + errorString);
+            Assert.IsNotNull(
+                contact1, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.ScheduleBlacklist, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.LocalTimeWindowStart, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.LocalTimeWindowEnd, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.AddressCube, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.AddressPieces, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.AddressRevenue, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.AddressWeight, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
+            Assert.IsNull(
+                contact1.AddressPriority, 
+                "UpdateWholeAddressBookContactTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8376,9 +8713,15 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(addressBookParameters, out uint total, out string errorString);
+            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(
+                                                        addressBookParameters, 
+                                                        out uint total, 
+                                                        out string errorString);
 
-            Assert.IsInstanceOfType(contacts, typeof(AddressBookContact[]), "SearchLocationsByTextTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                contacts, 
+                typeof(AddressBookContact[]), 
+                "SearchLocationsByTextTest failed. " + errorString);
 
             Assert.IsNotNull(total, "SearchLocationsByTextTest failed.");
         }
@@ -8388,8 +8731,8 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            Assert.IsNotNull(contact1, "contact1 is null...");
-            Assert.IsNotNull(contact2, "contact2 is null...");
+            Assert.IsNotNull(contact1, "contact1 is null.");
+            Assert.IsNotNull(contact2, "contact2 is null.");
 
             string addresses = contact1.AddressId + "," + contact2.AddressId;
 
@@ -8399,9 +8742,15 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(addressBookParameters, out uint total, out string errorString);
+            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(
+                                                        addressBookParameters, 
+                                                        out uint total, 
+                                                        out string errorString);
 
-            Assert.IsInstanceOfType(contacts, typeof(AddressBookContact[]), "SearchLocationsByIDsTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                contacts, 
+                typeof(AddressBookContact[]), 
+                "SearchLocationsByIDsTest failed.. " + errorString);
 
             Assert.IsNotNull(total, "SearchLocationsByIDsTest failed.");
         }
@@ -8422,16 +8771,30 @@ namespace Route4MeSDKUnitTest
             // Run the query
             if (addressBookParameters.Fields != null)
             {
-                var response = route4Me.SearchAddressBookLocation(addressBookParameters,
-                    out List<AddressBookContact> contactsFromObjects, out string errorString);
+                var response = route4Me.SearchAddressBookLocation(
+                                            addressBookParameters,
+                                            out List<AddressBookContact> contactsFromObjects, 
+                                            out string errorString);
 
-                Assert.IsInstanceOfType(response.Total, typeof(uint), "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
-                Assert.IsInstanceOfType(contactsFromObjects, typeof(List<AddressBookContact>), "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
+                Assert.IsInstanceOfType(
+                    response.Total, 
+                    typeof(uint), 
+                    "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
+                Assert.IsInstanceOfType(
+                    contactsFromObjects, 
+                    typeof(List<AddressBookContact>), 
+                    "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
             }
             else
             {
-                var response = route4Me.GetAddressBookContacts(addressBookParameters, out uint total, out string errorString);
-                Assert.IsInstanceOfType(response, typeof(AddressBookContact[]), "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
+                var response = route4Me.GetAddressBookContacts(
+                                            addressBookParameters, 
+                                            out uint total, 
+                                            out string errorString);
+                Assert.IsInstanceOfType(
+                    response, 
+                    typeof(AddressBookContact[]), 
+                    "GetSpecifiedFieldsSearchTextTest failed. " + errorString);
             }
         }
 
@@ -8447,9 +8810,15 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(addressBookParameters, out uint total, out string errorString);
+            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(
+                                                        addressBookParameters, 
+                                                        out uint total, 
+                                                        out string errorString);
 
-            Assert.IsInstanceOfType(contacts, typeof(AddressBookContact[]), "GetAddressBookContactsTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                contacts, 
+                typeof(AddressBookContact[]), 
+                "GetAddressBookContactsTest failed. " + errorString);
 
             Assert.IsNotNull(total, "GetAddressBookContactsTest failed.");
         }
@@ -8460,8 +8829,8 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
 
             bool removed = route4Me.RemoveAddressBookContacts(
-                new string[] { contactToRemove.AddressId.ToString() },
-                out string errorString);
+                                        new string[] { contactToRemove.AddressId.ToString() },
+                                        out string errorString);
 
             Assert.IsTrue(removed,
                 "Cannot remove the address book contact." + Environment.NewLine + errorString);
@@ -8480,9 +8849,15 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(addressBookParameters, out uint total, out string errorString);
+            AddressBookContact[] contacts = route4Me.GetAddressBookLocation(
+                                                        addressBookParameters, 
+                                                        out uint total, 
+                                                        out string errorString);
 
-            Assert.IsInstanceOfType(contacts, typeof(AddressBookContact[]), "SearchRoutedLocationsTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                contacts, 
+                typeof(AddressBookContact[]), 
+                "SearchRoutedLocationsTest failed. " + errorString);
 
             Assert.IsNotNull(total, "SearchRoutedLocationsTest failed.");
         }
@@ -8498,9 +8873,11 @@ namespace Route4MeSDKUnitTest
             {
                 foreach (int loc1 in lsRemoveContacts) lsRemLocations.Add(loc1.ToString());
 
-                bool removed = route4Me.RemoveAddressBookContacts(lsRemLocations.ToArray(), out string errorString);
+                bool removed = route4Me.RemoveAddressBookContacts(
+                                            lsRemLocations.ToArray(), 
+                                            out string errorString);
 
-                Assert.IsTrue(removed, "RemoveAddressBookContactsTest failed... " + errorString);
+                Assert.IsTrue(removed, "RemoveAddressBookContactsTest failed. " + errorString);
             }
         }
     }
@@ -8517,15 +8894,17 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void AddressBookGroupsInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class AddressbookGroupsGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class AddressbookGroupsGroup failed.");
 
             group1 = CreateAddreessBookGroup(out string errorString);
 
-            Assert.IsNotNull(group1, "AddressBookGroupsInitialize failed... " + errorString);
+            Assert.IsNotNull(group1, "AddressBookGroupsInitialize failed. " + errorString);
 
             group2 = CreateAddreessBookGroup(out errorString);
 
-            Assert.IsNotNull(group2, "AddressBookGroupsInitialize failed... " + errorString);
+            Assert.IsNotNull(group2, "AddressBookGroupsInitialize failed. " + errorString);
 
             lsGroups.Add(group2.GroupId);
         }
@@ -8533,7 +8912,7 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void GetAddressBookGroupsTest()
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
             var addressBookGroupParameters = new AddressBookGroupParameters()
             {
@@ -8542,55 +8921,70 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookGroup[] groups = route4Me.GetAddressBookGroups(addressBookGroupParameters, out string errorString);
+            AddressBookGroup[] groups = route4Me.GetAddressBookGroups(
+                                                    addressBookGroupParameters, 
+                                                    out string errorString);
 
-            Assert.IsInstanceOfType(groups, typeof(AddressBookGroup[]), "GetAddressBookGroupsTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                groups, 
+                typeof(AddressBookGroup[]), 
+                "GetAddressBookGroupsTest failed. " + errorString);
         }
 
         [TestMethod]
         public void GetAddressBookGroupTest()
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AddressBookGroupParameters addressBookGroupParameters = new AddressBookGroupParameters()
+            var addressBookGroupParameters = new AddressBookGroupParameters()
             {
                 GroupId = group2.GroupId
             };
 
             // Run the query
-            AddressBookGroup addressBookGroup = route4Me.GetAddressBookGroup(addressBookGroupParameters, out string errorString);
+            AddressBookGroup addressBookGroup = route4Me.GetAddressBookGroup(
+                                                            addressBookGroupParameters, 
+                                                            out string errorString);
 
-            Assert.IsInstanceOfType(addressBookGroup, typeof(AddressBookGroup), "GetAddressBookGroupTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                addressBookGroup, 
+                typeof(AddressBookGroup), 
+                "GetAddressBookGroupTest failed. " + errorString);
         }
 
         [TestMethod]
         public void GetAddressBookContactsByGroupTest()
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AddressBookGroupParameters addressBookGroupParameters = new AddressBookGroupParameters()
+            var addressBookGroupParameters = new AddressBookGroupParameters()
             {
                 groupID = group2.GroupId
             };
 
             // Run the query
-            AddressBookContactsResponse addressBookGroup = route4Me.GetAddressBookContactsByGroup(addressBookGroupParameters, out string errorString);
+            AddressBookContactsResponse addressBookGroup = route4Me.GetAddressBookContactsByGroup(
+                                                                        addressBookGroupParameters, 
+                                                                        out string errorString);
 
-            Assert.IsInstanceOfType(addressBookGroup, typeof(AddressBookContactsResponse), "GetAddressBookContactsByGroupTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                addressBookGroup, 
+                typeof(AddressBookContactsResponse), 
+                "GetAddressBookContactsByGroupTest failed. " + errorString);
         }
 
         [TestMethod]
         public void SearchAddressBookContactsByFilterTest()
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AddressBookGroupFilterParameter filterParam = new AddressBookGroupFilterParameter()
+            var filterParam = new AddressBookGroupFilterParameter()
             {
                 Query = "Louisville",
                 Display = "all"
             };
 
-            AddressBookGroupParameters addressBookGroupParameters = new AddressBookGroupParameters()
+            var addressBookGroupParameters = new AddressBookGroupParameters()
             {
                 Fields = new string[] { "address_id", "address_1", "address_group" },
                 offset = 0,
@@ -8599,17 +8993,22 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContactsResponse results = route4Me.SearchAddressBookContactsByFilter(addressBookGroupParameters, out string errorString);
+            AddressBookContactsResponse results = route4Me.SearchAddressBookContactsByFilter(
+                                                                addressBookGroupParameters, 
+                                                                out string errorString);
 
-            Assert.IsInstanceOfType(results, typeof(AddressBookContactsResponse), "GetAddressBookContactsByGroupTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                results, 
+                typeof(AddressBookContactsResponse), 
+                "GetAddressBookContactsByGroupTest failed. " + errorString);
         }
 
         [TestMethod]
         public void UpdateAddressBookGroupTest()
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AddressBookGroupRule addressBookGroupRule = new AddressBookGroupRule()
+            var addressBookGroupRule = new AddressBookGroupRule()
             {
                 ID = "address_1",
                 Field = "address_1",
@@ -8617,13 +9016,13 @@ namespace Route4MeSDKUnitTest
                 Value = "qwerty1234567"
             };
 
-            AddressBookGroupFilter addressBookGroupFilter = new AddressBookGroupFilter()
+            var addressBookGroupFilter = new AddressBookGroupFilter()
             {
                 Condition = "AND",
                 Rules = new AddressBookGroupRule[] { addressBookGroupRule }
             };
 
-            AddressBookGroup addressBookGroupParameters = new AddressBookGroup()
+            var addressBookGroupParameters = new AddressBookGroup()
             {
                 GroupId = group2.GroupId,
                 GroupColor = "cd74e6",
@@ -8631,9 +9030,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookGroup addressBookGroup = route4Me.UpdateAddressBookGroup(addressBookGroupParameters, out string errorString);
+            AddressBookGroup addressBookGroup = route4Me.UpdateAddressBookGroup(
+                                                            addressBookGroupParameters, 
+                                                            out string errorString);
 
-            Assert.IsNotNull(addressBookGroup, "UpdateAddressBookGroupTest failed... " + errorString);
+            Assert.IsNotNull(
+                addressBookGroup, 
+                "UpdateAddressBookGroupTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8641,16 +9044,16 @@ namespace Route4MeSDKUnitTest
         {
             AddressBookGroup addressBookGroup = CreateAddreessBookGroup(out string errorString);
 
-            Assert.IsNotNull(addressBookGroup, "AddAddreessBookGroupTest failed... " + errorString);
+            Assert.IsNotNull(addressBookGroup, "AddAddreessBookGroupTest failed. " + errorString);
 
             lsGroups.Add(addressBookGroup.GroupId);
         }
 
         private static AddressBookGroup CreateAddreessBookGroup(out string errorString)
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AddressBookGroupRule addressBookGroupRule = new AddressBookGroupRule()
+            var addressBookGroupRule = new AddressBookGroupRule()
             {
                 ID = "address_1",
                 Field = "address_1",
@@ -8658,13 +9061,13 @@ namespace Route4MeSDKUnitTest
                 Value = "qwerty123456"
             };
 
-            AddressBookGroupFilter addressBookGroupFilter = new AddressBookGroupFilter()
+            var addressBookGroupFilter = new AddressBookGroupFilter()
             {
                 Condition = "AND",
                 Rules = new AddressBookGroupRule[] { addressBookGroupRule }
             };
 
-            AddressBookGroup addressBookGroupParameters = new AddressBookGroup()
+            var addressBookGroupParameters = new AddressBookGroup()
             {
                 GroupName = "All Group",
                 GroupColor = "92e1c0",
@@ -8672,21 +9075,25 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookGroup addressBookGroup = route4Me.AddAddressBookGroup(addressBookGroupParameters, out errorString);
+            AddressBookGroup addressBookGroup = route4Me.AddAddressBookGroup(
+                                                            addressBookGroupParameters, 
+                                                            out errorString);
 
             return addressBookGroup;
         }
 
         private static StatusResponse DeleteAddreessBookGroup(string remeoveGroupID, out string errorString)
         {
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AddressBookGroupParameters addressGroupParams = new AddressBookGroupParameters()
+            var addressGroupParams = new AddressBookGroupParameters()
             {
                 groupID = remeoveGroupID
             };
 
-            StatusResponse status = route4Me.RemoveAddressBookGroup(addressGroupParams, out errorString);
+            StatusResponse status = route4Me.RemoveAddressBookGroup(
+                                                addressGroupParams, 
+                                                out errorString);
             return status;
         }
 
@@ -8695,7 +9102,7 @@ namespace Route4MeSDKUnitTest
         {
             StatusResponse response = DeleteAddreessBookGroup(group1.GroupId, out string errorString);
 
-            Assert.IsTrue(response.Status, "RemoveAddressBookGroupTest failed... " + errorString);
+            Assert.IsTrue(response.Status, "RemoveAddressBookGroupTest failed. " + errorString);
         }
 
         [ClassCleanup()]
@@ -8705,7 +9112,9 @@ namespace Route4MeSDKUnitTest
             {
                 StatusResponse resposne = DeleteAddreessBookGroup(curGroupID, out string errorString);
 
-                Assert.IsTrue(resposne.Status, "Removing of the address book group with group ID = "+curGroupID +" failed.");
+                Assert.IsTrue(
+                    resposne.Status, 
+                    "Removing of the address book group with group ID = "+curGroupID +" failed.");
             }
         }
     }
@@ -8720,11 +9129,13 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void AvoidanseZonesGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class AvoidanseZonesGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class AvoidanseZonesGroup failed.");
 
-            Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+            var route4Me = new Route4MeManager(c_ApiKey);
 
-            AvoidanceZoneParameters circleAvoidanceZoneParameters = new AvoidanceZoneParameters()
+            var circleAvoidanceZoneParameters = new AvoidanceZoneParameters()
             {
                 TerritoryName = "Test Circle Territory",
                 TerritoryColor = "ff0000",
@@ -8736,13 +9147,17 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            AvoidanceZone circleAvoidanceZone = route4Me.AddAvoidanceZone(circleAvoidanceZoneParameters, out string errorString);
+            AvoidanceZone circleAvoidanceZone = route4Me.AddAvoidanceZone(
+                                                            circleAvoidanceZoneParameters, 
+                                                            out string errorString);
 
             if (circleAvoidanceZone != null) lsAvoidanceZones.Add(circleAvoidanceZone.TerritoryId);
 
-            Assert.IsNotNull(circleAvoidanceZone, "Add Circle Avoidance Zone test failed... " + errorString);
+            Assert.IsNotNull(
+                circleAvoidanceZone, 
+                "Add Circle Avoidance Zone test failed. " + errorString);
 
-            AvoidanceZoneParameters polyAvoidanceZoneParameters = new AvoidanceZoneParameters()
+            var polyAvoidanceZoneParameters = new AvoidanceZoneParameters()
             {
                 TerritoryName = "Test Poly Territory",
                 TerritoryColor = "ff0000",
@@ -8763,13 +9178,17 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            AvoidanceZone polyAvoidanceZone = route4Me.AddAvoidanceZone(polyAvoidanceZoneParameters, out errorString);
+            AvoidanceZone polyAvoidanceZone = route4Me.AddAvoidanceZone(
+                                                            polyAvoidanceZoneParameters, 
+                                                            out errorString);
 
-            Assert.IsNotNull(polyAvoidanceZone, "Add Polygon Avoidance Zone test failed... " + errorString);
+            Assert.IsNotNull(
+                polyAvoidanceZone, 
+                "Add Polygon Avoidance Zone test failed. " + errorString);
 
             if (polyAvoidanceZone != null) lsAvoidanceZones.Add(polyAvoidanceZone.TerritoryId);
 
-            AvoidanceZoneParameters rectAvoidanceZoneParameters = new AvoidanceZoneParameters
+            var rectAvoidanceZoneParameters = new AvoidanceZoneParameters
             {
                 TerritoryName = "Test Rect Territory",
                 TerritoryColor = "ff0000",
@@ -8783,9 +9202,13 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            AvoidanceZone rectAvoidanceZone = route4Me.AddAvoidanceZone(rectAvoidanceZoneParameters, out errorString);
+            AvoidanceZone rectAvoidanceZone = route4Me.AddAvoidanceZone(
+                                                        rectAvoidanceZoneParameters, 
+                                                        out errorString);
 
-            Assert.IsNotNull(rectAvoidanceZone, "Add Rectangular Avoidance Zone test failed... " + errorString);
+            Assert.IsNotNull(
+                rectAvoidanceZone, 
+                "Add Rectangular Avoidance Zone test failed. " + errorString);
 
             if (lsAvoidanceZones != null) lsAvoidanceZones.Add(rectAvoidanceZone.TerritoryId);
         }
@@ -8807,11 +9230,15 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            var circleAvoidanceZone = route4Me.AddAvoidanceZone(circleAvoidanceZoneParameters, out string errorString);
+            var circleAvoidanceZone = route4Me.AddAvoidanceZone(
+                                                circleAvoidanceZoneParameters, 
+                                                out string errorString);
 
             if (circleAvoidanceZone != null) lsAvoidanceZones.Add(circleAvoidanceZone.TerritoryId);
 
-            Assert.IsNotNull(circleAvoidanceZone, "Add Circle Avoidance Zone test failed... " + errorString);
+            Assert.IsNotNull(
+                circleAvoidanceZone, 
+                "Add Circle Avoidance Zone test failed. " + errorString);
         }
 
         [TestMethod]
@@ -8819,14 +9246,17 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var avoidanceZoneQuery = new AvoidanceZoneQuery()
-            {
-            };
+            var avoidanceZoneQuery = new AvoidanceZoneQuery();
 
             // Run the query
-            AvoidanceZone[] avoidanceZones = route4Me.GetAvoidanceZones(avoidanceZoneQuery, out string errorString);
+            AvoidanceZone[] avoidanceZones = route4Me.GetAvoidanceZones(
+                                                        avoidanceZoneQuery, 
+                                                        out string errorString);
 
-            Assert.IsInstanceOfType(avoidanceZones, typeof(AvoidanceZone[]), "GetAvoidanceZonesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                avoidanceZones, 
+                typeof(AvoidanceZone[]), 
+                "GetAvoidanceZonesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8834,9 +9264,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string territoryId = "";
-
-            if (lsAvoidanceZones.Count > 1) territoryId = lsAvoidanceZones[1];
+            string territoryId = lsAvoidanceZones.Count > 1 ? lsAvoidanceZones[1] : "";
 
             var avoidanceZoneQuery = new AvoidanceZoneQuery()
             {
@@ -8844,9 +9272,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var avoidanceZone = route4Me.GetAvoidanceZone(avoidanceZoneQuery, out string errorString);
+            var avoidanceZone = route4Me.GetAvoidanceZone(
+                                            avoidanceZoneQuery, 
+                                            out string errorString);
 
-            Assert.IsNotNull(avoidanceZone, "GetAvoidanceZonesTest failed... " + errorString);
+            Assert.IsNotNull(
+                avoidanceZone, 
+                "GetAvoidanceZonesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8854,9 +9286,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string territoryId = "";
-
-            if (lsAvoidanceZones.Count > 1) territoryId = lsAvoidanceZones[1];
+            string territoryId = lsAvoidanceZones.Count > 1 ? lsAvoidanceZones[1] : "";
 
             var avoidanceZoneParameters = new AvoidanceZoneParameters()
             {
@@ -8872,9 +9302,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var avoidanceZone = route4Me.UpdateAvoidanceZone(avoidanceZoneParameters, out string errorString);
+            var avoidanceZone = route4Me.UpdateAvoidanceZone(
+                                            avoidanceZoneParameters, 
+                                            out string errorString);
 
-            Assert.IsNotNull(avoidanceZone, "UpdateAvoidanceZoneTest failed... " + errorString);
+            Assert.IsNotNull(
+                avoidanceZone, 
+                "UpdateAvoidanceZoneTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -8882,9 +9316,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string territoryId = "";
-
-            if (lsAvoidanceZones.Count > 0) territoryId = lsAvoidanceZones[0];
+            string territoryId = lsAvoidanceZones.Count > 0 ? lsAvoidanceZones[0] : "";
 
             var avoidanceZoneQuery = new AvoidanceZoneQuery()
             {
@@ -8892,9 +9324,11 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            bool result = route4Me.DeleteAvoidanceZone(avoidanceZoneQuery, out string errorString);
+            bool result = route4Me.DeleteAvoidanceZone(
+                                    avoidanceZoneQuery, 
+                                    out string errorString);
 
-            Assert.IsTrue(result, "RemoveAvoidanceZoneTest failed... " + errorString);
+            Assert.IsTrue(result, "RemoveAvoidanceZoneTest failed. " + errorString);
 
             if (result) lsAvoidanceZones.RemoveAt(0);
         }
@@ -8904,9 +9338,9 @@ namespace Route4MeSDKUnitTest
         {
             foreach (string territoryId in lsAvoidanceZones)
             {
-                Route4MeManager route4Me = new Route4MeManager(c_ApiKey);
+                var route4Me = new Route4MeManager(c_ApiKey);
 
-                AvoidanceZoneQuery avoidanceZoneQuery = new AvoidanceZoneQuery()
+                var avoidanceZoneQuery = new AvoidanceZoneQuery()
                 {
                     TerritoryId = territoryId
                 };
@@ -8914,7 +9348,7 @@ namespace Route4MeSDKUnitTest
                 // Run the query
                 bool result = route4Me.DeleteAvoidanceZone(avoidanceZoneQuery, out string errorString);
 
-                Assert.IsTrue(result, "RemoveAvoidanceZoneTest failed... " + errorString);
+                Assert.IsTrue(result, "RemoveAvoidanceZoneTest failed. " + errorString);
             }
         }
     }
@@ -8929,7 +9363,9 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void TerritoriesGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class TerritoriesGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class TerritoriesGroup failed.");
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -8945,11 +9381,13 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            var circleTerritory = route4Me.CreateTerritory(circleTerritoryParameters, out string errorString);
+            var circleTerritory = route4Me.CreateTerritory(
+                                            circleTerritoryParameters, 
+                                            out string errorString);
 
             if (circleTerritory != null) lsTerritories.Add(circleTerritory.TerritoryId);
 
-            Assert.IsNotNull(circleTerritory, "Add Circle Territory test failed... " + errorString);
+            Assert.IsNotNull(circleTerritory, "Add Circle Territory test failed. " + errorString);
 
             var polyTerritoryParameters = new AvoidanceZoneParameters()
             {
@@ -8974,7 +9412,7 @@ namespace Route4MeSDKUnitTest
 
             var polyTerritory = route4Me.CreateTerritory(polyTerritoryParameters, out errorString);
 
-            Assert.IsNotNull(polyTerritory, "Add Polygon Territory test failed... " + errorString);
+            Assert.IsNotNull(polyTerritory, "Add Polygon Territory test failed. " + errorString);
 
             if (polyTerritory != null) lsTerritories.Add(polyTerritory.TerritoryId);
 
@@ -8992,9 +9430,13 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            var rectTerritory = route4Me.CreateTerritory(rectTerritoryParameters, out errorString);
+            var rectTerritory = route4Me.CreateTerritory(
+                                            rectTerritoryParameters, 
+                                            out errorString);
 
-            Assert.IsNotNull(rectTerritory, "Add Rectangular Avoidance Zone test failed... " + errorString);
+            Assert.IsNotNull(
+                rectTerritory, 
+                "Add Rectangular Avoidance Zone test failed. " + errorString);
 
             if (lsTerritories != null) lsTerritories.Add(rectTerritory.TerritoryId);
         }
@@ -9016,11 +9458,13 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            var circleTerritory = route4Me.CreateTerritory(circleTerritoryParameters, out string errorString);
+            var circleTerritory = route4Me.CreateTerritory(
+                                            circleTerritoryParameters, 
+                                            out string errorString);
 
             if (circleTerritory != null) lsTerritories.Add(circleTerritory.TerritoryId);
 
-            Assert.IsNotNull(circleTerritory, "Add Circle Territory test failed... " + errorString);
+            Assert.IsNotNull(circleTerritory, "Add Circle Territory test failed. " + errorString);
         }
 
         [TestMethod]
@@ -9028,14 +9472,17 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var territoryQuery = new AvoidanceZoneQuery()
-            {
-            };
+            var territoryQuery = new AvoidanceZoneQuery();
 
             // Run the query
-            AvoidanceZone[] territories = route4Me.GetTerritories(territoryQuery, out string errorString);
+            AvoidanceZone[] territories = route4Me.GetTerritories(
+                                                    territoryQuery, 
+                                                    out string errorString);
 
-            Assert.IsInstanceOfType(territories, typeof(AvoidanceZone[]), "GetTerritoriesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                territories, 
+                typeof(AvoidanceZone[]), 
+                "GetTerritoriesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9043,11 +9490,9 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string territoryId = "";
+            string territoryId = lsTerritories.Count > 1 ? lsTerritories[1] : "";
 
-            if (lsTerritories.Count > 1) territoryId = lsTerritories[1];
-
-            TerritoryQuery territoryQuery = new TerritoryQuery()
+            var territoryQuery = new TerritoryQuery()
             {
                 TerritoryId = territoryId,
                 Addresses = 1,
@@ -9057,7 +9502,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var territory = route4Me.GetTerritory(territoryQuery, out string errorString);
 
-            Assert.IsNotNull(territory, "GetTerritoryTest failed... " + errorString);
+            Assert.IsNotNull(territory, "GetTerritoryTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9065,9 +9510,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string territoryId = "";
-
-            if (lsTerritories.Count > 1) territoryId = lsTerritories[1];
+            string territoryId = lsTerritories.Count > 1 ? lsTerritories[1] : "";
 
             var territoryParameters = new AvoidanceZoneParameters()
             {
@@ -9085,7 +9528,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var territory = route4Me.UpdateTerritory(territoryParameters, out string errorString);
 
-            Assert.IsNotNull(territory, "UpdateTerritoryTest failed... " + errorString);
+            Assert.IsNotNull(territory, "UpdateTerritoryTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9093,9 +9536,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            string territoryId = "";
-
-            if (lsTerritories.Count > 0) territoryId = lsTerritories[0];
+            string territoryId = lsTerritories.Count > 0 ? lsTerritories[0] : "";
 
             var territoryQuery = new AvoidanceZoneQuery()
             {
@@ -9105,7 +9546,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             bool result = route4Me.RemoveTerritory(territoryQuery, out string errorString);
 
-            Assert.IsTrue(result, "RemoveTerritoriesTest failed... " + errorString);
+            Assert.IsTrue(result, "RemoveTerritoriesTest failed. " + errorString);
 
             if (result) lsTerritories.RemoveAt(0);
         }
@@ -9125,7 +9566,7 @@ namespace Route4MeSDKUnitTest
                 // Run the query
                 bool result = route4Me.RemoveTerritory(territoryQuery, out string errorString);
 
-                Assert.IsTrue(result, "RemoveTerritoriesTest failed... " + errorString);
+                Assert.IsTrue(result, "RemoveTerritoriesTest failed. " + errorString);
             }
         }
     }
@@ -9156,9 +9597,9 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Single Driver Round Trip generation failed...");
+            Assert.IsTrue(result, "Single Driver Round Trip generation failed.");
 
-            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
 
@@ -9186,7 +9627,7 @@ namespace Route4MeSDKUnitTest
                 // Run the query
                 var resultOrder = route4Me.AddOrder(order, out string errorString);
 
-                Assert.IsNotNull(resultOrder, "CreateOrderTest failed... " + errorString);
+                Assert.IsNotNull(resultOrder, "CreateOrderTest failed. " + errorString);
 
                 lsOrderIds.Add(resultOrder.OrderId.ToString());
             }
@@ -9305,7 +9746,10 @@ namespace Route4MeSDKUnitTest
 
             Order[] orders = route4Me.FilterOrders(oParams, out string errorString);
 
-            Assert.IsInstanceOfType(orders, typeof(Order[]), "GetOrdersByScheduleFilter failed... " + errorString);
+            Assert.IsInstanceOfType(
+                orders, 
+                typeof(Order[]), 
+                "GetOrdersByScheduleFilter failed. " + errorString);
         }
 
         [TestMethod]
@@ -9381,14 +9825,18 @@ namespace Route4MeSDKUnitTest
 
             Order order = route4Me.GetOrderByID(orderParameters, out string errorString);
 
-            Assert.IsTrue(order != null, "There is no order for updating. " + errorString);
+            Assert.IsTrue(
+                order != null, 
+                "There is no order for updating. " + errorString);
 
             order.ExtFieldLastName = "Updated " + (new Random()).Next().ToString();
 
             // Run the query
             var updatedOrder = route4Me.UpdateOrder(order, out errorString);
 
-            Assert.IsNotNull(updatedOrder, "UpdateOrderTest failed. " + errorString);
+            Assert.IsNotNull(
+                updatedOrder, 
+                "UpdateOrderTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9411,8 +9859,11 @@ namespace Route4MeSDKUnitTest
                 ExtFieldLastName = "Carol",
                 ExtFieldEmail = "lcarol654@yahoo.com",
                 ExtFieldPhone = "897946541",
-                ExtFieldCustomData = new Dictionary<string, string>() { { "order_type", "scheduled order" } },
-                DayScheduledFor_YYMMDD = "2017-12-20",
+                ExtFieldCustomData = new Dictionary<string, string>() 
+                                    { 
+                                        { "order_type", "scheduled order" } 
+                                    },
+                DayScheduledFor_YYMMDD = "2020-12-20",
                 LocalTimeWindowEnd = 39000,
                 LocalTimeWindowEnd2 = 46200,
                 LocalTimeWindowStart = 37800,
@@ -9423,7 +9874,7 @@ namespace Route4MeSDKUnitTest
 
             var newOrder = route4Me.AddOrder(orderParams, out string errorString);
 
-            Assert.IsNotNull(newOrder, "AddScheduledOrdersTest failed... " + errorString);
+            Assert.IsNotNull(newOrder, "AddScheduledOrdersTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9565,7 +10016,7 @@ namespace Route4MeSDKUnitTest
 
             var result = route4Me.AddOrder(orderParams, out string errorString);
 
-            Assert.IsNotNull(result, "AddOrdersToRouteTest failed... " + errorString);
+            Assert.IsNotNull(result, "AddOrdersToRouteTest failed. " + errorString);
 
             lsOrderIds.Add(result.OrderId.ToString());
 
@@ -9609,6 +10060,7 @@ namespace Route4MeSDKUnitTest
             };
 
             #region Addresses
+
             Address[] addresses = new Address[] {
                 new Address {
                     AddressString = "273 Canal St, New York, NY 10013, USA",
@@ -9676,7 +10128,9 @@ namespace Route4MeSDKUnitTest
                 rParams,
                 out string errorString);
 
-            Assert.IsNotNull(result, "AddOrdersToRouteTest failed. " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "AddOrdersToRouteTest failed. " + errorString);
         }
 
         [ClassCleanup]
@@ -9692,11 +10146,11 @@ namespace Route4MeSDKUnitTest
             lsOrders.Clear();
             lsOrderIds.Clear();
 
-            Assert.IsTrue(removed, "RemoveOrdersTest failed... " + errorString);
+            Assert.IsTrue(removed, "RemoveOrdersTest failed. " + errorString);
 
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+            Assert.IsTrue(result, "Removing of the testing optimization problem failed.");
 
             lsOptimizationIDs.Clear();
         }
@@ -9723,10 +10177,13 @@ namespace Route4MeSDKUnitTest
 
             int customFieldId;
 
-            if (orderCustomUserFields.Where(x => x.OrderCustomFieldName == "CustomField33").Count() > 0)
+            if (orderCustomUserFields
+                .Where(x => x.OrderCustomFieldName == "CustomField33")
+                .Count() > 0)
             {
-                customFieldId = orderCustomUserFields.Where(x => x.OrderCustomFieldName == "CustomField33")
-                    .FirstOrDefault().OrderCustomFieldId;
+                customFieldId = orderCustomUserFields
+                                .Where(x => x.OrderCustomFieldName == "CustomField33")
+                                .FirstOrDefault().OrderCustomFieldId;
             }
             else
             {
@@ -9736,20 +10193,29 @@ namespace Route4MeSDKUnitTest
                     OrderCustomFieldLabel = "Custom Field 33",
                     OrderCustomFieldType = "checkbox",
                     OrderCustomFieldTypeInfo = new Dictionary<string, object>()
-                {
-                    {"short_label", "cFl33" },
-                    {"description", "This is test order custom field" },
-                    {"custom field no", 10 }
-                }
+                    {
+                        {"short_label", "cFl33" },
+                        {"description", "This is test order custom field" },
+                        {"custom field no", 10 }
+                    }
                 };
 
-                var createdCustomField = route4Me.CreateOrderCustomUserField(orderCustomFieldParams, out errorString);
-                Assert.IsInstanceOfType(createdCustomField, typeof(OrderCustomFieldCreateResponse), "Cannot initialize the class OrderCustomUserFieldsGroup. " + errorString);
+                var createdCustomField = route4Me.CreateOrderCustomUserField(
+                                                    orderCustomFieldParams, 
+                                                    out errorString);
+                
+                Assert.IsInstanceOfType(
+                    createdCustomField, 
+                    typeof(OrderCustomFieldCreateResponse), 
+                    "Cannot initialize the class OrderCustomUserFieldsGroup. " + errorString);
+                
                 customFieldId = createdCustomField.Data.OrderCustomFieldId;
             }
 
             lsOrderCustomUserFieldIDs = new List<int>() { customFieldId };
         }
+
+        
 
         [TestMethod]
         public void GetOrderCustomUserFieldsTest()
@@ -9760,7 +10226,10 @@ namespace Route4MeSDKUnitTest
 
             var orderCustomUserFields = route4Me.GetOrderCustomUserFields(out string errorString);
 
-            Assert.IsInstanceOfType(orderCustomUserFields, typeof(OrderCustomField[]), "GetOrderCustomUserFieldsTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                orderCustomUserFields, 
+                typeof(OrderCustomField[]), 
+                "GetOrderCustomUserFieldsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9772,20 +10241,25 @@ namespace Route4MeSDKUnitTest
 
             var orderCustomFieldParams = new OrderCustomFieldParameters()
             {
-                OrderCustomFieldName = "CustomField44",
-                OrderCustomFieldLabel = "Custom Field 44",
+                OrderCustomFieldName = "CustomField77",
+                OrderCustomFieldLabel = "Custom Field 77",
                 OrderCustomFieldType = "checkbox",
                 OrderCustomFieldTypeInfo = new Dictionary<string, object>()
                 {
-                    {"short_label", "cFl44" },
+                    {"short_label", "cFl77" },
                     {"description", "This is test order custom field" },
                     {"custom field no", 11 }
                 }
             };
 
-            var orderCustomUserField = route4Me.CreateOrderCustomUserField(orderCustomFieldParams, out string errorString);
+            var orderCustomUserField = route4Me.CreateOrderCustomUserField(
+                                                    orderCustomFieldParams, 
+                                                    out string errorString);
 
-            Assert.IsInstanceOfType(orderCustomUserField, typeof(OrderCustomFieldCreateResponse), "CreateOrderCustomUserFieldTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                orderCustomUserField, 
+                typeof(OrderCustomFieldCreateResponse), 
+                "CreateOrderCustomUserFieldTest failed. " + errorString);
 
             lsOrderCustomUserFieldIDs.Add(orderCustomUserField.Data.OrderCustomFieldId);
         }
@@ -9810,11 +10284,19 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            var orderCustomUserField = route4Me.UpdateOrderCustomUserField(orderCustomFieldParams, out string errorString);
+            var orderCustomUserField = route4Me.UpdateOrderCustomUserField(
+                                                            orderCustomFieldParams,
+                                                            out string errorString);
 
-            Assert.IsInstanceOfType(orderCustomUserField, typeof(OrderCustomFieldCreateResponse), "UpdateOrderCustomUserFieldTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                orderCustomUserField,
+                typeof(OrderCustomFieldCreateResponse),
+                "UpdateOrderCustomUserFieldTest failed. " + errorString);
 
-            Assert.AreEqual("Custom Field 55", orderCustomUserField.Data.OrderCustomFieldLabel, "UpdateOrderCustomUserFieldTest failed. " + errorString);
+            Assert.AreEqual(
+                "Custom Field 55",
+                orderCustomUserField.Data.OrderCustomFieldLabel,
+                "UpdateOrderCustomUserFieldTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9831,9 +10313,13 @@ namespace Route4MeSDKUnitTest
                 OrderCustomFieldId = orderCustomFieldId
             };
 
-            var response = route4Me.RemoveOrderCustomUserField(orderCustomFieldParams, out string errorString);
+            var response = route4Me.RemoveOrderCustomUserField(
+                                        orderCustomFieldParams, 
+                                        out string errorString);
 
-            Assert.IsTrue(response.Affected == 1, "RemoveOrderCustomUserFieldTest failed. " + errorString);
+            Assert.IsTrue(
+                response.Affected == 1, 
+                "RemoveOrderCustomUserFieldTest failed. " + errorString);
 
             lsOrderCustomUserFieldIDs.Remove(orderCustomFieldId);
         }
@@ -9852,10 +10338,13 @@ namespace Route4MeSDKUnitTest
                     OrderCustomFieldId = customFieldId
                 };
 
-                var removeResult = route4Me.RemoveOrderCustomUserField(customFieldParam, out string errorString);
+                var removeResult = route4Me.RemoveOrderCustomUserField(
+                                                    customFieldParam, 
+                                                    out string errorString);
 
-                Assert.IsTrue(removeResult.Affected == 1, "Cannot remove order customuser field with id=" + customFieldId + ". " + errorString);
-
+                Assert.IsTrue(
+                    removeResult.Affected == 1, 
+                    "Cannot remove order customuser field with id=" + customFieldId + ". " + errorString);
             }
 
             lsOrderCustomUserFieldIDs.Clear();
@@ -9881,9 +10370,11 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunOptimizationSingleDriverRoute10Stops();
 
-            Assert.IsTrue(result, "Single Driver 10 Stops generation failed...");
+            Assert.IsTrue(result, "Single Driver 10 Stops generation failed.");
 
-            Assert.IsTrue(tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(
+                tdr.SD10Stops_route.Addresses.Length > 0, 
+                "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SD10Stops_optimization_problem_id);
         }
@@ -9894,7 +10385,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             string message = "Test User Activity " + DateTime.Now.ToString();
 
@@ -9908,7 +10399,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             bool added = route4Me.LogCustomActivity(activity, out string errorString);
 
-            Assert.IsTrue(added, "LogCustomActivityTest failed... " + errorString);
+            Assert.IsTrue(added, "LogCustomActivityTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9917,7 +10408,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeId = tdr.SD10Stops_route_id;
-            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null...");
+            Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var activityParameters = new ActivityParameters()
             {
@@ -9928,9 +10419,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "GetActivitiesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "GetActivitiesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9945,9 +10441,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "GetActivitiesTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "GetActivitiesTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9957,26 +10458,36 @@ namespace Route4MeSDKUnitTest
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var parameters = new GenericParameters()
-            {
-            };
+            var parameters = new GenericParameters();
 
             var response = route4Me.GetUsers(parameters, out string userErrorString);
 
-            Assert.IsInstanceOfType(response.Results, typeof(MemberResponseV4[]), "GetActivitiesByMemberTest failed - cannot get users. "+ userErrorString);
-            Assert.IsTrue(response.Results.Length > 1, "Cannot retrieve more than 1 users");
+            Assert.IsInstanceOfType(
+                response.Results, 
+                typeof(MemberResponseV4[]), 
+                "GetActivitiesByMemberTest failed - cannot get users. "+ userErrorString);
+            Assert.IsTrue(
+                response.Results.Length > 1, 
+                "Cannot retrieve more than 1 users");
 
             var activityParameters = new ActivityParameters()
             {
-                MemberId = response.Results[1].MemberId != null ? Convert.ToInt32(response.Results[1].MemberId) : -1,
+                MemberId = response.Results[1].MemberId != null 
+                            ? Convert.ToInt32(response.Results[1].MemberId) 
+                            : -1,
                 Offset = 0,
                 Limit = 10
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActiviies(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActiviies(
+                                            activityParameters, 
+                                            out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "GetActivitiesByMemberTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "GetActivitiesByMemberTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -9986,9 +10497,14 @@ namespace Route4MeSDKUnitTest
 
             var activitiesAfterTime = DateTime.Now - (new TimeSpan(7, 0, 0, 0));
 
-            activitiesAfterTime = new DateTime(activitiesAfterTime.Year, activitiesAfterTime.Month, activitiesAfterTime.Day, 0, 0, 0);
+            activitiesAfterTime = new DateTime(
+                                        activitiesAfterTime.Year, 
+                                        activitiesAfterTime.Month, 
+                                        activitiesAfterTime.Day, 
+                                        0, 0, 0);
 
-            uint uiActivitiesAfterTime = (uint)Route4MeSDK.R4MeUtils.ConvertToUnixTimestamp(activitiesAfterTime);
+            uint uiActivitiesAfterTime = (uint)Route4MeSDK.R4MeUtils
+                                            .ConvertToUnixTimestamp(activitiesAfterTime);
 
             var activityParameters = new ActivityParameters()
             {
@@ -9998,12 +10514,18 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                            activityParameters, 
+                                            out string errorString);
 
             foreach (Activity activity in activities)
             {
-                uint activityTime = activity.ActivityTimestamp!=null ? (uint)activity.ActivityTimestamp : 0;
-                Assert.IsTrue(activityTime >= uiActivitiesAfterTime, "GetLastActivities failed. "+ errorString);
+                uint activityTime = activity.ActivityTimestamp!=null 
+                                    ? (uint)activity.ActivityTimestamp 
+                                    : 0;
+                Assert.IsTrue(
+                    activityTime >= uiActivitiesAfterTime, 
+                    "GetLastActivities failed. "+ errorString);
             }
         }
 
@@ -10015,9 +10537,14 @@ namespace Route4MeSDKUnitTest
             var activityParameters = new ActivityParameters { ActivityType = "area-updated" };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchAreaUpdatedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchAreaUpdatedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10028,9 +10555,14 @@ namespace Route4MeSDKUnitTest
             var activityParameters = new ActivityParameters { ActivityType = "area-added" };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchAreaAddedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchAreaAddedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10041,9 +10573,14 @@ namespace Route4MeSDKUnitTest
             var activityParameters = new ActivityParameters { ActivityType = "area-removed" };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchAreaRemovedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchAreaRemovedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10058,9 +10595,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDestinationDeletedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDestinationDeletedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10075,9 +10617,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDestinationInsertedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDestinationInsertedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10092,9 +10639,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                activityParameters, 
+                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDestinationMarkedAsDepartedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDestinationMarkedAsDepartedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10102,12 +10654,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "destination-out-sequence" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "destination-out-sequence" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDestinationOutSequenceTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDestinationOutSequenceTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10115,12 +10675,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "update-destinations" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "update-destinations" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDestinationUpdatedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDestinationUpdatedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10128,12 +10696,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "driver-arrived-early" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "driver-arrived-early" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDriverArrivedEarlyTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDriverArrivedEarlyTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10141,12 +10717,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "driver-arrived-late" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "driver-arrived-late" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDriverArrivedLateTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDriverArrivedLateTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10154,12 +10738,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "driver-arrived-on-time" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "driver-arrived-on-time" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchDriverArrivedOnTimeTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchDriverArrivedOnTimeTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10167,12 +10759,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "geofence-entered" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "geofence-entered" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchGeofenceEnteredTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchGeofenceEnteredTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10180,12 +10780,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "geofence-left" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "geofence-left" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchGeofenceLeftTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchGeofenceLeftTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10193,12 +10801,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "insert-destination" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "insert-destination" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchInsertDestinationAllTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchInsertDestinationAllTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10206,12 +10822,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "mark-destination-departed" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "mark-destination-departed" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchMarkDestinationDepartedAllTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchMarkDestinationDepartedAllTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10219,12 +10843,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "mark-destination-visited" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "mark-destination-visited"
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchMarkDestinationVisitedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchMarkDestinationVisitedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10232,12 +10864,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "member-created" };
+            var activityParameters = new ActivityParameters
+            { 
+                ActivityType = "member-created"
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchMemberCreatedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchMemberCreatedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10245,12 +10885,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "member-deleted" };
+            var activityParameters = new ActivityParameters 
+            { 
+                ActivityType = "member-deleted"
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchMemberDeletedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchMemberDeletedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10258,12 +10906,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "member-modified" };
+            var activityParameters = new ActivityParameters
+            { 
+                ActivityType = "member-modified"
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchMemberModifiedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchMemberModifiedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10271,12 +10927,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "move-destination" };
+            var activityParameters = new ActivityParameters
+            { 
+                ActivityType = "move-destination" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchMoveDestinationTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchMoveDestinationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10291,9 +10955,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchNoteInsertedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchNoteInsertedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10301,12 +10970,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "note-insert" };
+            var activityParameters = new ActivityParameters
+            { 
+                ActivityType = "note-insert" 
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchNoteInsertedAllTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchNoteInsertedAllTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10314,12 +10991,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "route-delete" };
+            var activityParameters = new ActivityParameters
+            {
+                ActivityType = "route-delete"
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchRouteDeletedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchRouteDeletedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10327,12 +11012,20 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters { ActivityType = "route-optimized" };
+            var activityParameters = new ActivityParameters
+            { 
+                ActivityType = "route-optimized"
+            };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchRouteOptimizedTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchRouteOptimizedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10347,9 +11040,14 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out string errorString);
+            Activity[] activities = route4Me.GetActivityFeed(
+                                                activityParameters, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(activities, typeof(Activity[]), "SearchRouteOwnerChanged failed... " + errorString);
+            Assert.IsInstanceOfType(
+                activities, 
+                typeof(Activity[]), 
+                "SearchRouteOwnerChanged failed. " + errorString);
         }
 
         [ClassCleanup()]
@@ -10357,7 +11055,9 @@ namespace Route4MeSDKUnitTest
         {
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+            Assert.IsTrue(
+                result, 
+                "Removing of the testing optimization problem failed.");
         }
     }
 
@@ -10372,7 +11072,9 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void AddressGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class AddressesGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class AddressesGroup failed.");
 
             lsOptimizationIDs = new List<string>();
 
@@ -10380,9 +11082,13 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Single Driver Round Trip generation failed...");
+            Assert.IsTrue(
+                result, 
+                "Single Driver Round Trip generation failed.");
 
-            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(
+                tdr.SDRT_route.Addresses.Length > 0, 
+                "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
 
@@ -10395,9 +11101,17 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string routeIdToMoveTo = tdr.SDRT_route_id;
-            Assert.IsNotNull(routeIdToMoveTo, "routeId_SingleDriverRoundTrip is null...");
+            Assert.IsNotNull(
+                routeIdToMoveTo, 
+                "routeId_SingleDriverRoundTrip is null.");
 
-            int addressId = (tdr.DataObjectSDRT != null && tdr.DataObjectSDRT.Routes != null && tdr.DataObjectSDRT.Routes.Length > 0 && tdr.DataObjectSDRT.Routes[0].Addresses.Length > 1 && tdr.DataObjectSDRT.Routes[0].Addresses[1].RouteDestinationId != null) ? tdr.DataObjectSDRT.Routes[0].Addresses[1].RouteDestinationId.Value : 0;
+            int addressId = (tdr.DataObjectSDRT != null && 
+                                tdr.DataObjectSDRT.Routes != null && 
+                                tdr.DataObjectSDRT.Routes.Length > 0 && 
+                                tdr.DataObjectSDRT.Routes[0].Addresses.Length > 1 && 
+                                tdr.DataObjectSDRT.Routes[0].Addresses[1].RouteDestinationId != null) 
+                            ? tdr.DataObjectSDRT.Routes[0].Addresses[1].RouteDestinationId.Value 
+                            : 0;
 
             var addressParameters = new AddressParameters()
             {
@@ -10407,9 +11121,11 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Address dataObject = route4Me.GetAddress(addressParameters, out string errorString);
+            Address dataObject = route4Me.GetAddress(
+                                            addressParameters, 
+                                            out string errorString);
 
-            Assert.IsNotNull(dataObject, "GetAddressTest failed... " + errorString);
+            Assert.IsNotNull(dataObject, "GetAddressTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10418,7 +11134,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             // Prepare the address that we are going to add to an existing route optimization
-            Address[] addresses = new Address[]
+            var addresses = new Address[]
             {
                 new Address() { AddressString = "717 5th Ave New York, NY 10021",
                             Alias         = "Giorgio Armani",
@@ -10428,7 +11144,8 @@ namespace Route4MeSDKUnitTest
                 }
             };
 
-            //Optionally change any route parameters, such as maximum route duration, maximum cubic constraints, etc.
+            // Optionally change any route parameters, such as maximum route duration, 
+            // maximum cubic constraints, etc.
             var optimizationParameters = new OptimizationParameters()
             {
                 OptimizationProblemID = tdr.SDRT_optimization_problem_id,
@@ -10436,40 +11153,64 @@ namespace Route4MeSDKUnitTest
                 ReOptimize = true
             };
 
-            // Execute the optimization to re-optimize and rebalance all the routes in this optimization
-            var dataObject = route4Me.UpdateOptimization(optimizationParameters, out string errorString);
+            // Execute the optimization to re-optimize and rebalance 
+            // all the routes in this optimization
+            var dataObject = route4Me.UpdateOptimization(
+                                        optimizationParameters, 
+                                        out string errorString);
 
-            tdr.SDRT_route_id = dataObject.Routes.Length > 0 ? dataObject.Routes[0].RouteId : "";
+            tdr.SDRT_route_id = dataObject.Routes.Length > 0 
+                                ? dataObject.Routes[0].RouteId 
+                                : "";
 
-            Assert.IsNotNull(tdr.DataObjectSDRT, "AddDestinationToOptimization and reoptimized Test  failed... " + errorString);
+            Assert.IsNotNull(
+                tdr.DataObjectSDRT, 
+                "AddDestinationToOptimization and reoptimized Test  failed. " + errorString);
 
             optimizationParameters.ReOptimize = false;
-            dataObject = route4Me.UpdateOptimization(optimizationParameters, out errorString);
+            dataObject = route4Me.UpdateOptimization(
+                                        optimizationParameters, 
+                                        out errorString);
 
-            tdr.SDRT_route_id = dataObject.Routes.Length > 0 ? dataObject.Routes[0].RouteId : "";
+            tdr.SDRT_route_id = dataObject.Routes.Length > 0 
+                                ? dataObject.Routes[0].RouteId 
+                                : "";
 
-            Assert.IsNotNull(tdr.DataObjectSDRT, "AddDestinationToOptimization and not reoptimized Test  failed... " + errorString);
+            Assert.IsNotNull(
+                tdr.DataObjectSDRT, 
+                "AddDestinationToOptimization and not reoptimized Test  failed. " + errorString);
         }
 
         [TestMethod]
         public void RemoveDestinationFromOptimizationTest()
         {
-            int delta = removedAddressId == tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId ? 2 : 1;
+            int delta = removedAddressId == tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId 
+                                            ? 2 
+                                            : 1;
 
-            var destinationToRemove = (tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 0) ? tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - delta] : null;
+            var destinationToRemove = (tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 0) 
+                                        ? tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - delta] 
+                                        : null;
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string OptimizationProblemId = tdr.SDRT_optimization_problem_id;
-            Assert.IsNotNull(OptimizationProblemId, "OptimizationProblemId is null...");
+            Assert.IsNotNull(OptimizationProblemId, "OptimizationProblemId is null.");
 
-            int destinationId = destinationToRemove.RouteDestinationId != null ? Convert.ToInt32(destinationToRemove.RouteDestinationId) : -1;
-            Assert.AreNotEqual(-1, "destinationId is null...");
+            int destinationId = destinationToRemove.RouteDestinationId != null 
+                                ? Convert.ToInt32(destinationToRemove.RouteDestinationId) 
+                                : -1;
+            Assert.AreNotEqual(-1, "destinationId is null.");
 
             // Run the query
-            bool removed = route4Me.RemoveDestinationFromOptimization(OptimizationProblemId, destinationId, out string errorString);
+            bool removed = route4Me.RemoveDestinationFromOptimization(
+                                                    OptimizationProblemId, 
+                                                    destinationId, 
+                                                    out string errorString);
 
-            Assert.IsTrue(removed, "RemoveDestinationFromOptimizationTest failed... " + errorString);
+            Assert.IsTrue(
+                removed, 
+                "RemoveDestinationFromOptimizationTest failed. " + errorString);
 
             removedAddressId = destinationId;
         }
@@ -10481,7 +11222,7 @@ namespace Route4MeSDKUnitTest
 
             string route_id = tdr.SDRT_route_id;
 
-            Assert.IsNotNull(route_id, "rote_id is null...");
+            Assert.IsNotNull(route_id, "rote_id is null.");
 
             // Prepare the addresses
             #region Addresses
@@ -10502,9 +11243,16 @@ namespace Route4MeSDKUnitTest
             // Run the query
             bool optimalPosition = true;
 
-            int[] destinationIds = route4Me.AddRouteDestinations(route_id, addresses, optimalPosition, out string errorString);
+            int[] destinationIds = route4Me.AddRouteDestinations(
+                                                route_id, 
+                                                addresses, 
+                                                optimalPosition, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(destinationIds, typeof(Int32[]), "AddRouteDestinationsTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                destinationIds, 
+                typeof(Int32[]), 
+                "AddRouteDestinationsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10514,7 +11262,7 @@ namespace Route4MeSDKUnitTest
 
             string route_id = tdr.SDRT_route_id;
 
-            Assert.IsNotNull(route_id, "rote_id is null...");
+            Assert.IsNotNull(route_id, "rote_id is null.");
 
             // Prepare the addresses
             #region Addresses
@@ -10531,9 +11279,16 @@ namespace Route4MeSDKUnitTest
             // Run the query
             bool optimalPosition = false;
 
-            int[] destinationIds = route4Me.AddRouteDestinations(route_id, addresses, optimalPosition, out string errorString);
+            int[] destinationIds = route4Me.AddRouteDestinations(
+                                                route_id, 
+                                                addresses, 
+                                                optimalPosition, 
+                                                out string errorString);
 
-            Assert.IsInstanceOfType(destinationIds, typeof(System.Int32[]), "AddRouteDestinationsTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                destinationIds, 
+                typeof(System.Int32[]), 
+                "AddRouteDestinationsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10542,17 +11297,28 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             string route_id = tdr.SDRT_route_id; ;
-            Assert.IsNotNull(route_id, "rote_id is null...");
+            Assert.IsNotNull(route_id, "rote_id is null.");
 
-            int delta = removedAddressId == tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId ? 2 : 1;
+            int delta = removedAddressId == tdr.SDRT_route
+                                                .Addresses[tdr.SDRT_route.Addresses.Length - 1]
+                                                .RouteDestinationId 
+                                            ? 2 
+                                            : 1;
 
-            object oDestinationId = tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - delta].RouteDestinationId;
+            object oDestinationId = tdr.SDRT_route
+                                        .Addresses[tdr.SDRT_route.Addresses.Length - delta]
+                                        .RouteDestinationId;
 
-            int destination_id = oDestinationId != null ? Convert.ToInt32(oDestinationId) : -1;
-            Assert.IsNotNull(oDestinationId, "destination_id is null...");
+            int destination_id = oDestinationId != null 
+                                 ? Convert.ToInt32(oDestinationId) 
+                                 : -1;
+            Assert.IsNotNull(oDestinationId, "destination_id is null.");
 
             // Run the query
-            bool deleted = route4Me.RemoveRouteDestination(route_id, destination_id, out string errorString);
+            bool deleted = route4Me.RemoveRouteDestination(
+                                        route_id, 
+                                        destination_id, 
+                                        out string errorString);
 
             Assert.IsTrue(deleted, "RemoveRouteDestinationTest failed. " + errorString);
 
@@ -10567,14 +11333,20 @@ namespace Route4MeSDKUnitTest
             var aParams = new AddressParameters
             {
                 RouteId = tdr.SDRT_route_id,
-                RouteDestinationId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) : -1,
+                RouteDestinationId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null 
+                                     ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) 
+                                     : -1,
                 IsDeparted = true
             };
 
             // Run the query
-            Address resultAddress = route4Me.MarkAddressAsMarkedAsDeparted(aParams, out string errorString);
+            Address resultAddress = route4Me.MarkAddressAsMarkedAsDeparted(
+                                                        aParams, 
+                                                        out string errorString);
 
-            Assert.IsNotNull(resultAddress, "MarkAddressAsMarkedAsDepartedTest... " + errorString);
+            Assert.IsNotNull(
+                resultAddress, 
+                "MarkAddressAsMarkedAsDepartedTest. " + errorString);
         }
 
         [TestMethod]
@@ -10585,14 +11357,20 @@ namespace Route4MeSDKUnitTest
             var aParams = new AddressParameters
             {
                 RouteId = tdr.SDRT_route_id,
-                RouteDestinationId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) : -1,
+                RouteDestinationId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null 
+                                     ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) 
+                                     : -1,
                 IsVisited = true
             };
 
             // Run the query
-            Address resultAddress = route4Me.MarkAddressAsMarkedAsVisited(aParams, out string errorString);
+            Address resultAddress = route4Me.MarkAddressAsMarkedAsVisited(
+                                                        aParams, 
+                                                        out string errorString);
 
-            Assert.IsNotNull(resultAddress, "MarkAddressAsMarkedAsVisitedTest... " + errorString);
+            Assert.IsNotNull(
+                resultAddress, 
+                "MarkAddressAsMarkedAsVisitedTest. " + errorString);
         }
 
         [TestMethod]
@@ -10603,14 +11381,16 @@ namespace Route4MeSDKUnitTest
             var aParams = new AddressParameters
             {
                 RouteId = tdr.SDRT_route_id,
-                AddressId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) : -1,
+                AddressId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null 
+                            ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) 
+                            : -1,
                 IsDeparted = true
             };
 
             // Run the query
             int result = route4Me.MarkAddressVisited(aParams, out string errorString);
 
-            Assert.IsNotNull(result, "MarkAddressDepartedTest... " + errorString);
+            Assert.IsNotNull(result, "MarkAddressDepartedTest. " + errorString);
         }
 
         [TestMethod]
@@ -10621,14 +11401,16 @@ namespace Route4MeSDKUnitTest
             var aParams = new AddressParameters
             {
                 RouteId = tdr.SDRT_route_id,
-                AddressId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) : -1,
+                AddressId = tdr.SDRT_route.Addresses[0].RouteDestinationId != null 
+                            ? Convert.ToInt32(tdr.SDRT_route.Addresses[0].RouteDestinationId) 
+                            : -1,
                 IsVisited = true
             };
 
             // Run the query
             object oResult = route4Me.MarkAddressVisited(aParams, out string errorString);
 
-            Assert.IsNotNull(oResult, "MarkAddressVisitedTest... " + errorString);
+            Assert.IsNotNull(oResult, "MarkAddressVisitedTest. " + errorString);
         }
 
         [ClassCleanup()]
@@ -10636,7 +11418,9 @@ namespace Route4MeSDKUnitTest
         {
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+            Assert.IsTrue(
+                result, 
+                "Removing of the testing optimization problem failed.");
         }
     }
 
@@ -10657,9 +11441,13 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Single Driver Round Trip generation failed...");
+            Assert.IsTrue
+                (result, 
+                "Single Driver Round Trip generation failed.");
 
-            Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(
+                tdr.SDRT_route.Addresses.Length > 0, 
+                "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
 
@@ -10741,8 +11529,12 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
 
-            double lat = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Latitude : 33.14384;
-            double lng = tdr.SDRT_route.Addresses.Length > 1 ? tdr.SDRT_route.Addresses[1].Longitude : -83.22466;
+            double lat = tdr.SDRT_route.Addresses.Length > 1 
+                         ? tdr.SDRT_route.Addresses[1].Latitude 
+                         : 33.14384;
+            double lng = tdr.SDRT_route.Addresses.Length > 1 
+                         ? tdr.SDRT_route.Addresses[1].Longitude 
+                         : -83.22466;
 
             // Create the gps parametes
             var gpsParameters = new GPSParameters()
@@ -10791,7 +11583,9 @@ namespace Route4MeSDKUnitTest
 
             var response = route4Me.SetGPS(gpsParameters, out string _);
 
-            return (response != null && response.GetType() == typeof(SetGpsResponse)) ? true : false;
+            return (response != null && response.GetType() == typeof(SetGpsResponse)) 
+                    ? true 
+                    : false;
         }
 
         [TestMethod]
@@ -10833,7 +11627,9 @@ namespace Route4MeSDKUnitTest
 
             var dataObject = route4Me.GetLastLocation(trParameters, out string errorString);
 
-            Assert.IsNotNull(dataObject, "TrackDeviceLastLocationHistoryTest failed. " + errorString);
+            Assert.IsNotNull(
+                dataObject, 
+                "TrackDeviceLastLocationHistoryTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10843,9 +11639,13 @@ namespace Route4MeSDKUnitTest
 
             var genericParameters = new GenericParameters();
 
-            var userLocations = route4Me.GetUserLocations(genericParameters, out string errorString);
+            var userLocations = route4Me.GetUserLocations(
+                                            genericParameters, 
+                                            out string errorString);
 
-            Assert.IsNotNull(userLocations, "GetAllUserLocationsTest failed. " + errorString);
+            Assert.IsNotNull(
+                userLocations, 
+                "GetAllUserLocationsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -10886,7 +11686,7 @@ namespace Route4MeSDKUnitTest
         {
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+            Assert.IsTrue(result, "Removing of the testing optimization problem failed.");
         }
     }
 
@@ -10904,18 +11704,28 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void UserGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class UsersGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class UsersGroup failed.");
 
             skip = c_ApiKey == c_ApiKey_1 ? "yes" : "no";
 
             lsMembers = new List<string>();
 
             var dispetcher = (new UsersGroup()).CreateUser("SUB_ACCOUNT_DISPATCHER", out string errorString);
-            Assert.IsInstanceOfType(dispetcher, typeof(MemberResponseV4), "Cannot create dispetcher. " + errorString);
+            Assert.IsInstanceOfType(
+                dispetcher, 
+                typeof(MemberResponseV4), 
+                "Cannot create dispetcher. " + errorString);
+
             lsMembers.Add(dispetcher.MemberId);
 
             var driver = (new UsersGroup()).CreateUser("SUB_ACCOUNT_DRIVER", out errorString);
-            Assert.IsInstanceOfType(driver, typeof(MemberResponseV4), "Cannot create driver. " + errorString);
+            Assert.IsInstanceOfType(
+                driver, 
+                typeof(MemberResponseV4), 
+                "Cannot create driver. " + errorString);
+
             lsMembers.Add(driver.MemberId);
         }
 
@@ -10929,9 +11739,12 @@ namespace Route4MeSDKUnitTest
             //For successful testing of an user creating, you shuld provide valid email address, otherwise you'll get error "Email is used in system"
             string rightResponse = dispetcher != null 
                 ? "ok" 
-                : ((errorString == "Email is used in system" || errorString == "Registration: The e-mail address is missing or invalid.") ? "ok" : "");
+                : ((errorString == "Email is used in system" || 
+                    errorString == "Registration: The e-mail address is missing or invalid.") 
+                    ? "ok" 
+                    : "");
 
-            Assert.IsTrue(rightResponse == "ok", "CreateUserTest failed... " + errorString);
+            Assert.IsTrue(rightResponse == "ok", "CreateUserTest failed. " + errorString);
 
             lsMembers.Add(dispetcher.MemberId);
         }
@@ -10998,13 +11811,17 @@ namespace Route4MeSDKUnitTest
 
             var result2 = route4Me.UserUpdate(@customParams, out string errorString);
 
-            Assert.IsTrue(result2!=null, "UpdateUserTest failed... " + errorString);
+            Assert.IsTrue(result2!=null, "UpdateUserTest failed. " + errorString);
 
             var customData = result2.CustomData;
 
-            Assert.IsTrue(customData.Keys.ElementAt(0) == "Custom Key 2", "Custom Key is not 'Custom Key 2'");
+            Assert.IsTrue(
+                customData.Keys.ElementAt(0) == "Custom Key 2", 
+                "Custom Key is not 'Custom Key 2'");
 
-            Assert.IsTrue(customData["Custom Key 2"] == "Custom Value 2", "Custom Value is not 'Custom Value 2'");
+            Assert.IsTrue(
+                customData["Custom Key 2"] == "Custom Value 2", 
+                "Custom Value is not 'Custom Value 2'");
         }
 
         [TestMethod]
@@ -11020,7 +11837,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.GetUserById(@params, out string errorString);
 
-            Assert.IsNotNull(result, "GetUserByIdTest... " + errorString);
+            Assert.IsNotNull(result, "GetUserByIdTest. " + errorString);
         }
 
         [TestMethod]
@@ -11028,14 +11845,15 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var parameters = new GenericParameters()
-            {
-            };
+            var parameters = new GenericParameters();
 
             // Run the query
             var dataObjects = route4Me.GetUsers(parameters, out string errorString);
 
-            Assert.IsInstanceOfType(dataObjects, typeof(Route4MeManager.GetUsersResponse), "GetUsersTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                dataObjects, 
+                typeof(Route4MeManager.GetUsersResponse), 
+                "GetUsersTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11047,14 +11865,16 @@ namespace Route4MeSDKUnitTest
 
             var @params = new MemberParametersV4
             {
-                member_id = createdMemberID!=null ? createdMemberID : Convert.ToInt32(lsMembers[lsMembers.Count - 1]),
+                member_id = createdMemberID!=null 
+                            ? createdMemberID 
+                            : Convert.ToInt32(lsMembers[lsMembers.Count - 1]),
                 member_phone = "571-259-5939"
             };
 
             // Run the query
             var result = route4Me.UserUpdate(@params, out string errorString);
 
-            Assert.IsNotNull(result, "UpdateUserTest failed... " + errorString);
+            Assert.IsNotNull(result, "UpdateUserTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11072,8 +11892,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.UserAuthentication(@params, out string errorString);
 
-            // result is always non null object, but in case of successful autentication object properties have non nul values
-            Assert.IsNotNull(result, "UserAuthenticationTest failed... " + errorString);
+            // result is always non null object, but in case of 
+            // successful autentication object properties have non nul values
+            Assert.IsNotNull(result, "UserAuthenticationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11099,8 +11920,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.UserRegistration(@params, out string errorString);
 
-            // result is always non null object, but in case of successful autentication object property Status=true
-            Assert.IsNotNull(result, "UserRegistrationTest failed... " + errorString);
+            // result is always non null object, but in case of 
+            // successful autentication object property Status=true
+            Assert.IsNotNull(result, "UserRegistrationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11118,8 +11940,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.ValidateSession(@params, out string errorString);
 
-            // result is always non null object, but in case of successful autentication object properties have non nul values
-            Assert.IsNotNull(result, "ValidateSessionTest failed... " + errorString);
+            // result is always non null object, but in case of 
+            // successful autentication object properties have non nul values
+            Assert.IsNotNull(result, "ValidateSessionTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11127,12 +11950,15 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var @params = new MemberParametersV4 { member_id = Convert.ToInt32(lsMembers[lsMembers.Count - 1]) };
+            var @params = new MemberParametersV4 
+            { 
+                member_id = Convert.ToInt32(lsMembers[lsMembers.Count - 1]) 
+            };
 
             // Run the query
             bool result = route4Me.UserDelete(@params, out string errorString);
 
-            Assert.IsNotNull(result, "DeleteUserTest failed... " + errorString);
+            Assert.IsNotNull(result, "DeleteUserTest failed. " + errorString);
 
             lsMembers.RemoveAt(lsMembers.Count - 1);
         }
@@ -11174,7 +12000,9 @@ namespace Route4MeSDKUnitTest
 
             // Run the query
             var result = route4Me.CreateNewConfigurationKey(@params, out string errorString);
-            Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "AddNewConfigurationKeyTest failed. " + errorString);
 
             lsConfigurationKeys.Add("Test My height");
 
@@ -11185,7 +12013,9 @@ namespace Route4MeSDKUnitTest
             };
 
             var result2 = route4Me.CreateNewConfigurationKey(keyrParams, out errorString);
-            Assert.IsNotNull(result2, "AddNewConfigurationKeyTest failed... " + errorString);
+            Assert.IsNotNull(
+                result2, 
+                "AddNewConfigurationKeyTest failed... " + errorString);
 
             lsConfigurationKeys.Add("Test Remove Key");
         }
@@ -11204,7 +12034,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.CreateNewConfigurationKey(@params, out string errorString);
 
-            Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed... " + errorString);
+            Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed. " + errorString);
 
             lsConfigurationKeys.Add("Test My weight");
         }
@@ -11229,9 +12059,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var result = route4Me.CreateNewConfigurationKey(parametersArray, out string errorString);
+            var result = route4Me.CreateNewConfigurationKey(
+                                        parametersArray, 
+                                        out string errorString);
 
-            Assert.IsNotNull(result, "AddNewConfigurationKeyTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "AddNewConfigurationKeyTest failed. " + errorString);
 
             lsConfigurationKeys.Add("Test My Height");
             lsConfigurationKeys.Add("Test My Weight");
@@ -11247,7 +12081,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.GetConfigurationData(@params, out string errorString);
 
-            Assert.IsNotNull(result, "GetAllConfigurationDataTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "GetAllConfigurationDataTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11260,7 +12096,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.GetConfigurationData(@params, out string errorString);
 
-            Assert.IsNotNull(result, "GetSpecificConfigurationKeyDataTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "GetSpecificConfigurationKeyDataTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11275,9 +12113,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var result = route4Me.UpdateConfigurationKey(@params, out string errorString);
+            var result = route4Me.UpdateConfigurationKey(
+                                        @params, 
+                                        out string errorString);
 
-            Assert.IsNotNull(result, "UpdateConfigurationKeyTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "UpdateConfigurationKeyTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11285,12 +12127,15 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var @params = new MemberConfigurationParameters { ConfigKey = "Test Remove Key" };
+            var @params = new MemberConfigurationParameters 
+            { 
+                ConfigKey = "Test Remove Key" 
+            };
 
             // Run the query
             var result = route4Me.RemoveConfigurationKey(@params, out string errorString);
 
-            Assert.IsNotNull(result, "RemoveConfigurationKeyTest failed... " + errorString);
+            Assert.IsNotNull(result, "RemoveConfigurationKeyTest failed. " + errorString);
 
             lsConfigurationKeys.Remove("Test Remove Key");
         }
@@ -11303,8 +12148,10 @@ namespace Route4MeSDKUnitTest
             foreach (var testKey in lsConfigurationKeys)
             {
                 var @params = new MemberConfigurationParameters { ConfigKey = testKey };
+
                 var result = route4Me.RemoveConfigurationKey(@params, out string errorString);
-                Assert.IsNotNull(result, "MemberConfigurationGroupCleanup failed...");
+
+                Assert.IsNotNull(result, "MemberConfigurationGroupCleanup failed.");
             }
         }
     }
@@ -11319,7 +12166,9 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void VehiclesGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class VehiclesGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class VehiclesGroup failed.");
 
             lsVehicleIDs = new List<string>();
 
@@ -11366,7 +12215,10 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var vehicles = route4Me.GetVehicles(vehicleParameters, out string errorString);
             
-            Assert.IsInstanceOfType(vehicles, typeof(VehiclesPaginated), "getVehiclesList failed... " + errorString);
+            Assert.IsInstanceOfType(
+                vehicles, 
+                typeof(VehiclesPaginated), 
+                "getVehiclesList failed. " + errorString);
 
             return vehicles;
         }
@@ -11512,7 +12364,7 @@ namespace Route4MeSDKUnitTest
             string errorString = "";
             var result = route4Me.CreateVehicle(vehicleParams, out errorString);
 
-            Assert.IsNotNull(result, "CreatetVehiclTest failed... " + errorString);
+            Assert.IsNotNull(result, "CreatetVehiclTest failed. " + errorString);
 
             return result;
         }
@@ -11530,7 +12382,10 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var vehicles = route4Me.GetVehicle(vehicleParameters, out string errorString);
             
-            Assert.IsInstanceOfType(vehicles, typeof(VehicleV4Response), "getVehicleTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                vehicles, 
+                typeof(VehicleV4Response), 
+                "getVehicleTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11551,7 +12406,8 @@ namespace Route4MeSDKUnitTest
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            // TO DO: on this stage specifying of the parameter vehicle_alias is mandatory. Will be checked later
+            // TO DO: on this stage specifying of the parameter vehicle_alias is mandatory. 
+            // Will be checked later
             var vehicleParams = new VehicleV4Parameters()
             {
                 VehicleModelYear = 1995,
@@ -11564,9 +12420,15 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var vehicles = route4Me.UpdateVehicle(vehicleParams, lsVehicleIDs[lsVehicleIDs.Count - 1], out string errorString);
+            var vehicles = route4Me.UpdateVehicle(
+                                        vehicleParams, 
+                                        lsVehicleIDs[lsVehicleIDs.Count - 1], 
+                                        out string errorString);
 
-            Assert.IsInstanceOfType(vehicles, typeof(VehicleV4Response), "updateVehicleTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                vehicles, 
+                typeof(VehicleV4Response), 
+                "updateVehicleTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11593,7 +12455,10 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var vehicles = route4Me.DeleteVehicle(vehicleParams, out string errorString);
 
-            Assert.IsInstanceOfType(vehicles, typeof(VehicleV4Response), "updateVehicleTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                vehicles, 
+                typeof(VehicleV4Response), 
+                "updateVehicleTest failed. " + errorString);
 
             lsVehicleIDs.RemoveAt(lsVehicleIDs.Count - 1);
         }
@@ -11624,7 +12489,7 @@ namespace Route4MeSDKUnitTest
             //Run the query
             string result = route4Me.Geocoding(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "GeocodingForwardTest failed... " + errorString);
+            Assert.IsNotNull(result, "GeocodingForwardTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11641,7 +12506,7 @@ namespace Route4MeSDKUnitTest
             //Run the query
             string result = route4Me.BatchGeocoding(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "GeocodingForwardTest failed... " + errorString);
+            Assert.IsNotNull(result, "GeocodingForwardTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11658,7 +12523,7 @@ namespace Route4MeSDKUnitTest
             //Run the query
             string result = route4Me.BatchGeocodingAsync(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "GeocodingForwardTest failed... " + errorString);
+            Assert.IsNotNull(result, "GeocodingForwardTest failed. " + errorString);
         }
 
         
@@ -11675,7 +12540,11 @@ namespace Route4MeSDKUnitTest
             {
                 Assert.IsNotNull(lsAddresses, "Geocoding process failed");
 
-                Assert.AreEqual(addressesInFile, lsAddresses.Count, "Not all the addresses were geocoded");
+                Assert.AreEqual(
+                    addressesInFile, 
+                    lsAddresses.Count, 
+                    "Not all the addresses were geocoded");
+
                 Console.WriteLine("Large addresses file geocoding is finished");
             };
 
@@ -11690,13 +12559,14 @@ namespace Route4MeSDKUnitTest
                 Console.WriteLine("Total Geocoded Addresses -> " + lsAddresses.Count);
             };
 
-            fastProcessing.uploadAndGeocodeLargeJsonFile(@"Data\JSON\batch_socket_upload_error_addresses_data_5.json");
-
+            fastProcessing.uploadAndGeocodeLargeJsonFile(
+                @"Data\JSON\batch_socket_upload_error_addresses_data_5.json");
         }
 
         private void FastProcessing_AddressesChunkGeocoded(object sender, FastBulkGeocoding.AddressesChunkGeocodedArgs e)
         {
-            if (e.lsAddressesChunkGeocoded != null) Console.WriteLine("Geocoded addresses " + e.lsAddressesChunkGeocoded.Count);
+            if (e.lsAddressesChunkGeocoded != null) 
+                Console.WriteLine("Geocoded addresses " + e.lsAddressesChunkGeocoded.Count);
         }
 
         [TestMethod]
@@ -11709,7 +12579,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RapidStreetData(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetDataAllTest failed... " + errorString);
+            Assert.IsNotNull(result, "RapidStreetDataAllTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11726,7 +12596,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RapidStreetData(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetDataLimitedTest failed... " + errorString);
+            Assert.IsNotNull(result, "RapidStreetDataLimitedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11742,7 +12612,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RapidStreetData(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetDataSingleTest failed... " + errorString);
+            Assert.IsNotNull(result, "RapidStreetDataSingleTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11759,7 +12629,7 @@ namespace Route4MeSDKUnitTest
             // Run the query
             ArrayList result = route4Me.RapidStreetService(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetServiceAllTest failed... " + errorString);
+            Assert.IsNotNull(result, "RapidStreetServiceAllTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11778,7 +12648,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RapidStreetService(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetServiceLimitedTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "RapidStreetServiceLimitedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11794,7 +12666,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RapidStreetZipcode(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetZipcodeAllTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "RapidStreetZipcodeAllTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11812,7 +12686,9 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var result = route4Me.RapidStreetZipcode(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "RapidStreetZipcodeLimitedTest failed... " + errorString);
+            Assert.IsNotNull(
+                result, 
+                "RapidStreetZipcodeLimitedTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11820,13 +12696,17 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var geoParams = new GeocodingParameters { Addresses = "41.00367151,-81.59846105" };
+            var geoParams = new GeocodingParameters 
+            { 
+                Addresses = "41.00367151,-81.59846105" 
+            };
+
             geoParams.ExportFormat = "json";
 
             // Run the query
             string result = route4Me.Geocoding(geoParams, out string errorString);
 
-            Assert.IsNotNull(result, "ReverseGeocodingTest failed... " + errorString);
+            Assert.IsNotNull(result, "ReverseGeocodingTest failed. " + errorString);
         }
     }
 
@@ -11842,7 +12722,9 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void OptimizationsGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(context, "Initialization of the class OptimizationsGroup failed.");
+            Assert.IsNotNull(
+                context, 
+                "Initialization of the class OptimizationsGroup failed.");
 
             lsOptimizationIDs = new List<string>();
             lsAddressbookContacts = new List<string>();
@@ -11852,9 +12734,11 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunOptimizationSingleDriverRoute10Stops();
 
-            Assert.IsTrue(result, "Single Driver 10 stops generation failed...");
+            Assert.IsTrue(result, "Single Driver 10 stops generation failed.");
 
-            Assert.IsTrue(tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses...");
+            Assert.IsTrue(
+                tdr.SD10Stops_route.Addresses.Length > 0, 
+                "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.DataObjectSD10Stops.OptimizationProblemId);
         }
@@ -11873,7 +12757,10 @@ namespace Route4MeSDKUnitTest
             // Run the query
             var dataObjects = route4Me.GetOptimizations(queryParameters, out string errorString);
 
-            Assert.IsInstanceOfType(dataObjects, typeof(DataObject[]), "GetOptimizationsTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                dataObjects, 
+                typeof(DataObject[]), 
+                "GetOptimizationsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11891,7 +12778,10 @@ namespace Route4MeSDKUnitTest
             string errorString;
             var dataObjects = route4Me.GetOptimizations(queryParameters, out errorString);
 
-            Assert.IsInstanceOfType(dataObjects, typeof(DataObject[]), "GetOptimizationsFromDateRangeTest failed... " + errorString);
+            Assert.IsInstanceOfType(
+                dataObjects, 
+                typeof(DataObject[]),
+                "GetOptimizationsFromDateRangeTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11905,9 +12795,13 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var dataObject = route4Me.GetOptimization(optimizationParameters, out string errorString);
+            var dataObject = route4Me.GetOptimization(
+                                        optimizationParameters, 
+                                        out string errorString);
 
-            Assert.IsNotNull(dataObject, "GetOptimizationTest failed... " + errorString);
+            Assert.IsNotNull(
+                dataObject, 
+                "GetOptimizationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11922,11 +12816,15 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var dataObject = route4Me.UpdateOptimization(optimizationParameters, out string errorString);
+            var dataObject = route4Me.UpdateOptimization(
+                                        optimizationParameters, 
+                                        out string errorString);
 
             lsOptimizationIDs.Add(dataObject.OptimizationProblemId);
 
-            Assert.IsNotNull(dataObject, "ReOptimizationTest failed... " + errorString);
+            Assert.IsNotNull(
+                dataObject, 
+                "ReOptimizationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -11942,7 +12840,9 @@ namespace Route4MeSDKUnitTest
             string errorString = "";
             var updatedAddress = route4Me.UpdateOptimizationDestination(address, out errorString);
 
-            Assert.IsNotNull(updatedAddress, "UpdateOptimizationDestinationTest failed...");
+            Assert.IsNotNull(
+                updatedAddress, 
+                "UpdateOptimizationDestinationTest failed.");
         }
 
         [TestMethod]
@@ -11952,17 +12852,19 @@ namespace Route4MeSDKUnitTest
 
             bool result = tdr.RunSingleDriverRoundTrip();
 
-            Assert.IsTrue(result, "Generation of the route Single Driver Round Trip failed...");
+            Assert.IsTrue(
+                result, 
+                "Generation of the route Single Driver Round Trip failed.");
 
             string opt_id = tdr.SDRT_optimization_problem_id;
-            Assert.IsNotNull(opt_id, "optimizationProblemID is null...");
+            Assert.IsNotNull(opt_id, "optimizationProblemID is null.");
 
             string[] OptIDs = new string[] { opt_id };
 
             // Run the query
             bool removed = route4Me.RemoveOptimization(OptIDs, out string errorString);
 
-            Assert.IsTrue(removed, "RemoveOptimizationTest failed... " + errorString);
+            Assert.IsTrue(removed, "RemoveOptimizationTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -12467,7 +13369,9 @@ namespace Route4MeSDKUnitTest
         {
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+            Assert.IsTrue(
+                result, 
+                "Removing of the testing optimization problem failed.");
         }
     }
 
@@ -12491,9 +13395,14 @@ namespace Route4MeSDKUnitTest
 
             var vendors = route4Me.GetAllTelematicsVendors(vendorParameters, out string errorString);
 
-            Assert.IsNotNull(vendors, "The test getAllVendorsTest failed. " + errorString);
+            Assert.IsNotNull(
+                vendors, 
+                "The test getAllVendorsTest failed. " + errorString);
 
-            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsResponse), "The test getAllVendorsTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                vendors, 
+                typeof(TelematicsVendorsResponse), 
+                "The test getAllVendorsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -12501,7 +13410,9 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var vendors = route4Me.GetAllTelematicsVendors(new TelematicsVendorParameters(), out string errorString);
+            var vendors = route4Me.GetAllTelematicsVendors(
+                                        new TelematicsVendorParameters(), 
+                                        out string errorString);
 
             Assert.IsNotNull(vendors, "Retrieving of the vendors failed. " + errorString);
 
@@ -12517,7 +13428,10 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(vendor, "The test getVendorTest failed. " + errorString);
 
-            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsResponse), "The test getVendorTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                vendors, 
+                typeof(TelematicsVendorsResponse), 
+                "The test getVendorTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -12539,8 +13453,10 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(vendors, "The test searchVendorsTest failed. " + errorString);
 
-            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsSearchResponse), "The test searchVendorsTest failed. " + errorString);
-
+            Assert.IsInstanceOfType(
+                vendors,
+                typeof(TelematicsVendorsResponse),
+                "The test searchVendorsTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -12555,9 +13471,14 @@ namespace Route4MeSDKUnitTest
 
             var vendors = route4Me.SearchTelematicsVendors(vendorParameters, out string errorString);
 
-            Assert.IsNotNull(vendors, "The test vendorsComparisonTest failed. " + errorString);
+            Assert.IsNotNull(
+                vendors,
+                "The test vendorsComparisonTest failed. " + errorString);
 
-            Assert.IsInstanceOfType(vendors, typeof(TelematicsVendorsSearchResponse), "The test vendorsComparisonTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                vendors, typeof(TelematicsVendorsResponse),
+                "The test vendorsComparisonTest failed. " + errorString
+            );
         }
 
     }
@@ -12703,7 +13624,7 @@ namespace Route4MeSDKUnitTest
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Single Driver Route 10 Stops generation failed... " + ex.Message);
+                Console.WriteLine("Single Driver Route 10 Stops generation failed. " + ex.Message);
                 return false;
             }
         }
@@ -12811,7 +13732,7 @@ namespace Route4MeSDKUnitTest
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Single Driver Round Trip generation failed... " + ex.Message);
+                Console.WriteLine("Single Driver Round Trip generation failed. " + ex.Message);
                 return false;
             }
         }
@@ -12828,7 +13749,7 @@ namespace Route4MeSDKUnitTest
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Removing of an optimization failed..." + ex.Message); return false;
+                Console.WriteLine("Removing of an optimization failed." + ex.Message); return false;
                 throw;
             }
         }
@@ -12839,7 +13760,7 @@ namespace Route4MeSDKUnitTest
 
             // Prepare the addresses
             Address[] addresses = new Address[]
-            {
+              {
                 #region Addresses
 
                 new Address() { AddressString   = "3634 W Market St, Fairlawn, OH 44333",
@@ -12858,7 +13779,13 @@ namespace Route4MeSDKUnitTest
                                 TimeWindowEnd   = 30529 },
 
                 new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
-                                IsDepot         = true,
+                                Latitude        = 41.003671512008,
+                                Longitude       = -81.598461046815,
+                                Time            = 300,
+                                TimeWindowStart = 30529,
+                                TimeWindowEnd   = 33479 },
+
+                new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
                                 Latitude        = 41.003671512008,
                                 Longitude       = -81.598461046815,
                                 Time            = 300,
@@ -12900,14 +13827,8 @@ namespace Route4MeSDKUnitTest
                                 TimeWindowStart = 41617,
                                 TimeWindowEnd   = 43660 },
 
-                new Address() { AddressString   = "367 Cathy Dr, Munroe Falls, OH 44262",
-                                Latitude        = 41.148579,
-                                Longitude       = -81.42923,
-                                Time            = 300,
-                                TimeWindowStart = 43660,
-                                TimeWindowEnd   = 46392 },
-
                 new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
+                                IsDepot         = true,
                                 Latitude        = 41.003671512008,
                                 Longitude       = -81.598461046815,
                                 Time            = 300,
@@ -13006,7 +13927,7 @@ namespace Route4MeSDKUnitTest
                                 TimeWindowEnd   = 68545 }
 
                 #endregion
-            };
+              };
 
             // Set parameters
             var parameters = new RouteParameters()
@@ -13050,7 +13971,8 @@ namespace Route4MeSDKUnitTest
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Generation of the Multiple Depot, Multiple Driver with 24 Stops optimization problem failed... " + ex.Message); return false;
+                Console.WriteLine("Generation of the Multiple Depot, Multiple Driver with 24 Stops optimization problem failed. " + ex.Message); 
+                return false;
             }
         }
 
