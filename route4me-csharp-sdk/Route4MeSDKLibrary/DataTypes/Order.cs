@@ -181,9 +181,15 @@ namespace Route4MeSDK.DataTypes
         public string OrderIcon { get; set; }
         
         /// <summary>
-        /// Custom user field of the order
+        /// Custom user fields.
         /// </summary>
         [DataMember(Name = "custom_user_fields", EmitDefaultValue = false)]
         public OrderCustomField[] CustomUserFields { get; set; }
+
+        /// <summary>
+        /// How many times the order visited.
+        /// </summary>
+        [DataMember(Name = "visited_count", EmitDefaultValue = false)]
+        public int VisitedCount { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(activityParameters, out errorString);
+            Activity[] activities = route4Me.GetActivities(activityParameters, out errorString);
 
             PrintExampleActivities(activities, errorString);
 

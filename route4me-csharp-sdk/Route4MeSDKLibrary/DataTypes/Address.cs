@@ -538,6 +538,33 @@ namespace Route4MeSDK.DataTypes
         public AddressManifest Manifest { get; set; }
 
         /// <summary>
+        /// Alias of a pickup point.
+        /// </summary>
+        [DataMember(Name = "pickup", EmitDefaultValue = false)]
+        public string Pickup { get; set; }
+
+        /// <summary>
+        /// Alias of the paired pickup point.
+        /// </summary>
+        [DataMember(Name = "dropoff", EmitDefaultValue = false)]
+        public string Dropoff { get; set; }
+
+        /// <summary>
+        /// If equal to 1, the pickup and dropoff addresses are joint 
+        /// (one by one despite the regular pickup-dropoff addresses 
+        /// when it's possible to have multiple pickup addresses with one dropoff address).
+        /// </summary>
+        [DataMember(Name = "joint", EmitDefaultValue = false)]
+        public int? Joint { get; set; }
+
+        /// <summary>
+        /// List of the order inventories
+        /// </summary>
+        [DataMember(Name = "order_inventory", EmitDefaultValue = true)]
+        [ReadOnly(true)]
+        public V5.OrderInventory[] OrderInventory { get; set; }
+
+        /// <summary>
         /// The driver tags specified in a team member's custom data.
         /// (e.g. "driver skills": 
         /// ["Class A CDL", "Class B CDL", "Forklift", "Skid Steer Loader", "Independent Contractor"]

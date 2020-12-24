@@ -28,6 +28,10 @@ The service is typically used by organizations who must route many drivers to ma
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DataTypes\MemberResponseV4.cs~RF1f5ebcb6.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="FastProcessing\" />
   </ItemGroup>
 

@@ -46,7 +46,8 @@ namespace Route4MeSDK.QueryTypes
         public bool? DeviceTrackingHistory { get; set; }
 
         /// <summary>
-        /// Limit the number of existing routes that should be returned per response when looking at a list of all the routes.
+        /// The number of existing routes that should be returned per response 
+        /// when looking at a list of all the routes.
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [IgnoreDataMember]
@@ -54,8 +55,8 @@ namespace Route4MeSDK.QueryTypes
         public uint? Limit { get; set; }
 
         /// <summary>
-        /// Only the routes starting from that offset will be considered.
-        /// <remarks><para>Query parameter.</para></remarks>
+        /// The page number for route listing pagination. 
+        /// Increment the offset by the limit number to move to the next page.
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "offset", EmitDefaultValue = false)]
@@ -65,6 +66,7 @@ namespace Route4MeSDK.QueryTypes
         [HttpQueryMemberAttribute(Name = "start_date", EmitDefaultValue = false)]
         public string StartDate { get; set; }
 
+
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "end_date", EmitDefaultValue = false)]
         public string EndDate { get; set; }
@@ -72,7 +74,6 @@ namespace Route4MeSDK.QueryTypes
         /// <summary>
         /// Output addresses and directions in the original optimization request sequence. 
         /// This is to allow us to compare routes before & after optimization.
-        /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "original", EmitDefaultValue = false)]
@@ -126,12 +127,9 @@ namespace Route4MeSDK.QueryTypes
         public string Optimize { get; set; }
 
         /// <summary>
-        /// By sending recompute_directions=1 we request that the route directions be recomputed.
-        /// <remarks><para>
-        /// Note that this does happen automatically if certain properties of the route are updated, such as stop sequence_no changes or round-tripness.
-        /// </para></remarks>
-        /// <para>Available values: <value>1 - recompute directions, 0 - not recompute directions.</value></para> 
-        /// <remarks><para>Query parameter.</para></remarks>
+        /// By sending recompute_directions=1 we request that the route directions 
+        /// be recomputed (note that this does happen automatically if certain properties 
+        /// of the route are updated, such as stop sequence_no changes or round-tripness)
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "recompute_directions", EmitDefaultValue = false)]
@@ -170,11 +168,9 @@ namespace Route4MeSDK.QueryTypes
         public bool? BundlingItems { get; set; }
 
         /// <summary>
-        /// Route Parameters to update. See <see cref="RouteParameters"/>
-        /// <remarks><para>
-        /// After a PUT there is no guarantee that the route_destination_id values are preserved! 
-        /// It may create copies resulting in new destination IDs, especially when dealing with multiple depots.
-        /// </para></remarks>
+        /// Route Parameters to update.
+        /// (After a PUT there is no guarantee that the route_destination_id values are preserved! 
+        /// It may create copies resulting in new destination IDs, especially when dealing with multiple depots.)
         /// </summary>
         [DataMember(Name = "parameters", EmitDefaultValue = false)]
         public RouteParameters Parameters { get; set; }
