@@ -165,7 +165,8 @@ namespace Route4MeSDKUnitTest
 
             var routeParameters = new RouteParametersQuery()
             {
-                RouteId = routeId
+                RouteId = routeId,
+                Directions = true
             };
 
             routeParameters.Directions = true;
@@ -4457,6 +4458,8 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void MergeRoutesTest()
         {
+            if (skip == "yes") return;
+
             var route4Me = new Route4MeManager(c_ApiKey);
 
             tdr.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
@@ -4628,7 +4631,7 @@ namespace Route4MeSDKUnitTest
             var parameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.CVRP_TW_SD,
-                RouteName = "Trucking SD Multiple TW 09-02-2018 from c# SDK " + DateTime.Now.ToString("yymMddHHmmss"),
+                RouteName = "Trucking SD Multiple TW from c# SDK " + DateTime.Now.ToString("yymMddHHmmss"),
                 OptimizationQuality = 3,
                 DeviceType = DeviceType.Web.Description(),
                 DistanceUnit = DistanceUnit.MI.Description(),
@@ -10419,7 +10422,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10441,7 +10444,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10480,7 +10483,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActiviies(
+            Activity[] activities = route4Me.GetActivities(
                                             activityParameters, 
                                             out string errorString);
 
@@ -10514,7 +10517,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                             activityParameters, 
                                             out string errorString);
 
@@ -10537,7 +10540,7 @@ namespace Route4MeSDKUnitTest
             var activityParameters = new ActivityParameters { ActivityType = "area-updated" };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10555,7 +10558,7 @@ namespace Route4MeSDKUnitTest
             var activityParameters = new ActivityParameters { ActivityType = "area-added" };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10573,7 +10576,7 @@ namespace Route4MeSDKUnitTest
             var activityParameters = new ActivityParameters { ActivityType = "area-removed" };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10590,12 +10593,12 @@ namespace Route4MeSDKUnitTest
 
             var activityParameters = new ActivityParameters
             {
-                ActivityType = "delete-destination",
-                RouteId = "5C15E83A4BE005BCD1537955D28D51D7"
+                ActivityType = "delete-destination"
+                //RouteId = "5C15E83A4BE005BCD1537955D28D51D7"
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10612,12 +10615,12 @@ namespace Route4MeSDKUnitTest
 
             var activityParameters = new ActivityParameters
             {
-                ActivityType = "insert-destination",
-                RouteId = "87B8873BAEA4E09942C68E2C92A9C4B7"
+                ActivityType = "insert-destination"
+                //RouteId = "87B8873BAEA4E09942C68E2C92A9C4B7"
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10634,12 +10637,12 @@ namespace Route4MeSDKUnitTest
 
             var activityParameters = new ActivityParameters
             {
-                ActivityType = "mark-destination-departed",
-                RouteId = "03CEF546324F727239ABA69EFF3766E1"
+                ActivityType = "mark-destination-departed"
+                //RouteId = "03CEF546324F727239ABA69EFF3766E1"
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                 activityParameters, 
                 out string errorString);
 
@@ -10660,7 +10663,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10681,7 +10684,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10702,7 +10705,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10723,7 +10726,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10744,7 +10747,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10765,7 +10768,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10786,7 +10789,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10807,7 +10810,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10828,7 +10831,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10849,7 +10852,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10870,7 +10873,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10891,7 +10894,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10912,7 +10915,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10933,7 +10936,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10950,12 +10953,12 @@ namespace Route4MeSDKUnitTest
 
             var activityParameters = new ActivityParameters
             {
-                ActivityType = "note-insert",
-                RouteId = "C3E7FD2F8775526674AE5FD83E25B88A"
+                ActivityType = "note-insert"
+                //RouteId = "C3E7FD2F8775526674AE5FD83E25B88A"
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10976,7 +10979,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -10997,7 +11000,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -11018,7 +11021,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -11035,12 +11038,12 @@ namespace Route4MeSDKUnitTest
 
             var activityParameters = new ActivityParameters
             {
-                ActivityType = "route-owner-changed",
-                RouteId = "5C15E83A4BE005BCD1537955D28D51D7"
+                ActivityType = "route-owner-changed"
+                //RouteId = "5C15E83A4BE005BCD1537955D28D51D7"
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivityFeed(
+            Activity[] activities = route4Me.GetActivities(
                                                 activityParameters, 
                                                 out string errorString);
 
@@ -11454,6 +11457,10 @@ namespace Route4MeSDKUnitTest
             bool recorded = SetAddressGPSPosition(tdr.SDRT_route.Addresses[1]);
 
             Assert.IsTrue(recorded, "Cannot record GPS position of the address");
+
+            recorded = SetAddressGPSPosition(tdr.SDRT_route.Addresses[2]);
+
+            Assert.IsTrue(recorded, "Cannot record GPS position of the address");
         }
 
         [TestMethod]
@@ -11609,7 +11616,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 response,
-                typeof(GetDeviceLocationHistoryResponse),
+                typeof(DeviceLocationHistoryResponse),
                 "GetDeviceHistoryTimeRangeTest failed. " + errorString
             );
         }
@@ -13617,7 +13624,11 @@ namespace Route4MeSDKUnitTest
                 DataObjectSD10Stops = r4mm.RunOptimization(optimizationParameters, out string errorString);
 
                 SD10Stops_optimization_problem_id = DataObjectSD10Stops.OptimizationProblemId;
-                SD10Stops_route = (DataObjectSD10Stops != null && DataObjectSD10Stops.Routes != null && DataObjectSD10Stops.Routes.Length > 0) ? DataObjectSD10Stops.Routes[0] : null;
+                SD10Stops_route = (DataObjectSD10Stops != null &&
+                                    DataObjectSD10Stops.Routes != null &&
+                                    DataObjectSD10Stops.Routes.Length > 0)
+                                  ? DataObjectSD10Stops.Routes[0]
+                                  : null;
                 SD10Stops_route_id = SD10Stops_route?.RouteId ?? null;
 
                 return true;

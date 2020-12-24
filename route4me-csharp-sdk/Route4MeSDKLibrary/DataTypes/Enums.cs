@@ -10,20 +10,18 @@ namespace Route4MeSDK.DataTypes
     /// <para>CVRP_TW_MD = 4, multiple depot, multiple driver, capacitated, time windows</para>
     /// <para>TSP_TW = 5, single depot, single driver, time windows</para>
     /// <para>TSP_TW_CR = 6, single depot, single driver, time windows, continuous optimization (minimal location shifting)</para>
-    /// <para>BBCVRP = 7, shifts addresses from one route to another over time on a recurring schedule</para>
+    /// <para>ADVANCED_CVRP_TW = 9, optimization with advanced constraints</para>
     /// <para>ALG_NONE = 100</para>
     /// <para>ALG_LEGACY_DISTRIBUTED = 101</para>
     /// </summary>
     public enum AlgorithmType
     {
-        STATE_NEW = 0,
         TSP = 1,
         VRP = 2,
         CVRP_TW_SD = 3,
         CVRP_TW_MD = 4,
         TSP_TW = 5,
         TSP_TW_CR = 6,
-        OPTIMIZATION_STATE_IN_QUEUE = 7,
         ADVANCED_CVRP_TW = 9,
         ALG_NONE = 100,
         ALG_LEGACY_DISTRIBUTED = 101
@@ -153,17 +151,20 @@ namespace Route4MeSDK.DataTypes
     /// <remark>
     /// <para>An optimization problem can be at one state at any given time.</para>
     /// <para>Every state change invokes a socket notification associated member ID.</para>
-    /// <para>Every state change invokes a callback webhook event invocation if it was provided during the initial optimization.</para>
+    /// <para>Every state change invokes a callback webhook event invocation 
+    /// if it was provided during the initial optimization.</para>
     /// </remark>
     /// </summary>
     public enum OptimizationState : uint
     {
+        New = 0,
         Initial = 1,
         MatrixProcessing = 2,
         Optimizing = 3,
         Optimized = 4,
         Error = 5,
-        ComputingDirections = 6
+        ComputingDirections = 6,
+        InQueue = 7
     }
 
     /// <summary>
