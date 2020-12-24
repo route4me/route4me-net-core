@@ -40,7 +40,7 @@ namespace Route4MeSDK.DataTypes
         public string MemberId { get; set; }
 
         /// <summary>
-        /// Route ID.
+        /// Parent route ID.
         /// </summary>
         [DataMember(Name = "route_id", EmitDefaultValue = false)]
         public string RouteId { get; set; }
@@ -76,7 +76,7 @@ namespace Route4MeSDK.DataTypes
         public string NoteFile { get; set; }
 
         /// <summary>
-        /// Route name.
+        /// Parent route name.
         /// </summary>
         [DataMember(Name = "route_name", EmitDefaultValue = false)]
         public string RouteName { get; set; }

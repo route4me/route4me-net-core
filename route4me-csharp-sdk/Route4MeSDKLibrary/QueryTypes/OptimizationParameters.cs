@@ -88,9 +88,15 @@ namespace Route4MeSDK.QueryTypes
         public string Query { get; set; }
 
         /// <summary>
-        /// The optimization state.
-        /// <para>Available values: </para>
-        /// <value>Initial = 1, MatrixProcessing = 2, Optimizing = 3, Optimized = 4, Error = 5, ComputingDirections = 6</value>
+        /// The optimization state: 
+        /// New = 0,
+        /// Initial = 1, 
+        /// MatrixProcessing = 2, 
+        /// Optimizing = 3, 
+        /// Optimized = 4, 
+        /// Error = 5, 
+        /// ComputingDirections = 6,
+        /// InQueue = 7
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "state", EmitDefaultValue = false)]
