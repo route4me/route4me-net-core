@@ -7,13 +7,13 @@ namespace Route4MeSDK.DataTypes
     public sealed class UserLocation
     {
         /// <summary>
-        /// Member data.
+        /// Member data
         /// </summary>
         [DataMember(Name = "member_data", EmitDefaultValue = false)]
         public User MemberData { get; set; }
 
         /// <summary>
-        /// User tracking.
+        /// User tracking
         /// </summary>
         [DataMember(Name = "tracking", EmitDefaultValue = false)]
         public UserTracking UserTracking { get; set; }
@@ -46,7 +46,7 @@ namespace Route4MeSDK.DataTypes
         public int? Direction { get; set; }
 
         /// <summary>
-        /// Data source name.
+        /// Data source name
         /// </summary>
         [DataMember(Name = "data_source_name", EmitDefaultValue = false)]
         public string DataSourceName { get; set; }
@@ -64,19 +64,19 @@ namespace Route4MeSDK.DataTypes
         public long? DeviceTimestamp { get; set; }
 
         /// <summary>
-        /// Route ID.
+        /// Route ID
         /// </summary>
         [DataMember(Name = "route_id", EmitDefaultValue = false)]
         public string RouteId { get; set; }
 
         /// <summary>
-        /// Device ID.
+        /// Device ID
         /// </summary>
         [DataMember(Name = "device_id", EmitDefaultValue = false)]
         public string DeviceId { get; set; }
 
         /// <summary>
-        /// Vehicle movement speed.
+        /// Vehicle movement speed
         /// </summary>
         [DataMember(Name = "speed", EmitDefaultValue = false)]
         public double? Speed { get; set; }
@@ -94,17 +94,26 @@ namespace Route4MeSDK.DataTypes
         public string SpeedAccuracy { get; set; }
 
         /// <summary>
-        /// speed Unit
+        /// Speed Unit
         /// </summary>
         [DataMember(Name = "speed_unit", EmitDefaultValue = false)]
         public string SpeedUnit { get; set; }
 
+        /// <summary>
+        /// Bearing
+        /// </summary>
         [DataMember(Name = "bearing", EmitDefaultValue = false)]
         public int? Bearing { get; set; }
 
+        /// <summary>
+        /// Bearing accuracy
+        /// </summary>
         [DataMember(Name = "bearing_accuracy", EmitDefaultValue = false)]
         public string BearingAccuracy { get; set; }
 
+        /// <summary>
+        /// Accuracy
+        /// </summary>
         [DataMember(Name = "accuracy", EmitDefaultValue = false)]
         public string Accuracy { get; set; }
 
@@ -115,13 +124,13 @@ namespace Route4MeSDK.DataTypes
         public int? Altitude { get; set; }
 
         /// <summary>
-        /// Footsteps.
+        /// Footsteps
         /// </summary>
         [DataMember(Name = "footsteps", EmitDefaultValue = false)]
         public int? Footsteps { get; set; }
 
         /// <summary>
-        ///User email.
+        ///User email
         /// </summary>
         [DataMember(Name = "custom_data")]
         public Dictionary<string, string> CustomData { get; set; }
@@ -133,25 +142,25 @@ namespace Route4MeSDK.DataTypes
         public string DeviceTimezone { get; set; }
 
         /// <summary>
-        /// Device timezone offset.
+        /// Device timezone offset
         /// </summary>
         [DataMember(Name = "device_timezone_offset", EmitDefaultValue = false)]
         public int? DeviceTimezoneOffset { get; set; }
 
         /// <summary>
-        /// Vehicle ID.
+        /// Vehicle ID
         /// </summary>
         [DataMember(Name = "vehicle_id", EmitDefaultValue = false)]
         public string VehicleId { get; set; }
 
         /// <summary>
-        /// Day ID.
+        /// Day ID
         /// </summary>
         [DataMember(Name = "day_id", EmitDefaultValue = false)]
         public int? DayId { get; set; }
 
         /// <summary>
-        /// Device type.
+        /// Device type
         /// </summary>
         [DataMember(Name = "device_type", EmitDefaultValue = false)]
         public string DeviceType { get; set; }

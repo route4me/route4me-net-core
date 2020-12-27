@@ -312,6 +312,6 @@ namespace Route4MeSDK.DataTypes
         /// If true, a location assigned to a route.
         /// </summary>
         [DataMember(Name = "is_assigned", EmitDefaultValue = false)]
-        public string IsAssigned { get; set; }
+        public bool? IsAssigned { get; set; }
     }
 }
