@@ -15,7 +15,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "updateOrderCustomUserField";
+            string executeOption = "ReoptimizeRemainingStops";
 
             if (executeOption.ToLower() == "api4")
             {
@@ -112,6 +112,7 @@ namespace Route4MeSDKTest
                 examples.ReoptimizeRoute();
                 examples.ResequenceReoptimizeRoute();
                 examples.ResequenceRouteDestinations();
+                examples.ReoptimizeRemainingStops();
                 examples.RouteOriginParameter();
                 examples.ShareRoute();
                 examples.UnlinkRouteFromOptimization();
