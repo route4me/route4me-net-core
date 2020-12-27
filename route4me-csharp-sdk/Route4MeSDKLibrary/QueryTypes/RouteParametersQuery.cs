@@ -11,7 +11,7 @@ namespace Route4MeSDK.QueryTypes
     public sealed class RouteParametersQuery : GenericParameters
     {
         /// <summary>
-        /// Unique route ID.
+        /// Unique route ID
         /// <remarks><para>Query parameter.</para></remarks>
         /// </summary>
         [IgnoreDataMember] // Don't serialize as JSON
@@ -62,11 +62,16 @@ namespace Route4MeSDK.QueryTypes
         [HttpQueryMemberAttribute(Name = "offset", EmitDefaultValue = false)]
         public uint? Offset { get; set; }
 
+        /// <summary>
+        /// A start date of a filter
+        /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "start_date", EmitDefaultValue = false)]
         public string StartDate { get; set; }
 
-
+        /// <summary>
+        /// An end date of a filter
+        /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "end_date", EmitDefaultValue = false)]
         public string EndDate { get; set; }
