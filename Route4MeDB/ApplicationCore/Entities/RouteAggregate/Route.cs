@@ -120,6 +120,24 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public double? RouteCost { get; set; }
 
         /// <summary>
+        /// Route weight
+        /// </summary>
+        [Column("route_weight")]
+        public double? RouteWeight { get; set; }
+
+        /// <summary>
+        /// Route total cubic volume of the carried cargo (vehicle capacity)
+        /// </summary>
+        [Column("route_cube")]
+        public double? RouteCube { get; set; }
+
+        /// <summary>
+        /// The total number of route pieces (vehicle pieces).
+        /// </summary>
+        [Column("route_pieces")]
+        public int? RoutePieces { get; set; }
+
+        /// <summary>
         /// Total route revenue
         /// </summary>
         [Column("route_revenue")]
@@ -301,6 +319,32 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
 
         [Column("path")]
         public List<Path> Pathes { get; set; }
+
+        /// <summary>
+        /// Original route.
+        /// </summary>
+        [Column("original_route")]
+        public string OriginalRoute { get; set; }
+
+        [NotMapped]
+        public Route OriginalRouteObj
+        {
+            get { return OriginalRoute == null ? null : JsonConvert.DeserializeObject<Route>(OriginalRoute); }
+            set { OriginalRoute = JsonConvert.SerializeObject(value); }
+        }
+
+        /// <summary>
+        /// Bundled items
+        /// </summary>
+        [Column("bundle_items")]
+        public string BundleItems { get; set; }
+
+        [NotMapped]
+        public BundledItemResponse[] BundleItemsArray
+        {
+            get { return BundleItems == null ? null : JsonConvert.DeserializeObject<BundledItemResponse[]>(BundleItems); }
+            set { BundleItems = JsonConvert.SerializeObject(value); }
+        }
 
         public string OptimizationProblemDbId { get; set; }
         [ForeignKey("OptimizationProblemDbId")]

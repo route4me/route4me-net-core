@@ -20,7 +20,8 @@ namespace Route4MeDB.Route4MeDbLibrary
         SQLite,
         PostgreSql,
         MySql,
-        InMemory
+        InMemory,
+        BigQuery
     }
 
     public class AppSettingsFileCreatedEventArgs : EventArgs
@@ -167,6 +168,11 @@ namespace Route4MeDB.Route4MeDbLibrary
                         .UseMySql(Config.GetConnectionString("MySqlConnection"))
                         .Options;
                     break;
+                case DatabaseProviders.BigQuery:
+                    _options = new DbContextOptionsBuilder<Route4MeDbContext>()
+                        .UseMySql(Config.GetConnectionString("BigQueryConnection"))
+                        .Options;
+                    break;
                 default:
                     _options = new DbContextOptionsBuilder<Route4MeDbContext>()
                         .UseInMemoryDatabase(databaseName: "Route4MeDB")
@@ -207,6 +213,10 @@ namespace Route4MeDB.Route4MeDbLibrary
                 case DatabaseProviders.MySql:
                     services.AddDbContext<Route4MeDbContext>(options =>
                     options.UseMySql(Config.GetConnectionString("MySqlConnection")));
+                    break;
+                case DatabaseProviders.BigQuery:
+                    services.AddDbContext<Route4MeDbContext>(options =>
+                    options.UseMySql(Config.GetConnectionString("BigQueryConnection")));
                     break;
                 default:
                     services.AddDbContext<Route4MeDbContext>(options =>

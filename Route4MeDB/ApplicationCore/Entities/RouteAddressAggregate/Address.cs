@@ -36,7 +36,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// </summary>
         // The ID of the member inside the Route4Me system.
         [Column("member_id")]
-        public int MemberId { get; set; }
+        public int? MemberId { get; set; }
 
         /// <summary>
         /// First name
@@ -315,25 +315,25 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// Server-side generated amount of km/miles that it will take to get to the next location on the route.
         /// </summary>
         [Column("drive_time_to_next_destination")]
-        public int? DriveTimeToNextDestination { get; set; }
+        public long? DriveTimeToNextDestination { get; set; }
 
         /// <summary>
         /// Abnormal traffic time to next destination.
         /// </summary>
         [Column("abnormal_traffic_time_to_next_destination")]
-        public int? AbnormalTrafficTimeToNextDestination { get; set; }
+        public long? AbnormalTrafficTimeToNextDestination { get; set; }
 
         /// <summary>
         /// Uncongested time to next destination.
         /// </summary>
         [Column("uncongested_time_to_next_destination")]
-        public int? UncongestedTimeToNextDestination { get; set; }
+        public long? UncongestedTimeToNextDestination { get; set; }
 
         /// <summary>
         /// Traffic time to next destination.
         /// </summary>
         [Column("traffic_time_to_next_destination")]
-        public int? TrafficTimeToNextDestination { get; set; }
+        public long? TrafficTimeToNextDestination { get; set; }
 
         /// <summary>
         /// Server-side generated amount of seconds that it will take to get to the next location.
@@ -387,53 +387,53 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// Geofence detected visited timestamp
         /// </summary>
         [Column("geofence_detected_visited_timestamp")]
-        public long? geofence_detected_visited_timestamp { get; set; }
+        public long? GeofenceDetectedVisitedTimestamp { get; set; }
 
         /// <summary>
         /// Geofence detected departed timestamp
         /// </summary>
         [Column("geofence_detected_departed_timestamp")]
-        public long? geofence_detected_departed_timestamp { get; set; }
+        public long? GeofenceDetectedDepartedTimestamp { get; set; }
 
         /// <summary>
         /// Geofence detected service time
         /// </summary>
         [Column("geofence_detected_service_time")]
-        public long? geofence_detected_service_time { get; set; }
+        public long? GeofenceDetectedService_time { get; set; }
 
         /// <summary>
         /// Geofence detected visited latitude
         /// </summary>
         [Range(-90, 90)]
         [Column("geofence_detected_visited_lat")]
-        public double? geofence_detected_visited_lat { get; set; }
+        public double? GeofenceDetectedVisitedLat { get; set; }
 
         /// <summary>
         /// Geofence detected visited longitude
         /// </summary>
         [Range(-180, 180)]
         [Column("geofence_detected_visited_lng")]
-        public double? geofence_detected_visited_lng { get; set; }
+        public double? GeofenceDetectedVisitedLng { get; set; }
 
         /// <summary>
         /// Geofence detected departed latitude
         /// </summary>
         [Range(-90, 90)]
         [Column("geofence_detected_departed_lat")]
-        public double? geofence_detected_departed_lat { get; set; }
+        public double? GeofenceDetectedDepartedLat { get; set; }
 
         /// <summary>
         /// Geofence detected departed longitude
         /// </summary>
         [Range(-180, 180)]
         [Column("geofence_detected_departed_lng")]
-        public double? geofence_detected_departed_lng { get; set; }
+        public double? GeofenceDetectedDepartedLng { get; set; }
 
         /// <summary>
         /// The expected amount of time that will be spent at this address by the driver/user.
         /// </summary>
         [Column("time")]
-        public int? Time { get; set; }
+        public long? Time { get; set; }
 
         /// <summary>
         /// The address notes
@@ -516,6 +516,60 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         /// </summary>
         [Column("tracking_number")]
         public string TrackingNumber { get; set; }
+
+        [Column("udu_distance_to_next_destination")]
+        public double? UduDistanceToNextDestination { get; set; }
+
+        [Column("wait_time_to_next_destination")]
+        public long? WaitTimeToNextDestination { get; set; }
+
+        [Column("bundle_count")]
+        public int BundleCount { get; set; }
+
+        [Column("bundle_items")]
+        public string BundleItems { get; set; }
+
+        [NotMapped]
+        public BundledItemResponse[] BundleItemsArray
+        {
+            get { return BundleItems == null ? null : JsonConvert.DeserializeObject<BundledItemResponse[]>(BundleItems); }
+            set { BundleItems = JsonConvert.SerializeObject(value); }
+        }
+
+        /// <summary>
+        /// Alias of a pickup point.
+        /// </summary>
+        [Column("pickup")]
+        public string Pickup { get; set; }
+
+        /// <summary>
+        /// Alias of the paired pickup point.
+        /// </summary>
+        [Column("dropoff")]
+        public string Dropoff { get; set; }
+
+        /// <summary>
+        /// If equal to 1, the pickup and dropoff addresses are joint 
+        /// (one by one despite the regular pickup-dropoff addresses 
+        /// when it's possible to have multiple pickup addresses with one dropoff address).
+        /// </summary>
+        [Column("joint")]
+        public int? Joint { get; set; }
+
+        /// <summary>
+        /// The driver tags specified in a team member's custom data.
+        /// (e.g. "driver skills": 
+        /// ["Class A CDL", "Class B CDL", "Forklift", "Skid Steer Loader", "Independent Contractor"]
+        /// </summary>
+        [Column("tags")]
+        public string Tags { get; set; }
+
+        [NotMapped]
+        public string[] TagsArray
+        {
+            get { return Tags == null ? null : JsonConvert.DeserializeObject<string[]>(Tags); }
+            set { Tags = JsonConvert.SerializeObject(value); }
+        }
 
         public string OptimizationProblemDbId { get; set; }
         [ForeignKey("OptimizationProblemDbId")]

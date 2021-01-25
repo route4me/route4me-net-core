@@ -32,6 +32,12 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public OptimizationState State { get; set; }
 
         /// <summary>
+        /// Smart optimization ID
+        /// </summary>
+        [Column("smart_optimization_id")]
+        public string SmartOptimizationId { get; set; }
+
+        /// <summary>
         /// An array of the user errors
         /// </summary>
         [Column("user_errors", TypeName = "varchar(250)")]
@@ -42,6 +48,19 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         {
             get { return UserErrors == null ? null : JsonConvert.DeserializeObject<string[]>(UserErrors); }
             set { UserErrors = JsonConvert.SerializeObject(value); }
+        }
+
+        /// <summary>
+        /// An array of the optimization errors
+        /// </summary>
+        [Column("optimization_errors")]
+        public string OptimizationErrors { get; set; }
+
+        [NotMapped]
+        public string[] OptimizationErrorsArray
+        {
+            get { return OptimizationErrors == null ? null : JsonConvert.DeserializeObject<string[]>(OptimizationErrors); }
+            set { OptimizationErrors = JsonConvert.SerializeObject(value); }
         }
 
         /// <summary>

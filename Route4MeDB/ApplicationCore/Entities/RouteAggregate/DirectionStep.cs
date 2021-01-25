@@ -53,6 +53,12 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public string CompassDirection { get; set; }
 
         ///<summary>
+        /// UDU Distance (UDU: User Distance Unit).
+        ///</summary>
+        [Column("udu_distance")]
+        public double? UduDistance { get; set; }
+
+        ///<summary>
         /// Direction step duration(seconds)
         ///</summary>
         [Column("duration_sec")]
