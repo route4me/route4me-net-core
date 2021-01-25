@@ -1827,12 +1827,15 @@ namespace Route4MeDB.Route4MeDbLibrary
                     switch (prop.Name)
                     {
                         case "AddressCustomData":
-                            contact.AddressCustomData = new Dictionary<string, string>();
+                            var customData = new Dictionary<string, string>();
+                            //contact.AddressCustomData = new Dictionary<string, string>();
 
                             foreach (var k1 in contactEntityObject.AddressCustomDataDic.Keys)
                             {
-                                contact.AddressCustomData[k1] = contactEntityObject.AddressCustomDataDic[k1];
+                                customData[k1] = contactEntityObject.AddressCustomDataDic[k1];
                             }
+
+                            contact.AddressCustomData = customData;
                             break;
                         case "ScheduleBlacklist":
                             contact.ScheduleBlacklist = contactEntityObject.ScheduleBlackListArray;

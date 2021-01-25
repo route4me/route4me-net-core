@@ -9,6 +9,7 @@
       "Route4MeDbLibrary/1.0.0.2": {
         "dependencies": {
           "ApplicationCore": "1.0.0.1",
+          "Google.Cloud.BigQuery.V2": "1.4.1",
           "Infrastructure": "1.0.0.1",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.2.0",
@@ -21,7 +22,7 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "2.2.4",
           "Pomelo.EntityFrameworkCore.MySql": "2.2.0",
           "Pomelo.Extensions.Caching.MySql": "2.0.2",
-          "Route4MeSDKLibrary": "1.0.0.3",
+          "Route4MeSDKLibrary": "1.0.0.4",
           "System.Collections": "4.3.0"
         },
         "runtime": {
@@ -41,6 +42,93 @@
           "lib/netstandard2.0/fastJSON.dll": {
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.0.0"
+          }
+        }
+      },
+      "Google.Api.Gax/2.10.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2",
+          "System.Interactive.Async": "3.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Api.Gax.dll": {
+            "assemblyVersion": "2.10.0.0",
+            "fileVersion": "2.10.0.0"
+          }
+        }
+      },
+      "Google.Api.Gax.Rest/2.10.0": {
+        "dependencies": {
+          "Google.Api.Gax": "2.10.0",
+          "Google.Apis.Auth": "1.42.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Api.Gax.Rest.dll": {
+            "assemblyVersion": "2.10.0.0",
+            "fileVersion": "2.10.0.0"
+          }
+        }
+      },
+      "Google.Apis/1.42.0": {
+        "dependencies": {
+          "Google.Apis.Core": "1.42.0",
+          "Newtonsoft.Json": "12.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.dll": {
+            "assemblyVersion": "1.42.0.0",
+            "fileVersion": "1.42.0.0"
+          }
+        }
+      },
+      "Google.Apis.Auth/1.42.0": {
+        "dependencies": {
+          "Google.Apis": "1.42.0",
+          "Google.Apis.Core": "1.42.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {
+            "assemblyVersion": "1.42.0.0",
+            "fileVersion": "1.42.0.0"
+          },
+          "lib/netstandard2.0/Google.Apis.Auth.dll": {
+            "assemblyVersion": "1.42.0.0",
+            "fileVersion": "1.42.0.0"
+          }
+        }
+      },
+      "Google.Apis.Bigquery.v2/1.42.0.1795": {
+        "dependencies": {
+          "Google.Apis": "1.42.0",
+          "Google.Apis.Auth": "1.42.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Bigquery.v2.dll": {
+            "assemblyVersion": "1.42.0.1795",
+            "fileVersion": "1.42.0.1795"
+          }
+        }
+      },
+      "Google.Apis.Core/1.42.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {
+            "assemblyVersion": "1.42.0.0",
+            "fileVersion": "1.42.0.0"
+          }
+        }
+      },
+      "Google.Cloud.BigQuery.V2/1.4.1": {
+        "dependencies": {
+          "Google.Api.Gax.Rest": "2.10.0",
+          "Google.Apis.Bigquery.v2": "1.42.0.1795"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Cloud.BigQuery.V2.dll": {
+            "assemblyVersion": "1.4.1.0",
+            "fileVersion": "1.4.1.0"
           }
         }
       },
@@ -1269,7 +1357,7 @@
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.0.3": {
+      "Route4MeSDKLibrary/1.0.0.4": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
@@ -1281,8 +1369,8 @@
         },
         "runtime": {
           "lib/netcoreapp2.2/Route4MeSDKLibrary.dll": {
-            "assemblyVersion": "1.0.0.3",
-            "fileVersion": "1.0.0.3"
+            "assemblyVersion": "1.0.0.4",
+            "fileVersion": "1.0.0.4"
           }
         }
       },
@@ -2177,6 +2265,7 @@
       "ApplicationCore/1.0.0.1": {
         "dependencies": {
           "Ardalis.GuardClauses": "1.2.9",
+          "Google.Cloud.BigQuery.V2": "1.4.1",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
           "Newtonsoft.Json": "12.0.2",
@@ -2190,6 +2279,7 @@
       "Infrastructure/1.0.0.1": {
         "dependencies": {
           "ApplicationCore": "1.0.0.1",
+          "Google.Cloud.BigQuery.V2": "1.4.1",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.2.0",
           "Microsoft.EntityFrameworkCore.InMemory": "2.2.6",
@@ -2224,6 +2314,55 @@
       "sha512": "sha512-iVGB/WrrflgKxMM+kG8zef98bFgMrOeHgGV/NNEFMh2ISgt+2BM1nBSqY4Ka0L0m1285AWV0e+4CHk8RDm8mlw==",
       "path": "fastjson/2.2.4",
       "hashPath": "fastjson.2.2.4.nupkg.sha512"
+    },
+    "Google.Api.Gax/2.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3zcUP57Fn7sRcJfon41N1/F0Lcv59k4bameEDSmPDHEs/sjOViwu0Codur2UOCPpiduXCz2A34QTBoyewtSemg==",
+      "path": "google.api.gax/2.10.0",
+      "hashPath": "google.api.gax.2.10.0.nupkg.sha512"
+    },
+    "Google.Api.Gax.Rest/2.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WKiKpDiF2Lw4e6hL2PXrRKPtdtzUGRANA0dNQ6dWOZj/ivffwNrUZCHcHt1H+AzaGlcR3mQ6Fwq6z7HXm+KMyw==",
+      "path": "google.api.gax.rest/2.10.0",
+      "hashPath": "google.api.gax.rest.2.10.0.nupkg.sha512"
+    },
+    "Google.Apis/1.42.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0xvGzOv3XDmifq9SXws9MjWttiIwsOtCQ93ic1eUFBSrO/4wFRaEFi6myRs34mGGOhf6ROk2gJ4WgZg2TBpbEg==",
+      "path": "google.apis/1.42.0",
+      "hashPath": "google.apis.1.42.0.nupkg.sha512"
+    },
+    "Google.Apis.Auth/1.42.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oXzljSx9Skx08Jp+kQfBUj/UqT/0x6IdfFZL/mnjTLa4y07KYVvhxHcx5T4VYQ79NaDstygSyU2ZYn6RLrLBOw==",
+      "path": "google.apis.auth/1.42.0",
+      "hashPath": "google.apis.auth.1.42.0.nupkg.sha512"
+    },
+    "Google.Apis.Bigquery.v2/1.42.0.1795": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-j8Mwfyrz4p2X2Va7QkIFiyHVr1IaVI34P4BVgbxziGwmk8wpPAkhn6uqiXJMc9eufug04p2MCx01afFrcc9HXg==",
+      "path": "google.apis.bigquery.v2/1.42.0.1795",
+      "hashPath": "google.apis.bigquery.v2.1.42.0.1795.nupkg.sha512"
+    },
+    "Google.Apis.Core/1.42.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6h04xA9Ez83OUDNU68NOG4eQtm3uxSqhqHlV+lefF8tvbOiEVPfreJzXjCDmnsgJVjIdSIoMdKr9Kt8yIqx+fg==",
+      "path": "google.apis.core/1.42.0",
+      "hashPath": "google.apis.core.1.42.0.nupkg.sha512"
+    },
+    "Google.Cloud.BigQuery.V2/1.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LVW6H7i25PxlcqeuZzVTb7OrG972XEUpusHnwgs47Ev5BHva7YZUJfCdJL/WwvlDKROniusF12espXJGGVt2pw==",
+      "path": "google.cloud.bigquery.v2/1.4.1",
+      "hashPath": "google.cloud.bigquery.v2.1.4.1.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/2.2.0": {
       "type": "package",
@@ -2925,12 +3064,12 @@
       "path": "remotion.linq/2.2.0",
       "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.0.3": {
+    "Route4MeSDKLibrary/1.0.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UJSdV+KvSOPHIk/FxrdTM2P/C7VHDZEHfbh2rySsFiV3EpINceoxGdAIWYQk6QtWRu/P8Av1n6d8hN92865MGg==",
-      "path": "route4mesdklibrary/1.0.0.3",
-      "hashPath": "route4mesdklibrary.1.0.0.3.nupkg.sha512"
+      "sha512": "sha512-LK2Z8mPd7DOm8SVXTGQS8x7I4UiNMWtCSgI8xyb8onhX5FfHTJYd6C2Wj+tmsMa5az31AFBhgXWor/l8mwl59w==",
+      "path": "route4mesdklibrary/1.0.0.4",
+      "hashPath": "route4mesdklibrary.1.0.0.4.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -2970,7 +3109,7 @@
     "runtime.native.System.IO.Compression/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-b+V9JC/Ii3sR659flBeaBJww111425tgjcDS1k+hqV4sGh9FALRDBvJnDtQ895gAzpPTUOFDHdqaZ2Et7BpZMg==",
+      "sha512": "sha512-INBPonS5QPEgn7naufQFXJEp3zX6L4bwHgJ/ZH78aBTpeNfQMtf7C6VrAFhlq2xxWBveIOWyFzQjJ8XzHMhdOQ==",
       "path": "runtime.native.system.io.compression/4.3.0",
       "hashPath": "runtime.native.system.io.compression.4.3.0.nupkg.sha512"
     },
@@ -3026,7 +3165,7 @@
     "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-T5NvFgmHX0WH4c7lP72krsnk+IJI10vJf2j2twGE+5QBRA4RyRAgD+ZjEgdmpLOjW4B+nZGaadewTCUcR899OQ==",
+      "sha512": "sha512-nyFNiCk/r+VOiIqreLix8yN+q3Wga9+SE8BCgkf+2BwEKiNx6DyvFjCgkfV743/grxv8jHJ8gUK4XEQw7yzRYg==",
       "path": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },

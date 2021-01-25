@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using static Route4MeDB.ApplicationCore.Enum;
 using Route4MeDB.ApplicationCore.Entities.RouteAggregate;
 using System.ComponentModel.DataAnnotations;
+
 namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
 {
     [Owned]
@@ -85,9 +86,27 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAddressAggregate
         public long? EstimatedDepartureTimeTs { get; set; }
 
         /// <summary>
+        /// Scheduled arrival time. 
+        /// </summary>
+        [Column("scheduled_arrival_time_ts")]
+        public long? ScheduledArrivalTimeTs { get; set; }
+
+        /// <summary>
+        /// Scheduled departure time.
+        /// </summary>
+        [Column("scheduled_departure_time_ts")]
+        public long? ScheduledDepartureTimeTs { get; set; }
+
+        /// <summary>
         /// This is the difference between the originally projected arrival time and Actual Arrival Time.
         /// </summary>
         [Column("time_impact")]
         public long? TimeImpact { get; set; }
+
+        /// <summary>
+        /// Distance traversed before reaching this address.
+        /// </summary>
+        [Column("udu_running_distance")]
+        public double? UduRunningDistance { get; set; }
     }
 }

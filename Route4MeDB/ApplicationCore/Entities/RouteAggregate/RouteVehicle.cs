@@ -18,7 +18,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// <c>true</c> if the vehicle is deleted.
         /// </summary>
         [Column("is_deleted")]
-        public bool? IsDeleted { get; set; }
+        public string IsDeleted { get; set; }
 
         /// <summary>
         /// Vehicle alias.
@@ -48,7 +48,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Vehicle registration country ID.
         /// </summary>
         [Column("vehicle_reg_country_id")]
-        public int? VehicleRegCountryId { get; set; }
+        public string VehicleRegCountryId { get; set; }
 
         /// <summary>
         /// A license plate of the vehicle.
@@ -91,7 +91,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Vehicle model year.
         /// </summary>
         [Column("vehicle_model_year")]
-        public int? VehicleModelYear { get; set; }
+        public string VehicleModelYear { get; set; }
 
         /// <summary>
         /// Vehicle model.
@@ -103,19 +103,19 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// The year, vehicle was acquired.
         /// </summary>
         [Column("vehicle_year_acquired")]
-        public int? VehicleYearAcquired { get; set; }
+        public string VehicleYearAcquired { get; set; }
 
         /// <summary>
         /// A cost of the new vehicle.
         /// </summary>
         [Column("vehicle_cost_new")]
-        public double? VehicleCostNew { get; set; }
+        public string VehicleCostNew { get; set; }
 
         /// <summary>
         /// If true, the vehicle was purchased new.
         /// </summary>
         [Column("purchased_new")]
-        public bool? PurchasedNew { get; set; }
+        public string PurchasedNew { get; set; }
 
         /// <summary>
         /// Start date of the license.
@@ -133,19 +133,19 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// A number of the vecile's axles.
         /// </summary>
         [Column("vehicle_axle_count")]
-        public int? VehicleAxleCount { get; set; }
+        public string VehicleAxleCount { get; set; }
 
         /// <summary>
         /// Miles per gallon in the city area.
         /// </summary>
         [Column("mpg_city")]
-        public int? MpgCity { get; set; }
+        public string MpgCity { get; set; }
 
         /// <summary>
         /// Miles per gallon in the highway area.
         /// </summary>
         [Column("mpg_highway")]
-        public int? MpgHighway { get; set; }
+        public string MpgHighway { get; set; }
 
         /// <summary>
         /// A type of the fuel.
@@ -159,13 +159,13 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Height of the vehicle in the inches.
         /// </summary>
         [Column("height_inches")]
-        public int? HeightInches { get; set; }
+        public string HeightInches { get; set; }
 
         /// <summary>
         /// Weight of the vehicle in the pounds.
         /// </summary>
         [Column("weight_lb")]
-        public int? WeightLb { get; set; }
+        public string WeightLb { get; set; }
 
         /// <summary>
         /// If "1", the vehicle is operational.
@@ -189,37 +189,37 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Vehicle height in inches.
         /// </summary>
         [Column("heightInInches")]
-        public int? HeightInInches { get; set; }
+        public string HeightInInches { get; set; }
 
         /// <summary>
         /// Vehicle length in inches.
         /// </summary>
         [Column("lengthInInches")]
-        public int? LengthInInches { get; set; }
+        public string LengthInInches { get; set; }
 
         /// <summary>
         /// Vehicle width in inches.
         /// </summary>
         [Column("widthInInches")]
-        public int? WidthInInches { get; set; }
+        public string WidthInInches { get; set; }
 
         /// <summary>
         /// Maximum weight per axle group in pounds.
         /// </summary>
         [Column("maxWeightPerAxleGroupInPounds")]
-        public int? MaxWeightPerAxleGroupInPounds { get; set; }
+        public string MaxWeightPerAxleGroupInPounds { get; set; }
 
         /// <summary>
         /// Number of the axles.
         /// </summary>
         [Column("numAxles")]
-        public int? NumAxles { get; set; }
+        public string NumAxles { get; set; }
 
         /// <summary>
         /// Weight in pounds.
         /// </summary>
         [Column("weightInPounds")]
-        public int? WeightInPounds { get; set; }
+        public string WeightInPounds { get; set; }
 
         /// <summary>
         /// Hazardous materials type.
@@ -302,19 +302,19 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// If true, the vehicle uses only highway.
         /// </summary>
         [Column("hwy_only")]
-        public bool? HwyOnly { get; set; }
+        public string HwyOnly { get; set; }
 
         /// <summary>
         /// If true, the vehicle is long combination.
         /// </summary>
         [Column("long_combination_vehicle")]
-        public bool? LongCombinationVehicle { get; set; }
+        public string LongCombinationVehicle { get; set; }
 
         /// <summary>
         /// If true, the vehicle should avoid highways
         /// </summary>
         [Column("avoid_highways")]
-        public bool? AvoidHighways { get; set; }
+        public string AvoidHighways { get; set; }
 
         /// <summary>
         /// Side street adherence.
@@ -337,31 +337,31 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Vehicle height in metric unit.
         /// </summary>
         [Column("height_metric")]
-        public float? HeightMetric { get; set; }
+        public string HeightMetric { get; set; }
 
         /// <summary>
         /// Vehicle length in metric unit.
         /// </summary>
         [Column("length_metric")]
-        public float? LengthMetric { get; set; }
+        public string LengthMetric { get; set; }
 
         /// <summary>
         /// Vehicle width in metric unit.
         /// </summary>
         [Column("width_metric")]
-        public float? WidthMetric { get; set; }
+        public string WidthMetric { get; set; }
 
         /// <summary>
         /// Vehicle weight in metric unit.
         /// </summary>
         [Column("weight_metric")]
-        public float? WeightMetric { get; set; }
+        public string WeightMetric { get; set; }
 
         /// <summary>
         /// Maximum weight per axle group in metric unit.
         /// </summary>
         [Column("max_weight_per_axle_group_metric")]
-        public float? MaxWeightPerAxleGroupMetric { get; set; }
+        public string MaxWeightPerAxleGroupMetric { get; set; }
 
         /// <summary>
         /// When the vehicle was removed.

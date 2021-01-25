@@ -19,7 +19,7 @@ namespace RouteMeDB.DatabaseMirgation
         static void Main(string[] args)
         {
             // Specify here a database provider
-            var dbProvider = DatabaseProviders.SQLite;
+            var dbProvider = DatabaseProviders.PostgreSql;
             var curPath = Directory.GetCurrentDirectory();
             var configBuilder = new ConfigurationBuilder()
                .SetBasePath(curPath)
@@ -51,6 +51,9 @@ namespace RouteMeDB.DatabaseMirgation
                     break;
                 case DatabaseProviders.PostgreSql:
                     optBuilder.UseNpgsql(config.GetConnectionString("PostgreSqlConnection"));
+                    break;
+                case DatabaseProviders.BigQuery:
+                     optBuilder.UseNpgsql(config.GetConnectionString("PostgreSqlConnection"));
                     break;
             }
 

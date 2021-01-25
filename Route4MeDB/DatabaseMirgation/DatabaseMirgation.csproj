@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.0.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Cloud.BigQuery.V2" Version="1.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
@@ -28,17 +30,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ApplicationCore">
-      <HintPath>..\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Infrastructure">
       <HintPath>..\Infrastructure\bin\Debug\netcoreapp2.2\Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Route4MeDbLibrary">
       <HintPath>..\Route4MeDbLibrary\bin\Debug\netcoreapp2.2\Route4MeDbLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="UnitTests">
-      <HintPath>..\UnitTests\bin\Debug\netcoreapp2.2\UnitTests.dll</HintPath>
     </Reference>
   </ItemGroup>
 

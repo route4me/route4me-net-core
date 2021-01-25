@@ -198,6 +198,27 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         [Column("route_max_duration")]
         public long? RouteMaxDuration { get; set; }
 
+        /// <summary>
+        /// The parameter specifies fine-tuning of an optimization process
+        /// by route duration.
+        /// </summary>
+        [Column("target_duration")]
+        public double? TargetDuration { get; set; }
+
+        /// <summary>
+        /// The parameter specifies fine-tuning of an optimization process 
+        /// by route distance.
+        /// </summary>
+        [Column("target_distance")]
+        public double? TargetDistance { get; set; }
+
+        /// <summary>
+        /// The parameter specifies fine-tuning of an optimization process 
+        /// by waiting time.
+        /// </summary>
+        [Column("target_wait_by_tail_size")]
+        public double? WaitingTime { get; set; }
+
         /// <summary>The email address to notify upon completion of an optimization request</summary>
         /// <value>The route email.</value>
         [Column("route_email")]
@@ -246,7 +267,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Specify the ip address of the remote user making this optimization request.
         /// </summary>
         [Column("ip")]
-        public int? Ip { get; set; }
+        public long? Ip { get; set; }
 
         /// <summary>
         /// The method to use when compute the distance between the points in a route.
@@ -518,6 +539,12 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public string OptimizationEngine { get; set; }
 
         /// <summary>
+        /// If true, the time windows ignored.
+        /// </summary>
+        [Column("ignore_tw")]
+        public bool? IgnoreTw { get; set; }
+
+        /// <summary>
         /// If the service time is specified, all the route addresses wil have same service time. 
         /// See <see cref="OverrideAddresses"/>
         /// </summary>
@@ -529,6 +556,55 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         {
             get { return overrideAddresses == null ? null : JsonConvert.DeserializeObject<OverrideAddresses>(overrideAddresses); }
             set { overrideAddresses = JsonConvert.SerializeObject(value); }
+        }
+
+        /// <summary>
+        /// Slowdown of the optimization parameters.
+        /// </summary>
+        /// <remarks>
+        /// <para>This is only query parameter.</para>
+        /// <para>This parameter is used in the optimization creation/generation process. </para>
+        /// </remarks>
+        [Column("slowdowns")]
+        public string Slowdowns { get; set; }
+
+        [NotMapped]
+        public SlowdownParams SlowdownsObj
+        {
+            get { return Slowdowns == null ? null : JsonConvert.DeserializeObject<SlowdownParams>(Slowdowns); }
+            set { Slowdowns = JsonConvert.SerializeObject(value); }
+        }
+
+        /// <summary>
+        /// TO DO: adjust description
+        /// </summary>
+        [Column("is_dynamic_start_time")]
+        public bool is_dynamic_start_time { get; set; }
+
+        /// <summary>
+        /// Address bundling rules
+        /// </summary>
+        [Column("bundling")]
+        public string Bundling { get; set; }
+
+        [NotMapped]
+        public AddressBundling BundlingObj
+        {
+            get { return Bundling == null ? null : JsonConvert.DeserializeObject<AddressBundling>(Bundling); }
+            set { Bundling = JsonConvert.SerializeObject(value); }
+        }
+
+        /// <summary>
+        /// Advanced route constraints
+        /// </summary>
+        [Column("advanced_constraints")]
+        public string AdvancedConstraints { get; set; }
+
+        [NotMapped]
+        public RouteAdvancedConstraints[] AdvancedConstraintsArray
+        {
+            get { return AdvancedConstraints == null ? null : JsonConvert.DeserializeObject<RouteAdvancedConstraints[]>(AdvancedConstraints); }
+            set { AdvancedConstraints = JsonConvert.SerializeObject(value); }
         }
     }
 }

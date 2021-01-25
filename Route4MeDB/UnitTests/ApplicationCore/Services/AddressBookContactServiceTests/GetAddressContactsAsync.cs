@@ -50,8 +50,8 @@ namespace Route4MeDB.UnitTests.ApplicationCore.Services.AddressBookContactServic
             var addressBookService = new AddressBookContactService(_mockContactRepo);
 
             var results = await addressBookService.GetAddressBookContactsAsync(0,3);
-            output.WriteLine("results -> " + results.ToString());
-            output.WriteLine("results count -> " + results.Count());
+            output.WriteLine("results ### -> " + results.ToString());
+            output.WriteLine("results count ### -> " + results.Count());
 
             Assert.True(results.Count() == 3);
         }
