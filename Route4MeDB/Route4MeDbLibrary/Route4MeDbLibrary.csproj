@@ -24,6 +24,13 @@ The library is done in the c# (.net core) envirnoment and it's platform-independ
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/Route4MeDB</RepositoryUrl>
     <RepositoryType>GIt</RepositoryType>
     <PackageTags>Database, SQL, MsSql, MySql, PostgreSql, SQLite, Route4Me, Route Optimization</PackageTags>
+    <PackageReleaseNotes>The project was migrated to the version .net core 3.1.
+
+Added the classes: BundledItemResponse, AddressBundling, RouteAdvancedConstraints, ServiceTimeRulesClass, SlowdownParams.
+
+Modified the classes: AddressBookContact, Address, AddressManifest, OptimizationProblem, Route, RouteParameters, Enum, DirectionStep, RouteVehicle.
+
+See https://github.com/route4me/route4me-net-core/blob/master/Route4MeDB/CHANGELOG.md for release note details.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -63,13 +70,17 @@ The library is done in the c# (.net core) envirnoment and it's platform-independ
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
     <PackageReference Include="Pomelo.Extensions.Caching.MySql" Version="2.0.2" />
-    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.0.4" />
+    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.1.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Private>true</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
