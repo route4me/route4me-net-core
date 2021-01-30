@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Route4MeDbLibrary/1.0.1.1": {
+      "Route4MeDbLibrary/1.0.1.2": {
         "dependencies": {
           "ApplicationCore": "1.0.0.1",
           "Google.Cloud.BigQuery.V2": "1.4.1",
@@ -2483,7 +2483,7 @@
     }
   },
   "libraries": {
-    "Route4MeDbLibrary/1.0.1.1": {
+    "Route4MeDbLibrary/1.0.1.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

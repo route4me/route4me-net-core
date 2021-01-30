@@ -1,5 +1,4 @@
 ﻿using Route4MeDB.ApplicationCore.Entities.AddressBookContactAggregate;
-using System.Linq;
 using Xunit;
 
 namespace Route4MeDB.UnitTests.ApplicationCore.Entities.AddressBookContactTests

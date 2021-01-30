@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
-    <Version>1.0.1.1</Version>
+    <Version>1.0.1.2</Version>
     <Description>The library enables to create/use different engine databases for consuming Route4Me system.
 
 Supported database engines:
