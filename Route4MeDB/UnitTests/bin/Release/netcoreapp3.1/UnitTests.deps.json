@@ -15,10 +15,9 @@
           "Microsoft.NET.Test.Sdk": "16.0.1",
           "Moq": "4.12.0",
           "Newtonsoft.Json": "12.0.2",
-          "Route4MeDbLibrary": "1.0.1.1",
+          "Route4MeDbLibrary": "1.0.1.2",
           "Route4MeSDKLibrary": "1.0.1.1",
           "xunit": "2.4.0",
-          "xunit.extensibility.core": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0"
         },
         "runtime": {
@@ -3065,7 +3064,7 @@
           "Infrastructure.dll": {}
         }
       },
-      "Route4MeDbLibrary/1.0.1.1": {
+      "Route4MeDbLibrary/1.0.1.2": {
         "dependencies": {
           "ApplicationCore": "1.0.0.1",
           "Google.Cloud.BigQuery.V2": "1.4.1",
@@ -4891,7 +4890,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Route4MeDbLibrary/1.0.1.1": {
+    "Route4MeDbLibrary/1.0.1.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

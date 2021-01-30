@@ -18,7 +18,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Route4MeSDKLibrary" Version="1.0.1.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
