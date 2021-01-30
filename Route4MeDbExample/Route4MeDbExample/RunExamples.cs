@@ -100,6 +100,11 @@ namespace Route4MeDbExample
                 FirstName = "Peter",
                 LastName = "Newman",
                 AddressEmail = "pnewman6564@yahoo.com",
+                AddressCustomDataDic = new Dictionary<string, string>()
+                {
+                    { "Filed 1", "Value 1" },
+                    { "Filed 2", "Value 2" }
+                },
                 AddressPhoneNumber = "65432178",
                 CachedLat = 38.141598,
                 CachedLng = -85.793846,
