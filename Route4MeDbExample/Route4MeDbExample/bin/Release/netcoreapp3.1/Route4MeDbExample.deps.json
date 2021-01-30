@@ -9,7 +9,7 @@
       "Route4MeDbExample/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Json": "2.2.0",
-          "Route4MeDbLibrary": "1.0.1.1",
+          "Route4MeDbLibrary": "1.0.1.2",
           "Route4MeSDKLibrary": "1.0.1.1"
         },
         "runtime": {
@@ -1394,7 +1394,7 @@
           }
         }
       },
-      "Route4MeDbLibrary/1.0.1.1": {
+      "Route4MeDbLibrary/1.0.1.2": {
         "dependencies": {
           "Google.Cloud.BigQuery.V2": "1.4.1",
           "Microsoft.AspNetCore.Identity": "2.2.0",
@@ -1421,8 +1421,8 @@
             "fileVersion": "1.0.0.1"
           },
           "lib/netcoreapp3.1/Route4MeDbLibrary.dll": {
-            "assemblyVersion": "1.0.1.1",
-            "fileVersion": "1.0.1.1"
+            "assemblyVersion": "1.0.1.2",
+            "fileVersion": "1.0.1.2"
           }
         }
       },
@@ -3233,12 +3233,12 @@
       "path": "remotion.linq/2.2.0",
       "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
     },
-    "Route4MeDbLibrary/1.0.1.1": {
+    "Route4MeDbLibrary/1.0.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Kx/+PfrpuMQgH/spTcCflnk/dHNiouQ0XetAJfO7IZ5LiPPIGEVZvN/cvV/yPkddUnwaHVMzFe8xcl5n47n/yg==",
-      "path": "route4medblibrary/1.0.1.1",
-      "hashPath": "route4medblibrary.1.0.1.1.nupkg.sha512"
+      "sha512": "sha512-sh9/DgAPGsjFsl4VOBx1GcLVbdGYHdnmxhnuaXBW+7+M7Z500vgRjPLRupHhwV7eKUhcUV4fBK6Omes3F+G0bw==",
+      "path": "route4medblibrary/1.0.1.2",
+      "hashPath": "route4medblibrary.1.0.1.2.nupkg.sha512"
     },
     "Route4MeSDKLibrary/1.0.1.1": {
       "type": "package",
