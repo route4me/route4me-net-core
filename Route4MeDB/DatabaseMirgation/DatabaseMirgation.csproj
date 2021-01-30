@@ -30,16 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Route4MeDbLibrary\Route4MeDbLibrary.csproj" />
     <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Infrastructure">
-      <HintPath>..\Infrastructure\bin\Debug\netcoreapp2.2\Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Route4MeDbLibrary">
-      <HintPath>..\Route4MeDbLibrary\bin\Debug\netcoreapp2.2\Route4MeDbLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

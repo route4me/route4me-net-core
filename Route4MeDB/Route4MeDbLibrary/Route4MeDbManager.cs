@@ -39,6 +39,11 @@ namespace Route4MeDB.Route4MeDbLibrary
             _route4meDbContext = Route4MeContext;
         }
 
+        public Route4MeDbManager(DatabaseProviders dbProvider)
+        {
+            AssignDatabaseProvider(dbProvider);
+        }
+
         public Route4MeDbManager()
         {
             
