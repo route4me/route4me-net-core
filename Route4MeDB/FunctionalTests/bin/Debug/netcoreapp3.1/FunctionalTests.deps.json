@@ -19,7 +19,9 @@
           "Route4MeDbLibrary": "1.0.1.1",
           "UnitTests": "1.0.1.1",
           "xunit": "2.4.0",
-          "xunit.runner.visualstudio": "2.4.0"
+          "xunit.runner.visualstudio": "2.4.0",
+          "ApplicationCore": "1.0.1.1",
+          "Infrastructure": "1.0.1.1"
         },
         "runtime": {
           "FunctionalTests.dll": {}
@@ -1743,20 +1745,21 @@
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.0.4": {
+      "Route4MeSDKLibrary/1.0.1.1": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
+          "Microsoft.Extensions.Configuration.Json": "2.2.0",
           "Newtonsoft.Json": "12.0.2",
           "System.Configuration.ConfigurationManager": "4.5.0",
           "System.Net.Http.WinHttpHandler": "4.5.4",
           "fastJSON": "2.2.4"
         },
         "runtime": {
-          "lib/netcoreapp2.2/Route4MeSDKLibrary.dll": {
-            "assemblyVersion": "1.0.0.4",
-            "fileVersion": "1.0.0.4"
+          "lib/netcoreapp3.1/Route4MeSDKLibrary.dll": {
+            "assemblyVersion": "1.0.1.1",
+            "fileVersion": "1.0.1.1"
           }
         }
       },
@@ -2600,17 +2603,6 @@
           "System.Security.Principal.Windows": "4.5.0"
         }
       },
-      "System.Security.Claims/4.3.0": {
-        "dependencies": {
-          "System.Collections": "4.3.0",
-          "System.Globalization": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Security.Principal": "4.3.0"
-        }
-      },
       "System.Security.Cryptography.Algorithms/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -2776,11 +2768,6 @@
             "assemblyVersion": "4.0.1.0",
             "fileVersion": "4.6.26515.6"
           }
-        }
-      },
-      "System.Security.Principal/4.3.0": {
-        "dependencies": {
-          "System.Runtime": "4.3.0"
         }
       },
       "System.Security.Principal.Windows/4.5.0": {
@@ -3033,42 +3020,9 @@
           "Microsoft.NET.Test.Sdk": "16.0.1"
         }
       },
-      "ApplicationCore/1.0.1.1": {
-        "dependencies": {
-          "Ardalis.GuardClauses": "1.2.9",
-          "Google.Cloud.BigQuery.V2": "1.4.1",
-          "Microsoft.AspNetCore.Mvc": "2.2.0",
-          "Microsoft.EntityFrameworkCore": "2.2.6",
-          "Newtonsoft.Json": "12.0.2",
-          "System.Collections": "4.3.0",
-          "System.Security.Claims": "4.3.0"
-        },
-        "runtime": {
-          "ApplicationCore.dll": {}
-        }
-      },
-      "Infrastructure/1.0.1.1": {
-        "dependencies": {
-          "ApplicationCore": "1.0.1.1",
-          "Google.Cloud.BigQuery.V2": "1.4.1",
-          "Microsoft.AspNetCore.Identity": "2.2.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.2.0",
-          "Microsoft.EntityFrameworkCore.InMemory": "2.2.6",
-          "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
-          "Microsoft.EntityFrameworkCore.Sqlite": "2.2.6",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "2.2.4",
-          "Pomelo.EntityFrameworkCore.MySql": "2.2.0",
-          "Pomelo.Extensions.Caching.MySql": "2.0.2"
-        },
-        "runtime": {
-          "Infrastructure.dll": {}
-        }
-      },
       "Route4MeDbLibrary/1.0.1.1": {
         "dependencies": {
-          "ApplicationCore": "1.0.1.1",
           "Google.Cloud.BigQuery.V2": "1.4.1",
-          "Infrastructure": "1.0.1.1",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.2.0",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -3080,7 +3034,7 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "2.2.4",
           "Pomelo.EntityFrameworkCore.MySql": "2.2.0",
           "Pomelo.Extensions.Caching.MySql": "2.0.2",
-          "Route4MeSDKLibrary": "1.0.0.4",
+          "Route4MeSDKLibrary": "1.0.1.1",
           "System.Collections": "4.3.0"
         },
         "runtime": {
@@ -3089,19 +3043,35 @@
       },
       "UnitTests/1.0.1.1": {
         "dependencies": {
-          "ApplicationCore": "1.0.1.1",
+          "Ardalis.GuardClauses": "1.2.9",
           "AutoFixture": "4.11.0",
           "Microsoft.EntityFrameworkCore.InMemory": "2.2.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
           "Microsoft.NET.Test.Sdk": "16.0.1",
           "Moq": "4.12.0",
           "Newtonsoft.Json": "12.0.2",
-          "Route4MeSDKLibrary": "1.0.0.4",
+          "Route4MeSDKLibrary": "1.0.1.1",
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0"
         },
         "runtime": {
           "UnitTests.dll": {}
+        }
+      },
+      "ApplicationCore/1.0.1.1": {
+        "runtime": {
+          "ApplicationCore.dll": {
+            "assemblyVersion": "1.0.1.1",
+            "fileVersion": "1.0.1.1"
+          }
+        }
+      },
+      "Infrastructure/1.0.1.1": {
+        "runtime": {
+          "Infrastructure.dll": {
+            "assemblyVersion": "1.0.1.1",
+            "fileVersion": "1.0.1.1"
+          }
         }
       }
     }
@@ -3959,12 +3929,12 @@
       "path": "remotion.linq/2.2.0",
       "hashPath": "remotion.linq.2.2.0.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.0.4": {
+    "Route4MeSDKLibrary/1.0.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-LK2Z8mPd7DOm8SVXTGQS8x7I4UiNMWtCSgI8xyb8onhX5FfHTJYd6C2Wj+tmsMa5az31AFBhgXWor/l8mwl59w==",
-      "path": "route4mesdklibrary/1.0.0.4",
-      "hashPath": "route4mesdklibrary.1.0.0.4.nupkg.sha512"
+      "sha512": "sha512-1YJmqgyeWlsF5zyo6Vh2yaq3zO4YioS8bb3nrxzKnkvcQyYzatBiXwG1hAXQCt7ro9sNFjqPNl4OQ6K0ebWHPg==",
+      "path": "route4mesdklibrary/1.0.1.1",
+      "hashPath": "route4mesdklibrary.1.0.1.1.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -4603,13 +4573,6 @@
       "path": "system.security.accesscontrol/4.5.0",
       "hashPath": "system.security.accesscontrol.4.5.0.nupkg.sha512"
     },
-    "System.Security.Claims/4.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-P/+BR/2lnc4PNDHt/TPBAWHVMLMRHsyYZbU1NphW4HIWzCggz8mJbTQQ3MKljFE7LS3WagmVFuBgoLcFzYXlkA==",
-      "path": "system.security.claims/4.3.0",
-      "hashPath": "system.security.claims.4.3.0.nupkg.sha512"
-    },
     "System.Security.Cryptography.Algorithms/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -4686,13 +4649,6 @@
       "sha512": "sha512-9gdyuARhUR7H+p5CjyUB/zPk7/Xut3wUSP8NJQB6iZr8L3XUXTMdoLeVAg9N4rqF8oIpE7MpdqHdDHQ7XgJe0g==",
       "path": "system.security.permissions/4.5.0",
       "hashPath": "system.security.permissions.4.5.0.nupkg.sha512"
-    },
-    "System.Security.Principal/4.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-I1tkfQlAoMM2URscUtpcRo/hX0jinXx6a/KUtEQoz3owaYwl3qwsO8cbzYVVnjxrzxjHo3nJC+62uolgeGIS9A==",
-      "path": "system.security.principal/4.3.0",
-      "hashPath": "system.security.principal.4.3.0.nupkg.sha512"
     },
     "System.Security.Principal.Windows/4.5.0": {
       "type": "package",
@@ -4897,16 +4853,6 @@
       "path": "xunit.runner.visualstudio/2.4.0",
       "hashPath": "xunit.runner.visualstudio.2.4.0.nupkg.sha512"
     },
-    "ApplicationCore/1.0.1.1": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Infrastructure/1.0.1.1": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "Route4MeDbLibrary/1.0.1.1": {
       "type": "project",
       "serviceable": false,
@@ -4914,6 +4860,16 @@
     },
     "UnitTests/1.0.1.1": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ApplicationCore/1.0.1.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Infrastructure/1.0.1.1": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

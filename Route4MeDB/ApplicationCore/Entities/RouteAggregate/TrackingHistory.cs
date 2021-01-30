@@ -18,6 +18,12 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         public string Speed { get; set; }
 
         /// <summary>
+        /// Speed unit ('mph', 'kph')
+        /// </summary>
+        [Column("su")]
+        public string SpeedUnit { get; set; }
+
+        /// <summary>
         /// Latitude at the time of the location transaction event.
         /// </summary>
         [Column("lt")]
@@ -39,7 +45,7 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// Direction/heading at the time of the location transaction event.
         /// </summary>
         [Column("d")]
-        public double? Direction { get; set; }
+        public int? D { get; set; }
 
         /// <summary>
         /// The original timestamp in unix timestamp format at the moment location transaction event.
@@ -52,6 +58,12 @@ namespace Route4MeDB.ApplicationCore.Entities.RouteAggregate
         /// </summary>
         [Column("ts_friendly", TypeName = "varchar(24)")]
         public string TimeStampFriendly { get; set; }
+
+        /// <summary>
+        /// Package src (e.g. 'R4M').
+        /// </summary>
+        [Column("src")]
+        public string Src { get; set; }
 
         public string RouteDbId { get; set; }
         [ForeignKey("RouteDbId")]

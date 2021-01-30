@@ -9,14 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="1.2.9" />
     <PackageReference Include="AutoFixture" Version="4.11.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="Moq" Version="4.12.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.0.4" />
+    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.1.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
@@ -26,16 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Infrastructure">
-      <HintPath>..\Infrastructure\bin\Debug\netcoreapp2.2\Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Route4MeDbLibrary">
-      <HintPath>..\Route4MeDbLibrary\bin\Debug\netcoreapp2.2\Route4MeDbLibrary.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Route4MeDbLibrary\Route4MeDbLibrary.csproj" />
   </ItemGroup>
 
 </Project>
