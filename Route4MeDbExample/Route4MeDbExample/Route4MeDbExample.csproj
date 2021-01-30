@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-    <PackageReference Include="Route4MeDbLibrary" Version="1.0.1.1" />
+    <PackageReference Include="Route4MeDbLibrary" Version="1.0.1.2" />
     <PackageReference Include="Route4MeSDKLibrary" Version="1.0.1.1" />
   </ItemGroup>
 
