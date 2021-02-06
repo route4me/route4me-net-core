@@ -738,23 +738,22 @@ namespace Route4MeSDK
 
 			var keyValues = new List<KeyValuePair<string, string>>()
             {
-				new KeyValuePair<string, string>("route_ids", mergeRoutesParameters.RouteIds),
-				new KeyValuePair<string, string>("depot_address", mergeRoutesParameters.DepotAddress),
-				new KeyValuePair<string, string>("remove_origin", mergeRoutesParameters.RemoveOrigin.ToString()),
-				new KeyValuePair<string, string>("depot_lat", mergeRoutesParameters.DepotLat.ToString()),
-				new KeyValuePair<string, string>("depot_lng", mergeRoutesParameters.DepotLng.ToString()),
-				new KeyValuePair<string, string>("to_route_id", mergeRoutesParameters.DepotLng.ToString()),
-				new KeyValuePair<string, string>("route_destination_id", mergeRoutesParameters.DepotLng.ToString())
-			};
+                new KeyValuePair<string, string>("route_ids", mergeRoutesParameters.RouteIds),
+                new KeyValuePair<string, string>("depot_address", mergeRoutesParameters.DepotAddress),
+                new KeyValuePair<string, string>("remove_origin", mergeRoutesParameters.RemoveOrigin.ToString()),
+                new KeyValuePair<string, string>("depot_lat", mergeRoutesParameters.DepotLat.ToString()),
+                new KeyValuePair<string, string>("depot_lng", mergeRoutesParameters.DepotLng.ToString())
+            };
 
-			HttpContent httpContent = new FormUrlEncodedContent(keyValues);
+            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+            {
+                StatusResponse response = GetJsonObjectFromAPI<StatusResponse>
+                    (roParames, R4MEInfrastructureSettings.MergeRoutes,
+                    HttpMethodType.Post, httpContent, out errorString);
 
-			StatusResponse response = GetJsonObjectFromAPI<StatusResponse>
-				(roParames, R4MEInfrastructureSettings.MergeRoutes,
-				HttpMethodType.Post, httpContent, out errorString);
-
-			return (response != null && response.Status) ? true : false;
-		}
+                return (response != null && response.Status) ? true : false;
+            };
+ 		}
 
 		/// <summary>
 		/// Resequences/roptimizes a route. TO DO: this endpoint seems to be deprecated and should be disabled

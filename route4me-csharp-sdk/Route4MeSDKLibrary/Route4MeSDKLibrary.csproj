@@ -16,15 +16,183 @@ The service is typically used by organizations who must route many drivers to ma
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
-    <Version>1.0.0.5</Version>
-    <PackageReleaseNotes>Summary of changes made in this release of the package.
-- Converting a value to the specified type;
-- Searching the locations with showing specified fields;
-- Added algorithm of managing wrong contact data;
-- Improved complex route updating algorithm;
-- Improved algorithm for adding complex address note (send text content, custom note, file at once).</PackageReleaseNotes>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
+    <Version>1.0.1.2</Version>
+    <PackageReleaseNotes>ADDDED
+
+The file Utils.cs   
+- Methods: ReadSetting, DDHHMM2Seconds
+	
+The file DataTypes/RouteParameters.cs  
+- Properties: Slowdowns (type SlowdownParams), IgnoreTw(bool?), is_dynamic_start_time(bool), Bundling(AddressBundling), AdvancedConstraints(V5.RouteAdvancedConstraints[]), AddressStopType(string), Group(string) 
+- Class: SlowdownParams 
+
+	
+The file Consts.cs 
+- Endpoints**: MemberCapabilities, ScheduleCalendar.   
+- Class: R4MEInfrastructureSettingsV5
+	
+The file DataTypes/Address.cs  
+- Properties: BundleCount(int), BundleItems(type BundledItemResponse[]), Tags(string[]), Pickup(string), Dropoff(string), Joint(int?), OrderInventory(V5.OrderInventory[])
+
+The file DataTypes/AddressBundling.cs  
+- Classes: AddressBundling, BundledItemResponse
+	
+The file DataTypes/Enums.cs  
+- Enumerations: AddressBundlingMode, AddressBundlingMergeMode, AddressBundlingFirstItemMode, AddressBundlingAdditionalItemsMode
+	
+The file DataTypes/V5/Enums.cs  
+- Enumerations: AlgorithmType, TravelMode, DistanceUnit, Avoid, Optimize, Metric, DeviceType, Format, OptimizationState, RoutePathOutput, StatusUpdateType, TerritoryType, AddressBundlingMode, AddressBundlingMergeMode, AddressBundlingFirstItemMode, AddressBundlingAdditionalItemsMode, MemberTypes
+
+The file DataTypes/MemberCapabilities.cs  
+- Class: MemberCapabilities
+	
+The file DataTypes/Route.cs  
+- Properties: BundleItems(type BundledItemResponse[]), RouteWeight(double?), RouteCube(double?), RoutePieces(int?)
+
+The file QueryTypes/RouteParametersQuery.cs 
+- Properties: BundlingItem(bool?), UnlinkFromMasterOptimization(bool), OrderInventory(bool?), Remaining(bool?)
+	 
+The file Route4MeManager.cs  
+- Methods: GetMemberCapabilities, GetScheduleCalendar, MemberHasCommercialCapability  
+- Class: SearchOrdersResponse
+	
+The file DataTypes/ScheduleCalendarResponse.cs 
+- Class: ScheduleCalendarResponse
+	
+The file QueryTypes/ScheduleCalendarQuery.cs  
+- Class: ScheduleCalendarQuery
+	
+The file QueryTypes/MergeRoutesQuery.cs 
+- Properties: ToRouteId(string), RouteDestinationId(string), RouteDestinationIDs(string)
+
+The file DataTypes/V5/DriverReview.cs  
+- Classes (API 5 version): DriverReview, DriverReviewsResponse, SimplePaginationData, TypeQuantity
+
+The file DataTypes/V5/ResultResponse.cs  
+- Class (API 5 version): ResultResponse
+	
+The file DataTypes/V5/TeamResponse.cs  
+- Class (API 5 version): TeamResponse
+	
+The file HttpClientExtensions.cs  
+- Class: HttpClientExtensions
+	
+The file DataTypes/V5/DriverReviewParameters.cs  
+- Class (API 5 version): DriverReviewParameters
+	
+The file QueryTypes/TeamRequest.cs  
+- Class (API 5 version): TeamRequest
+	
+The file Route4MeManagerV5.cs  
+- Class (API 5 version): Route4MeManagerV5  
+- Method (API 5 version): AddSkillsToDriver, 	
+	
+The file DataTypes/V5/RouteAdvancedConstraints.cs  
+- Class (API 5 version): RouteAdvancedConstraints
+
+The file DataTypes/Activity.cs  
+- Properties: RouteNam(string), NoteId(string), NoteType(string), NoteContents(string), NoteFile(string), Member(ActivityMember), DestinationName(string), DestinationAlias(string)  
+- Class: ActivityMember
+	
+The file DataTypes/AddressBookContact.cs  
+- Property: IsAssigned(string)
+	
+The file DataTypes/AddressBookGroup.cs  
+- Property: Valid(bool?)
+	
+The file DataTypes/DataObject.cs  
+- Property: SmartOptimizationId(string)
+	
+The file DataTypes/FindAssetResponse.cs  
+- Properties: LargeLogoUri2x(string), MobileLogoUri2x(string), HideCovid19Warning(string)
+	
+The file DataTypes/MemberResponseV4.cs  
+- Property: ApiKey(string)
+	
+The file DataTypes/Order.cs  
+- Property: VisitedCount(int)
+	
+The file DataTypes/TrackingHistory.cs  
+- Property: SpeedUnit(string)
+	
+The file DataTypes/UserLocation.cs  
+- Properties: CalculatedSpeed(string), SpeedAccuracy(string), SpeedUnit(string), Bearing(int?), BearingAccuracy(string), Accuracy(string), RootMemberId(int?)
+	
+The file DataTypes/V5/OrderInventory.cs  
+- Class (API 5 version): OrderInventory
+
+
+CHANGED
+
+The file DataTypes/DeviceLocationLeg.cs  
+- Type decimal? replaced with double? for the properties: Distance, Duration, Weight.
+	
+The file DataTypes/DeviceLocationMatching.cs  
+- Type decimal? replaced with double? for the properties: Distance, Duration, Weight.
+	
+The file DataTypes/DeviceLocationTracePoint.cs)  
+- Type decimal? replaced with double? for the property: Distance.
+	
+The file DataTypes/DirectionStep.cs  
+- Type decimal? replaced with double? for the property: UduDistance.
+	
+The file DataTypes/Route.cs  
+- Type decimal? replaced with double? for the properties: UduActualTravelDistance, ActualTravelDistance, PayingMiles.
+	
+The file DataTypes/RouteParameters.cs  
+- Type decimal? replaced with double? for the properties: RouteTimeMultiplier, RouteServiceTimeMultiplier.  
+- Type string replaced with bool? for the property: IsUpload.  
+- Type double? replaced with int? for the property: RouteTimeMultiplier.  
+- Type double? replaced with int? for the property: RouteServiceTimeMultiplier.
+	
+The file DataTypes/RouteResponse.cs  
+- Type decimal? replaced with double? for the property: UduActualTravelDistance.
+	
+The file DataTypes/UserLocation.cs  
+- Type decimal? replaced with double? for the property: Speed.
+	
+The file DataTypes/VehicleResponse.cs  
+- Type string replaced with bool? for the property: IsOperational.
+	
+The file DataTypes/Address.cs  
+- Type string replaced with int? for the property: MemberId.
+
+The DataTypes/AddressBookGroupRule.cs  
+- Type string replaced with object for the property: Value.
+	
+The file Types.cs  
+- Enumeration HttpMethodType - added Patch.
+
+The file DataTypes/V5/RouteAdvancedConstraints.cs  
+- Type int? replaced with int[] for the property: Route4meMembersId.  
+- Type Tuple&lt;int,int&gt;[] replaced with List&lt;int[]&gt; for the property: AvailableTimeWindows.
+	
+The file DataTypes/AddressBookGroupRule.cs  
+- Type int? replaced with string for the property: SessionId.
+	
+The file DataTypes/Enums.cs  
+- Enumeration: AlgorithmType - added: OPTIMIZATION_STATE_IN_QUEUE = 7, ADVANCED_CVRP_TW = 9
+	
+The file DataTypes/V5/Enums.cs  
+- Enumeration: AlgorithmType - added: OPTIMIZATION_STATE_IN_QUEUE = 7, ADVANCED_CVRP_TW = 9  
+- Enumeration: OptimizationState - added: InQueue = 7
+	
+The file QueryTypes/GPSParameters.cs  
+- Type int replaced with int? for the property: MemberId.  
+- Type int replaced with string for the property: VehicleId.  
+- Type int replaced with int? for the property: Course.  
+- Type double replaced with double? for the property: Speed.  
+- Type double replaced with double? for the property: Latitude.  
+- Type double replaced with double? for the property: Longitude.  
+- Type bool replaced with bool? for the property: LastPosition.  
+- Type long replaced with long? for the property: StartDate.  
+- Type long replaced with long? for the property: EndDate.  
+- Type double replaced with double? for the property: Altitude.
+
+The file DataTypes/AddressBookContact.cs  
+- Type string replaced with bool? for the property: IsAssigned.</PackageReleaseNotes>
+    <AssemblyVersion>1.0.1.2</AssemblyVersion>
+    <FileVersion>1.0.1.2</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
