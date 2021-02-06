@@ -6,7 +6,6 @@
         Put,
         Post,
         Delete,
-        Patch,
-        FileUpload
+        Patch
     }
 }
