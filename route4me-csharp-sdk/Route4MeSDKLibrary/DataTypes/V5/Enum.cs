@@ -151,8 +151,7 @@ namespace Route4MeSDK.DataTypes.V5
     /// <remark>
     /// <para>An optimization problem can be at one state at any given time.</para>
     /// <para>Every state change invokes a socket notification associated member ID.</para>
-    /// <para>Every state change invokes a callback webhook event invocation 
-    /// if it was provided during the initial optimization.</para>
+    /// <para>Every state change invokes a callback webhook event invocation if it was provided during the initial optimization.</para>
     /// </remark>
     /// </summary>
     public enum OptimizationState : uint
@@ -247,6 +246,33 @@ namespace Route4MeSDK.DataTypes.V5
 
         [Description("no_opportunity")]
         NoOpportunity
+    }
+
+    /// <summary>
+    /// Address stop type.
+    /// </summary>
+    public enum AddressStopType : uint
+    {
+        [Description("DELIVERY")]
+        Delivery,
+
+        [Description("PICKUP")]
+        PickUp,
+
+        [Description("BREAK")]
+        Break,
+
+        [Description("MEETUP")]
+        MeetUp,
+
+        [Description("SERVICE")]
+        Service,
+
+        [Description("VISIT")]
+        Visit,
+
+        [Description("DRIVEBY")]
+        DriverBy,
     }
 
     /// <summary>
