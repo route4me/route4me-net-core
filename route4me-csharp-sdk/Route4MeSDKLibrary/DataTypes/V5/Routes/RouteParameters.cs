@@ -629,6 +629,5 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "travel_time", EmitDefaultValue = false)]
         public int? TravelTime { get; set; }
 
-
     }
 }
