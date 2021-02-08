@@ -9,7 +9,7 @@
       "Route4MeSdkV5UnitTest/1.0.0": {
         "dependencies": {
           "Microsoft.NET.Test.Sdk": "16.5.0",
-          "Route4MeSDKLibrary": "1.0.1.1",
+          "Route4MeSDKLibrary": "1.0.1.2",
           "coverlet.collector": "1.2.0",
           "xunit": "2.4.0",
           "xunit.runner.visualstudio": "2.4.0"
@@ -1001,7 +1001,7 @@
           "Microsoft.NET.Test.Sdk": "16.5.0"
         }
       },
-      "Route4MeSDKLibrary/1.0.1.1": {
+      "Route4MeSDKLibrary/1.0.1.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
@@ -1634,7 +1634,7 @@
       "path": "xunit.runner.visualstudio/2.4.0",
       "hashPath": "xunit.runner.visualstudio.2.4.0.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.1.1": {
+    "Route4MeSDKLibrary/1.0.1.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
