@@ -66,7 +66,10 @@
 
         public const string CustomNoteType = MainHost + "/api.v4/note_custom_types.php";
 
-        public const string TeleamticsVendorsHost = "https://telematics.route4me.com/api/vendors.php";
+        public const string TelematicsVendorsHost = "https://telematics.route4me.com/api/vendors.php";
+        public const string TelematicsRegisterHost = MainHost + "/api.v4/telematics/register.php";
+        public const string TelematicsConnection = MainHost + "/api.v4/telematics/connections.php";
+        public const string TelematicsVendorsInfo = MainHost + "/api.v4/telematics/vendors.php";
 
         public const string MemberCapabilities = MainHost + "/api/member/capabilities.php";
 
@@ -108,6 +111,72 @@
         public const string TeamUsersBulkCreate = MainHost + "/team/bulk-insert";
 
         public const string DriverReview = MainHost + "/driver-reviews";
+
+        public const string AccountProfile = MainHost + "/profile-api";
+
+        #region Vehicles
+
+        public const string Vehicles = MainHost + "/vehicles";
+
+        public const string VehicleTemporary = MainHost + "/vehicles/assign";
+
+        public const string VehicleExecuteOrder = MainHost + "/vehicles/execute";
+
+        public const string VehicleLocation = MainHost + "/vehicles/location";
+
+        public const string VehicleProfiles = MainHost + "/vehicle-profiles";
+
+        public const string VehicleLicense = MainHost + "/vehicles/license";
+
+        public const string VehicleSearch = MainHost + "/vehicles/search";
+
+        #endregion
+
+        #region Telematics Platform
+
+        public const string StagingHost = "https://virtserver.swaggerhub.com/Route4Me/telematics-gateway/1.0.0";
+
+        public const string TelematicsConnection = StagingHost + "/connections";
+        public const string TelematicsConnectionVehicles = StagingHost + "/connections/{connection_token}/vehicles";
+
+        public const string TelematicsAccessToken = StagingHost + "/access-tokens";
+        public const string TelematicsAccessTokenSchedules = StagingHost + "/access-token-schedules";
+        public const string TelematicsAccessTokenScheduleItems = StagingHost + "/access-token-schedules/{schedule_id}/items";
+
+        public const string TelematicsVehicleGroups = StagingHost + "/vehicle-groups";
+        public const string TelematicsVehicleGroupsRelation = StagingHost + "/vehicle-groups/{vehicle_group_id}/{relation}";
+        public const string TelematicsVehiclesRelation = StagingHost + "/vehicles/{vehicle_id}/{relation}";
+
+        public const string TelematicsInfoMembers = StagingHost + "/info/members";
+        public const string TelematicsInfoVehicles = StagingHost + "/info/vehicles";
+        public const string TelematicsInfoVehicle = StagingHost + "/info/vehicle/{vehicle_id}/track";
+        public const string TelematicsInfoModules = StagingHost + "/info/members";
+
+        public const string TelematicsAddresses = StagingHost + "/addresses";
+
+        public const string TelematicsErrors = StagingHost + "/errors";
+
+        public const string TelematicsCustomerNotifications = StagingHost + "​/customers​/{customer_id}​/notifications​";
+        public const string TelematicsCustomers = StagingHost + "/customers";
+        public const string TelematicsCustomerId = StagingHost + "/customers/{customer_id}";
+
+        public const string TelematicsNotificationScheduleItems = StagingHost + "/notification-schedules/{notification_schedule_id}/items";
+        public const string TelematicsNotificationSchedules = StagingHost + "/notification-schedules";
+        public const string TelematicsNotificationScheduleId = StagingHost + "/notification-schedules/{schedule_id}";
+        public const string TelematicsOneTimeNotifications = StagingHost + "​/one-time-notifications";
+
+        public const string TelematicsMember = StagingHost;
+
+        public const string TelematicsMemberModules = StagingHost + "​/user-activated-modules";
+
+        public const string TelematicsMemberModuleId = StagingHost + "​/user-activated-modules/{module_id}";
+        public const string TelematicsMemberModuleVehicles = StagingHost + "​​/user-activated-modules​/{module_id}​/vehicles";
+        public const string TelematicsMemberModuleVehicleId = StagingHost + "​​​/user-activated-modules​/{module_id}​/vehicles​/{vehicle_id}";
+
+        public const string TelematicsVendors = StagingHost + "​/vendors";
+        public const string TelematicsVendorId = StagingHost + "​​/vendors​/{vendor_id}";
+
+        #endregion
 
         #endregion
     }
