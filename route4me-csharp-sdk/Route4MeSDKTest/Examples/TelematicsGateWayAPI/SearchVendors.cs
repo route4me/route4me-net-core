@@ -15,11 +15,11 @@ namespace Route4MeSDK.Examples
             var vendorParameters = new TelematicsVendorParameters()
             {
                 //Country = "GB",  // uncomment this line for searching by Country
-                isIntegrated = 1,
+                IsIntegrated = 1,
                 //Feature = "Satelite",  // uncomment this line for searching by Feature
                 Search = "Fleet",
                 Page = 1,
-                perPage = 15
+                PerPage = 15
             };
 
             // Run the query

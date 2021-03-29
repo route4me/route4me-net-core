@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 //using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK
@@ -80,6 +81,44 @@ namespace Route4MeSDK
                                 out resultResponse);
 
             return (response != null && response.status) ? true : false;
+        }
+
+        #endregion
+
+        #region Account Profile
+
+        /// <summary>
+        /// Get account profile
+        /// </summary>
+        /// <param name="failResponse">Error response</param>
+        /// <returns>Account profile</returns>
+        public AccountProfile GetAccountProfile(out ResultResponse failResponse)
+        {
+            var parameters = new QueryTypes.GenericParameters();
+
+            var result = GetJsonObjectFromAPI<AccountProfile>(parameters,
+                                R4MEInfrastructureSettingsV5.AccountProfile,
+                                HttpMethodType.Get,
+                                out failResponse);
+
+            return result;
+        }
+
+        public string GetAccountPreferedUnit(out ResultResponse failResponse)
+        {
+            var accountProfile = this.GetAccountProfile(out failResponse);
+
+            var ownerId = accountProfile.RootMemberId;
+
+            var r4me = new Route4MeManager(this.m_ApiKey);
+
+            var memPars = new QueryTypes.MemberParametersV4() { member_id = ownerId };
+
+            var user = r4me.GetUserById(memPars, out string errorString);
+
+            string prefUnit = user.PreferredUnits;
+
+            return prefUnit;
         }
 
         #endregion
@@ -754,6 +793,497 @@ namespace Route4MeSDK
                 return false;
             }
         }
+
+        #endregion
+
+        #region Vehicles
+
+        /// <summary>
+        /// Creates a vehicle
+        /// </summary>
+        /// <param name="vehicle">The VehicleV4Parameters type object as the request payload </param>
+        /// <param name="resultResponse"> Failing response </param>
+        /// <returns>The created vehicle </returns>
+        public Vehicle CreateVehicle(Vehicle vehicle, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<Vehicle>(
+                                                vehicle,
+                                                R4MEInfrastructureSettingsV5.Vehicles,
+                                                HttpMethodType.Post,
+                                                out resultResponse);
+        }
+
+        /// <summary>
+        /// Returns the VehiclesPaginated type object containing an array of the vehicles
+        /// </summary>
+        /// <param name="vehicleParams">The VehicleParameters type object as the query parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>An array of the vehicles</returns>
+        public Vehicle[] GetPaginatedVehiclesList(VehicleParameters vehicleParams, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<Vehicle[]>(
+                                                vehicleParams,
+                                                R4MEInfrastructureSettingsV5.Vehicles,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+        }
+
+        /// <summary>
+        /// Removes a vehicle from a user's account
+        /// </summary>
+        /// <param name="vehParams"> The VehicleParameters type object as the query parameters containing parameter VehicleId </param>
+        /// <param name="errorString"> Failing response </param>
+        /// <returns>The removed vehicle</returns>
+		public Vehicle DeleteVehicle(string vehicleId, out ResultResponse resultResponse)
+        {
+            if ((vehicleId?.Length ?? 0) != 32)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The vehicle ID is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            return GetJsonObjectFromAPI<Vehicle>(new QueryTypes.GenericParameters(),
+                            R4MEInfrastructureSettings.Vehicle_V4 + "/" + vehicleId,
+                            HttpMethodType.Delete,
+                            out resultResponse);
+        }
+
+        /// <summary>
+        /// Creates temporary vehicle in the database.
+        /// </summary>
+        /// <param name="vehParams">Request parameters for creating a temporary vehicle</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>A result with an order ID</returns>
+        public VehicleTemporary CreateTemporaryVehicle(VehicleTemporary vehParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<VehicleTemporary>(
+                                                vehParams,
+                                                R4MEInfrastructureSettingsV5.VehicleTemporary,
+                                                HttpMethodType.Post,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Execute a vehicle order
+        /// </summary>
+        /// <param name="vehOrderParams">Vehicle order parameters</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>Created vehicle order</returns>
+        public VehicleOrderResponse ExecuteVehicleOrder(VehicleOrderParameters vehOrderParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<VehicleOrderResponse>(
+                                                vehOrderParams,
+                                                R4MEInfrastructureSettingsV5.VehicleExecuteOrder,
+                                                HttpMethodType.Post,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get latest vehicle locations by specified vehicle IDs.
+        /// </summary>
+        /// <param name="vehParams">Vehicle query parameters containing vehicle IDs.</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Data with vehicles</returns>
+        public VehicleLocationResponse GetVehicleLocations(VehicleParameters vehParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<VehicleLocationResponse>(
+                                                vehParams,
+                                                R4MEInfrastructureSettingsV5.VehicleLocation,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get the Vehicle by specifying vehicle ID.
+        /// </summary>
+        /// <param name="vehicleId">Vehicle ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Vehicle object</returns>
+        public Vehicle GetVehicleById(string vehicleId, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<Vehicle>(
+                                                new VehicleParameters(),
+                                                R4MEInfrastructureSettingsV5.Vehicles + "/" + vehicleId,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get the Vehicle track by specifying vehicle ID.
+        /// </summary>
+        /// <param name="vehicleId">Vehicle ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Vehicle track object</returns>
+        public VehicleTrackResponse GetVehicleTrack(string vehicleId, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<VehicleTrackResponse>(
+                                                new VehicleParameters(),
+                                                R4MEInfrastructureSettingsV5.Vehicles + "/" + vehicleId + "/" + "track",
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get paginated list of the vehicle profiles.
+        /// </summary>
+        /// <param name="profileParams">Vehicle profile request parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The data including list of the vehicle profiles.</returns>
+        public VehicleProfilesResponse GetVehicleProfiles(VehicleProfileParameters profileParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<VehicleProfilesResponse>(
+                                                profileParams,
+                                                R4MEInfrastructureSettingsV5.VehicleProfiles,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Create a vehicle profile.
+        /// </summary>
+        /// <param name="vehicleProfileParams">Vehicle profile body parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Created vehicle profile</returns>
+        public VehicleProfile CreateVehicleProfile(VehicleProfile vehicleProfileParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<VehicleProfile>(
+                                                vehicleProfileParams,
+                                                R4MEInfrastructureSettingsV5.VehicleProfiles,
+                                                HttpMethodType.Post,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Remove a vehicle profile from database.
+        /// TO DO: adjust response structure.
+        /// </summary>
+        /// <param name="vehicleProfileParams">Vehicle profile parameter containing a vehicle profile ID </param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Removed vehicle profile</returns>
+        public object DeleteVehicleProfile(VehicleProfileParameters vehicleProfileParams, out ResultResponse resultResponse)
+        {
+            if ((vehicleProfileParams?.VehicleProfileId ?? 0) < 1)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The vehicle ID is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var result = GetJsonObjectFromAPI<object>(new QueryTypes.GenericParameters(),
+                            R4MEInfrastructureSettingsV5.VehicleProfiles + "/" + vehicleProfileParams.VehicleProfileId,
+                            HttpMethodType.Delete,
+                            out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get vehicle profile by ID.
+        /// </summary>
+        /// <param name="vehicleProfileParams">Vehicle profile parameter containing a vehicle profile ID </param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Vehicle profile</returns>
+        public VehicleProfile GetVehicleProfileById(VehicleProfileParameters vehicleProfileParams, out ResultResponse resultResponse)
+        {
+            if ((vehicleProfileParams?.VehicleProfileId ?? 0) < 1)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The vehicle ID is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var result = GetJsonObjectFromAPI<VehicleProfile>(
+                                                new VehicleParameters(),
+                                                R4MEInfrastructureSettingsV5.VehicleProfiles + "/" + vehicleProfileParams.VehicleProfileId,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get vehicle by license plate.
+        /// </summary>
+        /// <param name="vehicleProfileParams">Vehicle parameter containing vehicle license plate</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Vehicle</returns>
+        public VehicleResponse GetVehicleByLicensePlate(VehicleParameters vehicleParams, out ResultResponse resultResponse)
+        {
+            if ((vehicleParams?.VehicleLicensePlate?.Length ?? 0) < 1)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The vehicle license plate is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var result = GetJsonObjectFromAPI<VehicleResponse>(
+                                                vehicleParams,
+                                                R4MEInfrastructureSettingsV5.VehicleLicense,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Search vehicles by sending request body.
+        /// </summary>
+        /// <param name="searchParams">Search parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>An array of the found vehicles</returns>
+        [ObsoleteAttribute("This method is deprecated until resolving the response issue.")]
+        public Vehicle[] SearchVehicles(VehicleSearchParameters searchParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<Vehicle[]>(
+                                                searchParams,
+                                                R4MEInfrastructureSettingsV5.VehicleSearch,
+                                                HttpMethodType.Post,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Update a vehicle
+        /// </summary>
+        /// <param name="vehicleParams">Vehicle body parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Updated vehicle </returns>
+        public Vehicle UpdateVehicle(Vehicle vehicleParams, out ResultResponse resultResponse)
+        {
+            if ((vehicleParams?.VehicleId?.Length ?? 0) != 32)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The vehicle ID is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var updateBodyJsonString = R4MeUtils.SerializeObjectToJson(vehicleParams, false);
+
+            var content = new StringContent(updateBodyJsonString, System.Text.Encoding.UTF8, "application/json");
+
+            var genParams = new RouteParametersQuery();
+
+            var result = GetJsonObjectFromAPI<Vehicle>(
+                genParams,
+                R4MEInfrastructureSettingsV5.Vehicles + "/" + vehicleParams.VehicleId,
+                HttpMethodType.Patch,
+                content,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Update a vehicle profile.
+        /// </summary>
+        /// <param name="profileParams">Vehicle profile object as body payload</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Updated vehicle profile</returns>
+        public VehicleProfile UpdateVehicleProfile(VehicleProfile profileParams, out ResultResponse resultResponse)
+        {
+            if ((profileParams?.VehicleProfileId ?? 0) < 1)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The vehicle profile ID is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var updateBodyJsonString = R4MeUtils.SerializeObjectToJson(profileParams, false);
+
+            var content = new StringContent(updateBodyJsonString, System.Text.Encoding.UTF8, "application/json");
+
+            var genParams = new RouteParametersQuery();
+
+            var result = GetJsonObjectFromAPI<VehicleProfile>(
+                genParams,
+                R4MEInfrastructureSettingsV5.VehicleProfiles + "/" + profileParams.VehicleProfileId,
+                HttpMethodType.Patch,
+                content,
+                out resultResponse);
+
+            return result;
+        }
+
+        #endregion
+
+        #region Teleamtics Platform
+
+        #region Connection
+
+        /// <summary>
+        /// Get all registered telematics connections.
+        /// </summary>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>An array of the Connection type objects</returns>
+        public Connection[] GetTelematicsConnections(out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<Connection[]>(
+                                                new QueryTypes.GenericParameters(),
+                                                R4MEInfrastructureSettingsV5.TelematicsConnection,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get a telematics connection by specified access token
+        /// </summary>
+        /// <param name="connectionParams">The telematics query paramaters 
+        /// as ConnectionPaameters type object</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>A connection type object</returns>
+        public Connection GetTelematicsConnectionByToken(ConnectionParameters connectionParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<Connection>(
+                                                new QueryTypes.GenericParameters(),
+                                                R4MEInfrastructureSettingsV5.TelematicsConnection + "/" + connectionParams.ConnectionToken,
+                                                HttpMethodType.Get,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Register a telematics connection.
+        /// </summary>
+        /// <param name="connectionParams">The telematics query paramaters 
+        /// as ConnectionPaameters type object</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>A connection type object</returns>
+        public Connection RegisterTelematicsConnection(ConnectionParameters connectionParams, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<Connection>(
+                                                connectionParams,
+                                                R4MEInfrastructureSettingsV5.TelematicsConnection,
+                                                HttpMethodType.Post,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Delete telematics connection account by specified access token.
+        /// </summary>
+        /// <param name="connectionParams">The telematics query paramaters 
+        /// as ConnectionPaameters type object</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>Removed teleamtics connection</returns>
+        public Connection DeleteTelematicsConnection(ConnectionParameters connectionParams, out ResultResponse resultResponse)
+        {
+            if ((connectionParams?.ConnectionToken ?? "").Length < 1)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The connection token is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var result = GetJsonObjectFromAPI<Connection>(new QueryTypes.GenericParameters(),
+                            R4MEInfrastructureSettingsV5.TelematicsConnection + "/" + connectionParams.ConnectionToken,
+                            HttpMethodType.Delete,
+                            out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Update telemetics connection's account
+        /// </summary>
+        /// <param name="connectionParams">The telematics query paramaters 
+        /// as ConnectionPaameters type object</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>Updated teleamtics connection</returns>
+        public Connection UpdateTelematicsConnection(ConnectionParameters connectionParams, out ResultResponse resultResponse)
+        {
+            if ((connectionParams?.ConnectionToken ?? "").Length < 1)
+            {
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>()
+                    {
+                         { "Error", new string[] { "The connection token is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            var result = GetJsonObjectFromAPI<Connection>(
+                                                connectionParams,
+                                                R4MEInfrastructureSettingsV5.TelematicsConnection + "/" + connectionParams.ConnectionToken,
+                                                HttpMethodType.Put,
+                                                out resultResponse);
+
+            return result;
+        }
+
+        #endregion
 
         #endregion
 

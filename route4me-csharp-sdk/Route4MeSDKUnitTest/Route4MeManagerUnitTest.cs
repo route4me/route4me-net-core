@@ -14,6 +14,7 @@ using System.CodeDom.Compiler;
 using CsvHelper;
 using System.Linq;
 using static Route4MeSDK.Route4MeManager;
+using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDKUnitTest
 {
@@ -31,6 +32,7 @@ namespace Route4MeSDKUnitTest
         static TestDataRepository tdr;
         static TestDataRepository tdr2;
         static List<string> lsOptimizationIDs;
+        static List<string> lsVehicleIDs;
 
         [ClassInitialize()]
         public static void RoutesGroupInitialize(TestContext context)
@@ -38,6 +40,7 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(context, "Initialization of the class RoutesGroup failed");
 
             lsOptimizationIDs = new List<string>();
+            lsVehicleIDs = new List<string>();
 
             tdr = new TestDataRepository();
             tdr2 = new TestDataRepository();
@@ -587,8 +590,24 @@ namespace Route4MeSDKUnitTest
             var vehicleGroup = new VehiclesGroup();
             var vehicles = vehicleGroup.GetVehiclesList();
 
-            int randomNumber = (new Random()).Next(0, vehicles.PerPage - 1);
-            var vehicleId = vehicles.Data[randomNumber].VehicleId;
+            if ((vehicles?.Total ?? 0) < 1)
+            {
+                var newVehicle = new VehicleV4Parameters()
+                {
+                    VehicleName = "Ford Transit Test 6",
+                    VehicleAlias = "Ford Transit Test 6"
+                };
+
+                var vehicle = vehicleGroup.CreateVehicle(newVehicle);
+                lsVehicleIDs.Add(vehicle.VehicleGuid);
+            }
+
+            string vehicleId = (vehicles?.Total ?? 0) > 0
+                ? vehicles.Data[(new Random()).Next(0, vehicles.PerPage - 1)].VehicleId
+                : lsVehicleIDs[0];
+
+            //int randomNumber = (new Random()).Next(0, vehicles.PerPage-1);
+            //var vehicleId = vehicles.Data[randomNumber].VehicleId;
 
             string routeId = tdr.SD10Stops_route_id;
             Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
@@ -605,8 +624,8 @@ namespace Route4MeSDKUnitTest
             var route = route4Me.UpdateRoute(routeParameters, out string errorString);
 
             Assert.IsInstanceOfType(
-                route.Vehilce, 
-                typeof(VehicleV4Response), 
+                route.Vehilce,
+                typeof(VehicleV4Response),
                 "AssignVehicleToRouteTest failed. " + errorString);
         }
 
@@ -947,7 +966,25 @@ namespace Route4MeSDKUnitTest
         {
             bool result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
-            Assert.IsTrue(result, "Removing of the testing optimization problem failed...");
+            Assert.IsTrue(result, "Removing of the testing optimization problem failed.");
+
+            if (lsVehicleIDs.Count > 0)
+            {
+                var route4Me = new Route4MeManager(c_ApiKey);
+
+                foreach (string vehId in lsVehicleIDs)
+                {
+                    var vehicleParams = new VehicleV4Parameters()
+                    {
+                        VehicleId = vehId
+                    };
+
+                    // Run the query
+                    var vehicles = route4Me.DeleteVehicle(vehicleParams, out string errorString);
+                }
+
+                lsVehicleIDs.Clear();
+            }
         }
     }
 
@@ -10507,30 +10544,28 @@ namespace Route4MeSDKUnitTest
             var response = route4Me.GetUsers(parameters, out string userErrorString);
 
             Assert.IsInstanceOfType(
-                response.Results, 
-                typeof(MemberResponseV4[]), 
-                "GetActivitiesByMemberTest failed - cannot get users. "+ userErrorString);
+                response.Results,
+                typeof(MemberResponseV4[]),
+                "GetActivitiesByMemberTest failed - cannot get users");
             Assert.IsTrue(
-                response.Results.Length > 1, 
-                "Cannot retrieve more than 1 users");
+                response.Results.Length > 0,
+                "Cannot retrieve more than 0 users");
 
             var activityParameters = new ActivityParameters()
             {
-                MemberId = response.Results[1].MemberId != null 
-                            ? Convert.ToInt32(response.Results[1].MemberId) 
+                MemberId = response.Results[0].MemberId != null
+                            ? Convert.ToInt32(response.Results[0].MemberId)
                             : -1,
                 Offset = 0,
                 Limit = 10
             };
 
             // Run the query
-            Activity[] activities = route4Me.GetActivities(
-                                            activityParameters, 
-                                            out string errorString);
+            Activity[] activities = route4Me.GetActivities(activityParameters, out string errorString);
 
             Assert.IsInstanceOfType(
-                activities, 
-                typeof(Activity[]), 
+                activities,
+                typeof(Activity[]),
                 "GetActivitiesByMemberTest failed. " + errorString);
         }
 
@@ -12214,20 +12249,17 @@ namespace Route4MeSDKUnitTest
         [ClassInitialize()]
         public static void VehiclesGroupInitialize(TestContext context)
         {
-            Assert.IsNotNull(
-                context, 
-                "Initialization of the class VehiclesGroup failed.");
-
             lsVehicleIDs = new List<string>();
 
             var vehicleGroup = new VehiclesGroup();
 
             var vehicles = vehicleGroup.GetVehiclesList();
 
-            if (vehicles.Total < 1)
+            if ((vehicles?.Total ?? 0) < 1)
             {
                 var newVehicle = new VehicleV4Parameters()
                 {
+                    VehicleName = "Ford Transit Test 6",
                     VehicleAlias = "Ford Transit Test 6"
                 };
 
@@ -12236,7 +12268,7 @@ namespace Route4MeSDKUnitTest
             }
             else
             {
-                foreach (VehicleV4Response veh1 in vehicles.Data)
+                foreach (var veh1 in vehicles.Data)
                 {
                     lsVehicleIDs.Add(veh1.VehicleId);
                 }
@@ -12262,20 +12294,13 @@ namespace Route4MeSDKUnitTest
 
             // Run the query
             var vehicles = route4Me.GetVehicles(vehicleParameters, out string errorString);
-            
-            Assert.IsInstanceOfType(
-                vehicles, 
-                typeof(VehiclesPaginated), 
-                "getVehiclesList failed. " + errorString);
 
             return vehicles;
         }
 
         [TestMethod]
-        public void CreatetVehicleTest()
+        public void CreateVehicleTest()
         {
-            if (c_ApiKey == ApiKeys.DemoApiKey) return;
-
             // Create common vehicle
             var commonVehicleParams = new VehicleV4Parameters()
             {
@@ -12285,7 +12310,8 @@ namespace Route4MeSDKUnitTest
 
             var commonVehicle = CreateVehicle(commonVehicleParams);
 
-            Assert.IsNotNull(commonVehicle, "Creating of the commomVehicle failed");
+            if (commonVehicle != null && commonVehicle.GetType() == typeof(VehicleV4CreateResponse))
+                lsVehicleIDs.Add(commonVehicle.VehicleGuid);
 
             // Create a truck belonging to the class 6
             var class6TruckParams = new VehicleV4Parameters()
@@ -12322,7 +12348,8 @@ namespace Route4MeSDKUnitTest
 
             var class6Truck = CreateVehicle(class6TruckParams);
 
-            Assert.IsNotNull(class6Truck, "Creating of the class6Truck failed");
+            if (class6Truck != null && class6Truck.GetType() == typeof(VehicleV4CreateResponse))
+                lsVehicleIDs.Add(class6Truck.VehicleGuid);
 
             // Create a truck belonging to the class 7
             var class7TruckParams = new VehicleV4Parameters()
@@ -12362,7 +12389,8 @@ namespace Route4MeSDKUnitTest
 
             var class7Truck = CreateVehicle(class7TruckParams);
 
-            Assert.IsNotNull(class7Truck, "Creating of the class7Truck failed");
+            if (class7Truck != null && class7Truck.GetType() == typeof(VehicleV4CreateResponse))
+                lsVehicleIDs.Add(class7Truck.VehicleGuid);
 
             // Create a truck belonging to the class 8
             var class8TruckParams = new VehicleV4Parameters()
@@ -12402,7 +12430,8 @@ namespace Route4MeSDKUnitTest
 
             var class8Truck = CreateVehicle(class8TruckParams);
 
-            Assert.IsNotNull(class8Truck, "Creating of the class8Truck failed");
+            if (class8Truck != null && class8Truck.GetType() == typeof(VehicleV4CreateResponse))
+                lsVehicleIDs.Add(class8Truck.VehicleGuid);
         }
 
         public VehicleV4CreateResponse CreateVehicle(VehicleV4Parameters vehicleParams)
@@ -12510,6 +12539,23 @@ namespace Route4MeSDKUnitTest
 
             lsVehicleIDs.RemoveAt(lsVehicleIDs.Count - 1);
         }
+
+        [ClassCleanup()]
+        public static void VehiclesGroupCleanup()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            foreach (var vehicleId in lsVehicleIDs)
+            {
+                var vehicleParams = new VehicleV4Parameters()
+                {
+                    VehicleId = vehicleId
+                };
+
+                // Run the query
+                var vehicles = route4Me.DeleteVehicle(vehicleParams, out string errorString);
+            }
+        }
     }
 
     [TestClass]
@@ -12607,8 +12653,9 @@ namespace Route4MeSDKUnitTest
                 Console.WriteLine("Total Geocoded Addresses -> " + lsAddresses.Count);
             };
 
+            var stPath = AppDomain.CurrentDomain.BaseDirectory;
             fastProcessing.uploadAndGeocodeLargeJsonFile(
-                @"Data\JSON\batch_socket_upload_error_addresses_data_5.json");
+                stPath + @"\Data\JSON\batch_socket_upload_error_addresses_data_5.json");
         }
 
         private void FastProcessing_AddressesChunkGeocoded(object sender, FastBulkGeocoding.AddressesChunkGeocodedArgs e)
@@ -12927,7 +12974,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(ApiKey);
 
             #region ======= Add scheduled address book locations to an user account ================================
-            string sAddressFile = @"Data/CSV/addresses_1000.csv";
+            string sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/addresses_1000.csv";
             var sched0 = new Schedule("daily", false);
 
             using (TextReader reader = File.OpenText(sAddressFile))
@@ -13426,16 +13473,95 @@ namespace Route4MeSDKUnitTest
     [TestClass]
     public class TelematicsGateWayAPI
     {
-        static readonly string c_ApiKey = ApiKeys.ActualApiKey;
+        static string c_ApiKey = ApiKeys.ActualApiKey;
+        //static List<string> lsMembers;
+        static string firstMemberId;
 
-        [TestInitialize]
-        public void TelematicsGateWayAPIInitialize()
+        static string apiToken;
+
+        static List<TelematicsConnection> lsCreatedConnections;
+
+        static TelematicsVendors tomtomVendor;
+
+        [ClassInitialize()]
+        public static void TelematicsGateWayAPIInitialize(TestContext context)
         {
-            //Console.SetOut(new StreamWriter(new FileStream("Console_Output.txt", FileMode.Append)) { AutoFlush = true });
+            if (ApiKeys.ActualApiKey == ApiKeys.DemoApiKey) Assert.Inconclusive("The test cannot done with demo API key");
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            //lsMembers = new List<string>();
+            lsCreatedConnections = new List<TelematicsConnection>();
+
+            var members = route4Me.GetUsers(new GenericParameters(), out string errString);
+
+            Assert.IsNotNull((members?.Results?.Length ?? 0) > 0,
+                  "Cannot retrieve the account members." + Environment.NewLine + errString);
+
+            firstMemberId = members.Results[0].MemberId;
+
+            var memberParameters = new TelematicsVendorParameters()
+            {
+                MemberID = Convert.ToUInt32(firstMemberId),
+                ApiKey = c_ApiKey
+            };
+
+            var result = route4Me.RegisterTelematicsMember(memberParameters, out string errorString);
+
+            Assert.IsNotNull(
+                result,
+                "The test registerMemberTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(TelematicsRegisterMemberResponse));
+
+            apiToken = result.ApiToken;
+
+            var vendParams = new TelematicsVendorParameters() { Search = "tomtom" };
+
+            var vendors = route4Me.SearchTelematicsVendors(vendParams, out string errorString2);
+
+            Assert.IsNotNull(
+                vendors?.Vendors ?? null,
+                "Cannot retrieve tomtom vendor. " + errorString);
+
+            Assert.IsInstanceOfType(
+                vendors.Vendors,
+                typeof(TelematicsVendors[]));
+
+            Assert.IsTrue(vendors.Vendors.Length > 0);
+
+            tomtomVendor = vendors.Vendors[0];
+
+            #region Test Connection
+
+            var conParams = new TelematicsConnectionParameters()
+            {
+                Vendor = TelematicsVendorType.Geotab.Description(),
+                AccountId = "54321",
+                UserName = "John Doe 0",
+                Password = "password0",
+                VehiclePositionRefreshRate = 60,
+                Name = "Test Geotab Connection from c# SDK",
+                ValidateRemoteCredentials = false
+            };
+
+            var result0 = route4Me.CreateTelematicsConnection(apiToken, conParams, out string errorString0);
+
+            Assert.IsNotNull(result0,
+            "The test createTelematicsConnectionTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(result0,
+                typeof(TelematicsConnection));
+
+            lsCreatedConnections.Add(result0);
+
+            #endregion
         }
 
         [TestMethod]
-        public void GetAllVendorsTest()
+        public void getAllVendorsTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -13443,58 +13569,54 @@ namespace Route4MeSDKUnitTest
 
             var vendors = route4Me.GetAllTelematicsVendors(vendorParameters, out string errorString);
 
-            Assert.IsNotNull(
-                vendors, 
-                "The test getAllVendorsTest failed. " + errorString);
+            Assert.IsNotNull(vendors, "The test getAllVendorsTest failed. " + errorString);
 
             Assert.IsInstanceOfType(
-                vendors, 
-                typeof(TelematicsVendorsResponse), 
+                vendors,
+                typeof(TelematicsVendorsResponse),
                 "The test getAllVendorsTest failed. " + errorString);
         }
 
         [TestMethod]
-        public void GetVendorTest()
+        public void getVendorTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
             var vendors = route4Me.GetAllTelematicsVendors(
-                                        new TelematicsVendorParameters(), 
+                                        new TelematicsVendorParameters(),
                                         out string errorString);
 
-            Assert.IsNotNull(vendors, "Retrieving of the vendors failed. " + errorString);
-
             int randomNumber = (new Random()).Next(0, vendors.Vendors.Count() - 1);
-            string randomVendorID =  vendors.Vendors[randomNumber].ID;
+            string randomVendorID = vendors.Vendors[randomNumber].ID;
 
             var vendorParameters = new TelematicsVendorParameters()
             {
-                vendorID = Convert.ToUInt32(randomVendorID)
+                VendorID = Convert.ToUInt32(randomVendorID)
             };
 
             var vendor = route4Me.GetTelematicsVendor(vendorParameters, out errorString);
 
-            Assert.IsNotNull(vendor, "The test getVendorTest failed. " + errorString);
+            Assert.IsNotNull(vendors, "The test getVendorTest failed. " + errorString);
 
             Assert.IsInstanceOfType(
-                vendors, 
-                typeof(TelematicsVendorsResponse), 
+                vendors,
+                typeof(TelematicsVendorsResponse),
                 "The test getVendorTest failed. " + errorString);
         }
 
         [TestMethod]
-        public void SearchVendorsTest()
+        public void searchVendorsTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
             var vendorParameters = new TelematicsVendorParameters()
             {
                 //Country = "GB",  // uncomment this line for searching by Country
-                isIntegrated = 1,
+                IsIntegrated = 1,
                 //Feature = "Satelite",  // uncomment this line for searching by Feature
                 Search = "Fleet",
                 Page = 1,
-                perPage = 15
+                PerPage = 15
             };
 
             var vendors = route4Me.SearchTelematicsVendors(vendorParameters, out string errorString);
@@ -13508,7 +13630,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
-        public void VendorsComparisonTest()
+        public void vendorsComparisonTest()
         {
             var route4Me = new Route4MeManager(ApiKeys.DemoApiKey);
 
@@ -13527,6 +13649,156 @@ namespace Route4MeSDKUnitTest
                 vendors, typeof(TelematicsVendorsResponse),
                 "The test vendorsComparisonTest failed. " + errorString
             );
+        }
+
+        [TestMethod]
+        public void registerMemberTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var vendorParameters = new TelematicsVendorParameters()
+            {
+                MemberID = Convert.ToUInt32(firstMemberId),
+                ApiKey = c_ApiKey
+            };
+
+            var result = route4Me.RegisterTelematicsMember(vendorParameters, out string errorString);
+
+            Assert.IsNotNull(
+                result,
+                "The test registerMemberTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(TelematicsRegisterMemberResponse));
+        }
+
+        [TestMethod]
+        public void getTelematicsConnectionsTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var vendorParameters = new TelematicsVendorParameters()
+            {
+                ApiToken = apiToken
+            };
+
+            var result = route4Me.GetTelematicsConnections(vendorParameters, out string errorString);
+
+            Assert.IsNotNull(
+                result,
+                "The test getTelematicsConnectionsTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(TelematicsConnection[]));
+        }
+
+        [TestMethod]
+        public void createTelematicsConnectionTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var conParams = new TelematicsConnectionParameters()
+            {
+                VendorID = Convert.ToUInt32(tomtomVendor.ID),
+                Vendor = tomtomVendor.Slug,
+                AccountId = "12345",
+                UserName = "John Doe",
+                Password = "password",
+                VehiclePositionRefreshRate = 60,
+                Name = "Test Telematics Connection from c# SDK",
+                ValidateRemoteCredentials = false
+            };
+
+            var result = route4Me.CreateTelematicsConnection(apiToken, conParams, out string errorString);
+
+            Assert.IsNotNull(
+            result,
+            "The test createTelematicsConnectionTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(TelematicsConnection));
+
+            lsCreatedConnections.Add(result);
+        }
+
+        [TestMethod]
+        public void deleteTelematicsConnectionTest()
+        {
+            if (lsCreatedConnections.Count < 1) return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var result = route4Me.DeleteTelematicsConnection(
+                apiToken,
+                lsCreatedConnections[lsCreatedConnections.Count - 1].ConnectionToken,
+                out string errorString);
+
+            Assert.IsNotNull(
+                result,
+                "The test deleteTelematicsConnectionTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(TelematicsConnection));
+
+            lsCreatedConnections.RemoveAt(lsCreatedConnections.Count - 1);
+        }
+
+        [TestMethod]
+        public void updateTelematicsConnectionTest()
+        {
+            if (lsCreatedConnections.Count < 1) return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var conParams = new TelematicsConnectionParameters()
+            {
+                VendorID = Convert.ToUInt32(tomtomVendor.ID),
+                AccountId = "12345",
+                UserName = "John Doe",
+                Password = "password",
+                VehiclePositionRefreshRate = 60,
+                Name = "Test Telematics Connection from c# SDK",
+                ValidateRemoteCredentials = false
+            };
+        }
+
+        [TestMethod]
+        public void getTelematicsConnectionTest()
+        {
+            if (lsCreatedConnections.Count < 1) return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var result = route4Me.GetTelematicsConnection(
+                apiToken,
+                lsCreatedConnections[0].ConnectionToken,
+                out string errorString);
+
+            Assert.IsNotNull(
+                result,
+                "The test getTelematicsConnectionTest failed. " + errorString);
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(TelematicsConnection));
+        }
+
+        [ClassCleanup()]
+        public static void TelematicsGateWayAPICleanup()
+        {
+            if (lsCreatedConnections.Count > 0)
+            {
+                var route4Me = new Route4MeManager(c_ApiKey);
+
+                foreach (var conn in lsCreatedConnections)
+                {
+                    var result = route4Me.DeleteTelematicsConnection(apiToken, conn.ConnectionToken, out string errorString);
+                }
+            }
         }
 
     }
