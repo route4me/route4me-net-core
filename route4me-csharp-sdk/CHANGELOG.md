@@ -169,7 +169,7 @@ The file [AddressBundling.cs: ](https://github.com/route4me/route4me-net-core/bl
 The file [Enums.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Enums.cs)  
 – **Enumerations**: AddressBundlingMode, AddressBundlingMergeMode, AddressBundlingFirstItemMode, AddressBundlingAdditionalItemsMode
 	
-The file [Enums.cs (API 5 version): ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Enums.cs)  
+The file [Enums.cs (API 5 version): ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Enum.cs)  
 – **Enumerations**: AlgorithmType, TravelMode, DistanceUnit, Avoid, Optimize, Metric, DeviceType, Format, OptimizationState, RoutePathOutput, StatusUpdateType, TerritoryType, AddressBundlingMode, AddressBundlingMergeMode, AddressBundlingFirstItemMode, AddressBundlingAdditionalItemsMode, MemberTypes
 
 The file [MemberCapabilities.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/MemberCapabilities.cs)  
@@ -206,10 +206,10 @@ The file [TeamResponse.cs: ](https://github.com/route4me/route4me-net-core/blob/
 The file [HttpClientExtensions.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/HttpClientExtensions.cs)  
 – **Class**: HttpClientExtensions
 	
-The file [DriverReviewParameters.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/DriverReviewParameters.cs)  
+The file [DriverReviewParameters.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/DriverReviewParameters.cs)  
 – **Class (API 5 version)**: DriverReviewParameters
 	
-The file [TeamRequest.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/TeamRequest.cs)  
+The file [TeamRequest.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/TeamRequest.cs)  
 – **Class (API 5 version)**: TeamRequest
 	
 The file [Route4MeManagerV5.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
@@ -302,7 +302,7 @@ The file [MemberResponse.cs: ](https://github.com/route4me/route4me-net-core/blo
 The file [Enums.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Enums.cs)  
 – Enumeration: AlgorithmType - added: OPTIMIZATION_STATE_IN_QUEUE = 7, ADVANCED_CVRP_TW = 9
 	
-The file [Enums.cs (API 5): ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Enums.cs)  
+The file [Enums.cs (API 5): ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Enum.cs)  
 – Enumeration: AlgorithmType - added: OPTIMIZATION_STATE_IN_QUEUE = 7, ADVANCED_CVRP_TW = 9  
 – Enumeration: OptimizationState - added: InQueue = 7
 	
