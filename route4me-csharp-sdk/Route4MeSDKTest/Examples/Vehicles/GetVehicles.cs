@@ -21,7 +21,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            VehiclesPaginated vehicles = route4Me.GetVehicles(vehicleParameters, out string errorString);
+            DataTypes.V5.Vehicle[] vehicles = route4Me.GetVehicles(vehicleParameters, out string errorString);
 
             PrintTestVehciles(vehicles, errorString);
         }

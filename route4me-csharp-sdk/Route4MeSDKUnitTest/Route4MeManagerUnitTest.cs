@@ -243,17 +243,23 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsNotNull(route_id, "rote_id is null.");
 
-            var roParameters = new Dictionary<string, string>()
+            var routeParams = new RouteParametersQuery()
             {
-                {"route_id",route_id},
-                {"disable_optimization","0"},
-                {"optimize","Distance"},
+                RouteId = route_id,
+                ReOptimize = true,
+                Remaining = false,
+                DeviceType = DeviceType.Web.Description()
             };
 
             // Run the query
-            bool result = route4Me.ResequenceReoptimizeRoute(roParameters, out string errorString);
+            var result = route4Me.ReoptimizeRoute(routeParams, out string errorString);
 
-            Assert.IsTrue(result, "ResequenceReoptimizeRouteTest failed. " + errorString);
+            Assert.IsNotNull(result, "ResequenceReoptimizeRouteTest failed.");
+
+            Assert.IsInstanceOfType(
+                result,
+                typeof(DataObjectRoute),
+                "ResequenceReoptimizeRouteTest failed. " + errorString);
         }
 
         [TestMethod]
@@ -590,7 +596,7 @@ namespace Route4MeSDKUnitTest
             var vehicleGroup = new VehiclesGroup();
             var vehicles = vehicleGroup.GetVehiclesList();
 
-            if ((vehicles?.Total ?? 0) < 1)
+            if ((vehicles?.Length ?? 0) < 1)
             {
                 var newVehicle = new VehicleV4Parameters()
                 {
@@ -602,12 +608,9 @@ namespace Route4MeSDKUnitTest
                 lsVehicleIDs.Add(vehicle.VehicleGuid);
             }
 
-            string vehicleId = (vehicles?.Total ?? 0) > 0
-                ? vehicles.Data[(new Random()).Next(0, vehicles.PerPage - 1)].VehicleId
+            string vehicleId = (vehicles?.Length ?? 0) > 0
+                ? vehicles[(new Random()).Next(0, vehicles.Length - 1)].VehicleId
                 : lsVehicleIDs[0];
-
-            //int randomNumber = (new Random()).Next(0, vehicles.PerPage-1);
-            //var vehicleId = vehicles.Data[randomNumber].VehicleId;
 
             string routeId = tdr.SD10Stops_route_id;
             Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
@@ -12255,7 +12258,7 @@ namespace Route4MeSDKUnitTest
 
             var vehicles = vehicleGroup.GetVehiclesList();
 
-            if ((vehicles?.Total ?? 0) < 1)
+            if ((vehicles?.Length ?? 0) < 1)
             {
                 var newVehicle = new VehicleV4Parameters()
                 {
@@ -12268,7 +12271,7 @@ namespace Route4MeSDKUnitTest
             }
             else
             {
-                foreach (var veh1 in vehicles.Data)
+                foreach (var veh1 in vehicles)
                 {
                     lsVehicleIDs.Add(veh1.VehicleId);
                 }
@@ -12281,7 +12284,7 @@ namespace Route4MeSDKUnitTest
             GetVehiclesList();
         }
 
-        public VehiclesPaginated GetVehiclesList()
+        public Route4MeSDK.DataTypes.V5.Vehicle[] GetVehiclesList()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 

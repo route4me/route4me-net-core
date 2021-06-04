@@ -310,21 +310,59 @@ namespace Route4MeSDK
 														  HttpMethodType.Get,
 														  out errorString);
 
+			#region Shift the route date and route time to make them as shown in the web app.
+
+			if (result != null && result.GetType() == typeof(DataObjectRoute) && routeParameters.ShiftByTimeZone)
+			{
+				result = ShiftRouteDateTimeByTz(result);
+			}
+
+			#endregion
+
 			return result;
 		}
 
-        /// <summary>
-        /// Returns array of the routes limited by the parameters: offset and limit.
-        /// </summary>
-        /// <param name="routeParameters">The route parameters containing the parameters: offset, limit</param>
-        /// <param name="errorString">Returned error string in case of the processs failing</param>
-        /// <returns>An array of the routes</returns>
+		/// <summary>
+		/// Shift the route date and route time to make them as shown in the web app.
+		/// </summary>
+		/// <param name="route">Input route object</param>
+		/// <returns>Modified route object</returns>
+		public DataObjectRoute ShiftRouteDateTimeByTz(DataObjectRoute route)
+		{
+			var tz = R4MeUtils.GetLocalTimeZone();
+			long totalTime = (long)(route.Parameters.RouteDate + route.Parameters.RouteTime);
+
+			totalTime += tz;
+
+			route.Parameters.RouteDate = (totalTime / 86400) * 86400;
+			route.Parameters.RouteTime = (int)(totalTime - route.Parameters.RouteDate);
+
+			return route;
+		}
+
+		/// <summary>
+		/// Returns array of the routes limited by the parameters: offset and limit.
+		/// </summary>
+		/// <param name="routeParameters">The route parameters containing the parameters: offset, limit</param>
+		/// <param name="errorString">Returned error string in case of the processs failing</param>
+		/// <returns>An array of the routes</returns>
 		public DataObjectRoute[] GetRoutes(RouteParametersQuery routeParameters, out string errorString)
 		{
 			var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
 																 R4MEInfrastructureSettings.RouteHost,
 																 HttpMethodType.Get,
 																 out errorString);
+
+			if (result != null && result.GetType() == typeof(DataObjectRoute[]) && routeParameters.ShiftByTimeZone)
+			{
+				List<DataObjectRoute> lsRoutes = new List<DataObjectRoute>();
+
+				foreach (DataObjectRoute route in result)
+				{
+					lsRoutes.Add(ShiftRouteDateTimeByTz(route));
+				}
+
+			}
 
 			return result;
 		}
@@ -363,10 +401,15 @@ namespace Route4MeSDK
 														  HttpMethodType.Put,
 														  out errorString);
 
+			if (result != null && result.GetType() == typeof(DataObjectRoute) && routeParameters.ShiftByTimeZone)
+			{
+				result = ShiftRouteDateTimeByTz(result);
+			}
+
 			return result;
 		}
 
-		private DataObjectRoute RemoveDuplicatedAddressesFromRoute(DataObjectRoute route)
+		private DataObjectRoute RemoveDuplicatedAddressesFromRoute(DataObjectRoute route, bool ShiftByTimeZone = false)
 		{
 			var lsAddress = new List<Address>();
 
@@ -379,6 +422,11 @@ namespace Route4MeSDK
 			}
 
 			route.Addresses = lsAddress.ToArray();
+
+			if (route != null && route.GetType() == typeof(DataObjectRoute) && ShiftByTimeZone)
+			{
+				route = ShiftRouteDateTimeByTz(route);
+			}
 
 			return route;
 		}
@@ -761,6 +809,7 @@ namespace Route4MeSDK
 		/// <param name="roParames">The parameters for reoptimizng</param>
 		/// <param name="errorString">Error string</param>
 		/// <returns>True, if a route reoptimized/resequences successfully</returns>
+		[Obsolete("The method is obsolete, use the method ReoptimizeRoute instead.")]
 		public bool ResequenceReoptimizeRoute(Dictionary<string, string> roParames, out string errorString)
 		{
 			var request = new RouteParametersQuery
@@ -779,9 +828,33 @@ namespace Route4MeSDK
 			return (response != null && response.Status) ? true : false;
 		}
 
-        /// <summary>
-        /// The request parameters for manually resequencing of a route
-        /// </summary>
+		/// <summary>
+		/// Reoptimze a route
+		/// </summary>
+		/// <param name="queryParams">Route query parameters containing parameters:
+		/// <para>ReOptimize = true, enables reoptimization of a route</para>
+		/// <para>Remaining=0 - disables resequencing of the remaining stops. </para>
+		/// <para>Remaining=1 - enables resequencing of the remaining stops. </para></param>
+		/// <param name="errorString">Error string</param>
+		/// <returns>Reoptimized route</returns>
+		public DataObjectRoute ReoptimizeRoute(RouteParametersQuery queryParams, out string errorString)
+		{
+			var result = GetJsonObjectFromAPI<DataObjectRoute>(queryParams,
+											R4MEInfrastructureSettings.RouteHost,
+											HttpMethodType.Put,
+											out errorString);
+
+			if (result != null && result.GetType() == typeof(DataObjectRoute) && queryParams.ShiftByTimeZone)
+			{
+				result = ShiftRouteDateTimeByTz(result);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// The request parameters for manually resequencing of a route
+		/// </summary>
 		[DataContract()]
 		private sealed class ManuallyResequenceRouteRequest : GenericParameters
 		{
@@ -850,6 +923,12 @@ namespace Route4MeSDK
 											R4MEInfrastructureSettings.RouteHost,
 											HttpMethodType.Put,
 											out errorString);
+
+
+			if (route1 != null && route1.GetType() == typeof(DataObjectRoute) && rParams.ShiftByTimeZone)
+			{
+				route1 = ShiftRouteDateTimeByTz(route1);
+			}
 
 			return route1;
 		}
@@ -3641,9 +3720,9 @@ namespace Route4MeSDK
 		/// <param name="total"> out: Total number of the vehicles </param>
 		/// <param name="errorString"> out: Error as string </param>
 		/// <returns> The VehiclesPaginated type object containing an array of the vehicles</returns>
-		public VehiclesPaginated GetVehicles(VehicleParameters vehParams, out string errorString)
+		public DataTypes.V5.Vehicle[] GetVehicles(VehicleParameters vehParams, out string errorString)
 		{
-            return GetJsonObjectFromAPI<VehiclesPaginated>(vehParams, R4MEInfrastructureSettings.Vehicle_V4,
+            return GetJsonObjectFromAPI<DataTypes.V5.Vehicle[]>(vehParams, R4MEInfrastructureSettings.Vehicle_V4,
 															                       HttpMethodType.Get,
 															                       out errorString);
 		}

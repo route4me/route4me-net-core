@@ -217,5 +217,18 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [DataMember(Name = "unlink_from_master_optimization", EmitDefaultValue = false)]
         public bool UnlinkFromMasterOptimization { get; set; }
+
+        /// <value>iphone</value>,
+        /// <value>ipad</value>,
+        /// <value>android_phone</value>,
+        /// <value>android_tablet</value>
+        /// </summary>
+        [DataMember(Name = "device_type", EmitDefaultValue = false)]
+        public string DeviceType { get; set; }
+
+        /// <summary>
+        /// If true, the route time is shifted by timezone.
+        /// </summary>
+        public bool ShiftByTimeZone { get; set; }
     }
 }
