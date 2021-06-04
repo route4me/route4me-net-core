@@ -783,5 +783,16 @@ namespace Route4MeSDK
 
             return apiKeys.ContainsKey(key) ? apiKeys[key] : null;
         }
+
+        /// <summary>
+        /// Get local timezone in seconds.
+        /// </summary>
+        /// <returns>Timezone in seconds</returns>
+        public static int GetLocalTimeZone()
+        {
+            var seconds = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalSeconds;
+
+            return seconds;
+        }
     }
 }
