@@ -341,7 +341,7 @@ namespace Route4MeSDKUnitTest
                 UnlinkFromMasterOptimization = true
             };
 
-            lsOptimizationIDs.Add(duplicatedRoute.OptimizationProblemId);
+            if (duplicatedRoute.OptimizationProblemId!=null) lsOptimizationIDs.Add(duplicatedRoute.OptimizationProblemId);
 
             // Run the query
             var unlinkedRoute = route4Me.UpdateRoute(routeParameters, out errorString);
@@ -9943,10 +9943,12 @@ namespace Route4MeSDKUnitTest
                 ExtFieldLastName = "Carol",
                 ExtFieldEmail = "lcarol654@yahoo.com",
                 ExtFieldPhone = "897946541",
-                ExtFieldCustomData = new Dictionary<string, string>() 
-                                    { 
-                                        { "order_type", "scheduled order" } 
-                                    },
+                ExtFieldCustomData = (
+                        new List<Dictionary<string, string>>()
+                        {
+                            new Dictionary<string, string>() { { "order_type", "scheduled order" } }
+                        }
+                    ).ToArray(),
                 DayScheduledFor_YYMMDD = "2020-12-20",
                 LocalTimeWindowEnd = 39000,
                 LocalTimeWindowEnd2 = 46200,
