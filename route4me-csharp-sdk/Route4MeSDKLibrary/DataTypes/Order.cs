@@ -1,6 +1,8 @@
 ﻿using Route4MeSDK.QueryTypes;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text.Json.Serialization;
 
 namespace Route4MeSDK.DataTypes
 {
@@ -155,19 +157,30 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "EXT_FIELD_phone", EmitDefaultValue = false)]
         public string ExtFieldPhone { get; set; }
 
+        public bool ShouldSerializeExtFieldCustomData()
+        {
+            return this.ExtFieldCustomData == null
+                ? false
+                : (this.ExtFieldCustomData.GetType() == typeof(Dictionary<string, string>))
+                    ? true : false;
+        }
+
         /// <summary>
-        /// Custom data
+        /// Not serialized - for prevention wrong data (e.g. Dictionary<string, string>[])
+        /// </summary>
+        [JsonIgnore]
+        public Dictionary<string, string> ExtFieldCustomData {
+            get { return ExtFieldCustomData2!=null && ExtFieldCustomData2.GetType()==typeof(Dictionary<string, string>) 
+                    ? (Dictionary<string, string>)ExtFieldCustomData2 : null; }
+            set { ExtFieldCustomData2 = value; } 
+        }
+
+        /// <summary>
+        /// Custom data - serialized
         /// </summary>
         [DataMember(Name = "EXT_FIELD_custom_data", EmitDefaultValue = false)]
-        public Dictionary<string, string>[] ExtFieldCustomData
-        {
-            get { return _ext_field_custom_data; }
-            set
-            {
-                if (value.GetType() == typeof(Dictionary<string, string>[])) _ext_field_custom_data = value; else _ext_field_custom_data = null;
-            }
-        }
-        private Dictionary<string, string>[] _ext_field_custom_data;
+        private object ExtFieldCustomData2 { get; set; }
+
 
         /// <summary>
         /// Local timezone string
