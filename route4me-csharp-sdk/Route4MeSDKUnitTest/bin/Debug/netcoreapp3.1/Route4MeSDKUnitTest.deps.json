@@ -12,7 +12,7 @@
           "MSTest.TestAdapter": "1.4.0",
           "MSTest.TestFramework": "1.4.0",
           "Microsoft.NET.Test.Sdk": "16.0.1",
-          "Route4MeSDKLibrary": "1.0.1.4",
+          "Route4MeSDKLibrary": "1.0.1.5",
           "System.CodeDom": "4.5.0"
         },
         "runtime": {
@@ -1771,8 +1771,9 @@
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.1.4": {
+      "Route4MeSDKLibrary/1.0.1.5": {
         "dependencies": {
+          "CsvHelper": "12.1.2",
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
           "Microsoft.EntityFrameworkCore": "2.2.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
@@ -2873,7 +2874,7 @@
       "path": "system.xml.xpath.xmldocument/4.0.1",
       "hashPath": "system.xml.xpath.xmldocument.4.0.1.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.1.4": {
+    "Route4MeSDKLibrary/1.0.1.5": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -341,14 +341,12 @@ namespace Route4MeSDKUnitTest
                 UnlinkFromMasterOptimization = true
             };
 
-            //if (duplicatedRoute.OptimizationProblemId!=null) lsOptimizationIDs.Add(duplicatedRoute.OptimizationProblemId);
-
             // Run the query
             var unlinkedRoute = route4Me.UpdateRoute(routeParameters, out errorString);
 
             Assert.IsNotNull(
                 unlinkedRoute,
-                "UnlinkRouteFromOptimizationTest failed. " + errorString);
+                "UnlinkRouteFromOptimizationTest failed. " + errorString+Environment.NewLine+"Route ID: "+routeId);
             Assert.IsNull(
                 unlinkedRoute.OptimizationProblemId, 
                 "Optimization problem ID of the unlinked route is not null.");
