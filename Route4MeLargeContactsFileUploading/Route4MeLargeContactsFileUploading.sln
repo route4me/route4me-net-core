@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvFileUploading", "Route4MeLargeCsvFileUploading\CsvFileUploading.csproj", "{D5FF8B1B-7169-4F84-A4E3-5AEB58D4162C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5FF8B1B-7169-4F84-A4E3-5AEB58D4162C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5FF8B1B-7169-4F84-A4E3-5AEB58D4162C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5FF8B1B-7169-4F84-A4E3-5AEB58D4162C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5FF8B1B-7169-4F84-A4E3-5AEB58D4162C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B78EB476-C371-4FE1-9C41-B206AB6BB488}
+	EndGlobalSection
+EndGlobal

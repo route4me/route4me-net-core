@@ -1,0 +1,4 @@
+Alias,Address,City,State,Zip,Lat,Lng,Time,Time_window_start,Time_window_end
+ToDelete - CMA-SEV777 ~ Seven Springs ~ REPID3323,777 Water Wheel Dr,Champion,PA,15622-4007,40.02585,-79.29886,30,8:00,17:00
+ToDelete - CMA-WMRGL ~ Rocky Gap Lodge & Resort ~ REPID3323,16701 Lakeview Rd NE,Flintstone,MD,21530-1059,39.7,-78.65681,30,8:00,17:00
+ToDelete - CMA-PAQIB ~ Quality Inn-Breezewood ~ REPID3323,16621 Lincoln Hwy,Breezewood,PA,15533-7969,39.99919,-78.23881,30,8:00,17:00
