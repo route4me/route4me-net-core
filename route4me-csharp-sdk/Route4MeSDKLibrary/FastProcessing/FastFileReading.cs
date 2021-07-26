@@ -9,6 +9,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using Route4MeSDK.DataTypes;
 using System.Threading;
+using CsvHelper;
+using System.Text.RegularExpressions;
 
 namespace Route4MeSDK.FastProcessing
 {
@@ -21,8 +23,14 @@ namespace Route4MeSDK.FastProcessing
         const long length = 0x20000000; // 512 megabytes
 
         string jsonFileName;
+        string csvFileName;
 
-        public int jsonObjectsChunkSize { get; set; }
+        public int chunkPause { get; set; } = 2000;
+
+        public int jsonObjectsChunkSize { get; set; } = 300;
+        public int csvObjectsChunkSize { get; set; } = 300;
+
+        public static Dictionary<string, string> csvAddressMapping { get; set; }
 
         private ManualResetEvent manualResetEvent = null;
 
@@ -69,13 +77,59 @@ namespace Route4MeSDK.FastProcessing
 
         #endregion
 
+        #region // Event handler for the CsvFileChunkIsReady
+
+        public event EventHandler<CsvFileChunkIsReadyArgs> CsvFileChunkIsReady;
+
+        public event EventHandler<CsvFileReadingIsDoneArgs> CsvFileReadingIsDone;
+
+        public delegate void CsvFileChunkIsReadyEventHandler(object sender, CsvFileChunkIsReadyArgs e);
+
+        public class CsvFileChunkIsReadyArgs : EventArgs
+        {
+            public string AddressesChunk { get; set; }
+
+            public List<DataTypes.V5.AddressBookContact> multiContacts { get; set; }
+        }
+
+        protected virtual void OnCsvFileChunkIsReady(CsvFileChunkIsReadyArgs e)
+        {
+            EventHandler<CsvFileChunkIsReadyArgs> handler = CsvFileChunkIsReady;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion
+
+        #region // Event handler for the CsvFileReadingIsDone event
+        protected virtual void OnCsvFileReadingIsDone(CsvFileReadingIsDoneArgs e)
+        {
+            EventHandler<CsvFileReadingIsDoneArgs> handler = CsvFileReadingIsDone;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public delegate void CsvFileReadingIsDoneEventHandler(object sender, CsvFileReadingIsDoneArgs e);
+
+        public class CsvFileReadingIsDoneArgs : EventArgs
+        {
+            public bool IsDone { get; set; }
+        }
+
+        #endregion
+
         public void fastReadFromFile(String sFileName)
         {
             if (sFileName.Substring(1, 1) != ":")
             {
                 String startupPath = AppDomain.CurrentDomain.BaseDirectory;
                 sFileName = startupPath + "/" + sFileName;
-
             }
 
             try
@@ -89,7 +143,6 @@ namespace Route4MeSDK.FastProcessing
                         memoryMappedViewStream.Read(contentArray, 0, contentArray.Length);
 
                         string content = Encoding.UTF8.GetString(contentArray);
-
                     }
 
                 }
@@ -98,7 +151,6 @@ namespace Route4MeSDK.FastProcessing
             {
                 Console.WriteLine("Error during JSON file readinf. " + ex.Message);
             }
-
 
         }
 
@@ -152,7 +204,7 @@ namespace Route4MeSDK.FastProcessing
 
                             //manualResetEvent.Set();
                             OnJsonFileChunkIsReady(chunkIsReady);
-                            Thread.Sleep(5000);
+                            Thread.Sleep(chunkPause);
                             //manualResetEvent.WaitOne();
                         }
                     }
@@ -166,7 +218,7 @@ namespace Route4MeSDK.FastProcessing
                     sJsonAddressesChunk = "";
                     OnJsonFileChunkIsReady(chunkIsReady);
 
-                    System.Threading.Thread.Sleep(5000);
+                    System.Threading.Thread.Sleep(chunkPause);
                 }
 
                 JsonFileReadingIsDoneArgs args = new JsonFileReadingIsDoneArgs() { IsDone = true };
@@ -179,6 +231,362 @@ namespace Route4MeSDK.FastProcessing
         {
             //manualResetEvent.Set();
         }
+
+        public void readingChunksFromLargeCsvFile(string fileName, out string errorString)
+        {
+            errorString = null;
+            int curJsonObjects = 0;
+            //string sJsonAddressesChunk = "";
+            //var serializer = new JsonSerializer();
+
+            string wrongCoordPattern = @"\d{1,3}.\d"; // TO DO: API 5 contacts Batch uploading recognizes numbers with onli one digit after point as wrong
+
+            var lsMultiContacts = new List<DataTypes.V5.AddressBookContact>();
+
+            using (TextReader reader = File.OpenText(fileName))
+            {
+                var csv = new CsvReader(reader);
+
+                csv.ReadHeader();
+                string[] csvHeaders = csv.FieldHeaders.Where(x => x.Length > 0).ToArray();
+
+                foreach (var csvHeader in csvHeaders)
+                {
+                    if (!csvAddressMapping.ContainsKey(csvHeader))
+                    {
+                        errorString = "CSV file header " + csvHeader + " is not specified in the CSV address mapping.";
+                        return;
+                    }
+                }
+
+                foreach (string k1 in csvAddressMapping.Keys)
+                {
+                    if (!csvHeaders.Contains(k1))
+                    {
+                        errorString = "The CSV address mapping key " + k1 + " is not found in the CSV header";
+                        return;
+                    }
+                }
+
+                while (csv.Read())
+                {
+                    var abContact = new DataTypes.V5.AddressBookContact();
+
+                    foreach (var csvHeader in csvHeaders)
+                    {
+                        int fieldIndex = Array.IndexOf(csvHeaders, csvHeader);
+                        var fieldValue = csv.GetField(fieldIndex);
+                        object oFieldValue = (object)fieldValue;
+
+                        if (fieldValue != null)
+                        {
+                            var propinfo = abContact.GetType().GetProperty(csvAddressMapping[csvHeader]);
+                            //string fieldType = propinfo.PropertyType.FullName;
+
+                            //if (Nullable.GetUnderlyingType(propinfo.PropertyType) != null)
+                            //{
+                            //    fieldType = Nullable.GetUnderlyingType(propinfo.PropertyType).Name;
+                            //}
+
+                            string fieldType = Nullable.GetUnderlyingType(propinfo.PropertyType) != null
+                                ? Nullable.GetUnderlyingType(propinfo.PropertyType).Name
+                                : propinfo.PropertyType.Name;
+
+                                switch (fieldType)
+                            {
+                                case "String":
+                                    if (csvAddressMapping[csvHeader] == "AddressAlias" && fieldValue.ToString().Length > 59)
+                                            fieldValue = fieldValue.ToString().Substring(0, 59);
+                                    if (csvAddressMapping[csvHeader] == "AddressZip" && fieldValue.ToString().Length > 6)
+                                        fieldValue = fieldValue.ToString().Substring(0, 5);
+
+                                    abContact
+                                        .GetType()
+                                        .GetProperty(csvAddressMapping[csvHeader])
+                                        .SetValue(abContact, fieldValue);
+                                    break;
+                                case "Int32":
+                                    int? intVal = R4MeUtils.ConvertObjectToType<Int32>(ref oFieldValue);
+
+                                    if (intVal!=null)
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, intVal);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("The field " + csvHeader + " of the address book contact " + abContact.Address1 + " ommited");
+                                    }
+                                    break;
+                                case "Int64":
+                                    if ((new string[]
+                                    {
+                                        "LocalTimeWindowStart", "LocalTimeWindowEnd",
+                                        "LocalTimeWindowStart2", "LocalTimeWindowEnd2"
+                                    }).Contains(csvAddressMapping[csvHeader]) && fieldValue.Contains(":"))
+                                    {
+                                        string hmValue = fieldValue.Length < 5 ? "0" + fieldValue : fieldValue;
+                                        hmValue = hmValue.Length == 7 ? "0" + hmValue : hmValue;
+                                        hmValue = hmValue.Length < 8 ? "00:" + hmValue : hmValue;
+
+                                        var secValue = R4MeUtils.DDHHMM2Seconds(hmValue, out string errorString2);
+
+                                        long? seconds = secValue != null ? (long)secValue : default(long);
+
+                                        if (seconds != null)
+                                            abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, seconds);
+
+                                        continue;
+                                    }
+
+                                    long? longVal = R4MeUtils.ConvertObjectToType<long>(ref oFieldValue);
+
+                                    if (csvAddressMapping[csvHeader] == "ServiceTime") longVal = longVal * 60;
+
+                                    if (longVal != null)
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, longVal);
+
+                                        continue;
+                                    }
+                                    break;
+                                case "Double":
+                                    if ((new string[] 
+                                    {
+                                        "CachedLat","CachedLng","CurbsideLat","CurbsideLng"
+                                    }).Contains(csvAddressMapping[csvHeader]))
+                                    {
+                                        var problematic = Regex.IsMatch(fieldValue, wrongCoordPattern);
+                                        if (problematic)
+                                        {
+                                            fieldValue += "0000001";
+                                            oFieldValue = (object)fieldValue;
+                                        }
+                                    }
+
+                                    double? dbVal = R4MeUtils.ConvertObjectToType<double>(ref oFieldValue);
+
+                                    if (dbVal!=null)
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, dbVal);
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("The field " + csvHeader + " of the address book contact " + abContact.Address1 + " ommited");
+                                    }
+                                    break;
+                                case "Boolean":
+                                    bool? blVal = R4MeUtils.ConvertObjectToType<bool>(ref oFieldValue);
+
+                                    if (blVal!=null)
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, blVal);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("The field " + csvHeader + " of the address book contact " + abContact.Address1 + " ommited");
+                                    }
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                        }
+
+                    }
+
+                    if (!csvAddressMapping.Values.Contains("AddressStopType")) abContact.AddressStopType = AddressStopType.Delivery.Description();
+
+                    lsMultiContacts.Add(abContact);
+
+                    curJsonObjects++;
+
+                    if (curJsonObjects >= csvObjectsChunkSize)
+                    {
+                        CsvFileChunkIsReadyArgs chunkIsReady = new CsvFileChunkIsReadyArgs();
+                        chunkIsReady.multiContacts = lsMultiContacts;
+                        curJsonObjects = 0;
+
+                        OnCsvFileChunkIsReady(chunkIsReady);
+                        Thread.Sleep(chunkPause);
+
+                        lsMultiContacts = new List<DataTypes.V5.AddressBookContact>();
+                    }
+
+                }
+
+                if (lsMultiContacts.Count > 0)
+                {
+                    CsvFileChunkIsReadyArgs chunkIsReady = new CsvFileChunkIsReadyArgs();
+                    chunkIsReady.multiContacts = lsMultiContacts;
+
+                    OnCsvFileChunkIsReady(chunkIsReady);
+
+                    System.Threading.Thread.Sleep(chunkPause);
+
+                    lsMultiContacts = new List<DataTypes.V5.AddressBookContact>();
+                }
+
+                CsvFileReadingIsDoneArgs args = new CsvFileReadingIsDoneArgs() { IsDone = true };
+
+                OnCsvFileReadingIsDone(args);
+            }
+        }
+
+        public void readingChunksFromLargeCsvFileOld(string fileName, out string errorString)
+        {
+            errorString = null;
+            int curJsonObjects = 0;
+            string sJsonAddressesChunk = "";
+            var serializer = new JsonSerializer();
+
+            using (TextReader reader = File.OpenText(fileName))
+            {
+                var csv = new CsvReader(reader);
+
+                csv.ReadHeader();
+                string[] csvHeaders = csv.FieldHeaders;
+
+                foreach (var csvHeader in csvHeaders)
+                {
+                    if (!csvAddressMapping.ContainsKey(csvHeader))
+                    {
+                        errorString = "CSV file header " + csvHeader + " is not specified in the CSV address mapping.";
+                        return;
+                    }
+                }
+
+                foreach (string k1 in csvAddressMapping.Keys)
+                {
+                    if (!csvHeaders.Contains(k1))
+                    {
+                        errorString = "The CSV address mapping key " + k1 + " is not found in the CSV header";
+                        return;
+                    }
+                }
+
+                while (csv.Read())
+                {
+                    var abContact = new AddressBookContact();
+
+                    foreach (var csvHeader in csvHeaders)
+                    {
+                        int fieldIndex = Array.IndexOf(csvHeaders, csvHeader);
+                        var fieldValue = csv.GetField(fieldIndex);
+
+                        if (fieldValue != null)
+                        {
+                            string fieldType = abContact.GetType().GetProperty(csvAddressMapping[csvHeader]).PropertyType.Name;
+
+                            switch (fieldType)
+                            {
+                                case "String":
+                                    abContact
+                                        .GetType()
+                                        .GetProperty(csvAddressMapping[csvHeader])
+                                        .SetValue(abContact, fieldValue);
+                                    break;
+                                case "Int32":
+                                    if (Int32.TryParse(fieldValue.ToString(), out Int32 __32))
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, Convert.ToInt32(fieldValue));
+                                    }
+                                    break;
+                                case "Int64":
+                                    if (Int64.TryParse(fieldValue.ToString(), out Int64 __64))
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, Convert.ToInt64(fieldValue));
+                                    }
+                                    break;
+                                case "Double":
+                                    if (Double.TryParse(fieldValue.ToString(), out double __d))
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, Convert.ToDouble(fieldValue));
+                                    }
+                                    break;
+                                case "Boolean":
+                                    if (Boolean.TryParse(fieldValue.ToString(), out bool __b))
+                                    {
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, Convert.ToBoolean(fieldValue));
+                                    }
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                        }
+
+                    }
+
+                    sJsonAddressesChunk += JsonConvert.SerializeObject(abContact, Formatting.None) + ",";
+                    curJsonObjects++;
+
+                    if (curJsonObjects >= jsonObjectsChunkSize)
+                    {
+                        sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
+                        //JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
+                        CsvFileChunkIsReadyArgs chunkIsReady = new CsvFileChunkIsReadyArgs();
+                        chunkIsReady.AddressesChunk = sJsonAddressesChunk;
+                        sJsonAddressesChunk = "";
+                        curJsonObjects = 0;
+
+                        //manualResetEvent.Set();
+                        //OnJsonFileChunkIsReady(chunkIsReady);
+                        OnCsvFileChunkIsReady(chunkIsReady);
+                        Thread.Sleep(5000);
+                        //manualResetEvent.WaitOne();
+                    }
+
+
+                }
+
+                if (sJsonAddressesChunk != "")
+                {
+                    sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
+                    //JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
+                    CsvFileChunkIsReadyArgs chunkIsReady = new CsvFileChunkIsReadyArgs();
+                    chunkIsReady.AddressesChunk = sJsonAddressesChunk;
+                    sJsonAddressesChunk = "";
+                    //OnJsonFileChunkIsReady(chunkIsReady);
+                    OnCsvFileChunkIsReady(chunkIsReady);
+
+                    System.Threading.Thread.Sleep(5000);
+                }
+
+                //JsonFileReadingIsDoneArgs args = new JsonFileReadingIsDoneArgs() { IsDone = true };
+                CsvFileReadingIsDoneArgs args = new CsvFileReadingIsDoneArgs() { IsDone = true };
+                //OnJsonFileReadingIsDone(args);
+                OnCsvFileReadingIsDone(args);
+            }
+        }
+
+
 
         public string readJsonTextFromFile(String sFileName)
         {
