@@ -131,11 +131,11 @@ namespace CsvFileUploading
                         ? inputFileName
                         : stPath + @"files\" + inputFileName;
 
-                    Console.WriteLine("Start: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                    Console.WriteLine("Start: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
                     fastProcessing.uploadLargeContactsCsvFile(fileName, out string errorString);
 
-                    Console.WriteLine("End: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                    Console.WriteLine("End: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
             }
 
