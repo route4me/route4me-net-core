@@ -14,7 +14,7 @@
           "Microsoft.Extensions.Configuration.FileExtensions": "2.2.0.0",
           "Microsoft.Extensions.Configuration.Json": "2.2.0.0",
           "Newtonsoft.Json": "12.0.0.0",
-          "Route4MeSDKLibrary": "1.0.1.4"
+          "Route4MeSDKLibrary": "1.0.1.5"
         },
         "runtime": {
           "CsvFileUploading.dll": {}
@@ -68,11 +68,11 @@
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.1.4": {
+      "Route4MeSDKLibrary/1.0.1.5": {
         "runtime": {
           "Route4MeSDKLibrary.dll": {
-            "assemblyVersion": "1.0.1.4",
-            "fileVersion": "1.0.1.4"
+            "assemblyVersion": "1.0.1.5",
+            "fileVersion": "1.0.1.5"
           }
         }
       },
@@ -178,7 +178,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Route4MeSDKLibrary/1.0.1.4": {
+    "Route4MeSDKLibrary/1.0.1.5": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
