@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using Route4MeSDK.DataTypes;
+﻿using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.FastProcessing;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-
-        public void uploaLargeContactsCsvFile()
+        public void validateLargeContactsCsvFile()
         {
-            var fastProcessing = new FastBulkGeocoding(ActualApiKey, false)
+            var fastValidating = new FastValidateData(ActualApiKey, false)
             {
+                CsvChankSize = 500,
                 ChankPause = 0,
-                CsvChankSize = 500
+                ConsoleWriteMessage = true
             };
-            //var lsGeocodedAddressTotal = new List<AddressGeocoded>();
-            var lsAddresses = new List<string>();
 
             var ab = new AddressBookContact();
 
@@ -37,15 +36,14 @@ namespace Route4MeSDK.Examples
 
             FastFileReading.csvAddressMapping = csvAddressMapping;
 
-            fastProcessing.MandatoryFields = csvAddressMapping.Values.ToArray();
+            fastValidating.MandatoryFields = csvAddressMapping.Values.ToArray();
 
             Console.WriteLine("Start: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
             var stPath = AppDomain.CurrentDomain.BaseDirectory;
-            fastProcessing.uploadLargeContactsCsvFile(stPath + @"Data\CSV\60k_prob.csv", out string errorString);
+            fastValidating.readLargeContactsCsvFile(stPath + @"Data\CSV\60k.csv", out string errorString);
 
             Console.WriteLine("End: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
-
     }
 }

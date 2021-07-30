@@ -37,6 +37,9 @@ namespace Route4MeSDK
                                                                                                  //private bool m_isTestMode = false;
 
         private bool parseWithNewtonJson;
+
+        // Some endpoints rise error event if not all objects have the same fields (e.g. API 5 addressbook batch creating) 
+        private string[] mandatoryFields;
         #endregion
 
         #region Constructors
@@ -185,10 +188,12 @@ namespace Route4MeSDK
         /// <param name="contactParams">The data with multiple contacts parameters</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns>Status response (TO DO: expected result with created multiple contacts)</returns>
-        public StatusResponse BatchCreateAdressBookContacts(BatchCreatingAddressBookContactsRequest contactParams, out ResultResponse resultResponse)
+        public StatusResponse BatchCreateAdressBookContacts(BatchCreatingAddressBookContactsRequest contactParams, 
+                                                            string[] mandatoryNullableFields,
+                                                            out ResultResponse resultResponse)
         {
             //parseWithNewtonJson = true;
-
+            this.mandatoryFields = mandatoryNullableFields;
             contactParams.PrepareForSerialization();
 
             return GetJsonObjectFromAPI<StatusResponse>(contactParams,
@@ -1771,7 +1776,10 @@ namespace Route4MeSDK
                                 }
                                 else
                                 {
-                                    string jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+
+                                    string jsonString = (this.mandatoryFields?.Length ?? 0)>0 
+                                        ? R4MeUtils.SerializeObjectToJson(optimizationParameters, this.mandatoryFields) 
+                                        : R4MeUtils.SerializeObjectToJson(optimizationParameters);
                                     content = new StringContent(jsonString);
                                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                                 }
