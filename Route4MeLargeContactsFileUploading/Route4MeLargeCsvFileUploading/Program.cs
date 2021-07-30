@@ -23,6 +23,8 @@ namespace CsvFileUploading
 
             bool removeContacts = (args != null && args.Length > 0 && args[0] == "remove") ? true : false;
 
+            bool validateContacts = (args != null && args.Length > 0 && args[0] == "validate") ? true : false;
+
             if (removeContacts)
             {
                 string jsonfile = stPath + @"files\remove_contacts.json";
@@ -103,6 +105,46 @@ namespace CsvFileUploading
 
                 //Console.WriteLine("Remove Command");
             }
+            else if (validateContacts)
+            {
+                var fastValidating = new FastValidateData(ActualApiKey, false)
+                {
+                    ChankPause = Convert.ToInt32(ReadSetting("chank_setting.chunk_pause")),
+                    CsvChankSize = Convert.ToInt32(ReadSetting("chank_setting.chunk_size"))
+                };
+
+                var csvAddressMapping = (ReadSetting("csv_address_mapping") as Dictionary<string, object>)
+                                            .ToDictionary(k => k.Key, k => k.Value.ToString());
+
+                fastValidating.MandatoryFields = csvAddressMapping.Values.ToArray();
+
+                FastFileReading.csvAddressMapping = csvAddressMapping;
+
+                var inputFilenames = ReadInputFileNames();
+
+                if (inputFilenames == null)
+                {
+                    Console.WriteLine("There are no input file names in the file input_files.txt");
+                    return;
+                }
+
+                foreach (string inputFileName in inputFilenames)
+                {
+                    Console.WriteLine(Environment.NewLine + "===== Input file: " + inputFileName + "======");
+                    string fileName = (inputFileName.Contains(@"\") || inputFileName.Contains(@"/"))
+                        ? inputFileName
+                        : stPath + @"files\" + inputFileName;
+
+                    Console.WriteLine("Start: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    fastValidating.readLargeContactsCsvFile(fileName, out string errorString);
+
+                    Console.WriteLine("End: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+
+                Console.WriteLine(Environment.NewLine + "Press any key to close the window");
+                string v1 = Console.ReadLine();
+            }
             else
             {
                 var fastProcessing = new FastBulkGeocoding(ActualApiKey, false)
@@ -113,6 +155,8 @@ namespace CsvFileUploading
 
                 var csvAddressMapping = (ReadSetting("csv_address_mapping") as Dictionary<string, object>)
                                             .ToDictionary(k => k.Key, k => k.Value.ToString());
+
+                fastProcessing.MandatoryFields = csvAddressMapping.Values.ToArray();
 
                 FastFileReading.csvAddressMapping = csvAddressMapping;
 
