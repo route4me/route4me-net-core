@@ -43,10 +43,6 @@ See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sd
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FastProcessing\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="2.16.3" />
     <PackageReference Include="fastJSON" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Connections.Client" Version="1.1.0" />

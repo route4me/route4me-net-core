@@ -57,10 +57,19 @@ namespace Route4MeSDK.FastProcessing
         public int JsonChankSize { get; set; } = 300;
         public int ChankPause { get; set; } = 2000;
 
+        static List<Task> taskList;
+
+        static List<List<DataTypes.V5.AddressBookContact>> threadPackage;
+
+        public string[] MandatoryFields { get; set; }
+
         public FastBulkGeocoding(string ApiKey, bool EnableTraceSource = false)
         {
             if (ApiKey != "") apiKey = ApiKey;
             Quobject.SocketIoClientDotNet.TraceSourceTools.LogTraceSource.TraceSourceLogging(EnableTraceSource);
+
+            taskList = new List<Task>();
+            threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
         }
 
         #region // Addresses chunk's geocoding is finished event handler
@@ -216,12 +225,21 @@ namespace Route4MeSDK.FastProcessing
             bool isDone = e.IsDone;
             if (isDone)
             {
+                Parallel.ForEach(threadPackage, chunk =>
+                {
+                    CsvFileChunkIsReady(chunk);
+                });
+
+                threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
+
+                /*
                 largeCsvFileProcessingIsDone = true;
                 mainResetEvent.Set();
                 if (geocodedAddressesDownloadingIsDone)
                 {
                     OnGeocodingIsFinished(new GeocodingIsFinishedArgs() { isFinished = true });
                 }
+                */
                 // fire here event for external (test) code
             }
         }
@@ -251,21 +269,50 @@ namespace Route4MeSDK.FastProcessing
 
         private void FileReading_CsvFileChunkIsReady(object sender, FastFileReading.CsvFileChunkIsReadyArgs e)
         {
+            threadPackage.Add(e.multiContacts);
+
+            if (threadPackage.Count>15)
+            {
+                Parallel.ForEach(threadPackage, chunk =>
+                {
+                    CsvFileChunkIsReady(chunk);
+                });
+
+                threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
+            }
+
+            /* This works: 30 000 contacts in 3 min
+            taskList.Add(Task.Run(() => CsvFileChunkIsReady(e.multiContacts)));
+
+            if (taskList.Count>9)
+            {
+                Task.WaitAll(taskList.ToArray());
+
+                taskList = new List<Task>();
+            }
+            */ 
+        }
+
+        private async void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
+        {
             var route4Me = new Route4MeManagerV5(apiKey);
 
             var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest()
             {
-                Data = e.multiContacts.ToArray()
+                Data = contactsChunk.ToArray()
             };
 
-            var response = route4Me.BatchCreateAdressBookContacts(contactParams, out Route4MeSDK.DataTypes.V5.ResultResponse resultResponse);
+            var response = route4Me.BatchCreateAdressBookContacts(
+                contactParams, 
+                MandatoryFields,
+                out DataTypes.V5.ResultResponse resultResponse);
 
-            if (response?.status ?? false) totalCsvChunks += e.multiContacts.Count;
+            if (response?.status ?? false) totalCsvChunks += contactsChunk.Count;
 
             Console.WriteLine(
                 (response?.status ?? false)
                 ? totalCsvChunks + " address book contacts added to database"
-                : "Faild to add " + e.multiContacts.Count + " address book contacts");
+                : "Faild to add " + contactsChunk.Count + " address book contacts");
 
             if (!(response?.status ?? false))
             {
@@ -279,8 +326,8 @@ namespace Route4MeSDK.FastProcessing
                     Console.WriteLine(msg.Key + ": " + msg.Value);
                 }
 
-                Console.WriteLine("Start address: " + e.multiContacts[0].Address1);
-                Console.WriteLine("End address: " + e.multiContacts[e.multiContacts.Count-1].Address1);
+                Console.WriteLine("Start address: " + contactsChunk[0].Address1);
+                Console.WriteLine("End address: " + contactsChunk[contactsChunk.Count - 1].Address1);
                 Console.WriteLine("-------------------------------");
             }
         }
