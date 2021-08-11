@@ -21,6 +21,11 @@ The file [FastFileReading.cs: ](https://github.com/route4me/route4me-net-core/bl
 The file [PropertyValidation.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/PropertyValidation.cs)
 – **Class**: PropertyValidation  
 
+The file [Address.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Address.cs)
+– Changed the type of the property Joint form int? to bool?  
+The file [Address.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Address/Address.cs)
+– Changed the type of the property Joint form int? to bool?  
+
 ### Added
 
 The file [AddressBookContact.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/AddressBookContact/AddressBookContact.cs)  
@@ -32,13 +37,8 @@ The file [AddressBookContactsResponse.cs: ](https://github.com/route4me/route4me
 The file [AddressBookParameters.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/AddressBookContact/AddressBookParameters.cs)  
 – **Class (API 5 version)**: AddressBookParameters  
 
-The file [FastFileReading.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastValidateData.cs)
-– **Class**: FastFileReading   
-
-The file [Address.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Address.cs)
-– Changed the type of the property Joint form int? to bool?  
-The file [Address.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Address/Address.cs)
-– Changed the type of the property Joint form int? to bool?  
+The file [FastValidateData.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastValidateData.cs)
+– **Class**: FastValidateData   
 
 ## [1.0.1.5] - 2021-06-04
 
