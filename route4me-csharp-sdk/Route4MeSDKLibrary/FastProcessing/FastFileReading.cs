@@ -239,7 +239,7 @@ namespace Route4MeSDK.FastProcessing
             //string sJsonAddressesChunk = "";
             //var serializer = new JsonSerializer();
 
-            string wrongCoordPattern = @"^\-{0,1}\d{1,3}\.\d$"; // TO DO: API 5 contacts Batch uploading recognizes numbers with onli one digit after point as wrong
+            string wrongCoordPattern = @"^\-{0,1}\d{1,3}\.\d$"; // TO DO: API 5 contacts Batch uploading recognizes numbers with only one digit after point as wrong
 
             var lsMultiContacts = new List<DataTypes.V5.AddressBookContact>();
 
