@@ -63,6 +63,15 @@ namespace Route4MeSDK.FastProcessing
 
         public string[] MandatoryFields { get; set; }
 
+        public bool DoGeocoding { get; set; } = false;
+
+        /// <summary>
+        /// Geocode only addresses with empty coordinates (latitude longitude)
+        /// </summary>
+        public bool GeocodeOnlyEmpty { get; set; } = false;
+
+        JsonSerializer jsonSerializer = new JsonSerializer();
+
         public FastBulkGeocoding(string ApiKey, bool EnableTraceSource = false)
         {
             if (ApiKey != "") apiKey = ApiKey;
@@ -218,6 +227,9 @@ namespace Route4MeSDK.FastProcessing
             mainResetEvent = new ManualResetEvent(false);
 
             fileReading.readingChunksFromLargeCsvFile(fileName, out errorString);
+
+            if ((errorString?.Length ?? 0) > 0)
+                Console.WriteLine("Contacts file uploading canceled:" + Environment.NewLine + errorString);
         }
 
         private void FileReading_CsvFileReadingIsDone(object sender, FastFileReading.CsvFileReadingIsDoneArgs e)
@@ -227,7 +239,7 @@ namespace Route4MeSDK.FastProcessing
             {
                 Parallel.ForEach(threadPackage, chunk =>
                 {
-                    CsvFileChunkIsReady(chunk);
+                     CsvFileChunkIsReady(chunk);
                 });
 
                 threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
@@ -273,10 +285,13 @@ namespace Route4MeSDK.FastProcessing
 
             if (threadPackage.Count>15)
             {
+                
                 Parallel.ForEach(threadPackage, chunk =>
                 {
                     CsvFileChunkIsReady(chunk);
                 });
+
+                Task.WaitAll(taskList.ToArray());
 
                 threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
             }
@@ -293,9 +308,89 @@ namespace Route4MeSDK.FastProcessing
             */ 
         }
 
-        private async void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
+        private void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
         {
             var route4Me = new Route4MeManagerV5(apiKey);
+            var route4MeV4 = new Route4MeManager(apiKey);
+
+            if (DoGeocoding && contactsChunk!=null)
+            {
+                var contactsToGeocode = new Dictionary<int, DataTypes.V5.AddressBookContact>();
+
+                if (GeocodeOnlyEmpty)
+                {
+                    var emptyContacts = contactsChunk.Where(x => (x.CachedLat == 0 && x.CachedLng == 0))?.ToList() ?? null;
+
+                    if (emptyContacts!=null)
+                    {
+                        foreach (var econt in emptyContacts)
+                            contactsToGeocode.Add(contactsChunk.IndexOf(econt), econt);
+                    }
+                }
+                else
+                {
+                    for (int i=0; i< (contactsChunk?.Count ?? 0); i++)
+                    {
+                        contactsToGeocode.Add(i, contactsChunk[i]);
+                    }
+                }
+
+                var lsAddressesToGeocode = contactsToGeocode
+                    .Select(x=>x.Value)
+                    .Select(x => x.Address1 +
+                            ((x?.AddressCity?.Length ?? 0) > 0 ? ", " + x.AddressCity : "") +
+                            ((x?.AddressStateId?.Length ?? 0) > 0 ? ", " + x.AddressStateId : "") +
+                            ((x?.AddressZip?.Length ?? 0) > 0 ? ", " + x.AddressZip : "") +
+                            ((x?.AddressCountryId?.Length ?? 0) > 0 ? ", " + x.AddressCountryId : "")
+                            )
+                    .ToList();
+
+                var addressesToGeocode = String.Join(Environment.NewLine, lsAddressesToGeocode);
+
+                var geoParams = new QueryTypes.GeocodingParameters
+                {
+                    Addresses = addressesToGeocode,
+                    ExportFormat = "json"
+                };
+
+                var geocodedAddressesResult = route4MeV4.BatchGeocodingAsync(geoParams);
+                geocodedAddressesResult.Wait();
+                var result = geocodedAddressesResult.Result;
+
+                Console.WriteLine($"geocodedAddressesResult length: {geocodedAddressesResult.Result.Item1.Length}");
+
+                if ((result.Item1?.Length ?? 0)>50)
+                {
+                    var geocodedObjects = JsonConvert.DeserializeObject<GeocodingResponse[]>(result.Item1).ToList();
+
+                    // If returned objects not equal to input contacts, remove with duplicated original
+                    if (geocodedObjects != null && geocodedObjects.Count > contactsToGeocode.Count)
+                    {
+                        var dupicates = new List<GeocodingResponse>();
+
+                        for (int i = 1; i< geocodedObjects.Count; i++)
+                        {
+                            if (geocodedObjects[i].Original == geocodedObjects[i - 1].Original)
+                                dupicates.Add(geocodedObjects[i]);
+                        }
+
+                        foreach (var duplicate in dupicates) geocodedObjects.Remove(duplicate);
+                    }
+
+                    if (geocodedObjects!=null && geocodedObjects.Count == contactsToGeocode.Count)
+                    {
+                        var indexList = contactsToGeocode.Keys.ToList();
+
+                        Console.WriteLine($"geocodedObjects count: {geocodedObjects.Count}");
+
+                        for (int i=0; i<geocodedObjects.Count; i++)
+                        {
+                            contactsChunk[indexList[i]].CachedLat = geocodedObjects[i].Lat;
+                            contactsChunk[indexList[i]].CachedLng = geocodedObjects[i].Lng;
+                        }
+                    }
+                }
+            }
 
             var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest()
             {
