@@ -12,16 +12,16 @@ namespace Route4MeSDK.Examples
         {
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            geoParams = new GeocodingParameters
+            geoParams = new GeocodingParameters()
             {
                 Addresses = "Los Angeles International Airport, CA\n3495 Purdue St, Cuyahoga Falls, OH 44221",
                 ExportFormat = "json"
             };
 
             //Run the query
-            string result = route4Me.BatchGeocodingAsync(geoParams, out string errorString);
+            var result = route4Me.BatchGeocodingAsync(geoParams);
 
-            PrintExampleGeocodings(result, GeocodingPrintOption.Geocodings, errorString);
+            PrintExampleGeocodings(result.Result.Item1, GeocodingPrintOption.Geocodings, result.Result.Item2);
         }
     }
 }
