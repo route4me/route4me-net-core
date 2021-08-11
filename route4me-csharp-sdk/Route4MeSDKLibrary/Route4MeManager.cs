@@ -3494,7 +3494,7 @@ namespace Route4MeSDK
         /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The geocoded addresses</returns>
-		public string BatchGeocodingAsync(GeocodingParameters geoParams, out string errorString)
+		public async Task<Tuple<string, string>> BatchGeocodingAsync(GeocodingParameters geoParams)
 		{
 			var request = new GeocodingRequest { };
 
@@ -3506,16 +3506,16 @@ namespace Route4MeSDK
 
             using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
             {
-                Task<Tuple<string, string>> result = GetJsonObjectFromAPIAsync<string>(request,
+                Tuple<string, string> result = await GetJsonObjectFromAPIAsync<string>(request,
                                                         R4MEInfrastructureSettings.Geocoder,
                                                         HttpMethodType.Post,
                                                         httpContent, true);
 
-                result.Wait();
+                //result.Wait();
 
-                errorString = (result.IsFaulted || result.IsCanceled) ? result.Result.Item2 : "";
+                //errorString = ((result?.Item2?.Length ?? 0) >0) ? result.Item2 : "";
 
-                return result.Result.Item1;
+                return result;
             };
 		}
 
