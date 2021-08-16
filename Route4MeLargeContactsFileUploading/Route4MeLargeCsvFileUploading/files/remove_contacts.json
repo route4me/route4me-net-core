@@ -1,6 +1,0 @@
-{
-	"query": "ToDelete",
-	"offset": 0,
-	"limit":  30000,
-	"address_ids": [  ]
-}

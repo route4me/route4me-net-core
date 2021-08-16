@@ -1,0 +1,81 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AbConactsRemoveFromDb.bat" />
+    <None Remove="appsettings.json" />
+    <None Remove="CsvFileGeocode.bat" />
+    <None Remove="CsvFileGeocodeOnlyEmpty.bat" />
+    <None Remove="CsvFileUpload.bat" />
+    <None Remove="CsvFileValidate.bat" />
+    <None Remove="files\100_geocoded.csv" />
+    <None Remove="files\60k.csv" />
+    <None Remove="files\60k_prob.csv" />
+    <None Remove="files\for_address_removing.csv" />
+    <None Remove="files\input_files.txt" />
+    <None Remove="files\remove_contacts.json" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AbConactsRemoveFromDb.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CsvFileGeocode.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CsvFileGeocodeOnlyEmpty.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CsvFileUpload.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CsvFileValidate.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="files\100_geocoded.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="files\60k.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="files\60k_prob.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="files\for_address_removing.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="files\input_files.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="files\remove_contacts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="2.16.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Route4MeSDKLibrary">
+      <HintPath>lib\Route4MeSDKLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIoClientDotNet.core_2.2">
+      <HintPath>lib\SocketIoClientDotNet.core_2.2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

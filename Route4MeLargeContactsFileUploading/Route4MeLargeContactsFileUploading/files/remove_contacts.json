@@ -1,0 +1,10 @@
+{
+	"query": "ToDelete",
+	"offset": null,
+	"limit":  null,
+	"address_ids": [  ],
+	"csv_file_column": {
+		"file_name": null,
+		"column_name": null
+	}
+}
