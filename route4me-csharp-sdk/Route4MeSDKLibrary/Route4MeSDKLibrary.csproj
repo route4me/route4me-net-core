@@ -16,25 +16,13 @@ The service is typically used by organizations who must route many drivers to ma
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
-    <Version>1.0.1.5</Version>
-    <PackageReleaseNotes>ADDED
-
-The endpoints in the class Consts: /vehicles, /vehicles/assign, /vehicles/execute, /vehicles/location, /vehicle-profiles, /vehicles/license, /vehicles/search, TelematicsVendorsHost, TelematicsRegisterHost, TelematicsConnection, TelematicsVendorsInfo
-
-The enumerations in the class Enums: FuelTypes, FuelConsumptionUnits, VehicleSizeUnits, VehicleWeightUnits, TelematicsVendorType.  
-
-The classes: Vehicle, VehicleLocationResponse, VehicleProfile, VehicleProfilesResponse, VehicleResponse, VehicleTrackResponse, VehicleOrderParameters, VehicleParameters, VehicleProfileParameters, VehicleSearchParameters, AccountProfile, TelematicsConnection, TelematicsRegisterMemberResponse, TelematicsConnectionParameters, 
- 
-The methods in the class Route4MeManagerV5: GetRouteDataTableWithElasticSearch, CreateVehicle, GetPaginatedVehiclesList, DeleteVehicle, CreateTemporaryVehicle, ExecuteVehicleOrder, GetVehicleLocations, GetVehicleById, GetVehicleTrack, GetVehicleProfiles, CreateVehicleProfile, DeleteVehicleProfile, GetVehicleProfileById, GetVehicleByLicensePlate, SearchVehicles, UpdateVehicle, UpdateVehicleProfile.
-
-
-CHANGED
-
-The classses: Consts, TelematicsVendors, TelematicsVendorParameters, Route4MeManager, Route4MeManagerV5.
+    <Version>1.0.1.7</Version>
+    <PackageReleaseNotes>Changed the classes: DataContractResolver, FastBulkGeocoding, FastFileReading, PropertyValidation, Route4MeManagerV5
+Added the classes: AddressBookContact (V5), AddressBookContactsResponse (V5), AddressBookParameters (V5), FastFileReading, FastValidateData
 
 See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/CHANGELOG.md for release note details.</PackageReleaseNotes>
-    <AssemblyVersion>1.0.1.5</AssemblyVersion>
-    <FileVersion>1.0.1.5</FileVersion>
+    <AssemblyVersion>1.0.1.7</AssemblyVersion>
+    <FileVersion>1.0.1.7</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

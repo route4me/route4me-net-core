@@ -83,7 +83,7 @@ namespace Route4MeSDK
                                 HttpMethodType.Delete,
                                 out resultResponse);
 
-            return (response != null && response.status) ? true : false;
+            return resultResponse==null  ? true : false;
         }
 
         /// <summary>

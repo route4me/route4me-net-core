@@ -2867,15 +2867,88 @@ namespace Route4MeSDK
 		/// <param name="addressBookGroupParameters">Query parameters</param>
 		/// <param name="errorString">Error string</param>
 		/// <returns>An address book group</returns>
-		public AddressBookContactsResponse GetAddressBookContactsByGroup(AddressBookGroupParameters addressBookGroupParameters, out string errorString)
+		public AddressBookSearchResponse GetAddressBookContactsByGroup(AddressBookGroupParameters addressBookGroupParameters, out string errorString)
 		{
 			addressBookGroupParameters.PrepareForSerialization();
-			var response = GetJsonObjectFromAPI<AddressBookContactsResponse>(addressBookGroupParameters,
+			var response = GetJsonObjectFromAPI<AddressBookSearchResponse>(addressBookGroupParameters,
 													R4MEInfrastructureSettings.AddressBookGroupSearch,
 													HttpMethodType.Post,
 													out errorString);
 			
 			return response;
+		}
+
+		/// <summary>
+		/// Get response containing contact IDs by sending custom field and its value array.
+		/// </summary>
+		/// <param name="customField">Custom field name</param>
+		/// <param name="customFieldValues">An array of the custom field values</param>
+		/// <param name="errorString">Error string</param>
+		/// <returns>Response containing an array of the Contact IDs</returns>
+		public long[] GetAddressBookContactsByCustomField(string customField, string[] customFieldValues, out string errorString)
+        {
+			var addressBookGroupRules = new List<AddressBookGroupRule>();
+
+			if ((customField?.Length ?? 0)<1 || (customFieldValues?.Length ?? 0)<1)
+            {
+				errorString = "Empty custom field value(s)";
+				return null;
+			}
+
+			foreach (var customFieldValue in customFieldValues)
+            {
+				var addressBookGroupRule = new AddressBookGroupRule()
+				{
+					ID = "custom_data." + customField,
+					Field = "custom_data." + customField,
+					Operator = "contains",
+					Value = customFieldValue
+				};
+
+				addressBookGroupRules.Add(addressBookGroupRule);
+			}
+
+			var addressBookGroupFilter = new AddressBookGroupFilter()
+			{
+				Condition = "OR",
+				Rules = addressBookGroupRules.ToArray()
+			};
+
+			var addressBookGroupParameters = new AddressBookGroup()
+			{
+				GroupName = "Custom Fied Contains",
+				GroupColor = "92e1c0",
+				Filter = addressBookGroupFilter
+			};
+
+			var addressBookGroup = this.AddAddressBookGroup(addressBookGroupParameters,
+															out errorString);
+
+			if (addressBookGroup == null || addressBookGroup.GetType() != typeof(AddressBookGroup)) return null;
+
+			var addressBookGroupParams = new AddressBookGroupParameters()
+			{
+				groupID = addressBookGroup.GroupId,
+				Fields = new string[] { "address_id" }
+			};
+
+			var response = this.GetAddressBookContactsByGroup(
+				addressBookGroupParams,
+				out errorString);
+
+			if ((response?.Results?.Length ?? 0) < 1) return null;
+
+			var contactIDs = new List<long>();
+
+			foreach (object[] oContId in response.Results)
+            {
+				if (long.TryParse(oContId[0].ToString(), out long __)) contactIDs.Add(Convert.ToInt64(oContId[0]));
+			}
+
+			var removeGroupParams = new AddressBookGroupParameters() { groupID = addressBookGroup.GroupId };
+			this.RemoveAddressBookGroup(removeGroupParams, out errorString);
+
+			return contactIDs.Count>0 ? contactIDs.ToArray() : null;
 		}
 
 		/// <summary>
@@ -3488,43 +3561,43 @@ namespace Route4MeSDK
                 
 		}
 
-        /// <summary>
-        /// Asynchronous bath geocoding of the addresses.
-        /// </summary>
-        /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
-        /// <param name="errorString">out: Error as string</param>
-        /// <returns>The geocoded addresses</returns>
-		public async Task<Tuple<string, string>> BatchGeocodingAsync(GeocodingParameters geoParams)
+		/// <summary>
+		/// Asynchronous bath geocoding of the addresses.
+		/// </summary>
+		/// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
+		/// <param name="errorString">out: Error as string</param>
+		/// <returns>The geocoded addresses</returns>
+		public string BatchGeocodingAsync(GeocodingParameters geoParams, out string errorString)
 		{
 			var request = new GeocodingRequest { };
 
 			var keyValues = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("strExportFormat", geoParams.ExportFormat),
-                new KeyValuePair<string, string>("addresses", geoParams.Addresses)
-            };
+			{
+				new KeyValuePair<string, string>("strExportFormat", geoParams.ExportFormat),
+				new KeyValuePair<string, string>("addresses", geoParams.Addresses)
+			};
 
-            using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
-            {
-                Tuple<string, string> result = await GetJsonObjectFromAPIAsync<string>(request,
-                                                        R4MEInfrastructureSettings.Geocoder,
-                                                        HttpMethodType.Post,
-                                                        httpContent, true);
+			using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
+			{
+				Task<Tuple<string, string>> result = GetJsonObjectFromAPIAsync<string>(request,
+														R4MEInfrastructureSettings.Geocoder,
+														HttpMethodType.Post,
+														httpContent, true);
 
-                //result.Wait();
+				result.Wait();
 
-                //errorString = ((result?.Item2?.Length ?? 0) >0) ? result.Item2 : "";
+				errorString = (result.IsFaulted || result.IsCanceled) ? result.Result.Item2 : "";
 
-                return result;
-            };
+				return result.Result.Item1;
+			};
 		}
 
-        /// <summary>
-        /// Returns rapid street data
-        /// </summary>
-        /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
-        /// <param name="errorString">out: Error as string</param>
-        /// <returns>An array of the street data</returns>
+		/// <summary>
+		/// Returns rapid street data
+		/// </summary>
+		/// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
+		/// <param name="errorString">out: Error as string</param>
+		/// <returns>An array of the street data</returns>
 		public ArrayList RapidStreetData(GeocodingParameters geoParams, out string errorString)
 		{
 			var request = new GeocodingRequest

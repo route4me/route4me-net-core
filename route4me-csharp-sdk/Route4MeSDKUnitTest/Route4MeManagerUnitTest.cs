@@ -307,8 +307,9 @@ namespace Route4MeSDKUnitTest
         public void UnlinkRouteFromOptimizationTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
+            Thread.Sleep(5000);
 
-            string routeId = tdr.SD10Stops_route_id;
+            string routeId = tdr2.SDRT_route_id;
             Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeDuplicateParameters = new RouteParametersQuery()
@@ -316,12 +317,14 @@ namespace Route4MeSDKUnitTest
                 RouteId = routeId
             };
 
+
+
             // Run the query
             var duplicatedRouteId = route4Me.DuplicateRoute(
                                                 routeDuplicateParameters, 
                                                 out string errorString);
 
-            Assert.IsNotNull(duplicatedRouteId, "Cannot duplicate a route. " + errorString);
+            Assert.IsNotNull(duplicatedRouteId, $"Cannot duplicate a route {duplicatedRouteId ?? "nll"}. " + errorString);
             Assert.IsTrue(duplicatedRouteId.Length == 32, "Cannot duplicate a route.");
 
             var duplicatedRoute = route4Me.GetRoute(
@@ -348,7 +351,7 @@ namespace Route4MeSDKUnitTest
                 unlinkedRoute,
                 "UnlinkRouteFromOptimizationTest failed. " + errorString+Environment.NewLine+"Route ID: "+routeId);
             Assert.IsNull(
-                unlinkedRoute.OptimizationProblemId, 
+                unlinkedRoute?.OptimizationProblemId ?? null, 
                 "Optimization problem ID of the unlinked route is not null.");
         }
 
@@ -9045,13 +9048,12 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            AddressBookContactsResponse addressBookGroup = route4Me.GetAddressBookContactsByGroup(
-                                                                        addressBookGroupParameters, 
+            var addressBookGroup = route4Me.GetAddressBookContactsByGroup(addressBookGroupParameters, 
                                                                         out string errorString);
 
             Assert.IsInstanceOfType(
                 addressBookGroup, 
-                typeof(AddressBookContactsResponse), 
+                typeof(AddressBookSearchResponse), 
                 "GetAddressBookContactsByGroupTest failed. " + errorString);
         }
 
@@ -9062,7 +9064,7 @@ namespace Route4MeSDKUnitTest
 
             var filterParam = new AddressBookGroupFilterParameter()
             {
-                Query = "Louisville",
+                Query = "623CEE8BCD50B75A66268AAC11E552FD",
                 Display = "all"
             };
 
@@ -12613,7 +12615,7 @@ namespace Route4MeSDKUnitTest
             };
 
             //Run the query
-            string result = route4Me.BatchGeocodingAsync(geoParams, out string errorString);
+            var result = route4Me.BatchGeocodingAsync(geoParams, out string errorString);
 
             Assert.IsNotNull(result, "GeocodingForwardTest failed. " + errorString);
         }

@@ -11,6 +11,7 @@ using Route4MeSDK.DataTypes;
 using System.Threading;
 using CsvHelper;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 namespace Route4MeSDK.FastProcessing
 {
@@ -402,6 +403,16 @@ namespace Route4MeSDK.FastProcessing
                                     }
                                     break;
                                 default:
+                                    if (fieldType == "Object" && propinfo.Name == "AddressCustomData")
+                                    {
+                                        var customData = JsonConvert
+                                            .DeserializeObject<Dictionary<string,string>>(oFieldValue.ToString());
+
+                                        abContact
+                                            .GetType()
+                                            .GetProperty(csvAddressMapping[csvHeader])
+                                            .SetValue(abContact, customData);
+                                    }
 
                                     break;
                             }
