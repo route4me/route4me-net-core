@@ -11,7 +11,7 @@
           "CsvHelper": "2.16.3",
           "MSTest.TestAdapter": "1.4.0",
           "MSTest.TestFramework": "1.4.0",
-          "Route4MeSDKLibrary": "1.0.1.5",
+          "Route4MeSDKLibrary": "1.0.1.7",
           "System.CodeDom": "4.5.0",
           "System.Net.Http.WinHttpHandler": "4.5.4"
         },
@@ -1258,7 +1258,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "Route4MeSDKLibrary/1.0.1.5": {
+      "Route4MeSDKLibrary/1.0.1.7": {
         "dependencies": {
           "CsvHelper": "2.16.3",
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
@@ -2193,7 +2193,7 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.1.5": {
+    "Route4MeSDKLibrary/1.0.1.7": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Route4MeSDKLibrary/1.0.1.5": {
+      "Route4MeSDKLibrary/1.0.1.7": {
         "dependencies": {
           "CsvHelper": "2.16.3",
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
@@ -1203,7 +1203,7 @@
     }
   },
   "libraries": {
-    "Route4MeSDKLibrary/1.0.1.5": {
+    "Route4MeSDKLibrary/1.0.1.7": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
