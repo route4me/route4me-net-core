@@ -1,4 +1,5 @@
 ﻿using Route4MeSDK.QueryTypes;
+using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -8,20 +9,21 @@ namespace Route4MeSDK.Examples
         /// Asynchronous batch geocoding
         /// </summary>
         /// <param name="geoParams">Geocoding parameters</param>
-        public void BatchGeocodingForwardAsync(GeocodingParameters geoParams = null)
+        public void BatchGeocodingForwardAsync()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            geoParams = new GeocodingParameters()
+            var geoParams = new GeocodingParameters
             {
-                Addresses = "Los Angeles International Airport, CA\n3495 Purdue St, Cuyahoga Falls, OH 44221",
+                Addresses = "4171 Woodland Dr, Howell, Howell, MI, 48855" + Environment.NewLine +
+                            "6689 N LAKE ROAD, LENA, LENA, IL, 61048",
                 ExportFormat = "json"
             };
 
             //Run the query
-            var result = route4Me.BatchGeocodingAsync(geoParams);
+            var result = route4Me.BatchGeocodingAsync(geoParams, out string errorString);
 
-            PrintExampleGeocodings(result.Result.Item1, GeocodingPrintOption.Geocodings, result.Result.Item2);
+            PrintExampleGeocodings(result, GeocodingPrintOption.Geocodings, errorString);
         }
     }
 }

@@ -31,7 +31,8 @@ namespace Route4MeSDK.Examples
                 {"Lng", R4MeUtils.GetPropertyName(() => ab.CachedLng)},
                 {"Time", R4MeUtils.GetPropertyName(() => ab.ServiceTime)},
                 {"Time_window_start", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowStart)},
-                {"Time_window_end", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowEnd)}
+                {"Time_window_end", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowEnd)},
+                {"Custom_Data", R4MeUtils.GetPropertyName(() => ab.AddressCustomData)}
             };
 
             FastFileReading.csvAddressMapping = csvAddressMapping;

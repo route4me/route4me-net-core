@@ -14,7 +14,9 @@ namespace Route4MeSDK.Examples
             var fastProcessing = new FastBulkGeocoding(ActualApiKey, false)
             {
                 ChankPause = 0,
-                CsvChankSize = 500
+                CsvChankSize = 500,
+                DoGeocoding = true,
+                GeocodeOnlyEmpty = true
             };
             //var lsGeocodedAddressTotal = new List<AddressGeocoded>();
             var lsAddresses = new List<string>();
@@ -27,12 +29,14 @@ namespace Route4MeSDK.Examples
                 {"Address", R4MeUtils.GetPropertyName(() => ab.Address1)},
                 {"City", R4MeUtils.GetPropertyName(() => ab.AddressCity)},
                 {"State", R4MeUtils.GetPropertyName(() => ab.AddressStateId)},
+                {"Group", R4MeUtils.GetPropertyName(() => ab.AddressGroup)},
                 {"Zip", R4MeUtils.GetPropertyName(() => ab.AddressZip)},
                 {"Lat", R4MeUtils.GetPropertyName(() => ab.CachedLat)},
                 {"Lng", R4MeUtils.GetPropertyName(() => ab.CachedLng)},
                 {"Time", R4MeUtils.GetPropertyName(() => ab.ServiceTime)},
                 {"Time_window_start", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowStart)},
-                {"Time_window_end", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowEnd)}
+                {"Time_window_end", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowEnd)},
+                {"Custom_Data", R4MeUtils.GetPropertyName(() => ab.AddressCustomData)}
             };
 
             FastFileReading.csvAddressMapping = csvAddressMapping;

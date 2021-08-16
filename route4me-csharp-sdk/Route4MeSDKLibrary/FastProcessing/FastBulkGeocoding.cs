@@ -239,7 +239,7 @@ namespace Route4MeSDK.FastProcessing
             {
                 Parallel.ForEach(threadPackage, chunk =>
                 {
-                     CsvFileChunkIsReady(chunk);
+                    CsvFileChunkIsReady(chunk);
                 });
 
                 threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
@@ -285,13 +285,10 @@ namespace Route4MeSDK.FastProcessing
 
             if (threadPackage.Count>15)
             {
-                
                 Parallel.ForEach(threadPackage, chunk =>
                 {
                     CsvFileChunkIsReady(chunk);
                 });
-
-                Task.WaitAll(taskList.ToArray());
 
                 threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
             }
@@ -308,7 +305,7 @@ namespace Route4MeSDK.FastProcessing
             */ 
         }
 
-        private void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
+        private async void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
         {
             var route4Me = new Route4MeManagerV5(apiKey);
             var route4MeV4 = new Route4MeManager(apiKey);
@@ -319,8 +316,7 @@ namespace Route4MeSDK.FastProcessing
 
                 if (GeocodeOnlyEmpty)
                 {
-                    var emptyContacts = contactsChunk.Where(x => (x.CachedLat == 0 && x.CachedLng == 0))?.ToList() ?? null;
-
+                    var emptyContacts = contactsChunk.Where(x => x.CachedLat == 0 && x.CachedLng == 0);
                     if (emptyContacts!=null)
                     {
                         foreach (var econt in emptyContacts)
@@ -353,15 +349,11 @@ namespace Route4MeSDK.FastProcessing
                     ExportFormat = "json"
                 };
 
-                var geocodedAddressesResult = route4MeV4.BatchGeocodingAsync(geoParams);
-                geocodedAddressesResult.Wait();
-                var result = geocodedAddressesResult.Result;
+                var geocodedAddresses = route4MeV4.BatchGeocodingAsync(geoParams, out string errorString);
 
-                Console.WriteLine($"geocodedAddressesResult length: {geocodedAddressesResult.Result.Item1.Length}");
-
-                if ((result.Item1?.Length ?? 0)>50)
+                if ((geocodedAddresses?.Length ?? 0)>50)
                 {
-                    var geocodedObjects = JsonConvert.DeserializeObject<GeocodingResponse[]>(result.Item1).ToList();
+                    var geocodedObjects = JsonConvert.DeserializeObject<GeocodingResponse[]>(geocodedAddresses).ToList();
 
                     // If returned objects not equal to input contacts, remove with duplicated original
                     if (geocodedObjects != null && geocodedObjects.Count > contactsToGeocode.Count)
@@ -380,8 +372,6 @@ namespace Route4MeSDK.FastProcessing
                     if (geocodedObjects!=null && geocodedObjects.Count == contactsToGeocode.Count)
                     {
                         var indexList = contactsToGeocode.Keys.ToList();
-
-                        Console.WriteLine($"geocodedObjects count: {geocodedObjects.Count}");
 
                         for (int i=0; i<geocodedObjects.Count; i++)
                         {
