@@ -50,10 +50,28 @@ The uploading process is made based on the API 5 endpoint: <br>
 ### Bulk Remove the contacts from the database
 
  1. Insert your API key in the section **api_keys**;  
- 2. Make settings in the file **files\remove_contacts.json**:   
+ 2. Make settings in the file **files\remove_contacts.json**:  
+	```
+	{
+		"query": "ToDelete",
+		"offset": null,
+		"limit":  null,
+		"address_ids": [  ],
+		"csv_file_column": {
+			 "file_name": null,
+			 "column_name": null
+		}
+	}
+	``` 
    - Assign to the key **query** string value for removing all the contacts containing the specified text. If the value is specified as "", the option will be disabled;   
    - Assign an array of the contact IDs to the key **address_ids" to remove them. If the value is specified as an empty array, the option will be disabled;
    - Assign appropriate values to the keys: offset and limit to specify the limit of the queried contacts to remove. If these parameters are not specified, all the contacts found by the query will be removed.   
+   - You can enter appropriate value in the variable **csv_file_column":  
+     **file_name** - A CSV file name with the column. By unique values of this column is searched adreess book contacts (if their custom data contains the values) and bulk remove them.  
+	 **column_name** - A column name with values for searching.  
+	 
+To disable  the property actuality, assign **null** to it.   
+
  3. Run the batch file **AbConactsRemoveFromDb.bat** (or the command **Route4MeLargeContactsFileUploading.exe remove** directly).  
  4. You can run CMD command in alternative format:
  Route4MeLargeContactsFileUploading.exe --API_KEY XXXXXX --CSV file_name.csv --COLUMN_NAME col_uid
