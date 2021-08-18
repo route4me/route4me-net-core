@@ -19,6 +19,7 @@
     <None Remove="Data\JSON\batch_socket_upload_error_addresses_data_5.json" />
     <None Remove="Data\JSON\get orders RESPONSE.json" />
     <None Remove="Data\JSON\pickupdropoff_request.json" />
+    <None Remove="Data\JSON\start_depot_end_depot_data.json" />
     <None Remove="Data\Other files\addressbook_v4.csv" />
     <None Remove="Data\Other files\addressbook_v4_short.csv" />
     <None Remove="Data\Other files\addressbook_v4_short.xlsx" />
@@ -69,6 +70,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\JSON\pickupdropoff_request.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\JSON\start_depot_end_depot_data.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Other files\addressbook_v4.csv">
