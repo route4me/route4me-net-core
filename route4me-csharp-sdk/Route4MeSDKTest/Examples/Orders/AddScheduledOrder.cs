@@ -28,7 +28,7 @@ namespace Route4MeSDK.Examples
                 ExtFieldEmail = "lcarol654@yahoo.com",
                 ExtFieldPhone = "897946541",
                 ExtFieldCustomData = new Dictionary<string, string>() { { "order_type", "scheduled order" } },
-                DayScheduledFor_YYMMDD = "2017-12-20",
+                DayScheduledFor_YYYYMMDD = "2017-12-20",
                 LocalTimeWindowEnd = 39000,
                 LocalTimeWindowEnd2 = 46200,
                 LocalTimeWindowStart = 37800,

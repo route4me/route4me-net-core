@@ -9695,7 +9695,7 @@ namespace Route4MeSDKUnitTest
                 AddressAlias = "Test AddressAlias " + (new Random()).Next().ToString(),
                 CachedLat = 37.773972,
                 CachedLng = -122.431297,
-                DayScheduledFor_YYMMDD = dtTomorrow.ToString("yyyy-MM-dd"),
+                DayScheduledFor_YYYYMMDD = dtTomorrow.ToString("yyyy-MM-dd"),
                 CustomUserFields = new OrderCustomField[]
                 {
                     new OrderCustomField()
@@ -9944,7 +9944,7 @@ namespace Route4MeSDKUnitTest
                 ExtFieldEmail = "lcarol654@yahoo.com",
                 ExtFieldPhone = "897946541",
                 ExtFieldCustomData = new Dictionary<string, string>() { { "order_type", "scheduled order" } },
-                DayScheduledFor_YYMMDD = "2020-12-20",
+                DayScheduledFor_YYYYMMDD = "2020-12-20",
                 LocalTimeWindowEnd = 39000,
                 LocalTimeWindowEnd2 = 46200,
                 LocalTimeWindowStart = 37800,
@@ -10083,7 +10083,7 @@ namespace Route4MeSDKUnitTest
                 Address1 = "1358 E Luzerne St, Philadelphia, PA 19124, US",
                 CachedLat = 48.335991,
                 CachedLng = 31.18287,
-                DayScheduledFor_YYMMDD = "2019-10-11",
+                DayScheduledFor_YYYYMMDD = "2019-10-11",
                 AddressAlias = "Auto test address",
                 CustomUserFields = new OrderCustomField[]
                 {
@@ -13321,7 +13321,7 @@ namespace Route4MeSDKUnitTest
                             if (DateTime.TryParse(sched_date.ToString(), out dt))
                             {
                                 dt = Convert.ToDateTime(sched_date);
-                                newOrder.DayScheduledFor_YYMMDD = dt.ToString("yyyy-MM-dd");
+                                newOrder.DayScheduledFor_YYYYMMDD = dt.ToString("yyyy-MM-dd");
                             }
                         }
 

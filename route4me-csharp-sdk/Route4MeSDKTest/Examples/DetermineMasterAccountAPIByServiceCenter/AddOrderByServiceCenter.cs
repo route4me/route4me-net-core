@@ -14,11 +14,11 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example referes to the process of creating an order by specified service center.
         /// </summary>
-        public void AddOrderByServiceCenter()
+        public void AddOrderByServiceCenter(string serviceCenter)
         {
-            string serviceCenter = "s1";
+            //string serviceCenter = "s1";
 
-            var serviceMapping = (ReadSetting("service_mapping") as Dictionary<string, object>)
+            var serviceMapping = (ReadSetting("account_to_api_key_map") as Dictionary<string, object>)
                                             .ToDictionary(k => k.Key, k => k.Value.ToString());
 
             if (!serviceMapping.Keys.Contains(serviceCenter))
@@ -45,7 +45,7 @@ namespace Route4MeSDK.Examples
                 ExtFieldEmail = "lcarol654@yahoo.com",
                 ExtFieldPhone = "897946541",
                 ExtFieldCustomData = new Dictionary<string, string>() { { "ServiceCenter", serviceCenter } },
-                DayScheduledFor_YYMMDD = "2017-12-20",
+                DayScheduledFor_YYYYMMDD = "2017-12-20",
                 LocalTimeWindowEnd = 39000,
                 LocalTimeWindowEnd2 = 46200,
                 LocalTimeWindowStart = 37800,
@@ -66,9 +66,9 @@ namespace Route4MeSDK.Examples
 
         static object ReadSetting(string key_path)
         {
-            var stPath = AppDomain.CurrentDomain.BaseDirectory;
+            var startPath = AppDomain.CurrentDomain.BaseDirectory;
 
-            string jsonfile = stPath + @"appsettings.json";
+            string jsonfile = startPath + @"appsettings.json";
 
             using (StreamReader file = File.OpenText(jsonfile))
             {

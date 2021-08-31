@@ -23,8 +23,8 @@ namespace Route4MeSDK.FastProcessing
         const long offset = 0x10000000; // 256 megabytes
         const long length = 0x20000000; // 512 megabytes
 
-        string jsonFileName;
-        string csvFileName;
+        //string jsonFileName;
+        //string csvFileName;
 
         public int chunkPause { get; set; } = 2000;
 
