@@ -16,6 +16,7 @@ namespace Route4MeSDKTest
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
             string executeOption = "AddOrderByServiceCenter";
+            object[] executeParams = new object[] { "s1" };
 
             if (executeOption.ToLower() == "api4")
             {
@@ -406,7 +407,7 @@ namespace Route4MeSDKTest
             {
                 try
                 {
-                    typeof(Route4MeExamples).GetMethod(executeOption).Invoke(examples, null);
+                    typeof(Route4MeExamples).GetMethod(executeOption).Invoke(examples, executeParams);
                 }
                 catch (Exception ex)
                 {

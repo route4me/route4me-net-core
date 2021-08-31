@@ -29,7 +29,7 @@ namespace Route4MeSDK.FastProcessing
         private ManualResetEvent mainResetEvent = null;
         private Socket socket;
         public string Message;
-        private int Number;
+        //private int Number;
         private bool Flag;
         public static Connection con = new Connection();
         private int requestedAddresses;
@@ -43,7 +43,7 @@ namespace Route4MeSDK.FastProcessing
         bool geocodedAddressesDownloadingIsDone;
 
         bool largeCsvFileProcessingIsDone;
-        bool uploadContactsIsDone;
+        //bool uploadContactsIsDone;
 
         int totalCsvChunks;
 
@@ -637,7 +637,7 @@ namespace Route4MeSDK.FastProcessing
                 if (progressMessage.total == progressMessage.done)
                 {
                     //Debug.Print("Geocoding Done, Downloading...");
-                    if (requestedAddresses == null) requestedAddresses = progressMessage.total;
+                    if (requestedAddresses == default(int)) requestedAddresses = progressMessage.total;
                     download(0);
                 }
             });
