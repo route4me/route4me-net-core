@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Route4MeSDK.Examples
 {
@@ -14,20 +15,24 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example referes to the process of creating an order by specified service center.
         /// </summary>
-        public void AddOrderByServiceCenter(string serviceCenter)
+        public Order AddOrderByServiceCenter(string serviceCenter)
         {
-            //string serviceCenter = "s1";
-
             var serviceMapping = (ReadSetting("account_to_api_key_map") as Dictionary<string, object>)
                                             .ToDictionary(k => k.Key, k => k.Value.ToString());
 
             if (!serviceMapping.Keys.Contains(serviceCenter))
             {
                 Console.WriteLine($"The service mapping table does not contain {serviceCenter}");
-                return;
+                return null;
             }
 
             var apiKey = serviceMapping[serviceCenter];
+
+            if (!ValidateApiKey(apiKey))
+            {
+                Console.WriteLine($"The API key {apiKey} is wrong");
+                return null;
+            }
 
             var route4Me = new Route4MeManager(apiKey);
 
@@ -58,10 +63,15 @@ namespace Route4MeSDK.Examples
 
             PrintExampleOrder(newOrder, errorString);
 
-            if (newOrder != null && newOrder.GetType() == typeof(Order))
-                OrdersToRemove = new List<string>() { newOrder.OrderId.ToString() };
+            return newOrder;
+        }
 
-            RemoveTestOrders();
+        bool ValidateApiKey(string apiKey)
+        {
+            string pattern = @"[a-fA-F0-9]{32}";
+            Regex regex = new Regex(pattern);
+
+            return regex.Match(apiKey).Success;
         }
 
         static object ReadSetting(string key_path)
