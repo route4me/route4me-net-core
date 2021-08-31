@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
             var geoParams = new GeocodingParameters
             {
                 Addresses = "42.35863,-71.05670",
-                Format = "json"
+                ExportFormat = "json"
             };
 
             // Run the query
