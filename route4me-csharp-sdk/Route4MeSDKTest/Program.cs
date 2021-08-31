@@ -15,8 +15,9 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "AddOrderByServiceCenter";
-            object[] executeParams = new object[] { "s1" };
+            string executeOption = "ReverseGeocoding";
+            //object[] executeParams = new object[] { null };
+            object[] executeParams = null;
 
             if (executeOption.ToLower() == "api4")
             {
