@@ -261,8 +261,8 @@ namespace Route4MeLargeContactsFileUploading
             {
                 var fastValidating = new FastValidateData(ActualApiKey, false)
                 {
-                    ChankPause = Convert.ToInt32(ReadSetting("chank_setting.chunk_pause")),
-                    CsvChankSize = Convert.ToInt32(ReadSetting("chank_setting.chunk_size"))
+                    ChunkPause = Convert.ToInt32(ReadSetting("chunk_setting.chunk_pause")),
+                    CsvChunkSize = Convert.ToInt32(ReadSetting("chunk_setting.chunk_size"))
                 };
 
                 var csvAddressMapping = (ReadSetting("csv_address_mapping") as Dictionary<string, object>)
@@ -301,8 +301,8 @@ namespace Route4MeLargeContactsFileUploading
             {
                 var fastProcessing = new FastBulkGeocoding(ActualApiKey, false)
                 {
-                    ChankPause = Convert.ToInt32(ReadSetting("chank_setting.chunk_pause")),
-                    CsvChankSize = Convert.ToInt32(ReadSetting("chank_setting.chunk_size")),
+                    ChunkPause = Convert.ToInt32(ReadSetting("chunk_setting.chunk_pause")),
+                    CsvChunkSize = Convert.ToInt32(ReadSetting("chunk_setting.chunk_size")),
                     DoGeocoding = geocode,
                     GeocodeOnlyEmpty = only_empty
                 };

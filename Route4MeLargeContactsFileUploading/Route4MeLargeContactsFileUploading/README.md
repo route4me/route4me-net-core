@@ -13,7 +13,7 @@ Users can write messages on the console or get a list of the error messages and 
 3. Make appropriate settings in the file **appsettings.json**:   
    - Insert your API key in the section **api_keys**;   
    - Specify the contact mapping in the section **csv_address_mapping**. You can find available for uploading contact fields in the section **contact_fields**;   
-   - Make the chunk settings in the section **chank_setting**; 
+   - Make the chunk settings in the section **chunk_setting**; 
 4. Run the batch file **CsvFileValidate.bat** (or the EXE file **Route4MeLargeContactsFileUploading.exe validate** directly);  
 
 ### Geocode the contacts from the large CSV files
@@ -25,7 +25,7 @@ User can geocode the addresses contained in the large CSV file.
 3. Make appropriate settings in the file **appsettings.json**:   
    - Insert your API key in the section **api_keys**;   
    - Specify the contact mapping in the section **csv_address_mapping**. You can find available for uploading contact fields in the section **contact_fields**;   
-   - Make the chunk settings in the section **chank_setting**; 
+   - Make the chunk settings in the section **chunk_setting**; 
 4. To geocode all the addresses in the CSV file run the batch file **CsvFileGeocode.bat** (or the EXE file **Route4MeLargeContactsFileUploading.exe geocode all** directly); 
 5. To geocode only the addresses with empty lattitude and longitude fields run the batch file **CsvFileGeocodeOnlyEmpty.bat** (or the EXE file **Route4MeLargeContactsFileUploading.exe geocode only_empty** directly); 
 
@@ -36,7 +36,7 @@ User can geocode the addresses contained in the large CSV file.
 3. Make appropriate settings in the file **appsettings.json**:   
    - Insert your API key in the section **api_keys**;   
    - Specify the contact mapping in the section **csv_address_mapping**. You can find available for uploading contact fields in the section **contact_fields**;   
-   - Make the chunk settings in the section **chank_setting**;   
+   - Make the chunk settings in the section **chunk_setting**;   
 4. Run the batch file **CsvFileUploade.bat** (or the exe file **Route4MeLargeContactsFileUploading.exe** directly);   
   
 The uploading process is made based on the API 5 endpoint: <br>  
