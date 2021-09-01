@@ -53,9 +53,9 @@ namespace Route4MeSDK.FastProcessing
 
         public string apiKey { get; set; }
 
-        public int CsvChankSize { get; set; } = 300;
-        public int JsonChankSize { get; set; } = 300;
-        public int ChankPause { get; set; } = 2000;
+        public int CsvChunkSize { get; set; } = 300;
+        public int JsonChunkSize { get; set; } = 300;
+        public int ChunkPause { get; set; } = 2000;
 
         static List<Task> taskList;
 
@@ -212,9 +212,9 @@ namespace Route4MeSDK.FastProcessing
 
             fileReading = new FastFileReading();
 
-            fileReading.csvObjectsChunkSize = CsvChankSize;
-            fileReading.chunkPause = ChankPause;
-            fileReading.jsonObjectsChunkSize = JsonChankSize;
+            fileReading.csvObjectsChunkSize = CsvChunkSize;
+            fileReading.chunkPause = ChunkPause;
+            fileReading.jsonObjectsChunkSize = JsonChunkSize;
 
             fileReading.CsvFileChunkIsReady += FileReading_CsvFileChunkIsReady;
 
