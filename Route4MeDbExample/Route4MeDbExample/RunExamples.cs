@@ -100,11 +100,11 @@ namespace Route4MeDbExample
                 FirstName = "Peter",
                 LastName = "Newman",
                 AddressEmail = "pnewman6564@yahoo.com",
-                AddressCustomDataDic = new Dictionary<string, string>()
-                {
-                    { "Filed 1", "Value 1" },
-                    { "Filed 2", "Value 2" }
-                },
+                //AddressCustomDataDic = new Dictionary<string, string>()
+                //{
+                //    { "Filed 1", "Value 1" },
+                //    { "Filed 2", "Value 2" }
+                //},
                 AddressPhoneNumber = "65432178",
                 CachedLat = 38.141598,
                 CachedLng = -85.793846,
@@ -116,6 +116,8 @@ namespace Route4MeDbExample
             route4MeDb.Route4MeContext.SaveChangesAsync();
 
             bool contactExists = route4MeDb.ContactsRepository.CheckIfAddressBookContactExists(contact.AddressDbId);
+
+            Console.WriteLine($"Created address boo contact ID: {contact.AddressDbId}");
 
             Console.WriteLine(contactExists ? "The contact created" : "The contact not created");
 
