@@ -56,7 +56,7 @@ Set the properties of the file **appSettings.json** as:
 - Build Action: Content  
 - Copy to Output Directory: Copy if Newer  
 
-You can find the class **RunExamples** in the provided example project **Route4MeDbExample**, where is demonstrated how to:  
+You can find the class **RunExamples** in the provided sample project **Route4MeDbExample**, where is demonstrated how to:  
 - Create DB;  
 - Create address book contact;  
 - Copy the content of a JSON response file (with retrieved/created/updated route) to the DB;  
