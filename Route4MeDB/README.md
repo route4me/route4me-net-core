@@ -48,15 +48,15 @@ The typical worklow of the library usage is:
   }
 }
 ``` 
-Of course, appropriate DB providers should be installed. 
-The DB provider **InMemory** not requires installation.
-The DB provider **SQLite** nor requires installation - only the path to SQLite file.
+Of course, appropriate DB providers must be installed. 
+The DB provider **InMemory** does not require installation.
+The DB provider **SQLite** does not require installation - only the path to a SQLite file.
 
 Set the properties of the file **appSettings.json** as:
 - Build Action: Content
-- Copy to Output Directory: Copy if newer 
+- Copy to Output Directory: Copy if Newer 
 
-You can find the class **RunExamples** in the provided example project **Route4MeDbExample**, where we demonstrated how to:
+You can find the class **RunExamples** in the provided example project **Route4MeDbExample**, where is demonstrated how to:
 - Create DB;
 - Create address book contact;
 - Copy the content of a JSON response file (with retrieved/created/updated route) to the DB;
