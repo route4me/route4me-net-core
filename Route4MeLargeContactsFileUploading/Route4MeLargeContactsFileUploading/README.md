@@ -2,7 +2,7 @@
 
 ### Validate the contacts from large CSV files
 
-Before uploading to the database, the contact should be validated because one contact failure causes omitting of entire contacts chunk - which can contain 200, 500, 1000 contacts.
+Before uploading to the database, the contact must be validated because one contact failure causes omitting of entire contacts chunk - which can contain 200, 500, 1000 contacts.
 
 The validator tested simultaneously for two files containing 30 000 contacts and 60 000 contacts - the process finished almost instantly.
 
@@ -31,7 +31,7 @@ User can geocode the addresses contained in the large CSV file.
 
 ### Upload the contacts from large CSV files
   
-1. Place the csv files in the folder **files**.  
+1. Place the CSV files in the folder **files**.  
 2. List the file names in the file **files\input_files.txt**.  
 3. Make appropriate settings in the file **appsettings.json**:   
    - Insert your API key in the section **api_keys**;   
