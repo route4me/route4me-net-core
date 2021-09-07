@@ -1,6 +1,60 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.1.9] - 2021-09-07
+
+### Changed
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+– Changed the WinHttpHandler reference and appropriate code with SocketsHttpHandler
+
+The file [Route4MeManagerV5cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
+– Changed the WinHttpHandler reference and appropriate code with SocketsHttpHandler
+
+## [1.0.1.8] - 2021-09-01
+
+### Changed
+
+The file [Order.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Order.cs)
+– Changed the property DayScheduledFor_YYMMDD to DayScheduledFor_YYYYMMDD. 
+
+The file [FastBulkGeocoding.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastBulkGeocoding.cs)
+– Removed non-used variables. 
+- Fixed typos Chank to Chunk. 
+
+The file [FastFileReading.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastFileReading.cs)
+– Removed non-used variables. 
+
+The file [FastValidateData.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastValidateData.cs)
+– Removed non-used variables. 
+- Fixed typos Chank to Chunk. 
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+– In the class UpdateRouteDestinationRequest was sat as shadowed properties: RouteId, OptimizationProblemId, RouteDestinationId. 
+
+
+## [1.0.1.7] - 2021-08-18
+
+### Changed
+
+The file [FastFileReading.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastFileReading.cs)
+– **Class**: FastFileReading - added custom data field reading feature.  
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+– Added the method: GetAddressBookContactsByCustomField;
+- Changed the method: GetAddressBookContactsByGroup, BatchGeocodingAsync.  
+
+The file [RouteAdvancedConstraints.cs: ](https://github.com/route4me/route4me-csharp-sdk/blob/master/Route4MeSDKLibrary/DataTypes/V5/RouteAdvancedConstraints.cs)  
+– **Class (API 5 version)**: RouteAdvancedConstraints  - added the property LocationSequencePattern.  
+
+### Added
+
+The file [AddressBookSearchResponse.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/AddressBookSearchResponse.cs)  
+– **Class**: AddressBookSearchResponse  
+
+The file [FastBulkRemoveContacts.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastBulkRemoveContacts.cs)
+– **Class**: FastBulkRemoveContacts   
+
 ## [1.0.1.6] - 2021-08-11
 
 ### Changed
