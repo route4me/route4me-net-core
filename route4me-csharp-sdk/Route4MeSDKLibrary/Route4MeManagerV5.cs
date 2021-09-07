@@ -15,6 +15,7 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
+using System.Security.Authentication;
 //using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK
@@ -2204,6 +2205,21 @@ namespace Route4MeSDK
             return result;
         }
 
+        /*
+        private HttpClient CreateHttpClient(string url)
+        {
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)768 | (SecurityProtocolType)3072 | (SecurityProtocolType)12288;
+
+            HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
+
+            result.Timeout = m_DefaultTimeOut;
+            result.DefaultRequestHeaders.Accept.Clear();
+            result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            return result;
+        }
+        */
+
         private HttpClient CreateHttpClient(string url)
         {
             // Uncomment code lines below when is tested broono (no signed cert)
@@ -2224,15 +2240,30 @@ namespace Route4MeSDK
 			*/
 
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-            ServicePointManager.SecurityProtocol = (SecurityProtocolType)768 | (SecurityProtocolType)3072 | (SecurityProtocolType)12288;
 
-            HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
+            var sslOptions = new System.Net.Security.SslClientAuthenticationOptions
+            {
+                EnabledSslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+                // Leave certs unvalidated for debugging
+                //RemoteCertificateValidationCallback = delegate { return true; }
+            };
 
-            result.Timeout = m_DefaultTimeOut;
-            result.DefaultRequestHeaders.Accept.Clear();
-            result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            SocketsHttpHandler httpHandler = new SocketsHttpHandler
+            {
+                SslOptions = sslOptions
+            };
 
-            return result;
+            //httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            using (httpHandler)
+            {
+                HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
+
+                result.Timeout = m_DefaultTimeOut;
+                result.DefaultRequestHeaders.Accept.Clear();
+                result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                return result;
+            };
         }
 
         private HttpClient CreateAsyncHttpClient(string url)
