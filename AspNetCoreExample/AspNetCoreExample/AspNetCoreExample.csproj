@@ -7,8 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="lib\Route4MeSDKLibrary.dll" />
+    <None Remove="lib\Route4MeSDKLibrary.pdb" />
+    <None Remove="lib\SocketIoClientDotNet.core_2.2.dll" />
+    <None Remove="lib\SocketIoClientDotNet.core_2.2.pdb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="lib\Route4MeSDKLibrary.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Route4MeSDKLibrary.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\SocketIoClientDotNet.core_2.2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\SocketIoClientDotNet.core_2.2.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
-    <PackageReference Include="Route4MeSDKLibrary" Version="1.0.1.8" />
   </ItemGroup>
 
   <ItemGroup>
