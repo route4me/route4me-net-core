@@ -408,7 +408,7 @@ namespace Route4MeSDK.FastProcessing
 
                 foreach (var msg in resultResponse.Messages)
                 {
-                    Console.WriteLine(msg.Key + ": " + msg.Value);
+                    Console.WriteLine(msg.Key + ": " + string.Join(", ", msg.Value));
                 }
 
                 Console.WriteLine("Start address: " + contactsChunk[0].Address1);

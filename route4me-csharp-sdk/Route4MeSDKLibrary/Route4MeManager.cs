@@ -4747,8 +4747,8 @@ namespace Route4MeSDK
 
 		private HttpClient CreateHttpClient(string url)
 		{
-            // Uncomment code lines below when is tested broono (no signed cert)
-            /*
+			// Uncomment code lines below when is tested broono (no signed cert)
+			/*
 			ServicePointManager.ServerCertificateValidationCallback +=
 		(sender, cert, chain, sslPolicyErrors) => true;
 
@@ -4764,15 +4764,22 @@ namespace Route4MeSDK
 			Console.WriteLine("Supports redirection -> " + supportsAutoRdirect);
 			*/
 
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
+			//ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
 
-            WinHttpHandler httpHandler = new WinHttpHandler
-            {
-                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
-            };
+			var sslOptions = new System.Net.Security.SslClientAuthenticationOptions
+			{
+				EnabledSslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+				// Leave certs unvalidated for debugging
+				//RemoteCertificateValidationCallback = delegate { return true; }
+			};
 
-            //httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
-            using (httpHandler)
+			SocketsHttpHandler httpHandler = new SocketsHttpHandler
+			{
+				SslOptions = sslOptions
+			};
+
+			//httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+			using (httpHandler)
             {
                 HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
 
@@ -4791,13 +4798,19 @@ namespace Route4MeSDK
 				AllowAutoRedirect = false
 			};
 
-            //var supprotsAutoRdirect = handler.SupportsAutomaticDecompression;
+			//var supprotsAutoRdirect = handler.SupportsAutomaticDecompression;
 
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-
-            WinHttpHandler httpHandler = new WinHttpHandler
+			//ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
+			var sslOptions = new System.Net.Security.SslClientAuthenticationOptions
             {
-                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+				EnabledSslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+				// Leave certs unvalidated for debugging
+				//RemoteCertificateValidationCallback = delegate { return true; }
+			};
+
+			SocketsHttpHandler httpHandler = new SocketsHttpHandler
+			{
+				SslOptions = sslOptions
             };
 
             using (httpHandler)
