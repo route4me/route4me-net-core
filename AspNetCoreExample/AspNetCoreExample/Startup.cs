@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Route4MeSDK.DataTypes;
+using System;
 
 namespace AspNetCoreExample
 {
@@ -38,7 +39,7 @@ namespace AspNetCoreExample
 
                     string outputMessage = (dataObject != null && dataObject.GetType() == typeof(DataObject))
                             ? $"Created the optimization with ID={dataObject.OptimizationProblemId} and route name = {dataObject.Parameters.RouteName}"
-                            : $"Cannot create the optimization - change input data and try again";
+                            : $"Cannot create the optimization - change input data and try again{Environment.NewLine} {errorString}";
 
                     await context.Response.WriteAsync(outputMessage);
                 });
