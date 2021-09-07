@@ -60,7 +60,7 @@ namespace Route4MeSDKLibrary.DataTypes
         public int? VehiclePositionRefreshRate { get; set; }
 
         /// <summary>
-        /// Maimum idle time
+        /// Maximum idle time
         /// </summary>
         [DataMember(Name = "max_idle_time", EmitDefaultValue = false)]
         public int? MaxIdleTime { get; set; }
@@ -114,7 +114,7 @@ namespace Route4MeSDKLibrary.DataTypes
         public string CreatedAt { get; set; }
 
         /// <summary>
-        /// Telemetics connection  ID
+        /// Telemetics connection ID
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public int? Id { get; set; }
