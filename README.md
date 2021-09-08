@@ -18,11 +18,21 @@ Read about the project [here](https://github.com/route4me/route4me-net-core/blob
 
 ### Usage Example of the Route4Me C# SDK (.net core)
 
-This sample project demonstrates how to consume the library Route4MeSDKLibrary from the Route4me c# SDK (.net core) project.  
+This sample console project demonstrates how to consume the library Route4MeSDKLibrary from the Route4me c# SDK (.net core) project.  
 
 Find the project [here](https://github.com/route4me/route4me-net-core/tree/master/TestRoute4MeSharpSDKCore)  
 
 Read about the project [here](https://github.com/route4me/route4me-net-core/blob/master/TestRoute4MeSharpSDKCore/README.md).  
+
+### ASP.NET Core Sample Projects
+
+The **AspNetCoreExample** demonstrates how to create an ASP.NET Core Web App sample project with the ability to create an optimized route and write the information about it on the web page.
+
+The project also demonstrates how to dockerize it and try the project in the **Linux** environment.
+
+Find the project [here](https://github.com/route4me/route4me-net-core/tree/master/AspNetCoreExample)  
+
+Read about the project [here](https://github.com/route4me/route4me-net-core/blob/master/AspNetCoreExample/README.md).
 
 ### Route4MeDB
 
