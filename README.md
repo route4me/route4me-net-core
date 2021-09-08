@@ -55,7 +55,7 @@ Read about the project [here](https://github.com/route4me/route4me-net-core/blob
 
 ### Usage Example of the Route4MeDbLibrary package
 
-This sample project demonstrates how to consume the library Route4MeDbLibrary from the solution Route4MeDB.
+This sample project **Route4MeDbExample** demonstrates how to consume the library Route4MeDbLibrary from the solution Route4MeDB.
 
 Find the project [here](https://github.com/route4me/route4me-net-core/tree/master/Route4MeDbExample)  
 
@@ -63,7 +63,7 @@ Read about the project [here](https://github.com/route4me/route4me-net-core/blob
 
 ### Tool for working with large amount of the address book contacts
 
-The project Route4MeLargeContactsFileUploading is done for consuming large CSV files with address book contacts.
+The project **Route4MeLargeContactsFileUploading** is done for consuming large CSV files with address book contacts.
 
 With the tool you can:
 - Validate the contacts from large CSV files;
