@@ -1,7 +1,7 @@
 # ASP.NET Core Sample Project
 
 
-The ASP.NET Core sample project demonstrates the process of creating a new route with 10 destinations and writing information about it to the web page. The project is done based on the Route4Me c# SDK (.net core 3.1). 
+The **AspNetCoreExample** sample project demonstrates the process of creating a new route with 10 destinations and writing information about it to the web page. The project is done based on the Route4Me c# SDK (.net core 3.1). 
 
 The project is done in the Visual Studio 2019.
 
