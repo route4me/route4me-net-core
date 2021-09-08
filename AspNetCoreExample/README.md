@@ -156,7 +156,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 			RunExamples runExamples = new RunExamples();
 
 			// Please, change the demo API key with your own API key
-			runExamples.c_ApiKey = "51d0c0701ce83855c9f62d0440096e7c";
+			runExamples.c_ApiKey = "11111111111111111111111111111111";
 
 			var dataObject = runExamples.SingleDriverRoute10Stops(out string errorString);
 
