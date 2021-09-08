@@ -1,7 +1,7 @@
 # ASP.NET Core Sample Project
 
 
-The ASP.NET Core sample project demonstrates the process of creating a new route with 10 destinations and writing information about it to the web page. The project is done based on the Route4Me c# SDK (.net core 3.1). 
+The **AspNetCoreExample** sample project demonstrates the process of creating a new route with 10 destinations and writing information about it to the web page. The project is done based on the Route4Me c# SDK (.net core 3.1). 
 
 The project is done in the Visual Studio 2019.
 
@@ -156,7 +156,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 			RunExamples runExamples = new RunExamples();
 
 			// Please, change the demo API key with your own API key
-			runExamples.c_ApiKey = "11111111111111111111111111111111";
+			runExamples.c_ApiKey = "51d0c0701ce83855c9f62d0440096e7c";
 
 			var dataObject = runExamples.SingleDriverRoute10Stops(out string errorString);
 
