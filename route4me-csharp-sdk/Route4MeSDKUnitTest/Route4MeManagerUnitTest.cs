@@ -9837,6 +9837,31 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void FilterOrdersByTrackingNumbers()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var oParams = new OrderFilterParameters()
+            {
+                Limit = 10,
+                Filter = new FilterDetails()
+                {
+                    Display = "all",
+                    TrackingNumbers = new string[] { "TN1"}
+                }
+            };
+
+            Order[] orders = route4Me.FilterOrders(oParams, out string errorString);
+
+            Assert.IsInstanceOfType(
+                orders,
+                typeof(Order[]),
+                "FilterOrdersByTrackingNumbers failed. " + errorString);
+        }
+
+        [TestMethod]
         public void GetOrdersBySpecifiedTextTest()
         {
             if (skip == "yes") return;
