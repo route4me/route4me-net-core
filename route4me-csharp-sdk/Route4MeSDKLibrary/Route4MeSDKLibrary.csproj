@@ -16,13 +16,13 @@ The service is typically used by organizations who must route many drivers to ma
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
-    <Version>1.0.1.9</Version>
+    <Version>1.0.1.10</Version>
     <PackageReleaseNotes>Changed the classes: DataContractResolver, FastBulkGeocoding, FastFileReading, PropertyValidation, Route4MeManagerV5
 Added the classes: AddressBookContact (V5), AddressBookContactsResponse (V5), AddressBookParameters (V5), FastFileReading, FastValidateData
 
 See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/CHANGELOG.md for release note details.</PackageReleaseNotes>
-    <AssemblyVersion>1.0.1.9</AssemblyVersion>
-    <FileVersion>1.0.1.9</FileVersion>
+    <AssemblyVersion>1.0.1.10</AssemblyVersion>
+    <FileVersion>1.0.1.10</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
