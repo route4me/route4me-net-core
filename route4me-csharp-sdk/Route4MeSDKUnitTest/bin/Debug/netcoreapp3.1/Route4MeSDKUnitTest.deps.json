@@ -12,7 +12,7 @@
           "MSTest.TestAdapter": "1.4.0",
           "MSTest.TestFramework": "1.4.0",
           "Microsoft.NET.Test.Sdk": "16.0.1",
-          "Route4MeSDKLibrary": "1.0.1.8",
+          "Route4MeSDKLibrary": "1.0.1.10",
           "System.CodeDom": "4.5.0"
         },
         "runtime": {
@@ -1225,22 +1225,6 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.0"
         }
       },
-      "System.Net.Http.WinHttpHandler/4.5.4": {
-        "runtime": {
-          "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
-            "assemblyVersion": "4.0.3.2",
-            "fileVersion": "4.6.27514.2"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "4.0.3.2",
-            "fileVersion": "4.6.27514.2"
-          }
-        }
-      },
       "System.Net.Primitives/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -1771,7 +1755,7 @@
           }
         }
       },
-      "Route4MeSDKLibrary/1.0.1.8": {
+      "Route4MeSDKLibrary/1.0.1.10": {
         "dependencies": {
           "CsvHelper": "12.1.2",
           "Microsoft.AspNetCore.Http.Connections.Client": "1.1.0",
@@ -1780,7 +1764,6 @@
           "Microsoft.Extensions.Configuration.Json": "2.2.0",
           "Newtonsoft.Json": "12.0.2",
           "System.Configuration.ConfigurationManager": "4.5.0",
-          "System.Net.Http.WinHttpHandler": "4.5.4",
           "fastJSON": "2.2.4"
         },
         "runtime": {
@@ -2517,13 +2500,6 @@
       "path": "system.net.http/4.3.0",
       "hashPath": "system.net.http.4.3.0.nupkg.sha512"
     },
-    "System.Net.Http.WinHttpHandler/4.5.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ugUKd9n5hb6MDmzhW8At0TTilHYsfYP0aLDv+mKAkbWtrivRj3X5KjkkDa+QO9gTOoNhdTEsZdycofPUNgVyKw==",
-      "path": "system.net.http.winhttphandler/4.5.4",
-      "hashPath": "system.net.http.winhttphandler.4.5.4.nupkg.sha512"
-    },
     "System.Net.Primitives/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -2874,7 +2850,7 @@
       "path": "system.xml.xpath.xmldocument/4.0.1",
       "hashPath": "system.xml.xpath.xmldocument.4.0.1.nupkg.sha512"
     },
-    "Route4MeSDKLibrary/1.0.1.8": {
+    "Route4MeSDKLibrary/1.0.1.10": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

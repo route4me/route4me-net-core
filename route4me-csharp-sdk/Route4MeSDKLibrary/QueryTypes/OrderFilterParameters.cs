@@ -28,16 +28,28 @@ namespace Route4MeSDK.QueryTypes
     public class FilterDetails : GenericParameters
     {
         /// <summary>
+        /// A query text for the orders searching.
+        /// </summary>
+        [DataMember(Name = "query")]
+        public string Query { get; set; }
+
+        /// <summary>
         /// Available values: "all", "routed", "unrouted"
         /// </summary>
         [DataMember(Name = "display")]
         public string Display { get; set; }
 
         /// <summary>
-        /// Start and end dates for filter the orders by schedule.
+        /// Start and end dates to filter the orders by schedule.
         /// e.g. ["2019-06-01", "2019-06-18"]
         /// </summary>
         [DataMember(Name = "scheduled_for_YYMMDD")]
         public string[] Scheduled_for_YYMMDD { get; set; }
+
+        /// <summary>
+        /// An array of the tracking numbers to filter the orders by tracking numbers.
+        /// </summary>
+        [DataMember(Name = "tracking_numbers")]
+        public string[] TrackingNumbers { get; set; }
     }
 }
