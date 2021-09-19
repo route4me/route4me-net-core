@@ -1,6 +1,30 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.1.10] - 2021-09-19
+
+### Changed
+
+The file [OrderFilterParameters.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/OrderFilterParameters.cs)  
+– Added the properties: Query, TrackingNumbers.
+- Renamed the property Scheduled_for_YYMMDD to Scheduled_for_YYYYMMDD.
+
+The file [Order.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Order.cs)
+– Added the properties: AddressStopType, TrackingNumber.
+
+The file [OptimizationParameters.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/OptimizationParameters.cs)  
+– Added the properties: OrderTerritories, IdOnly.
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+– Added the method RunOptimizationByOrderTerritories.
+
+
+### Added
+
+The file [OrderTerritories.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/OrderTerritories.cs) 
+– **Class**: OrderTerritories - for optimization payload. 
+
+
 ## [1.0.1.9] - 2021-09-07
 
 ### Changed
