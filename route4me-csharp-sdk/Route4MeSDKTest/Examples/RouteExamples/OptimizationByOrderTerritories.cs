@@ -14,39 +14,57 @@ namespace Route4MeSDK.Examples
             // Set parameters
             var parameters = new RouteParameters()
             {
-                AlgorithmType = AlgorithmType.CVRP_TW_MD,
+                AlgorithmType = AlgorithmType.CVRP_TW_SD,
                 RouteName = "Optimization by order territories, " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
-                RouteTime = 5 * 3600 + 30 * 60
+                is_dynamic_start_time = false,
+                Optimize = "Time",
+                IgnoreTw = false,
+                Parts = 10,
+                RT = false,
+                LockLast = false,
+                DisableOptimization = false,
+                VehicleId = ""
             };
 
             var orderTerritories = new OrderTerritories()
             {
                 SplitTerritories = true,
-                TerritoriesId = new string[] { "015F1568818C0AEB63E2B63ADE7F819F", "01F8572D0965E4C90879996DFED5B58D" },
+
+                // The territory IDs are token from test account- to run test on yor PC, put your territory IDs.
+                TerritoriesId = new string[] { "5E66A5AFAB087B08E690DFAE4F8B151B", "6160CFC4CC3CD508409D238E04D6F6C4" },
                 filters = new FilterDetails()
                 {
-                    Display = "unrouted",
-                    Scheduled_for_YYYYMMDD = new string[] { "2021-09-01" }
+                    // Specified as 'all' for test purpose - after the first optimization, the orders become routed and the test is failing.
+                    // For real tasks should be specified as 'unrouted'
+                    Display = "all",
+                    Scheduled_for_YYYYMMDD = new string[] { "2021-09-21" }
                 }
             };
 
             var optimizationParameters = new OptimizationParameters()
             {
+                Redirect = false,
                 OrderTerritories = orderTerritories,
                 Parameters = parameters
             };
 
             // Run the query
-            var dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
+            var dataObjects = route4Me.RunOptimizationByOrderTerritories(optimizationParameters, out string errorString);
 
-            OptimizationsToRemove = new List<string>()
+            if ((dataObjects?.Length ?? 0)>0)
             {
-                dataObject?.OptimizationProblemId ?? null
-            };
+                OptimizationsToRemove = new List<string>();
 
-            // Output the result
-            PrintExampleOptimizationResult(dataObject, errorString);
+                foreach (var dataObject in dataObjects)
+                {
+                    if (dataObject.OptimizationProblemId != null) OptimizationsToRemove.Add(dataObject.OptimizationProblemId);
+                    Console.WriteLine($"Optimization Problem ID: {dataObject.OptimizationProblemId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Optimization failed. {errorString}");
+            }
 
             RemoveTestOptimizations();
         }
