@@ -4926,6 +4926,45 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void OptimizationByOrderTerritoriesTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            // Set parameters
+            var parameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.CVRP_TW_MD,
+                RouteName = "Optimization by order territories, " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
+                RouteTime = 5 * 3600 + 30 * 60
+            };
+
+            var orderTerritories = new OrderTerritories()
+            {
+                SplitTerritories = true,
+                TerritoriesId = new string[] { "015F1568818C0AEB63E2B63ADE7F819F", "01F8572D0965E4C90879996DFED5B58D" },
+                filters = new FilterDetails()
+                {
+                    Display = "unrouted",
+                    Scheduled_for_YYYYMMDD = new string[] { "2021-09-01" }
+                }
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                OrderTerritories = orderTerritories,
+                Parameters = parameters
+            };
+
+            // Run the query
+            dataObject = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsNotNull(dataObject, "OptimizationByOrderTerritoriesTest failed. " + errorString);
+
+            tdr.RemoveOptimization(new string[] { dataObject.OptimizationProblemId });
+        }
+
+        [TestMethod]
         public void BundledAddressesTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
@@ -9824,7 +9863,7 @@ namespace Route4MeSDKUnitTest
                 Filter = new FilterDetails()
                 {
                     Display = "all",
-                    Scheduled_for_YYMMDD = new string[] { startDate, endDate }
+                    Scheduled_for_YYYYMMDD = new string[] { startDate, endDate }
                 }
             };
 
@@ -9902,7 +9941,7 @@ namespace Route4MeSDKUnitTest
                 Filter = new FilterDetails()
                 {
                     Display = "all",
-                    Scheduled_for_YYMMDD = new string[] { startDate, endDate }
+                    Scheduled_for_YYYYMMDD = new string[] { startDate, endDate }
                 }
             };
 
@@ -10123,6 +10162,29 @@ namespace Route4MeSDKUnitTest
             var result = route4Me.AddOrder(orderParams, out string errorString);
 
             Assert.IsNotNull(result, "AddOrdersToRouteTest failed. " + errorString);
+
+            lsOrderIds.Add(result.OrderId.ToString());
+
+            lsOrders.Add(result);
+        }
+
+        [TestMethod]
+        public void CreateOrderWithTrackingNumberTest()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var orderParams = new Order()
+            {
+                Address1 = "201 LAVACA ST APT 746, AUSTIN, TX, 78701, US",
+                TrackingNumber = "AA11ZZCC",
+                AddressStopType = AddressStopType.PickUp.Description()
+            };
+
+            var result = route4Me.AddOrder(orderParams, out string errorString);
+
+            Assert.IsNotNull(result, "CreateOrderWithTrackingNumberTest failed. " + errorString);
 
             lsOrderIds.Add(result.OrderId.ToString());
 
