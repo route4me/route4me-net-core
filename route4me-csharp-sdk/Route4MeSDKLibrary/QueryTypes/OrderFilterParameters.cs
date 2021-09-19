@@ -44,7 +44,7 @@ namespace Route4MeSDK.QueryTypes
         /// e.g. ["2019-06-01", "2019-06-18"]
         /// </summary>
         [DataMember(Name = "scheduled_for_YYMMDD")]
-        public string[] Scheduled_for_YYMMDD { get; set; }
+        public string[] Scheduled_for_YYYYMMDD { get; set; }
 
         /// <summary>
         /// An array of the tracking numbers to filter the orders by tracking numbers.

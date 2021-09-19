@@ -121,5 +121,11 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [DataMember(Name = "depots", EmitDefaultValue = false)]
         public Address[] Depots { get; set; }
+
+        /// <summary>
+        /// The order territories containing addresses for an optimization process.
+        /// </summary>
+        [DataMember(Name = "order_territories")]
+        public OrderTerritories OrderTerritories { get; set; }
     }
 }
