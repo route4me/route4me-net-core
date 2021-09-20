@@ -30,7 +30,7 @@ namespace Route4MeSDK.Examples
             {
                 SplitTerritories = true,
 
-                // The territory IDs are token from test account- to run test on yor PC, put your territory IDs.
+                // The territory IDs are taken from the test account- to run the test on your PC, put your territory IDs.
                 TerritoriesId = new string[] { "5E66A5AFAB087B08E690DFAE4F8B151B", "6160CFC4CC3CD508409D238E04D6F6C4" },
                 filters = new FilterDetails()
                 {
