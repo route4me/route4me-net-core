@@ -26,6 +26,19 @@ namespace Route4MeSDK.Examples
                 VehicleId = ""
             };
 
+            var depots = new Address[1]
+            {
+                new Address()
+                {
+                    Alias = "HQ1",
+                    AddressString = "1010 N Florida ave, Tampa, FL",
+                    IsDepot = true,
+                    Latitude = 27.952941,
+                    Longitude = -82.459493,
+                    Time = 0
+                }
+            };
+
             var orderTerritories = new OrderTerritories()
             {
                 SplitTerritories = true,
@@ -45,7 +58,8 @@ namespace Route4MeSDK.Examples
             {
                 Redirect = false,
                 OrderTerritories = orderTerritories,
-                Parameters = parameters
+                Parameters = parameters,
+                Depots = depots
             };
 
             // Run the query
