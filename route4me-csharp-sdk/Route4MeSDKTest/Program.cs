@@ -1,7 +1,5 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.Examples;
+﻿using Route4MeSDK.Examples;
 using System;
-using System.Collections.Generic;
 
 namespace Route4MeSDKTest
 {
@@ -15,7 +13,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "OptimizationByOrderTerritories";
+            string executeOption = "AddOrderWithOrderType";
             //object[] executeParams = new object[] { null };
             object[] executeParams = null;
 
@@ -416,9 +414,9 @@ namespace Route4MeSDKTest
                 }
             }
 
-            System.Console.WriteLine("");
-            System.Console.WriteLine("Press any key");
-            System.Console.ReadKey();
+            Console.WriteLine("");
+            Console.WriteLine("Press any key");
+            Console.ReadKey();
         }
     }
 }
