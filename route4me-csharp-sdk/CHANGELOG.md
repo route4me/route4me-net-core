@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.1.11] - 2021-09-24
+
+### Changed
+
+The file [RouteParametersQuery.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/RouteParametersQuery.cs)  
+– Added the property: DuplicateRoutesId.
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+– Changed the class DuplicateRouteResponse;
+- Changed the method DuplicateRoute;
+- Fixed error notification (was non-informative) issue in the generic methods GetJsonObjectFromAPIAsync, GetJsonObjectFromAPI, GetXmlObjectFromAPI.
+
+
 ## [1.0.1.10] - 2021-09-19
 
 ### Changed
