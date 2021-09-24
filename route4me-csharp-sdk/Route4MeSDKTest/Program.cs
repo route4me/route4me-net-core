@@ -13,9 +13,9 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "AddOrderWithOrderType";
-            //object[] executeParams = new object[] { null };
-            object[] executeParams = null;
+            string executeOption = "UnlinkRouteFromOptimization";
+            //object[] executeParams = new object[] { null }; // Uncomment if null or object array is sent as a parameter
+            object[] executeParams = null; // Uncomment if nothing is sent
 
             if (executeOption.ToLower() == "api4")
             {
