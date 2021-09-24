@@ -25,9 +25,7 @@ namespace Route4MeSDK.Examples
             double lng = SD10Stops_route.Addresses.Length > 1
                 ? SD10Stops_route.Addresses[1].Longitude
                 : -83.22466;
-            lat = 41.003672;
-            lng = -81.598461;
-            SD10Stops_route_id = "541DC543153661CEAC1D7DA7F33DD59F";
+            
             // Create the gps parameters
             var gpsParameters = new GPSParameters()
             {

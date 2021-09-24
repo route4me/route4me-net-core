@@ -707,12 +707,12 @@ namespace Route4MeSDK
 			public string[] RouteIDs { get; set; }
 		}
 
-        /// <summary>
-        /// Duplicates a route
-        /// </summary>
-        /// <param name="queryParameters">The query parameters containing a route ID to be duplicated</param>
-        /// <param name="errorString">Returned error string in case of the processs failing</param>
-        /// <returns>ID of a duplicate route</returns>
+		/// <summary>
+		/// Duplicates a route
+		/// </summary>
+		/// <param name="queryParameters">The query parameters containing a route ID to be duplicated</param>
+		/// <param name="errorString">Returned error string in case of the processs failing</param>
+		/// <returns>DuplicateRouteResponse type object</returns>
 		public DuplicateRouteResponse DuplicateRoute(RouteParametersQuery queryParameters, out string errorString)
 		{
 			//queryParameters.ParametersCollection["to"] = "none";
@@ -4566,6 +4566,7 @@ namespace Route4MeSDK
 								else
 								{
 									ErrorResponse errorResponse = null;
+
 									try
 									{
 										var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
