@@ -8,13 +8,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using Microsoft.AspNetCore.Connections;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Security.Authentication;
+using Route4MeSDKLibrary;
 
 namespace Route4MeSDK
 {
@@ -32,10 +31,9 @@ namespace Route4MeSDK
 		#region Fields
 
 		private readonly string m_ApiKey;
-		private readonly TimeSpan m_DefaultTimeOut = new TimeSpan(TimeSpan.TicksPerMinute * 30); // Default timeout - 30 minutes
-																								 //private bool m_isTestMode = false;
 		private bool parseWithNewtonJson;
-		#endregion
+
+        #endregion
 
 		#region Methods
 
@@ -45,22 +43,22 @@ namespace Route4MeSDK
 		{
 			m_ApiKey = apiKey;
 			parseWithNewtonJson = false;
-		}
+        }
 
-        #endregion
+		#endregion
 
-        #region Route4Me Shortcut Methods
+		#region Route4Me Shortcut Methods
 
-        #region Optimizations
+		#region Optimizations
 
-        /// <summary>
-        /// Generates optimized routes
-        /// </summary>
-        /// <param name="optimizationParameters">The input parameters for the routes optimization, which encapsulates:
-        /// the route parameters and the addresses. </param>
-        /// <param name="errorString">Returned error string in case of an optimization processs failing</param>
-        /// <returns>Generated optimization problem object</returns>
-        public DataObject RunOptimization(OptimizationParameters optimizationParameters, out string errorString)
+		/// <summary>
+		/// Generates optimized routes
+		/// </summary>
+		/// <param name="optimizationParameters">The input parameters for the routes optimization, which encapsulates:
+		/// the route parameters and the addresses. </param>
+		/// <param name="errorString">Returned error string in case of an optimization processs failing</param>
+		/// <returns>Generated optimization problem object</returns>
+		public DataObject RunOptimization(OptimizationParameters optimizationParameters, out string errorString)
 		{
 			var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
 														  R4MEInfrastructureSettings.ApiHost,
@@ -4307,25 +4305,26 @@ namespace Route4MeSDK
 									   HttpMethodType httpMethod,
 									   HttpContent httpContent,
 									   bool isString)
-	   where T : class
+	    where T : class
 		{
 			//out string errorMessage return this parameter in the tuple
 
 			T result = default;
 			string errorMessage = string.Empty;
 
-			try
-			{
-				using (HttpClient httpClient = CreateAsyncHttpClient(url))
-				{
-					// Get the parameters
-					string parametersURI = optimizationParameters.Serialize(m_ApiKey);
+            string parametersURI = optimizationParameters.Serialize(m_ApiKey);
+            var uri = new Uri($"{url}{parametersURI}");
 
+			try
+            {
+                using (var httpClientHolder =
+                    HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(System.UriPartial.Authority)))
+                {
 					switch (httpMethod)
 					{
 						case HttpMethodType.Get:
 							{
-								var response = await httpClient.GetStreamAsync(parametersURI);
+								var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
 
 								result = isString ? response.ReadString() as T :
 														response.ReadObject<T>();
@@ -4354,7 +4353,7 @@ namespace Route4MeSDK
 
 								if (isPut)
 								{
-									response = await httpClient.PutAsync(parametersURI, content);
+									response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
 								}
 								else if (isDelete)
 								{
@@ -4362,20 +4361,20 @@ namespace Route4MeSDK
 									{
 										Content = content,
 										Method = HttpMethod.Delete,
-										RequestUri = new Uri(parametersURI, UriKind.Relative)
+										RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
 									};
-									response = await httpClient.SendAsync(request);
+									response = await httpClientHolder.HttpClient.SendAsync(request);
 								}
 								else
 								{
 									//var request = new HttpRequestMessage();
-									response = await httpClient.PostAsync(parametersURI, content).ConfigureAwait(true);
+									response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content).ConfigureAwait(true);
 								}
 
-                                // Check if successful
-                                //if (response.Content is StreamContent)
-                                if ((response.IsSuccessStatusCode && response.StatusCode== HttpStatusCode.OK) || response.StatusCode==HttpStatusCode.RedirectMethod)
-                                {
+								// Check if successful
+								//if (response.Content is StreamContent)
+								if ((response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK) || response.StatusCode == HttpStatusCode.RedirectMethod)
+								{
 									var streamTask = await (response.Content).ReadAsStreamAsync();
 
 									result = isString ? streamTask.ReadString() as T :
@@ -4383,21 +4382,21 @@ namespace Route4MeSDK
 								}
 								else
 								{
-                                    using (var streamTask = await (response.Content).ReadAsStreamAsync())
-                                    {
-                                        ErrorResponse errorResponse = null;
+									using (var streamTask = await (response.Content).ReadAsStreamAsync())
+									{
+										ErrorResponse errorResponse = null;
 
-                                        try
-                                        {
-                                            errorResponse = streamTask.ReadObject<ErrorResponse>();
-                                        }
-                                        catch (Exception)
-                                        {
+										try
+										{
+											errorResponse = streamTask.ReadObject<ErrorResponse>();
+										}
+										catch (Exception)
+										{
 											if ((response?.ReasonPhrase ?? null) != null)
 											{
 												errorResponse = new ErrorResponse();
 												errorResponse.Errors = new List<string>() { response.ReasonPhrase };
-												
+
 												var reqMessage = response?.RequestMessage?.Content.ReadAsStringAsync().Result ?? "";
 
 												if (reqMessage != "") errorResponse.Errors.Add($"Request content: {Environment.NewLine} {reqMessage}");
@@ -4408,30 +4407,30 @@ namespace Route4MeSDK
 											}
 										}
 
-                                        if (errorResponse != null && errorResponse.Errors != null && errorResponse.Errors.Count > 0)
-                                        {
-                                            foreach (String error in errorResponse.Errors)
-                                            {
-                                                if (errorMessage.Length > 0)
-                                                    errorMessage += "; ";
-                                                errorMessage += error;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            var responseStream = await response.Content.ReadAsStringAsync();
-                                            String responseString = responseStream;
-                                            if (responseString != null)
-                                                errorMessage = "Response: " + responseString;
-                                        }
-                                    };
+										if (errorResponse != null && errorResponse.Errors != null && errorResponse.Errors.Count > 0)
+										{
+											foreach (String error in errorResponse.Errors)
+											{
+												if (errorMessage.Length > 0)
+													errorMessage += "; ";
+												errorMessage += error;
+											}
+										}
+										else
+										{
+											var responseStream = await response.Content.ReadAsStringAsync();
+											String responseString = responseStream;
+											if (responseString != null)
+												errorMessage = "Response: " + responseString;
+										}
+									};
 								}
-                                response.Dispose();
+								response.Dispose();
 								break;
 							}
 					}
 				}
-			}
+            }
 			catch (HttpListenerException e)
 			{
 				errorMessage = e.Message + " --- " + errorMessage;
@@ -4458,29 +4457,29 @@ namespace Route4MeSDK
 			T result = default;
 			errorMessage = string.Empty;
 
+            // Get the parameters
+            bool hasApiKey = (optimizationParameters
+                .GetType()
+                .GetProperties()
+                .Where(x => x.Name == "ApiKey" || x.Name == "api_key")
+                .FirstOrDefault()
+                ?.GetValue(optimizationParameters) ?? null) != null;
+            string parametersURI = hasApiKey
+                ? optimizationParameters.Serialize(String.Empty)
+                : optimizationParameters.Serialize(m_ApiKey);
+            parametersURI = parametersURI.Replace("?&", "?");
+            var uri = new Uri($"{url}{parametersURI}");
+
 			try
 			{
-				using (HttpClient httpClient = CreateHttpClient(url))
-				{
-					// Get the parameters
-					bool hasApiKey = (optimizationParameters
-										.GetType()
-										.GetProperties()
-										.Where(x => x.Name == "ApiKey" || x.Name == "api_key")
-										.FirstOrDefault()
-										?.GetValue(optimizationParameters) ?? null) != null;
-
-					string parametersURI = hasApiKey
-											? optimizationParameters.Serialize(String.Empty)
-											: optimizationParameters.Serialize(m_ApiKey);
-
-					parametersURI = parametersURI.Replace("?&", "?");
-
+                using (var acquireHttpClientHolder =
+                    HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
+                {
 					switch (httpMethod)
 					{
 						case HttpMethodType.Get:
 							{
-								var response = httpClient.GetStreamAsync(parametersURI);
+								var response = acquireHttpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
 								response.Wait();
 
 								if (response.IsCompleted)
@@ -4513,7 +4512,7 @@ namespace Route4MeSDK
 
 								if (isPut)
 								{
-									response = httpClient.PutAsync(parametersURI, content);
+									response = acquireHttpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
 								}
 								else if (isDelete)
 								{
@@ -4521,31 +4520,31 @@ namespace Route4MeSDK
 									{
 										Content = content,
 										Method = HttpMethod.Delete,
-										RequestUri = new Uri(parametersURI, UriKind.Relative)
+										RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
 									};
-									response = httpClient.SendAsync(request);
+									response = acquireHttpClientHolder.HttpClient.SendAsync(request);
 								}
 								else
 								{
-                                    using (var cts = new CancellationTokenSource())
-                                    {
-                                        cts.CancelAfter(1000 * 60 * 5); // 3 seconds
+									using (var cts = new CancellationTokenSource())
+									{
+										cts.CancelAfter(1000 * 60 * 5); // 3 seconds
 
-                                        response = httpClient.PostAsync(parametersURI, content, cts.Token);
-                                    };
+										response = acquireHttpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
+									};
 								}
 
 								// Wait for response
 								response.Wait();
 
-                                // Check if successful
-                                if (response.IsCompleted &&
+								// Check if successful
+								if (response.IsCompleted &&
 									response.Result.IsSuccessStatusCode &&
 									response.Result.StatusCode == HttpStatusCode.OK)
 								{
-                                    //var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
-                                    var streamTask = (response.Result.Content).ReadAsStreamAsync();
-                                    streamTask.Wait();
+									//var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+									var streamTask = (response.Result.Content).ReadAsStreamAsync();
+									streamTask.Wait();
 
 									if (streamTask.IsCompleted)
 									{
@@ -4576,17 +4575,17 @@ namespace Route4MeSDK
 									}
 									catch (Exception) // If cannot read ErrorResponse from the stream, try another way
 									{
-										if ((response?.Result?.ReasonPhrase ?? null)!=null)
-                                        {
+										if ((response?.Result?.ReasonPhrase ?? null) != null)
+										{
 											errorResponse = new ErrorResponse();
 											errorResponse.Errors = new List<string>() { response.Result.ReasonPhrase };
-											
+
 											var reqMessage = response?.Result?.RequestMessage?.Content.ReadAsStringAsync().Result ?? "";
 
 											if (reqMessage != "") errorResponse.Errors.Add($"Request content: {Environment.NewLine} {reqMessage}");
 										}
 										else
-                                        {
+										{
 											errorResponse = default(ErrorResponse);
 										}
 									}
@@ -4614,7 +4613,7 @@ namespace Route4MeSDK
 							}
 					}
 				}
-			}
+            }
 			catch (HttpListenerException e)
 			{
 				errorMessage = e.Message + " --- " + errorMessage;
@@ -4634,19 +4633,20 @@ namespace Route4MeSDK
 			string result = string.Empty;
 			errorMessage = string.Empty;
 
-			try
-			{
-				using (HttpClient httpClient = CreateHttpClient(url))
-				{
-					// Get the parameters
-					string parametersURI = optimizationParameters.Serialize(m_ApiKey);
+            string parametersURI = optimizationParameters.Serialize(m_ApiKey);
+            var uri = new Uri($"{url}{parametersURI}");
 
+			try
+            {
+                using (var httpClientHolder =
+                    HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(System.UriPartial.Authority)))
+                {
 					switch (httpMethod__1)
 					{
 						case HttpMethodType.Get:
 							if (true)
 							{
-								var response = httpClient.GetStreamAsync(parametersURI);
+								var response = httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
 								response.Wait();
 
 								if (response.IsCompleted)
@@ -4658,7 +4658,7 @@ namespace Route4MeSDK
 						case HttpMethodType.Post:
 							if (true)
 							{
-								var response = httpClient.GetStreamAsync(parametersURI);
+								var response = httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
 								response.Wait();
 
 								if (response.IsCompleted)
@@ -4688,7 +4688,7 @@ namespace Route4MeSDK
 								Task<HttpResponseMessage> response = null;
 								if (isPut)
 								{
-									response = httpClient.PutAsync(parametersURI, content);
+									response = httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
 								}
 								else if (isDelete)
 								{
@@ -4696,13 +4696,13 @@ namespace Route4MeSDK
 									{
 										Content = content,
 										Method = HttpMethod.Delete,
-										RequestUri = new Uri(parametersURI, UriKind.Relative)
+										RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
 									};
-									response = httpClient.SendAsync(request);
+									response = httpClientHolder.HttpClient.SendAsync(request);
 								}
 								else
 								{
-									response = httpClient.PostAsync(parametersURI, content);
+									response = httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content);
 								}
 
 								// Wait for response
@@ -4736,7 +4736,7 @@ namespace Route4MeSDK
 										{
 											errorResponse = new ErrorResponse();
 											errorResponse.Errors = new List<string>() { response.Result.ReasonPhrase };
-											
+
 											var reqMessage = response?.Result?.RequestMessage?.Content.ReadAsStringAsync().Result ?? "";
 
 											if (reqMessage != "") errorResponse.Errors.Add($"Request content: {Environment.NewLine} {reqMessage}");
@@ -4773,7 +4773,7 @@ namespace Route4MeSDK
 							break;
 					}
 				}
-			}
+            }
 			catch (HttpListenerException e)
 			{
 				errorMessage = e.Message + " --- " + errorMessage;
@@ -4789,88 +4789,8 @@ namespace Route4MeSDK
 			return result;
 		}
 
-		private HttpClient CreateHttpClient(string url)
-		{
-			// Uncomment code lines below when is tested broono (no signed cert)
-			/*
-			ServicePointManager.ServerCertificateValidationCallback +=
-		(sender, cert, chain, sslPolicyErrors) => true;
-
-
-			var handler = new HttpClientHandler()
-			{
-				AllowAutoRedirect = true,
-				MaxAutomaticRedirections = 4
-			};
-
-			var supportsAutoRdirect = handler.SupportsAutomaticDecompression;
-
-			Console.WriteLine("Supports redirection -> " + supportsAutoRdirect);
-			*/
-
-			//ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-
-			var sslOptions = new System.Net.Security.SslClientAuthenticationOptions
-			{
-				EnabledSslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
-				// Leave certs unvalidated for debugging
-				//RemoteCertificateValidationCallback = delegate { return true; }
-			};
-
-			SocketsHttpHandler httpHandler = new SocketsHttpHandler
-			{
-				SslOptions = sslOptions
-			};
-
-			//httpHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
-			using (httpHandler)
-            {
-                HttpClient result = new HttpClient() { BaseAddress = new Uri(url) };
-
-                result.Timeout = m_DefaultTimeOut;
-                result.DefaultRequestHeaders.Accept.Clear();
-                result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                return result;
-            };
-		}
-
-		private HttpClient CreateAsyncHttpClient(string url)
-		{
-			var handler = new HttpClientHandler()
-			{
-				AllowAutoRedirect = false
-			};
-
-			//var supprotsAutoRdirect = handler.SupportsAutomaticDecompression;
-
-			//ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-			var sslOptions = new System.Net.Security.SslClientAuthenticationOptions
-            {
-				EnabledSslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
-				// Leave certs unvalidated for debugging
-				//RemoteCertificateValidationCallback = delegate { return true; }
-			};
-
-			SocketsHttpHandler httpHandler = new SocketsHttpHandler
-			{
-				SslOptions = sslOptions
-            };
-
-            using (httpHandler)
-            {
-                HttpClient result = new HttpClient(handler) { BaseAddress = new Uri(url) };
-
-                result.Timeout = m_DefaultTimeOut;
-                result.DefaultRequestHeaders.Accept.Clear();
-                result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                return result;
-            };
-		}
-
 		#endregion
 
 		#endregion
-	}
+    }
 }

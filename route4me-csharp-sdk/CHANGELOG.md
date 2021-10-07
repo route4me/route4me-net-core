@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.2.0] - 2021-10-07
+
+### Added
+
+The file [HttpClientHolderManager.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/HttpClientHolderManager.cs) 
+– **Class**: HttpClientHolderManager - for correct usage of HttpClient means re-use to avoid TCP handshake overhead and exhaust the available socket pool (also supports GC for not-in-use HttpClient instances). 
+
+The file [HttpClientHolder.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/HttpClientHolder.cs) 
+– **Class**: HttpClientHolder - holds the instance of HttpClient provided by HttpClientHolderManager.
+
+The file [SequentialTimer.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/SequentialTimer.cs) 
+– **Class**: SequentialTimer - wraps System.Threading.Timer and guarantees FIFO for timer callbacks (without race conditions).
+
+### Changed
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+– Switch from HttpClient per HTTP Request to usage of HttpClientHolderManager
+
+The file [Route4MeManagerV5.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
+– Switch from HttpClient per HTTP Request to usage of HttpClientHolderManager
+
+
 ## [1.0.1.11] - 2021-09-24
 
 ### Changed

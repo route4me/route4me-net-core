@@ -130,8 +130,6 @@ namespace Route4MeSDK.FastProcessing
         /// <param name="fileName">JSON file name</param>
         public void uploadAndGeocodeLargeJsonFile(string fileName)
         {
-            var route4Me = new Route4MeManager(apiKey);
-
             largeJsonFileProcessingIsDone = false;
 
             fileReading = new FastFileReading();
@@ -206,8 +204,6 @@ namespace Route4MeSDK.FastProcessing
                 return;
             }
 
-            var route4Me = new Route4MeManager(apiKey);
-
             largeCsvFileProcessingIsDone = false;
 
             fileReading = new FastFileReading();
@@ -254,29 +250,6 @@ namespace Route4MeSDK.FastProcessing
                 */
                 // fire here event for external (test) code
             }
-        }
-
-        private void FileReading_CsvFileChunkIsReadyOld(object sender, FastFileReading.CsvFileChunkIsReadyArgs e)
-        {
-            string csvAddressesChunk = e.AddressesChunk;
-
-            var uploadAddressesResponse = uploadAddressesToTemporaryStorage(csvAddressesChunk);
-
-            if (uploadAddressesResponse != null)
-            {
-                string tempAddressesStorageID = uploadAddressesResponse.OptimizationProblemId;
-                int addressesInChunk = (int)uploadAddressesResponse.AddressCount;
-
-                if (addressesInChunk < fileReading.csvObjectsChunkSize) requestedAddresses = addressesInChunk; // last chunk
-
-                geocodedAddressesDownloadingIsDone = true;
-
-                SaveAddressesToDatabase(tempAddressesStorageID);
-
-
-                //downloadGeocodedAddresses(tempAddressesStorageID, addressesInChunk);
-            }
-
         }
 
         private void FileReading_CsvFileChunkIsReady(object sender, FastFileReading.CsvFileChunkIsReadyArgs e)
@@ -416,17 +389,6 @@ namespace Route4MeSDK.FastProcessing
                 Console.WriteLine("-------------------------------");
             }
         }
-
-        private void SaveAddressesToDatabase(string tempOptimizationProblemId)
-        {
-            var r4me = new Route4MeManager(apiKey);
-
-            bool saved = r4me.SaveGeocodedAddressesToDatabase(tempOptimizationProblemId, out string errorString);
-
-            Console.WriteLine(saved ? "Uploaded addesses saved to database" : "Cannot save uploaded addesses to database");
-
-        }
-
 
         /// <summary>
         /// Upload JSON addresses to a temporary storage

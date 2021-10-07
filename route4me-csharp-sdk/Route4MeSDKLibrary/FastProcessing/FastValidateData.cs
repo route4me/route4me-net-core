@@ -77,8 +77,6 @@ namespace Route4MeSDK.FastProcessing
                 return;
             }
 
-            var route4Me = new Route4MeManager(apiKey);
-
             largeCsvFileProcessingIsDone = false;
 
             fileReading = new FastFileReading();
@@ -132,13 +130,6 @@ namespace Route4MeSDK.FastProcessing
         /// <param name="contactsChunk"></param>
         private async void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
         {
-            var route4Me = new Route4MeManagerV5(apiKey);
-
-            var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest()
-            {
-                Data = contactsChunk.ToArray()
-            };
-
             foreach (var contact in contactsChunk)
             {
                 var errorMessages = ValidateContact(contact);
