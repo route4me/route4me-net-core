@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client.Transports;
 using Client = Quobject.SocketIoClientDotNet.Client;
 using IO = Quobject.SocketIoClientDotNet.Client.IO;
 using Newtonsoft.Json;
@@ -17,6 +15,7 @@ using Route4MeSDK.DataTypes;
 using Newtonsoft.Json.Serialization;
 using System.Diagnostics;
 using System.IO;
+using Quobject.EngineIoClientDotNet.Client.Transports;
 
 namespace Route4MeSDK.FastProcessing
 {
@@ -49,8 +48,6 @@ namespace Route4MeSDK.FastProcessing
 
         List<AddressGeocoded> savedAddresses;
 
-        JsonSerializer jsSer = new JsonSerializer();
-
         public string apiKey { get; set; }
 
         public int CsvChunkSize { get; set; } = 300;
@@ -70,16 +67,20 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         public bool GeocodeOnlyEmpty { get; set; } = false;
 
-        JsonSerializer jsonSerializer = new JsonSerializer();
+        [Obsolete("EnableTraceSource is not used anymore. Use overloaded constructor without EnableTraceSource")]
+        public FastBulkGeocoding(string ApiKey, bool EnableTraceSource = false) : this(ApiKey)
+        {
+        }
 
-        public FastBulkGeocoding(string ApiKey, bool EnableTraceSource = false)
+        public FastBulkGeocoding(string ApiKey)
         {
             if (ApiKey != "") apiKey = ApiKey;
-            Quobject.SocketIoClientDotNet.TraceSourceTools.LogTraceSource.TraceSourceLogging(EnableTraceSource);
 
             taskList = new List<Task>();
             threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
         }
+
+
 
         #region // Addresses chunk's geocoding is finished event handler
         public event EventHandler<AddressesChunkGeocodedArgs> AddressesChunkGeocoded;
@@ -469,7 +470,7 @@ namespace Route4MeSDK.FastProcessing
 
             socket.On(Socket.EVENT_ERROR, (e) =>
             {
-                var exception = (Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client.EngineIOException)e;
+                var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
                 Console.WriteLine("EVENT_ERROR. " + exception.Message);
                 Console.WriteLine("BASE EXCEPTION. " + exception.GetBaseException());
                 Console.WriteLine("DATA COUNT. " + exception.Data.Count);
