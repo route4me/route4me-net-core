@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Modules;
-//using IO = Quobject.EngineIoClientDotNet.Client.Transports;
+﻿using Quobject.EngineIoClientDotNet.Modules;
 using IO = Quobject.SocketIoClientDotNet.Client.IO;
 
 namespace Route4MeSDK.FastProcessing
