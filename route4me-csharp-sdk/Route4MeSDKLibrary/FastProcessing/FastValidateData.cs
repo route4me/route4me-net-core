@@ -96,10 +96,7 @@ namespace Route4MeSDK.FastProcessing
 
         private void FileReading_CsvFileReadingIsDone(object sender, FastFileReading.CsvFileReadingIsDoneArgs e)
         {
-            Parallel.ForEach(threadPackage, chunk =>
-            {
-                CsvFileChunkIsReady(chunk);
-            });
+            Parallel.ForEach(threadPackage, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, CsvFileChunkIsReady);
 
             threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
         }
@@ -115,10 +112,7 @@ namespace Route4MeSDK.FastProcessing
 
             if (threadPackage.Count > 15)
             {
-                Parallel.ForEach(threadPackage, chunk =>
-                {
-                    CsvFileChunkIsReady(chunk);
-                });
+                Parallel.ForEach(threadPackage, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, CsvFileChunkIsReady);
 
                 threadPackage = new List<List<DataTypes.V5.AddressBookContact>>();
             }
