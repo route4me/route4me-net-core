@@ -41,12 +41,6 @@ See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sd
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SocketIoClientDotNet.core_2.2">
-      <HintPath>lib\SocketIoClientDotNet.core_2.2.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
