@@ -237,6 +237,42 @@ namespace Route4MeSDK
 
         #endregion
 
+        #region Barcodes
+
+        /// <summary>
+        /// Returns address barcodes
+        /// </summary>
+        /// <param name="getAddressBarcodesParameters">Request parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>An <see cref="GetAddressBarcodesResponse"/> type object</returns>
+        public GetAddressBarcodesResponse GetAddressBarcodes(GetAddressBarcodesParameters getAddressBarcodesParameters, out ResultResponse resultResponse)
+        {
+            var response = GetJsonObjectFromAPI<GetAddressBarcodesResponse>(getAddressBarcodesParameters,
+                R4MEInfrastructureSettingsV5.AddressBarcodes,
+                HttpMethodType.Get,
+                out resultResponse);
+
+            return response;
+        }
+
+        /// <summary>
+        /// Saves address bar codes
+        /// </summary>
+        /// <param name="saveAddressBarcodesParameters">The contact parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Created address book contact</returns>
+        public StatusResponse SaveAddressBarcodes(SaveAddressBarcodesParameters saveAddressBarcodesParameters, out ResultResponse resultResponse)
+        {
+            saveAddressBarcodesParameters.PrepareForSerialization();
+
+            return GetJsonObjectFromAPI<StatusResponse>(saveAddressBarcodesParameters,
+                R4MEInfrastructureSettingsV5.AddressBarcodes,
+                HttpMethodType.Post,
+                out resultResponse);
+        }
+
+        #endregion
+
         #region Team Management
 
         /// <summary>
