@@ -204,6 +204,8 @@
 
         #endregion
 
+        public const string AddressBarcodes = MainHost + "/address-barcodes";
+
         #endregion
     }
 }

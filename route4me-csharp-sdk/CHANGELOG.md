@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.1.0.0] - 2021-10-07
+
+### Added
+
+The file [BarcodeDataRequest.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/AddressBarcodes/BarcodeDataRequest.cs) 
+– **Class**: BarcodeDataRequest - for saving bar codes. 
+
+The file [BarcodeDataResponse.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/AddressBarcodes/BarcodeDataResponse.cs) 
+– **Class**: BarcodeDataResponse - for reading bar codes from response. 
+
+The file [GetAddressBarcodesResponse.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/AddressBarcodes/GetAddressBarcodesResponse.cs) 
+– **Class**: GetAddressBarcodesResponse - response for get bar codes request. 
+
+The file [GetAddressBarcodesParameters.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/AddressBarcodes/GetAddressBarcodesResponse.cs) 
+– **Class**: GetAddressBarcodesParameters - Query parameters for get bar codes request. 
+
+The file [SaveAddressBarcodesParameters.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/AddressBarcodes/SaveAddressBarcodesParameters.cs) 
+– **Class**: SaveAddressBarcodesParameters - Query parameters for save bar codes request. 
+
 ## [1.0.2.0] - 2021-10-07
 
 ### Added
