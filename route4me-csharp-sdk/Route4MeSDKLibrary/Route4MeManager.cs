@@ -4280,25 +4280,19 @@ namespace Route4MeSDK
 			return result;
 		}
 
-		private async Task<Tuple<T, string>> GetJsonObjectFromAPIAsync<T>(GenericParameters optimizationParameters,
+		private Task<Tuple<T, string>> GetJsonObjectFromAPIAsync<T>(GenericParameters optimizationParameters,
 										string url,
 										HttpMethodType httpMethod,
 										bool isString)
 		where T : class
 		{
-			return await Task.Run(() =>
-			{
-				Task<Tuple<T, string>> result = GetJsonObjectFromAPIAsync<T>(optimizationParameters,
-											   url,
-											   httpMethod,
-											   (HttpContent)null,
-											   isString);
-
-				return result;
-			});
-
-
-		}
+			var result = GetJsonObjectFromAPIAsync<T>(optimizationParameters,
+                url,
+                httpMethod,
+                (HttpContent)null,
+                isString);
+            return result;
+        }
 
 		private async Task<Tuple<T, string>> GetJsonObjectFromAPIAsync<T>(GenericParameters optimizationParameters,
 									   string url,
