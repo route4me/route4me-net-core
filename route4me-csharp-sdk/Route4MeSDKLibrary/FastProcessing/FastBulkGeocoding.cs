@@ -273,7 +273,7 @@ namespace Route4MeSDK.FastProcessing
             */ 
         }
 
-        private async void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
+        private void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
         {
             var route4Me = new Route4MeManagerV5(apiKey);
             var route4MeV4 = new Route4MeManager(apiKey);

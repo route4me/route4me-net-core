@@ -122,7 +122,7 @@ namespace Route4MeSDK.FastProcessing
         /// Validate a chunk of the address book contacts 
         /// </summary>
         /// <param name="contactsChunk"></param>
-        private async void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
+        private void CsvFileChunkIsReady(List<DataTypes.V5.AddressBookContact> contactsChunk)
         {
             foreach (var contact in contactsChunk)
             {
