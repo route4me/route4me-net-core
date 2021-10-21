@@ -49,7 +49,7 @@ namespace Route4MeSDK.FastProcessing
             return TotalRemovedContacts;
         }
 
-        private async void RemoveContactsChunks(List<int> chunk)
+        private void RemoveContactsChunks(List<int> chunk)
         {
             var route4Me = new Route4MeManagerV5(apiKey);
 

@@ -32,12 +32,12 @@ See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sd
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="2.16.3" />
-    <PackageReference Include="fastJSON" Version="2.2.4" />
+    <PackageReference Include="fastJSON" Version="2.4.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SocketIoClientDotNet.Standard" Version="0.0.6" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
