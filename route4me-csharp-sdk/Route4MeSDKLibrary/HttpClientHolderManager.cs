@@ -13,7 +13,9 @@ namespace Route4MeSDKLibrary
     /// </summary>
     internal class HttpClientHolderManager
     {
-        private static readonly Dictionary<string, HttpClientWrapper> HttpClientWrappers = new Dictionary<string, HttpClientWrapper>();
+        private static readonly Dictionary<string, HttpClientWrapper> HttpClientWrappers =
+            new Dictionary<string, HttpClientWrapper>();
+
         private static readonly object SyncRoot = new object();
 
         static HttpClientHolderManager()
@@ -49,10 +51,7 @@ namespace Route4MeSDKLibrary
             {
                 if (HttpClientWrappers.TryGetValue(baseAddress, out var wrapper))
                 {
-                    if (wrapper.RefCount > 0)
-                    {
-                        wrapper.RefCount--;
-                    }
+                    if (wrapper.RefCount > 0) wrapper.RefCount--;
                     wrapper.LastAccess = DateTime.Now;
                 }
             }
@@ -60,7 +59,7 @@ namespace Route4MeSDKLibrary
 
         private static HttpClient CreateHttpClient(string baseAddress)
         {
-            HttpClient result = new HttpClient { BaseAddress = new Uri(baseAddress), Timeout = TimeSpan.FromMinutes(30) };
+            var result = new HttpClient {BaseAddress = new Uri(baseAddress), Timeout = TimeSpan.FromMinutes(30)};
 
             result.DefaultRequestHeaders.Accept.Clear();
             result.DefaultRequestHeaders.ConnectionClose = false;
@@ -78,35 +77,27 @@ namespace Route4MeSDKLibrary
                 var now = DateTime.Now;
                 var keysToRemove = new List<string>();
                 foreach (var kvp in HttpClientWrappers)
-                {
-                    if (kvp.Value.RefCount == 0 && ((now - kvp.Value.LastAccess) > TimeSpan.FromHours(1)))
-                    {
+                    if (kvp.Value.RefCount == 0 && now - kvp.Value.LastAccess > TimeSpan.FromHours(1))
                         keysToRemove.Add(kvp.Key);
-                    }
-                }
 
                 foreach (var key in keysToRemove)
-                {
                     if (HttpClientWrappers.Remove(key, out var removed))
-                    {
                         removed.HttpClient.Dispose();
-                    }
-                }
             }
         }
 
         private class HttpClientWrapper
         {
-            public DateTime LastAccess { get; set; }
-            public HttpClient HttpClient { get; }
-            public int RefCount { get; set; }
-
             public HttpClientWrapper(HttpClient httpClient)
             {
                 HttpClient = httpClient;
                 LastAccess = DateTime.Now;
                 RefCount = 1;
             }
+
+            public DateTime LastAccess { get; set; }
+            public HttpClient HttpClient { get; }
+            public int RefCount { get; set; }
         }
     }
 }

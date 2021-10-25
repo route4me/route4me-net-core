@@ -1,20 +1,24 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Route4MeSDK.FastProcessing
 {
     public class FastBulkRemoveContacts
     {
+        private static List<List<int>> _threadPackage; // Threads package with address IDs to remove.
+
+        public FastBulkRemoveContacts(string ApiKey)
+        {
+            if (ApiKey != "") apiKey = ApiKey;
+
+            _threadPackage = new List<List<int>>();
+        }
+
         public int TotalRemovedContacts { get; set; }
 
         public int ChunkPause { get; set; } = 2000;
-
-        static List<List<int>> threadPackage; // Threads package with address IDs to remove.
 
         public int RemoveContactsChunkSize { get; set; } = 300;
 
@@ -22,29 +26,23 @@ namespace Route4MeSDK.FastProcessing
 
         public bool PrintMessagesOnConsole { get; set; } = false;
 
-        public FastBulkRemoveContacts(string ApiKey)
-        {
-            if (ApiKey != "") apiKey = ApiKey;
-
-            threadPackage = new List<List<int>>();
-        }
-
         public int RemoveAddressBookContacts(int[] contactIDs, out string errorString)
         {
             errorString = "";
             TotalRemovedContacts = 0;
 
-            int chunksNumber = Math.DivRem(contactIDs.Length, RemoveContactsChunkSize, out int remainder);
+            var chunksNumber = Math.DivRem(contactIDs.Length, RemoveContactsChunkSize, out var remainder);
 
             chunksNumber = remainder > 0 ? chunksNumber + 1 : chunksNumber;
 
-            int i = 0;
+            var i = 0;
 
-            int[][] chunks = contactIDs.GroupBy(s => i++ / RemoveContactsChunkSize).Select(g => g.ToArray()).ToArray();
+            var chunks = contactIDs.GroupBy(s => i++ / RemoveContactsChunkSize).Select(g => g.ToArray()).ToArray();
 
-            for (i = 0; i < chunks.Length; i++) threadPackage.Add(chunks[i].ToList());
+            for (i = 0; i < chunks.Length; i++) _threadPackage.Add(chunks[i].ToList());
 
-            Parallel.ForEach(threadPackage, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, RemoveContactsChunks);
+            Parallel.ForEach(_threadPackage, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
+                RemoveContactsChunks);
 
             return TotalRemovedContacts;
         }
@@ -54,18 +52,14 @@ namespace Route4MeSDK.FastProcessing
             var route4Me = new Route4MeManagerV5(apiKey);
 
             var removed = route4Me.RemoveAddressBookContacts(
-                                        chunk.ToArray(),
-                                        out ResultResponse resultResponse);
+                chunk.ToArray(),
+                out var resultResponse);
             if (PrintMessagesOnConsole)
-            {
                 Console.WriteLine(removed
-                ? $"The chunk of the {chunk.Count} contacts removed --- {TotalRemovedContacts}" 
-                : $"Cannot remove the chunk of the contacts: {Environment.NewLine}" + string.Join(',', chunk));
-            }
+                    ? $"The chunk of the {chunk.Count} contacts removed --- {TotalRemovedContacts}"
+                    : $"Cannot remove the chunk of the contacts: {Environment.NewLine}" + string.Join(',', chunk));
 
             if (removed) TotalRemovedContacts += chunk.Count;
-
         }
-
     }
 }

@@ -9,10 +9,13 @@ namespace Route4MeSDK.DataTypes
     public static class DatabaseHelper
     {
         /// <summary>
-        /// Indicates whether a specified DataTable is null, has zero columns, or (optionally) zero rows.
+        ///     Indicates whether a specified DataTable is null, has zero columns, or (optionally) zero rows.
         /// </summary>
         /// <param name="Table">DataTable to check.</param>
-        /// <param name="IgnoreRows">When set to true, the function will return true even if the table's row count is equal to zero.</param>
+        /// <param name="IgnoreRows">
+        ///     When set to true, the function will return true even if the table's row count is equal to
+        ///     zero.
+        /// </param>
         /// <returns>False if the specified DataTable null, has zero columns, or zero rows, otherwise true.</returns>
         public static bool IsValidDatatable(DataTable Table, bool IgnoreRows = false)
         {
@@ -23,18 +26,18 @@ namespace Route4MeSDK.DataTypes
         }
 
         /// <summary>
-        /// Indicates whether a specified Enumerable collection is null or an empty collection.
+        ///     Indicates whether a specified Enumerable collection is null or an empty collection.
         /// </summary>
         /// <typeparam name="T">The specified type contained in the collection.</typeparam>
         /// <param name="Input">An Enumerator to the collection to check.</param>
         /// <returns>True if the specified Enumerable collection is null or empty, otherwise false.</returns>
         public static bool IsCollectionEmpty<T>(IEnumerable<T> Input)
         {
-            return (Input == null || Input.Count() < 1) ? true : false;
+            return Input == null || Input.Count() < 1 ? true : false;
         }
 
         /// <summary>
-        ///  Indicates whether a specified Type can be assigned null.
+        ///     Indicates whether a specified Type can be assigned null.
         /// </summary>
         /// <param name="Input">The Type to check for nullable property.</param>
         /// <returns>True if the specified Type can be assigned null, otherwise false.</returns>
@@ -42,51 +45,53 @@ namespace Route4MeSDK.DataTypes
         {
             if (!Input.IsValueType) return true; // Reference Type
             if (Nullable.GetUnderlyingType(Input) != null) return true; // Nullable<T>
-            return false;   // Value Type
+            return false; // Value Type
         }
 
         /// <summary>
-        /// Returns all the column names of the specified DataRow in a string delimited like and SQL INSERT INTO statement.
-        /// Example: ([FullName], [Gender], [BirthDate])
+        ///     Returns all the column names of the specified DataRow in a string delimited like and SQL INSERT INTO statement.
+        ///     Example: ([FullName], [Gender], [BirthDate])
         /// </summary>
         /// <returns>A string formatted like the columns specified in an SQL 'INSERT INTO' statement.</returns>
         public static string RowToColumnString(DataRow Row)
         {
-            IEnumerable<string> Collection = Row.ItemArray.Select(item => item as String);
+            var Collection = Row.ItemArray.Select(item => item as string);
             return ListToDelimitedString(Collection, "([", "], [", "])");
         }
 
         /// <summary>
-        /// Returns all the values the specified DataRow in as a string delimited like and SQL INSERT INTO statement.
-        /// Example: ('John Doe', 'M', '10/3/1981'')
+        ///     Returns all the values the specified DataRow in as a string delimited like and SQL INSERT INTO statement.
+        ///     Example: ('John Doe', 'M', '10/3/1981'')
         /// </summary>
         /// <returns>A string formatted like the values specified in an SQL 'INSERT INTO' statement.</returns>
         public static string RowToValueString(DataRow Row)
         {
-            IEnumerable<string> Collection = GetDatatableColumns(Row.Table).Select(c => c.ColumnName);
+            var Collection = GetDatatableColumns(Row.Table).Select(c => c.ColumnName);
             return ListToDelimitedString(Collection, "('", "', '", "')");
         }
 
         /// <summary>
-        /// Enumerates a collection as delimited collection of strings.
+        ///     Enumerates a collection as delimited collection of strings.
         /// </summary>
         /// <typeparam name="T">The Type of the collection.</typeparam>
         /// <param name="Collection">An Enumerator to a collection to populate the string.</param>
         /// <param name="Prefix">The string to prefix the result.</param>
         /// <param name="Delimiter">The string that will appear between each item in the specified collection.</param>
-        /// <param name="Postfix">The string to postfix the result.</param>         
-        public static string ListToDelimitedString<T>(IEnumerable<T> Collection, string Prefix, string Delimiter, string Postfix)
+        /// <param name="Postfix">The string to postfix the result.</param>
+        public static string ListToDelimitedString<T>(IEnumerable<T> Collection, string Prefix, string Delimiter,
+            string Postfix)
         {
-            if (IsCollectionEmpty<T>(Collection)) return string.Empty;
+            if (IsCollectionEmpty(Collection)) return string.Empty;
 
-            StringBuilder result = new StringBuilder();
-            foreach (T item in Collection)
+            var result = new StringBuilder();
+            foreach (var item in Collection)
             {
                 if (result.Length != 0)
-                    result.Append(Delimiter);   // Add comma
+                    result.Append(Delimiter); // Add comma
 
-                result.Append(EscapeSingleQuotes(item as String));
+                result.Append(EscapeSingleQuotes(item as string));
             }
+
             if (result.Length < 1) return string.Empty;
 
             result.Insert(0, Prefix);
@@ -96,7 +101,8 @@ namespace Route4MeSDK.DataTypes
         }
 
         /// <summary>
-        /// Returns an enumerator, which supports a simple iteration over a collection of all the DataColumns in a specified DataTable.
+        ///     Returns an enumerator, which supports a simple iteration over a collection of all the DataColumns in a specified
+        ///     DataTable.
         /// </summary>
         public static IEnumerable<DataColumn> GetDatatableColumns(DataTable Input)
         {
@@ -105,7 +111,8 @@ namespace Route4MeSDK.DataTypes
         }
 
         /// <summary>
-        /// Returns an enumerator, which supports a simple iteration over a collection of all the DataRows in a specified DataTable.
+        ///     Returns an enumerator, which supports a simple iteration over a collection of all the DataRows in a specified
+        ///     DataTable.
         /// </summary>
         public static IEnumerable<DataRow> GetDatatableRows(DataTable Input)
         {
@@ -114,7 +121,8 @@ namespace Route4MeSDK.DataTypes
         }
 
         /// <summary>
-        /// Returns a new string in which all occurrences of the single quote character in the current instance are replaced with a back-tick character.
+        ///     Returns a new string in which all occurrences of the single quote character in the current instance are replaced
+        ///     with a back-tick character.
         /// </summary>
         public static string EscapeSingleQuotes(string Input)
         {

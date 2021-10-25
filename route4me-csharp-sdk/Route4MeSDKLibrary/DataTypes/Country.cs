@@ -3,26 +3,26 @@
 namespace Route4MeSDK.DataTypes
 {
     /// <summary>
-    /// The Country class.
-    /// TODO: check if it will not be used
+    ///     The Country class.
+    ///     TODO: check if it will not be used
     /// </summary>
     [DataContract]
     public sealed class Country
     {
         /// <summary>
-        /// Country ID
+        ///     Country ID
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public string ID { get; set; }
 
         /// <summary>
-        /// Country code
+        ///     Country code
         /// </summary>
         [DataMember(Name = "country_code", EmitDefaultValue = false)]
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Country name
+        ///     Country name
         /// </summary>
         [DataMember(Name = "country_name", EmitDefaultValue = false)]
         public string CountryName { get; set; }

@@ -7,13 +7,13 @@ namespace Route4MeSDKLibrary
     {
         private readonly string _baseAddress;
 
-        public HttpClient HttpClient { get; }
-
         public HttpClientHolder(HttpClient httpClient, string baseAddress)
         {
             HttpClient = httpClient;
             _baseAddress = baseAddress;
         }
+
+        public HttpClient HttpClient { get; }
 
         public void Dispose()
         {
