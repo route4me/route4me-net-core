@@ -12,7 +12,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
         {
             var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
 
-            var getAddressBarcodesParameters = new GetAddressBarcodesParameters()
+            var getAddressBarcodesParameters = new GetAddressBarcodesParameters
             {
                 RouteId = "893E6C33F0494572DEB2FAE34B2D3E0B",
                 RouteDestinationId = 705601646
@@ -20,13 +20,13 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
             var readResult1 = route4me.GetAddressBarcodes(getAddressBarcodesParameters, out var resultResponse);
             Assert.NotEmpty(readResult1.Data);
 
-            var saveAddressBarcodesResponse = route4me.SaveAddressBarcodes(new SaveAddressBarcodesParameters()
+            var saveAddressBarcodesResponse = route4me.SaveAddressBarcodes(new SaveAddressBarcodesParameters
             {
                 RouteId = "893E6C33F0494572DEB2FAE34B2D3E0B",
                 RouteDestinationId = 705601646,
-                Barcodes = new BarcodeDataRequest[]
+                Barcodes = new[]
                 {
-                    new BarcodeDataRequest()
+                    new BarcodeDataRequest
                     {
                         Barcode = "TEST2",
                         Latitude = 40.610804,
@@ -37,7 +37,6 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
                         ScannedAt = "2021-10-15 19:18:11"
                     }
                 }
-
             }, out resultResponse);
 
             Assert.True(saveAddressBarcodesResponse.status);
@@ -45,7 +44,6 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
             var readResult2 = route4me.GetAddressBarcodes(getAddressBarcodesParameters, out resultResponse);
 
             Assert.True(readResult2.Data.Length - readResult1.Data.Length == 1);
-
         }
     }
 }

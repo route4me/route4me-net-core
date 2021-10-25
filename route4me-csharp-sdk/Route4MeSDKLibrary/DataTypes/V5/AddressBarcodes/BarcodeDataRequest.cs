@@ -1,51 +1,52 @@
 ﻿using System.Runtime.Serialization;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5
 {
     /// <summary>
-    /// Barcode data request
+    ///     Barcode data request
     /// </summary>
     [DataContract]
-    public class BarcodeDataRequest : QueryTypes.GenericParameters
+    public class BarcodeDataRequest : GenericParameters
     {
         /// <summary>
-        /// Barcode
+        ///     Barcode
         /// </summary>
         [DataMember(Name = "barcode", EmitDefaultValue = false)]
         public string Barcode { get; set; }
 
         /// <summary>
-        /// Scan type
+        ///     Scan type
         /// </summary>
         [DataMember(Name = "scan_type", EmitDefaultValue = false)]
         public string ScanType { get; set; }
 
         /// <summary>
-        /// Latitude
+        ///     Latitude
         /// </summary>
         [DataMember(Name = "lat", EmitDefaultValue = false)]
         public double Latitude { get; set; }
 
         /// <summary>
-        /// Longitude
+        ///     Longitude
         /// </summary>
         [DataMember(Name = "lan", EmitDefaultValue = false)]
         public double Longitude { get; set; }
 
         /// <summary>
-        /// Date
+        ///     Date
         /// </summary>
         [DataMember(Name = "timestamp_date", EmitDefaultValue = false)]
         public long TimestampDate { get; set; }
 
         /// <summary>
-        /// UTC data
+        ///     UTC data
         /// </summary>
         [DataMember(Name = "timestamp_utc", EmitDefaultValue = false)]
         public long TimestampUtc { get; set; }
 
         /// <summary>
-        /// Scanned at
+        ///     Scanned at
         /// </summary>
         [DataMember(Name = "scanned_at", EmitDefaultValue = false)]
         public string ScannedAt { get; set; }

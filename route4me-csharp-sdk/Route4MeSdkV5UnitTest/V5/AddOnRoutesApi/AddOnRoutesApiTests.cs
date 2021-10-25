@@ -1,25 +1,24 @@
 ﻿using System;
-using Xunit;
 using System.Collections.Generic;
-using System.Text;
 using Route4MeSDK;
-using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDK.DataTypes.V5;
+using Route4MeSDK.QueryTypes.V5;
 using Route4MeSdkV5UnitTest.V5;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
 {
     public class AddOnRoutesApiTests : IDisposable
     {
-        static string c_ApiKey = ApiKeys.ActualApiKey;
+        private static readonly string c_ApiKey = ApiKeys.ActualApiKey;
+
+        private static TestDataRepository tdr;
+        private static TestDataRepository tdr2;
+        private static List<string> lsOptimizationIDs;
+        private static List<string> lsRoutenIDs;
 
         private readonly ITestOutputHelper _output;
-
-        static TestDataRepository tdr;
-        static TestDataRepository tdr2;
-        static List<string> lsOptimizationIDs;
-        static List<string> lsRoutenIDs;
 
         public AddOnRoutesApiTests(ITestOutputHelper output)
         {
@@ -31,10 +30,10 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
             tdr = new TestDataRepository();
             tdr2 = new TestDataRepository();
 
-            bool result = tdr.RunOptimizationSingleDriverRoute10Stops();
-            bool result2 = tdr2.RunOptimizationSingleDriverRoute10Stops();
-            bool result3 = tdr2.RunSingleDriverRoundTrip();
-            bool result4 = tdr2.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
+            var result = tdr.RunOptimizationSingleDriverRoute10Stops();
+            var result2 = tdr2.RunOptimizationSingleDriverRoute10Stops();
+            var result3 = tdr2.RunSingleDriverRoundTrip();
+            var result4 = tdr2.MultipleDepotMultipleDriverWith24StopsTimeWindowTest();
 
             Assert.True(result, "Single Driver 10 Stops generation failed.");
             Assert.True(result2, "Single Driver 10 Stops generation failed.");
@@ -51,15 +50,15 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
 
         public void Dispose()
         {
-            bool optimizationResult = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
+            var optimizationResult = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
             if (lsRoutenIDs.Count > 0)
             {
-                RoutesDeleteResponse routesDeleteResponse = route4Me.DeleteRoutes(
+                var routesDeleteResponse = route4Me.DeleteRoutes(
                     lsRoutenIDs.ToArray(),
-                    out ResultResponse resultResponse);
+                    out var resultResponse);
             }
 
             Assert.True(optimizationResult, "Removing of the testing optimization problem failed.");
@@ -70,14 +69,14 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeParameters = new RouteParametersQuery()
+            var routeParameters = new RouteParametersQuery
             {
                 Limit = 1,
                 Offset = 15
             };
 
             // Run the query
-            DataObjectRoute[] dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
+            var dataObjects = route4Me.GetRoutes(routeParameters, out var resultResponse);
 
             Assert.IsType<DataObjectRoute[]>(dataObjects);
         }
@@ -87,13 +86,13 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeParameters = new RouteParametersQuery()
+            var routeParameters = new RouteParametersQuery
             {
                 Page = 1,
                 PerPage = 20
             };
 
-            DataObjectRoute[] dataObjects = route4Me.GetAllRoutesWithPagination(routeParameters, out ResultResponse resultResponse);
+            var dataObjects = route4Me.GetAllRoutesWithPagination(routeParameters, out var resultResponse);
 
             Assert.IsType<DataObjectRoute[]>(dataObjects);
         }
@@ -103,13 +102,14 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeParameters = new RouteParametersQuery()
+            var routeParameters = new RouteParametersQuery
             {
                 Page = 1,
                 PerPage = 20
             };
 
-            DataObjectRoute[] dataObjects = route4Me.GetPaginatedRouteListWithoutElasticSearch(routeParameters, out ResultResponse resultResponse);
+            var dataObjects =
+                route4Me.GetPaginatedRouteListWithoutElasticSearch(routeParameters, out var resultResponse);
 
             Assert.IsType<DataObjectRoute[]>(dataObjects);
         }
@@ -119,24 +119,24 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeParameters = new RouteFilterParameters()
+            var routeParameters = new RouteFilterParameters
             {
                 Page = 1,
                 PerPage = 20,
-                Filters = new RouteFilterParametersFilters()
+                Filters = new RouteFilterParametersFilters
                 {
-                    ScheduleDate = new string[] { "2021-02-01", "2021-02-01" }
+                    ScheduleDate = new[] {"2021-02-01", "2021-02-01"}
                 },
-                OrderBy = new List<string[]>()
+                OrderBy = new List<string[]>
                 {
-                    new string[] { "route_created_unix", "desc" }
+                    new[] {"route_created_unix", "desc"}
                 },
                 Timezone = "UTC"
             };
 
-            DataObjectRoute[] dataObjects = route4Me.GetRouteDataTableWithElasticSearch(
+            var dataObjects = route4Me.GetRouteDataTableWithElasticSearch(
                 routeParameters,
-                out ResultResponse resultResponse);
+                out var resultResponse);
 
             Assert.IsType<DataObjectRoute[]>(dataObjects);
         }
@@ -146,24 +146,24 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeParameters = new RouteFilterParameters()
+            var routeParameters = new RouteFilterParameters
             {
                 Page = 1,
                 PerPage = 20,
-                Filters = new RouteFilterParametersFilters()
+                Filters = new RouteFilterParametersFilters
                 {
-                    ScheduleDate = new string[] { "2021-02-01", "2021-02-01" }
+                    ScheduleDate = new[] {"2021-02-01", "2021-02-01"}
                 },
-                OrderBy = new List<string[]>()
+                OrderBy = new List<string[]>
                 {
-                    new string[] { "route_created_unix", "desc" }
+                    new[] {"route_created_unix", "desc"}
                 },
                 Timezone = "UTC"
             };
 
-            DataObjectRoute[] dataObjects = route4Me.GetRouteDataTableWithElasticSearch(
+            var dataObjects = route4Me.GetRouteDataTableWithElasticSearch(
                 routeParameters,
-                out ResultResponse resultResponse);
+                out var resultResponse);
 
             Assert.IsType<DataObjectRoute[]>(dataObjects);
         }
@@ -173,13 +173,13 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeParameters = new RouteParametersQuery()
+            var routeParameters = new RouteParametersQuery
             {
                 Offset = 0,
                 Limit = 10
             };
 
-            DataObjectRoute[] dataObjects = route4Me.GetRouteListWithoutElasticSearch(routeParameters, out ResultResponse resultResponse);
+            var dataObjects = route4Me.GetRouteListWithoutElasticSearch(routeParameters, out var resultResponse);
 
             Assert.IsType<DataObjectRoute[]>(dataObjects);
         }
@@ -189,18 +189,17 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeIDs = new string[] { tdr.SD10Stops_route.RouteID };
+            var routeIDs = new[] {tdr.SD10Stops_route.RouteID};
 
-            var result = route4Me.DuplicateRoute(routeIDs, out ResultResponse resultResponse);
+            var result = route4Me.DuplicateRoute(routeIDs, out var resultResponse);
 
             Assert.NotNull(result);
             Assert.IsType<RouteDuplicateResponse>(result);
             Assert.True(result.Status);
 
             if (result.RouteIDs.Length > 0)
-            {
-                foreach (string routeId in result.RouteIDs) lsRoutenIDs.Add(routeId);
-            }
+                foreach (var routeId in result.RouteIDs)
+                    lsRoutenIDs.Add(routeId);
         }
 
         [Fact]
@@ -208,9 +207,9 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var routeIDs = new string[] { tdr2.MDMD24_route_id };
+            var routeIDs = new[] {tdr2.MDMD24_route_id};
 
-            var result = route4Me.DeleteRoutes(routeIDs, out ResultResponse resultResponse);
+            var result = route4Me.DeleteRoutes(routeIDs, out var resultResponse);
 
             Assert.NotNull(result);
             Assert.IsType<RoutesDeleteResponse>(result);
@@ -222,7 +221,7 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var result = route4Me.GetRouteDataTableConfig(out ResultResponse resultResponse);
+            var result = route4Me.GetRouteDataTableConfig(out var resultResponse);
 
             Assert.NotNull(result);
             Assert.IsType<RouteDataTableConfigResponse>(result);
@@ -233,7 +232,7 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var result = route4Me.GetRouteDataTableFallbackConfig(out ResultResponse resultResponse);
+            var result = route4Me.GetRouteDataTableFallbackConfig(out var resultResponse);
 
             Assert.NotNull(result);
             Assert.IsType<RouteDataTableConfigResponse>(result);
@@ -261,7 +260,7 @@ namespace Route4MeSdkV5UnitTest.AddOnRoutesApi
 
             tdr.SD10Stops_route.Addresses = addresses.ToArray();
 
-            var updatedRoute = route4Me.UpdateRoute(tdr.SD10Stops_route, out ResultResponse resultResponse);
+            var updatedRoute = route4Me.UpdateRoute(tdr.SD10Stops_route, out var resultResponse);
 
             Assert.NotNull(updatedRoute);
             Assert.IsType<DataObjectRoute>(updatedRoute);

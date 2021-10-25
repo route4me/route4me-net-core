@@ -1,19 +1,19 @@
-﻿using Route4MeSDK.DataTypes;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web;
+using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK.QueryTypes
 {
     /// <summary>
-    /// Helper class, for easy REST query parameters string generation
-    /// 1. Use GenericParameters.Serialize() to generate the query string
-    /// 2. Use GenericParameters.ParametersCollection for adding query parameters
-    /// 3. Inherit this class, to create usable parameters holders
-    ///    Add an attribute [HttpQueryMemberAttribute] on each property for serializing it automatically
-    /// 4. Modify ConvertBooleansToInteger.GenericParameters to serialize bool and bool? as "0" and "1"
-    /// Important: You have to add here all derived classes, that are serealized as json as a KnownType
+    ///     Helper class, for easy REST query parameters string generation
+    ///     1. Use GenericParameters.Serialize() to generate the query string
+    ///     2. Use GenericParameters.ParametersCollection for adding query parameters
+    ///     3. Inherit this class, to create usable parameters holders
+    ///     Add an attribute [HttpQueryMemberAttribute] on each property for serializing it automatically
+    ///     4. Modify ConvertBooleansToInteger.GenericParameters to serialize bool and bool? as "0" and "1"
+    ///     Important: You have to add here all derived classes, that are serealized as json as a KnownType
     /// </summary>
     [DataContract]
     [KnownType(typeof(OptimizationParameters))]
@@ -36,24 +36,22 @@ namespace Route4MeSDK.QueryTypes
     {
         #region Fields
 
-        [IgnoreDataMember]
-        public NameValueCollection ParametersCollection = new NameValueCollection();
+        [IgnoreDataMember] public NameValueCollection ParametersCollection = new NameValueCollection();
 
-        [IgnoreDataMember]
-        public bool ConvertBooleansToInteger { get; protected set; }
+        [IgnoreDataMember] public bool ConvertBooleansToInteger { get; protected set; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>Initializes a new instance of the <see cref="GenericParameters"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="GenericParameters" /> class.</summary>
         public GenericParameters()
         {
-            this.PrepareForSerialization();
+            PrepareForSerialization();
         }
 
         /// <summary>
-        /// Prepares the parameters for serialization.
+        ///     Prepares the parameters for serialization.
         /// </summary>
         public void PrepareForSerialization()
         {
@@ -63,7 +61,7 @@ namespace Route4MeSDK.QueryTypes
         }
 
         /// <summary>
-        /// Serializes the parameters with an API key (if specified).
+        ///     Serializes the parameters with an API key (if specified).
         /// </summary>
         /// <param name="apiKey">The API key.</param>
         /// <returns>Serialized string</returns>
@@ -77,7 +75,8 @@ namespace Route4MeSDK.QueryTypes
 
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttribute(typeof(HttpQueryMemberAttribute)) as HttpQueryMemberAttribute;
+                var attribute =
+                    property.GetCustomAttribute(typeof(HttpQueryMemberAttribute)) as HttpQueryMemberAttribute;
 
                 if (attribute != null)
                 {
@@ -87,23 +86,18 @@ namespace Route4MeSDK.QueryTypes
                     if (ConvertBooleansToInteger &&
                         valueObj != null &&
                         (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?)))
-                    {
-                        value = ((bool)valueObj) ? "1" : "0";
-                    }
+                        value = (bool) valueObj ? "1" : "0";
 
                     var name = attribute.Name ?? property.Name;
                     var emit = valueObj != attribute.DefaultValue ||
                                attribute.EmitDefaultValue;
 
-                    if (emit)
-                    {
-                        paramsCollection.Add(name, value);
-                    }
+                    if (emit) paramsCollection.Add(name, value);
                 }
             }
 
-            string apiKeyStr = string.IsNullOrEmpty(apiKey) ? "?" : string.Format("?api_key={0}", apiKey);
-            string result = paramsCollection.Count > 0 ? string.Format("{0}&{1}", apiKeyStr, paramsCollection.ToString()) : apiKeyStr;
+            var apiKeyStr = string.IsNullOrEmpty(apiKey) ? "?" : string.Format("?api_key={0}", apiKey);
+            var result = paramsCollection.Count > 0 ? string.Format("{0}&{1}", apiKeyStr, paramsCollection) : apiKeyStr;
 
             return result;
         }

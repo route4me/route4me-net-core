@@ -3,7 +3,7 @@
 namespace Route4MeSDK.DataTypes
 {
     /// <summary>
-    /// Base class for the DataObject and DataObjectRoute classes
+    ///     Base class for the DataObject and DataObjectRoute classes
     /// </summary>
     [DataContract]
     [KnownType(typeof(DataObject))]
@@ -11,31 +11,31 @@ namespace Route4MeSDK.DataTypes
     public class DataObjectBase
     {
         /// <summary>
-        /// Optimization problem ID
+        ///     Optimization problem ID
         /// </summary>
         [DataMember(Name = "optimization_problem_id")]
         public string OptimizationProblemId { get; set; }
 
         /// <summary>
-        /// When the optimization problem was created
+        ///     When the optimization problem was created
         /// </summary>
         [DataMember(Name = "created_timestamp", EmitDefaultValue = false)]
         public long? CreatedTimestamp { get; set; }
 
         /// <summary>
-        /// Route Parameters. See <see cref="RouteParameters"/>
+        ///     Route Parameters. See <see cref="RouteParameters" />
         /// </summary>
         [DataMember(Name = "parameters")]
         public RouteParameters Parameters { get; set; }
 
         /// <summary>
-        /// An array ot the Address type objects. See  <see cref="Address"/>
+        ///     An array ot the Address type objects. See  <see cref="Address" />
         /// </summary>
         [DataMember(Name = "addresses")]
         public Address[] Addresses { get; set; }
 
         /// <summary>
-        /// The links to the GET operations for the optimization problem. See <see cref="Links"/>
+        ///     The links to the GET operations for the optimization problem. See <see cref="Links" />
         /// </summary>
         [DataMember(Name = "links")]
         public Links Links { get; set; }

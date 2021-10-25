@@ -11,6 +11,5 @@ namespace Route4MeSDK.DataTypes
 
         [DataMember(Name = "mmd", EmitDefaultValue = false)]
         public DeviceLocationMmd Mmd { get; set; }
-
     }
 }
