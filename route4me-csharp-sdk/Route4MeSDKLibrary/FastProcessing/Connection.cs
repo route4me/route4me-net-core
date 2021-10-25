@@ -1,5 +1,5 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
-using IO = Quobject.SocketIoClientDotNet.Client.IO;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace Route4MeSDK.FastProcessing
 {
@@ -15,8 +15,6 @@ namespace Route4MeSDK.FastProcessing
         protected IO.Options CreateOptions()
         {
             var _ = LogManager.GetLogger(Global.CallerName());
-
-
             var config = ConfigBase.Load();
             var options = new IO.Options
             {
@@ -26,21 +24,17 @@ namespace Route4MeSDK.FastProcessing
                 Reconnection = true
             };
 
-            //options.Hostname = config.server.hostname;
-            //options.ForceNew = true;
-            //options.Secure = true;
             options.Port = options.Secure ? 443 : 8080;
-            //log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
-            //options.Reconnection = true;
+
             return options;
         }
 
         protected string CreateUri()
         {
             var options = CreateOptions();
-            //var uri = string.Format("{0}://{1}:{2}/{3}/{4}", options.Secure ? "https" : "http", options.Hostname, options.Port, ConnectionConstants.ROUTE, ConnectionConstants.QUERY);
             var uri = ConnectionConstants.url ??
-                string.Format("{0}://{1}:{2}/{3}/", options.Secure ? "https" : "http", options.Hostname, options.Port, ConnectionConstants.ROUTE);
+                      string.Format("{0}://{1}:{2}/{3}/", options.Secure ? "https" : "http", options.Hostname,
+                          options.Port, ConnectionConstants.ROUTE);
             return uri;
         }
 
@@ -56,11 +50,9 @@ namespace Route4MeSDK.FastProcessing
                 Secure = true,
                 IgnoreServerCertificateValidation = true
             };
-            //options.Port = config.server.ssl_port;
-            //options.Hostname = config.server.hostname;
+
             log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
-            //options.Secure = true;
-            //options.IgnoreServerCertificateValidation = true;
+
             return options;
         }
     }
@@ -72,7 +64,7 @@ namespace Route4MeSDK.FastProcessing
 
         public static ConfigBase Load()
         {
-            var result = new ConfigBase()
+            var result = new ConfigBase
             {
                 Server = new ConfigServer()
             };

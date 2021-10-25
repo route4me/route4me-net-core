@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
@@ -14,11 +12,11 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
 {
     public class AddressBookContactApiTests : IDisposable
     {
-        static string c_ApiKey = ApiKeys.ActualApiKey;
+        private static readonly string c_ApiKey = ApiKeys.ActualApiKey;
+
+        private static List<AddressBookContact> lsCreatedContacts;
 
         private readonly ITestOutputHelper _output;
-
-        static List<AddressBookContact> lsCreatedContacts;
 
         public AddressBookContactApiTests(ITestOutputHelper output)
         {
@@ -30,24 +28,24 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
 
             lsCreatedContacts = new List<AddressBookContact>();
 
-            var contactParams = new AddressBookContact()
+            var contactParams = new AddressBookContact
             {
-                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                FirstName = "Test FirstName " + new Random().Next(),
+                Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024654,
                 CachedLng = -77.338814,
                 AddressStopType = AddressStopType.PickUp.Description()
             };
 
-            var contact1 = route4Me.AddAddressBookContact(contactParams, out ResultResponse resultResponse);
+            var contact1 = route4Me.AddAddressBookContact(contactParams, out var resultResponse);
 
             lsCreatedContacts.Add(contact1);
 
 
-            contactParams = new AddressBookContact()
+            contactParams = new AddressBookContact
             {
-                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                FirstName = "Test FirstName " + new Random().Next(),
+                Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024664,
                 CachedLng = -77.338834,
                 AddressStopType = AddressStopType.PickUp.Description()
@@ -58,10 +56,10 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
             lsCreatedContacts.Add(contact2);
 
 
-            contactParams = new AddressBookContact()
+            contactParams = new AddressBookContact
             {
-                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                FirstName = "Test FirstName " + new Random().Next(),
+                Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024684,
                 CachedLng = -77.338854,
                 AddressStopType = AddressStopType.PickUp.Description()
@@ -84,11 +82,12 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
             {
                 //foreach (int loc1 in lsRemoveContacts) lsRemLocations.Add(loc1.ToString());
 
-                var contactIDs = lsCreatedContacts.Where(x => (x != null && x.AddressId != null)).Select(x => (int)(x.AddressId));
+                var contactIDs = lsCreatedContacts.Where(x => x != null && x.AddressId != null)
+                    .Select(x => (int) x.AddressId);
 
-                bool removed = route4Me.RemoveAddressBookContacts(
-                                                contactIDs.ToArray(),
-                                                out ResultResponse resultResponse);
+                var removed = route4Me.RemoveAddressBookContacts(
+                    contactIDs.ToArray(),
+                    out var resultResponse);
 
                 Assert.Null(resultResponse);
             }
@@ -99,7 +98,7 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var addressBookParameters = new AddressBookParameters()
+            var addressBookParameters = new AddressBookParameters
             {
                 Limit = 1,
                 Offset = 16
@@ -107,8 +106,8 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
 
             // Run the query
             var response = route4Me.GetAddressBookContacts(
-                                    addressBookParameters,
-                                    out ResultResponse resultResponse);
+                addressBookParameters,
+                out var resultResponse);
 
             Assert.IsType<AddressBookContactsResponse>(response);
         }
@@ -118,9 +117,9 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            int addressId = (int)lsCreatedContacts[lsCreatedContacts.Count - 1].AddressId;
+            var addressId = (int) lsCreatedContacts[lsCreatedContacts.Count - 1].AddressId;
 
-            var response = route4Me.GetAddressBookContactById(addressId, out ResultResponse resultResponse);
+            var response = route4Me.GetAddressBookContactById(addressId, out var resultResponse);
 
             Assert.IsType<AddressBookContact>(response);
         }
@@ -130,12 +129,12 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            int addressId1 = (int)lsCreatedContacts[lsCreatedContacts.Count - 1].AddressId;
-            int addressId2 = (int)lsCreatedContacts[lsCreatedContacts.Count - 2].AddressId;
+            var addressId1 = (int) lsCreatedContacts[lsCreatedContacts.Count - 1].AddressId;
+            var addressId2 = (int) lsCreatedContacts[lsCreatedContacts.Count - 2].AddressId;
 
-            int[] addressIDs = new int[] { addressId1, addressId2 };
+            int[] addressIDs = {addressId1, addressId2};
 
-            var response = route4Me.GetAddressBookContactsByIds(addressIDs, out ResultResponse resultResponse);
+            var response = route4Me.GetAddressBookContactsByIds(addressIDs, out var resultResponse);
 
             Assert.IsType<AddressBookContactsResponse>(response);
         }
@@ -147,9 +146,10 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
 
             var lsSize = lsCreatedContacts.Count - 1;
 
-            int[] addressIDs = new int[] { (int)lsCreatedContacts[lsSize - 1].AddressId, (int)lsCreatedContacts[lsSize - 2].AddressId };
+            int[] addressIDs =
+                {(int) lsCreatedContacts[lsSize - 1].AddressId, (int) lsCreatedContacts[lsSize - 2].AddressId};
 
-            var response = route4Me.RemoveAddressBookContacts(addressIDs, out ResultResponse resultResponse);
+            var response = route4Me.RemoveAddressBookContacts(addressIDs, out var resultResponse);
 
             Assert.Null(resultResponse);
 
@@ -162,16 +162,16 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var contactParams = new AddressBookContact()
+            var contactParams = new AddressBookContact
             {
-                FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                FirstName = "Test FirstName " + new Random().Next(),
+                Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024654,
                 CachedLng = -77.338814,
                 AddressStopType = AddressStopType.PickUp.Description()
             };
 
-            var contact = route4Me.AddAddressBookContact(contactParams, out ResultResponse resultResponse);
+            var contact = route4Me.AddAddressBookContact(contactParams, out var resultResponse);
             Assert.IsType<AddressBookContact>(contact);
 
             lsCreatedContacts.Add(contact);
@@ -182,41 +182,42 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var lsContacts = new List<AddressBookContact>()
+            var lsContacts = new List<AddressBookContact>
             {
-                new AddressBookContact()
+                new AddressBookContact
                 {
-                    FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                    Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                    FirstName = "Test FirstName " + new Random().Next(),
+                    Address1 = "Test Address1 " + new Random().Next(),
                     CachedLat = 38.024754,
                     CachedLng = -77.338914,
                     AddressStopType = AddressStopType.PickUp.Description()
                 },
-                new AddressBookContact()
+                new AddressBookContact
                 {
-                    FirstName = "Test FirstName " + (new Random()).Next().ToString(),
-                    Address1 = "Test Address1 " + (new Random()).Next().ToString(),
+                    FirstName = "Test FirstName " + new Random().Next(),
+                    Address1 = "Test Address1 " + new Random().Next(),
                     CachedLat = 38.024554,
                     CachedLng = -77.338714,
                     AddressStopType = AddressStopType.PickUp.Description()
                 }
             };
 
-            var mandatoryFields = new string[]
-                {
-                    R4MeUtils.GetPropertyName(() => lsContacts[0].FirstName),
-                    R4MeUtils.GetPropertyName(() => lsContacts[0].Address1),
-                    R4MeUtils.GetPropertyName(() => lsContacts[0].CachedLat),
-                    R4MeUtils.GetPropertyName(() => lsContacts[0].CachedLng),
-                    R4MeUtils.GetPropertyName(() => lsContacts[0].AddressStopType)
-                };
+            var mandatoryFields = new[]
+            {
+                R4MeUtils.GetPropertyName(() => lsContacts[0].FirstName),
+                R4MeUtils.GetPropertyName(() => lsContacts[0].Address1),
+                R4MeUtils.GetPropertyName(() => lsContacts[0].CachedLat),
+                R4MeUtils.GetPropertyName(() => lsContacts[0].CachedLng),
+                R4MeUtils.GetPropertyName(() => lsContacts[0].AddressStopType)
+            };
 
-            var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest()
+            var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest
             {
                 Data = lsContacts.ToArray()
             };
 
-            var response = route4Me.BatchCreateAdressBookContacts(contactParams, mandatoryFields, out ResultResponse resultResponse);
+            var response =
+                route4Me.BatchCreateAdressBookContacts(contactParams, mandatoryFields, out var resultResponse);
 
             Assert.IsType<StatusResponse>(response);
             Assert.True(response.status);

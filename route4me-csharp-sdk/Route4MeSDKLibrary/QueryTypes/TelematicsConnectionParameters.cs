@@ -3,7 +3,7 @@
 namespace Route4MeSDK.QueryTypes
 {
     /// <summary>
-    /// Parameters for requesting the telematics connection.
+    ///     Parameters for requesting the telematics connection.
     /// </summary>
     public sealed class TelematicsConnectionParameters : GenericParameters
     {
@@ -20,43 +20,43 @@ namespace Route4MeSDK.QueryTypes
         public string Host { get; set; }
 
         /// <summary>
-        /// An unique ID of a telematics vendor.
+        ///     An unique ID of a telematics vendor.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vendor_id", EmitDefaultValue = false)]
         public uint? VendorID { get; set; }
 
         /// <summary>
-        /// Telematics connection name
+        ///     Telematics connection name
         /// </summary>
         [HttpQueryMemberAttribute(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Vehicle tracking interval in seconds
+        ///     Vehicle tracking interval in seconds
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vehicle_position_refresh_rate", EmitDefaultValue = false)]
         public int? VehiclePositionRefreshRate { get; set; }
 
         /// <summary>
-        /// Connection token
+        ///     Connection token
         /// </summary>
         [HttpQueryMemberAttribute(Name = "connection_token", EmitDefaultValue = false)]
         public string ConnectionToken { get; set; }
 
         /// <summary>
-        /// Connection user ID
+        ///     Connection user ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "user_id", EmitDefaultValue = false)]
         public int? UserId { get; set; }
 
         /// <summary>
-        /// Connection ID
+        ///     Connection ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "id", EmitDefaultValue = false)]
         public int? ID { get; set; }
 
         /// <summary>
-        /// Telemetics connection type <see cref="Enum.TelematicsVendorType" />
+        ///     Telemetics connection type <see cref="Enum.TelematicsVendorType" />
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vendor", EmitDefaultValue = false)]
         public string Vendor { get; set; }

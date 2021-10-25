@@ -3,22 +3,21 @@
 namespace Route4MeSDK.DataTypes
 {
     /// <summary>
-    /// Geographic point structure
+    ///     Geographic point structure
     /// </summary>
     [DataContract]
     public sealed class GeoPoint
     {
         /// <summary>
-        /// Latitude
+        ///     Latitude
         /// </summary>
         [DataMember(Name = "lat")]
         public double Latitude { get; set; }
 
         /// <summary>
-        /// Longitude
+        ///     Longitude
         /// </summary>
         [DataMember(Name = "lng")]
         public double Longitude { get; set; }
-
     }
 }

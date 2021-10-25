@@ -3,7 +3,7 @@
 namespace Route4MeSDK.QueryTypes
 {
     /// <summary>
-    /// Route parameters accepted by endpoints
+    ///     Route parameters accepted by endpoints
     /// </summary>
     [DataContract]
     public sealed class MergeRoutesQuery : GenericParameters
@@ -13,7 +13,7 @@ namespace Route4MeSDK.QueryTypes
         public string RouteIds { get; set; }
 
         /// <summary>
-        /// Where to merge routes (optional)
+        ///     Where to merge routes (optional)
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "to_route_id", EmitDefaultValue = false)]
@@ -24,14 +24,14 @@ namespace Route4MeSDK.QueryTypes
         public string DepotAddress { get; set; }
 
         /// <summary>
-        /// Depot ID
+        ///     Depot ID
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
         public string RouteDestinationId { get; set; }
 
         /// <summary>
-        /// Comma-delimited list of the depot IDs.
+        ///     Comma-delimited list of the depot IDs.
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "route_destination_ids", EmitDefaultValue = false)]

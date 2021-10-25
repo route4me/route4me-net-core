@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Route4MeSDK.QueryTypes.V5
 {
     /// <summary>
-    /// Route filter parameters.
+    ///     Route filter parameters.
     /// </summary>
     [DataContract]
     public sealed class RouteFilterParameters : GenericParameters
@@ -41,7 +37,7 @@ namespace Route4MeSDK.QueryTypes.V5
     public class RouteFilterParametersFilters : GenericParameters
     {
         /// <summary>
-        /// An array of the scheduled dates.
+        ///     An array of the scheduled dates.
         /// </summary>
         [DataMember(Name = "schedule_date", EmitDefaultValue = false)]
         public string[] ScheduleDate { get; set; }
