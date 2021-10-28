@@ -81,8 +81,13 @@ namespace Route4MeSDKLibrary
                         keysToRemove.Add(kvp.Key);
 
                 foreach (var key in keysToRemove)
-                    if (HttpClientWrappers.Remove(key, out var removed))
+                {
+                    if (HttpClientWrappers.TryGetValue(key, out var removed))
+                    {
+                        HttpClientWrappers.Remove(key);
                         removed.HttpClient.Dispose();
+                    }
+                }
             }
         }
 

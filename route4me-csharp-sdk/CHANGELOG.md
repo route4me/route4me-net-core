@@ -1,7 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.1.0.0] - 2021-10-07
+## [1.1.1.0] - 2021-10-28
+
+### Changed
+
+- Route4MeSDKLibrary is Switched from .NET Core 3.1 to .NET Standard 2.0.
+- Threading is optimized for Route4MeManager and Route4MeManagerV5
+- 3rd party dependencies are updated and consolidated
+- Code style is adjusted
+- Code is cleaned up
+
+## [1.1.0.0] - 2021-10-20
 
 ### Added
 

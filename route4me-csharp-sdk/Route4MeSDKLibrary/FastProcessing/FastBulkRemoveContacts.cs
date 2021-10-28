@@ -57,7 +57,7 @@ namespace Route4MeSDK.FastProcessing
             if (PrintMessagesOnConsole)
                 Console.WriteLine(removed
                     ? $"The chunk of the {chunk.Count} contacts removed --- {TotalRemovedContacts}"
-                    : $"Cannot remove the chunk of the contacts: {Environment.NewLine}" + string.Join(',', chunk));
+                    : $"Cannot remove the chunk of the contacts: {Environment.NewLine}" + string.Join(",", chunk.Select(x => x.ToString())));
 
             if (removed) TotalRemovedContacts += chunk.Count;
         }
