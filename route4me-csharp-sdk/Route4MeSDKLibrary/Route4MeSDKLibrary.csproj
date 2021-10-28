@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Oleg Guchashvili</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>Route4Me Route Optimization SaaS C# SDK (.net core framework).
@@ -16,13 +16,13 @@ The service is typically used by organizations who must route many drivers to ma
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
-    <Version>1.1.0.0</Version>
+    <Version>1.1.1.0</Version>
     <PackageReleaseNotes>Changed the classes: DataContractResolver, FastBulkGeocoding, FastFileReading, PropertyValidation, Route4MeManagerV5
 Added the classes: AddressBookContact (V5), AddressBookContactsResponse (V5), AddressBookParameters (V5), FastFileReading, FastValidateData
 
 See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/CHANGELOG.md for release note details.</PackageReleaseNotes>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,6 +37,7 @@ See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sd
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SocketIoClientDotNet.Standard" Version="0.0.6" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 
