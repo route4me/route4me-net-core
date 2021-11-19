@@ -4422,7 +4422,7 @@ namespace Route4MeSDK
                     {
                         case HttpMethodType.Get:
                         {
-                            var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
+                            var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
 
                             result = isString ? response.ReadString() as T : response.ReadObject<T>();
 
@@ -4450,7 +4450,7 @@ namespace Route4MeSDK
 
                             if (isPut)
                             {
-                                response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
+                                response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
                             }
                             else if (isDelete)
                             {
@@ -4460,13 +4460,13 @@ namespace Route4MeSDK
                                     Method = HttpMethod.Delete,
                                     RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
                                 };
-                                response = await httpClientHolder.HttpClient.SendAsync(request);
+                                response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
                             }
                             else
                             {
                                 //var request = new HttpRequestMessage();
                                 response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
-                                    .ConfigureAwait(true);
+                                    .ConfigureAwait(false);
                             }
 
                             // Check if successful
@@ -4474,13 +4474,13 @@ namespace Route4MeSDK
                             if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK ||
                                 response.StatusCode == HttpStatusCode.RedirectMethod)
                             {
-                                var streamTask = await response.Content.ReadAsStreamAsync();
+                                var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                                 result = isString ? streamTask.ReadString() as T : streamTask.ReadObject<T>();
                             }
                             else
                             {
-                                using (var streamTask = await response.Content.ReadAsStreamAsync())
+                                using (var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                                 {
                                     ErrorResponse errorResponse = null;
 
