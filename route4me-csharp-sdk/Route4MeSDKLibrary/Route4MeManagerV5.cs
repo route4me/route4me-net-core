@@ -38,7 +38,6 @@ namespace Route4MeSDK
         public Route4MeManagerV5(string apiKey)
         {
             _mApiKey = apiKey;
-            _parseWithNewtonJson = false;
         }
 
         #endregion
@@ -46,11 +45,6 @@ namespace Route4MeSDK
         #region Fields
 
         private readonly string _mApiKey;
-
-        private bool _parseWithNewtonJson;
-
-        // Some endpoints rise error event if not all objects have the same fields (e.g. API 5 addressbook batch creating) 
-        private string[] _mandatoryFields;
 
         #endregion
 
@@ -169,13 +163,13 @@ namespace Route4MeSDK
         public AddressBookContact AddAddressBookContact(AddressBookContact contactParams,
             out ResultResponse resultResponse)
         {
-            _parseWithNewtonJson = true;
-
             contactParams.PrepareForSerialization();
 
             return GetJsonObjectFromAPI<AddressBookContact>(contactParams,
                 R4MEInfrastructureSettingsV5.ContactsAddNew,
                 HttpMethodType.Post,
+                false,
+                true,
                 out resultResponse);
         }
 
@@ -200,14 +194,13 @@ namespace Route4MeSDK
             string[] mandatoryNullableFields,
             out ResultResponse resultResponse)
         {
-            //parseWithNewtonJson = true;
-            _mandatoryFields = mandatoryNullableFields;
             contactParams.PrepareForSerialization();
 
             return GetJsonObjectFromAPI<StatusResponse>(contactParams,
                 R4MEInfrastructureSettingsV5.ContactsAddMultiple,
                 HttpMethodType.Post,
-                out resultResponse);
+                out resultResponse,
+                mandatoryNullableFields);
         }
 
         #endregion
@@ -628,11 +621,11 @@ namespace Route4MeSDK
         public DriverReviewsResponse GetDriverReviewList(DriverReviewParameters parameters,
             out ResultResponse resultResponse)
         {
-            _parseWithNewtonJson = true;
-
             var result = GetJsonObjectFromAPI<DriverReviewsResponse>(parameters,
                 R4MEInfrastructureSettingsV5.DriverReview,
                 HttpMethodType.Get,
+                false,
+                true,
                 out resultResponse);
 
             return result;
@@ -661,11 +654,11 @@ namespace Route4MeSDK
                 return null;
             }
 
-            _parseWithNewtonJson = true;
-
             var result = GetJsonObjectFromAPI<DriverReview>(parameters,
                 R4MEInfrastructureSettingsV5.DriverReview + "/" + parameters.RatingId,
                 HttpMethodType.Get,
+                false,
+                true,
                 out resultResponse);
 
             return result;
@@ -926,6 +919,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
+                false,
                 false,
                 out resultResponse);
 
@@ -1512,6 +1506,7 @@ namespace Route4MeSDK
                 url,
                 httpMethod,
                 true,
+                false,
                 out resultResponse);
 
             return result;
@@ -1521,14 +1516,17 @@ namespace Route4MeSDK
         public T GetJsonObjectFromAPI<T>(GenericParameters optimizationParameters,
             string url,
             HttpMethodType httpMethod,
-            out ResultResponse resultResponse)
+            out ResultResponse resultResponse,
+            string[] mandatoryFields = null)
             where T : class
         {
             var result = GetJsonObjectFromAPI<T>(optimizationParameters,
                 url,
                 httpMethod,
                 false,
-                out resultResponse);
+                false,
+                out resultResponse,
+                mandatoryFields);
 
             return result;
         }
@@ -1545,6 +1543,7 @@ namespace Route4MeSDK
                 httpMethod,
                 httpContent,
                 false,
+                false,
                 out resultResponse);
 
             return result;
@@ -1554,7 +1553,9 @@ namespace Route4MeSDK
             string url,
             HttpMethodType httpMethod,
             bool isString,
-            out ResultResponse resultResponse)
+            bool parseWithNewtonJson,
+            out ResultResponse resultResponse,
+            string[] mandatoryFields = null)
             where T : class
         {
             var result = GetJsonObjectFromAPI<T>(optimizationParameters,
@@ -1562,7 +1563,9 @@ namespace Route4MeSDK
                 httpMethod,
                 null,
                 isString,
-                out resultResponse);
+                parseWithNewtonJson,
+                out resultResponse,
+                mandatoryFields);
 
             return result;
         }
@@ -1577,6 +1580,7 @@ namespace Route4MeSDK
                 url,
                 httpMethod,
                 null,
+                false,
                 isString);
 
             return result;
@@ -1587,6 +1591,7 @@ namespace Route4MeSDK
             string url,
             HttpMethodType httpMethod,
             HttpContent httpContent,
+            bool parseWithNewtonJson,
             bool isString)
             where T : class
         {
@@ -1684,11 +1689,9 @@ namespace Route4MeSDK
                                     }
                                     else
                                     {
-                                        result = _parseWithNewtonJson
+                                        result = parseWithNewtonJson
                                             ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
                                             : content2.ReadAsStreamAsync().Result.ReadObject<T>();
-
-                                        _parseWithNewtonJson = false;
                                     }
                                 }
                             }
@@ -1809,7 +1812,9 @@ namespace Route4MeSDK
             HttpMethodType httpMethod,
             HttpContent httpContent,
             bool isString,
-            out ResultResponse resultResponse)
+            bool parseWithNewtonJson,
+            out ResultResponse resultResponse,
+            string[] mandatoryFields = null)
             where T : class
         {
             var result = default(T);
@@ -1838,11 +1843,9 @@ namespace Route4MeSDK
                                 }
                                 else
                                 {
-                                    result = _parseWithNewtonJson
+                                    result = parseWithNewtonJson
                                         ? response.Result.ReadObjectNew<T>()
                                         : response.Result.ReadObject<T>();
-
-                                    _parseWithNewtonJson = false;
                                 }
                             }
 
@@ -1863,8 +1866,8 @@ namespace Route4MeSDK
                             }
                             else
                             {
-                                var jsonString = (_mandatoryFields?.Length ?? 0) > 0
-                                    ? R4MeUtils.SerializeObjectToJson(optimizationParameters, _mandatoryFields)
+                                var jsonString = (mandatoryFields?.Length ?? 0) > 0
+                                    ? R4MeUtils.SerializeObjectToJson(optimizationParameters, mandatoryFields)
                                     : R4MeUtils.SerializeObjectToJson(optimizationParameters);
                                 content = new StringContent(jsonString);
                                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -1918,11 +1921,9 @@ namespace Route4MeSDK
                                     }
                                     else
                                     {
-                                        result = _parseWithNewtonJson
+                                        result = parseWithNewtonJson
                                             ? streamTask.Result.ReadObjectNew<T>()
                                             : streamTask.Result.ReadObject<T>();
-
-                                        _parseWithNewtonJson = false;
                                     }
                                 }
                             }
@@ -1945,11 +1946,9 @@ namespace Route4MeSDK
                                     }
                                     else
                                     {
-                                        result = _parseWithNewtonJson
+                                        result = parseWithNewtonJson
                                             ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
                                             : content2.ReadAsStreamAsync().Result.ReadObject<T>();
-
-                                        _parseWithNewtonJson = false;
                                     }
                                 }
                             }
