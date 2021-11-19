@@ -42,7 +42,6 @@ namespace Route4MeSDK
         #region Fields
 
         private readonly string _mApiKey;
-        private bool _parseWithNewtonJson;
 
         #endregion
 
@@ -53,7 +52,6 @@ namespace Route4MeSDK
         public Route4MeManager(string apiKey)
         {
             _mApiKey = apiKey;
-            _parseWithNewtonJson = false;
         }
 
         #endregion
@@ -77,6 +75,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 false,
+                false,
                 out errorString);
 
             return result;
@@ -97,6 +96,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObject[]>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
+                false,
                 false,
                 out errorString);
 
@@ -189,6 +189,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put,
+                false,
                 false,
                 out errorString);
 
@@ -472,7 +473,6 @@ namespace Route4MeSDK
         public DataObjectRoute UpdateRoute(DataObjectRoute route, DataObjectRoute initialRoute, out string errorString)
         {
             errorString = "";
-            _parseWithNewtonJson = true;
 
             if (initialRoute == null)
             {
@@ -501,7 +501,7 @@ namespace Route4MeSDK
 
                 initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
                 (genParams, R4MEInfrastructureSettings.RouteHost,
-                    HttpMethodType.Put, content, out errorString);
+                    HttpMethodType.Put, content, false, true, out errorString);
 
                 if (initialRoute == null) return null;
             }
@@ -1295,6 +1295,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
                 false,
+                false,
                 out errorString);
 
             return result;
@@ -1328,6 +1329,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.DeviceLocation,
                 HttpMethodType.Get,
                 false,
+                false,
                 out errorString);
 
             //var dataLength = ((DeviceLocationHistoryResponse)result).data.Length;
@@ -1354,6 +1356,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<SetGpsResponse>(gpsParameters,
                 R4MEInfrastructureSettings.SetGpsHost,
                 HttpMethodType.Get,
+                false,
                 false,
                 out errorString);
 
@@ -1382,7 +1385,7 @@ namespace Route4MeSDK
             var request = new FindAssetRequest {Tracking = tracking};
 
             return GetJsonObjectFromAPI<FindAssetResponse>(request, R4MEInfrastructureSettings.AssetTracking,
-                HttpMethodType.Get, false, out errorString);
+                HttpMethodType.Get, false, false, out errorString);
         }
 
         /// <summary>
@@ -1396,7 +1399,7 @@ namespace Route4MeSDK
             var userLocations = GetJsonObjectFromAPI<UserLocation[]>(parameters,
                 R4MEInfrastructureSettings.UserLocation,
                 HttpMethodType.Get,
-                false, out errorString);
+                false, false, out errorString);
 
             return userLocations;
         }
@@ -1609,7 +1612,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<MemberResponse>(request, R4MEInfrastructureSettings.ValidateSession,
-                HttpMethodType.Get, false, out errorString);
+                HttpMethodType.Get, false, false, out errorString);
         }
 
         /// <summary>
@@ -2609,14 +2612,14 @@ namespace Route4MeSDK
         public AddressBookContact[] GetAddressBookLocation(AddressBookParameters addressBookParameters, out uint total,
             out string errorString)
         {
-            _parseWithNewtonJson = true;
-
             if (addressBookParameters.AddressId != null && !addressBookParameters.AddressId.Contains(","))
                 addressBookParameters.AddressId += "," + addressBookParameters.AddressId;
 
             var response = GetJsonObjectFromAPI<GetAddressBookContactsResponse>(addressBookParameters,
                 R4MEInfrastructureSettings.AddressBook,
                 HttpMethodType.Get,
+                false,
+                true,
                 out errorString);
 
             total = response?.Total ?? 0;
@@ -2699,9 +2702,8 @@ namespace Route4MeSDK
             if (addressBookParameters.Limit != null)
                 request.Limit = addressBookParameters.Limit >= 0 ? (int) addressBookParameters.Limit : 0;
 
-            _parseWithNewtonJson = true;
             var response = GetJsonObjectFromAPI<SearchAddressBookLocationResponse>(request,
-                R4MEInfrastructureSettings.AddressBook, HttpMethodType.Get, out var errorString0);
+                R4MEInfrastructureSettings.AddressBook, HttpMethodType.Get, false, true, out var errorString0);
 
             if (response != null && response.Total > 0)
             {
@@ -2774,12 +2776,13 @@ namespace Route4MeSDK
         /// <returns>The AddressBookContact type object</returns>
         public AddressBookContact AddAddressBookContact(AddressBookContact contact, out string errorString)
         {
-            _parseWithNewtonJson = true;
-
             contact.PrepareForSerialization();
+
             return GetJsonObjectFromAPI<AddressBookContact>(contact,
                 R4MEInfrastructureSettings.AddressBook,
                 HttpMethodType.Post,
+                false,
+                true,
                 out errorString);
         }
 
@@ -2812,8 +2815,6 @@ namespace Route4MeSDK
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact, List<string> updatableProperties,
             out string errorString)
         {
-            _parseWithNewtonJson = true;
-
             var myDynamicClass = new Route4MeDynamicClass();
             myDynamicClass.CopyPropertiesFromClass(contact, updatableProperties, out var errorString0);
 
@@ -2825,7 +2826,7 @@ namespace Route4MeSDK
 
             var response = GetJsonObjectFromAPI<AddressBookContact>
             (genParams, R4MEInfrastructureSettings.AddressBook,
-                HttpMethodType.Put, content, out errorString);
+                HttpMethodType.Put, content, false, true, out errorString);
 
             return response;
         }
@@ -2842,7 +2843,6 @@ namespace Route4MeSDK
             AddressBookContact initialContact, out string errorString)
         {
             errorString = "";
-            _parseWithNewtonJson = true;
 
             if (initialContact == null || initialContact == contact)
             {
@@ -2871,7 +2871,7 @@ namespace Route4MeSDK
 
                 var response = GetJsonObjectFromAPI<AddressBookContact>
                 (genParams, R4MEInfrastructureSettings.AddressBook,
-                    HttpMethodType.Put, content, out errorString);
+                    HttpMethodType.Put, content, false, true, out errorString);
 
                 return response;
             }
@@ -3418,7 +3418,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, false, out errorString);
+                HttpMethodType.Put, false, false, out errorString);
         }
 
         /// <summary>
@@ -3464,7 +3464,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put,
-                false, out errorString);
+                false, false, out errorString);
         }
 
         #endregion
@@ -3499,7 +3499,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPI<OrderCustomFieldCreateResponse>
             (orderCustomUserField, R4MEInfrastructureSettings.OrderCustomField,
-                HttpMethodType.Post, false, out errorString);
+                HttpMethodType.Post, false, false, out errorString);
         }
 
         /// <summary>
@@ -3513,7 +3513,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPI<OrderCustomFieldCreateResponse>
             (orderCustomUserField, R4MEInfrastructureSettings.OrderCustomField,
-                HttpMethodType.Delete, false, out errorString);
+                HttpMethodType.Delete, false, false, out errorString);
         }
 
         /// <summary>
@@ -3529,7 +3529,7 @@ namespace Route4MeSDK
 
             var orderCustomField = GetJsonObjectFromAPI<OrderCustomFieldCreateResponse>
             (orderCustomUserFieldParams, R4MEInfrastructureSettings.OrderCustomField,
-                HttpMethodType.Put, false, out errorString);
+                HttpMethodType.Put, false, false, out errorString);
 
             return orderCustomField;
         }
@@ -3608,7 +3608,7 @@ namespace Route4MeSDK
             using (HttpContent httpContent = new FormUrlEncodedContent(keyValues))
             {
                 return GetJsonObjectFromAPI<string>(request, R4MEInfrastructureSettings.Geocoder, HttpMethodType.Post,
-                    httpContent, true, out errorString);
+                    httpContent, true, false, out errorString);
             }
 
             ;
@@ -3722,7 +3722,7 @@ namespace Route4MeSDK
             {
                 url = url + "/" + geoParams.Pk + "/";
 
-                var response = GetJsonObjectFromAPI<RapidStreetResponse>(request, url, HttpMethodType.Get, null, false,
+                var response = GetJsonObjectFromAPI<RapidStreetResponse>(request, url, HttpMethodType.Get, null, false, false,
                     out errorString);
 
                 var dresult = new Dictionary<string, string>();
@@ -3740,7 +3740,7 @@ namespace Route4MeSDK
                     url = url + "/" + geoParams.Offset + "/" + geoParams.Limit + "/";
 
                 var response = GetJsonObjectFromAPI<RapidStreetResponse[]>(request, url, HttpMethodType.Get, null,
-                    false, out errorString);
+                    false, false, out errorString);
 
                 if (response != null)
                     foreach (var resp1 in response)
@@ -3790,7 +3790,7 @@ namespace Route4MeSDK
                 url = url + geoParams.Offset + "/" + geoParams.Limit + "/";
 
             var response = GetJsonObjectFromAPI<RapidStreetResponse[]>(request, url,
-                HttpMethodType.Get, null, false, out errorString);
+                HttpMethodType.Get, null, false, false, out errorString);
 
             if (response != null)
                 foreach (var resp1 in response)
@@ -3849,7 +3849,7 @@ namespace Route4MeSDK
                 url = url + geoParams.Offset + "/" + geoParams.Limit + "/";
 
             var response = GetJsonObjectFromAPI<RapidStreetResponse[]>(request, url,
-                HttpMethodType.Get, null, false, out errorString);
+                HttpMethodType.Get, null, false, false, out errorString);
 
             if (response != null)
                 foreach (var resp1 in response)
@@ -4330,6 +4330,7 @@ namespace Route4MeSDK
                 url,
                 httpMethod,
                 true,
+                false,
                 out errorMessage);
 
             return result;
@@ -4344,6 +4345,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<T>(optimizationParameters,
                 url,
                 httpMethod,
+                false,
                 false,
                 out errorMessage);
 
@@ -4362,6 +4364,7 @@ namespace Route4MeSDK
                 httpMethod,
                 httpContent,
                 false,
+                false,
                 out errorMessage);
 
             return result;
@@ -4371,6 +4374,7 @@ namespace Route4MeSDK
             string url,
             HttpMethodType httpMethod,
             bool isString,
+            bool parseWithNewtonJson,
             out string errorMessage)
             where T : class
         {
@@ -4379,6 +4383,7 @@ namespace Route4MeSDK
                 httpMethod,
                 null,
                 isString,
+                parseWithNewtonJson,
                 out errorMessage);
 
             return result;
@@ -4556,6 +4561,7 @@ namespace Route4MeSDK
             HttpMethodType httpMethod,
             HttpContent httpContent,
             bool isString,
+            bool parseWithNewtonJson,
             out string errorMessage)
             where T : class
         {
@@ -4659,11 +4665,9 @@ namespace Route4MeSDK
                                     }
                                     else
                                     {
-                                        result = _parseWithNewtonJson
+                                        result = parseWithNewtonJson
                                             ? streamTask.Result.ReadObjectNew<T>()
                                             : streamTask.Result.ReadObject<T>();
-
-                                        _parseWithNewtonJson = false;
                                     }
                                 }
                             }
