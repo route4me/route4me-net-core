@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.1.2.0] - 2021-11-19
+
+### Changed
+
+The file [Route4MeManagerV5.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
+– Async API for BarCodes (Add, Save).
+- Unnecessary context capturing during async/await is fixed (the same for is done for Route4MeManager)
+- State is removed to be thread-safe (the same for is done for Route4MeManager)
+
 ## [1.1.1.0] - 2021-10-28
 
 ### Changed
