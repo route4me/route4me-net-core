@@ -270,6 +270,21 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        ///     Returns address barcodes
+        /// </summary>
+        /// <param name="getAddressBarcodesParameters">Request parameters</param>
+        /// <returns>An <see cref="GetAddressBarcodesResponse" /> type object and <see cref="ResultResponse"/> type object</returns>
+        public Task<Tuple<GetAddressBarcodesResponse, ResultResponse>> GetAddressBarcodesAsync(GetAddressBarcodesParameters getAddressBarcodesParameters)
+        {
+            var response = GetJsonObjectFromAPIAsync<GetAddressBarcodesResponse>(getAddressBarcodesParameters,
+                R4MEInfrastructureSettingsV5.AddressBarcodes,
+                HttpMethodType.Get,
+                false);
+
+            return response;
+        }
+
+        /// <summary>
         ///     Saves address bar codes
         /// </summary>
         /// <param name="saveAddressBarcodesParameters">The contact parameters</param>
@@ -284,6 +299,21 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettingsV5.AddressBarcodes,
                 HttpMethodType.Post,
                 out resultResponse);
+        }
+
+        /// <summary>
+        ///     Saves address bar codes
+        /// </summary>
+        /// <param name="saveAddressBarcodesParameters">The contact parameters</param>
+        /// <returns>Created address book contact</returns>
+        public Task<Tuple<StatusResponse, ResultResponse>> SaveAddressBarcodesAsync(SaveAddressBarcodesParameters saveAddressBarcodesParameters)
+        {
+            saveAddressBarcodesParameters.PrepareForSerialization();
+
+            return GetJsonObjectFromAPIAsync<StatusResponse>(saveAddressBarcodesParameters,
+                R4MEInfrastructureSettingsV5.AddressBarcodes,
+                HttpMethodType.Post,
+                false);
         }
 
         #endregion
