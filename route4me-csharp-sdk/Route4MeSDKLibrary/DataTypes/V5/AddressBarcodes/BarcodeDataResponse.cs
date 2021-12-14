@@ -24,7 +24,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Order id
         /// </summary>
         [DataMember(Name = "order_id", EmitDefaultValue = false)]
-        public int? OrderId { get; set; }
+        public long? OrderId { get; set; }
 
         /// <summary>
         ///     Barcode

@@ -15,7 +15,7 @@ namespace Route4MeSDK.DataTypes
         ///     Order ID
         /// </summary>
         [DataMember(Name = "order_id", EmitDefaultValue = false)]
-        public int? OrderId { get; set; }
+        public long? OrderId { get; set; }
 
         /// <summary>
         ///     Address 1 field. Required
