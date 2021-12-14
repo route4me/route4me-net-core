@@ -251,7 +251,7 @@ namespace Route4MeSDK.DataTypes
         ///     The address order ID
         /// </summary>
         [DataMember(Name = "order_id", EmitDefaultValue = false)]
-        public int? OrderId { get; set; }
+        public long? OrderId { get; set; }
 
         /// <summary>
         ///     The address cargo weight
