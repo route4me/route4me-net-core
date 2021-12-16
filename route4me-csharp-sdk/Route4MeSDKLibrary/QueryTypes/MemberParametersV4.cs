@@ -18,7 +18,7 @@ namespace Route4MeSDK.QueryTypes
         ///     </remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public int? member_id { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Unique ID of a device.

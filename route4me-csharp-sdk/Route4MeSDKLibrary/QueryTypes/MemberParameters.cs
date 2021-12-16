@@ -24,7 +24,7 @@ namespace Route4MeSDK.QueryTypes
         ///     Unique ID of a member.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     The plan type that the user selected.

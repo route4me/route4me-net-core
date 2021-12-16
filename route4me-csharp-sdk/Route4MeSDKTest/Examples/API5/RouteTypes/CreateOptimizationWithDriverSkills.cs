@@ -20,7 +20,7 @@ namespace Route4MeSDK.Examples
 
             #region Create Skilled Drivers
 
-            int? ownerId = GetOwnerMemberId();
+            long? ownerId = GetOwnerMemberId();
 
             if (ownerId == null) return;
 

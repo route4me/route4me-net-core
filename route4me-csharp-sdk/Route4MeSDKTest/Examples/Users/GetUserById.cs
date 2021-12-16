@@ -18,7 +18,7 @@ namespace Route4MeSDK.Examples
 
             int memberId = Convert.ToInt32(usersToRemove[usersToRemove.Count - 1]);
 
-            var @params = new MemberParametersV4 { member_id = memberId };
+            var @params = new MemberParametersV4 { MemberId = memberId };
 
             // Run the query
             MemberResponseV4 result = route4Me.GetUserById(@params, out string errorString);

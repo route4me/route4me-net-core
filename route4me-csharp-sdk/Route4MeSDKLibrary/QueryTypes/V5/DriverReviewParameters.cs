@@ -15,7 +15,7 @@ namespace Route4MeSDK.QueryTypes.V5
         ///     The driver ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Start of the time filter. (e.g. "2020-11-26")

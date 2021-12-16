@@ -18,7 +18,7 @@ namespace Route4MeSDK.DataTypes
         ///     A member ID the geocoded address belongs
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int MemberId { get; set; }
+        public long MemberId { get; set; }
 
         /// <summary>
         ///     The member type ID

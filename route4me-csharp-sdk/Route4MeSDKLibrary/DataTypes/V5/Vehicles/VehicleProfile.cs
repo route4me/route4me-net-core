@@ -19,7 +19,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Root member ID
         /// </summary>
         [DataMember(Name = "root_member_id", EmitDefaultValue = false)]
-        public int? RootMemberId { get; set; }
+        public long? RootMemberId { get; set; }
 
         /// <summary>
         ///     Vehicle profile name
