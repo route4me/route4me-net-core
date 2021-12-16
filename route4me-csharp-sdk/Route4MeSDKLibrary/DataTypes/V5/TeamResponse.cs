@@ -15,7 +15,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     The member ID
         /// </summary>
         [DataMember(Name = "member_id")]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     The user's account owner ID

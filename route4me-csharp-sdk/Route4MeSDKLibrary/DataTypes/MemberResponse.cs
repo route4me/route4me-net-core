@@ -36,7 +36,7 @@ namespace Route4MeSDK.DataTypes
         ///     Member ID
         /// </summary>
         [DataMember(Name = "member_id")]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     User's API key
@@ -60,7 +60,7 @@ namespace Route4MeSDK.DataTypes
         ///     Geofence polygon size
         /// </summary>
         [DataMember(Name = "geofence_polygon_size")]
-        public int? GeofencePolygonSize { get; set; }
+        public long? GeofencePolygonSize { get; set; }
 
         /// <summary>
         ///     Geofence onsite trigger time (seconds)

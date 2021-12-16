@@ -31,7 +31,7 @@
         ///     </remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Limit the number of records in response.

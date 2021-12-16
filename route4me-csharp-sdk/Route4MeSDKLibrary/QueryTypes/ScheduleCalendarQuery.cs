@@ -29,7 +29,7 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Timezone offset (in minutes) (e.g. NYT: -4*60 = -480, Kiev: 3*60 = 180).

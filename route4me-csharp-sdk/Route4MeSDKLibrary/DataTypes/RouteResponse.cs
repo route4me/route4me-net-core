@@ -26,13 +26,13 @@ namespace Route4MeSDK.DataTypes
         ///     Route rating by user [0 - 5].
         /// </summary>
         [DataMember(Name = "user_route_rating")]
-        public int? UserRouteRating { get; set; }
+        public long? UserRouteRating { get; set; }
 
         /// <summary>
         ///     Route owner's member ID.
         /// </summary>
         [DataMember(Name = "member_id")]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Route owner's email.
@@ -80,7 +80,7 @@ namespace Route4MeSDK.DataTypes
         ///     Counter of the approved revisions
         /// </summary>
         [DataMember(Name = "approved_revisions_counter", EmitDefaultValue = false)]
-        public int? ApprovedRevisionsCounter { get; set; }
+        public long? ApprovedRevisionsCounter { get; set; }
 
         /// <summary>
         ///     Vehicle alias.
@@ -206,7 +206,7 @@ namespace Route4MeSDK.DataTypes
         ///     Actual footsteps.
         /// </summary>
         [DataMember(Name = "actual_footsteps")]
-        public int? ActualFootSteps { get; set; }
+        public long? ActualFootSteps { get; set; }
 
         /// <summary>
         ///     Working time
@@ -242,19 +242,19 @@ namespace Route4MeSDK.DataTypes
         ///     Geofence polygon size.
         /// </summary>
         [DataMember(Name = "geofence_polygon_size")]
-        public int? GeofencePolygonSize { get; set; }
+        public long? GeofencePolygonSize { get; set; }
 
         /// <summary>
         ///     Destination count.
         /// </summary>
         [DataMember(Name = "destination_count", EmitDefaultValue = false)]
-        public int? DestinationCount { get; set; }
+        public long? DestinationCount { get; set; }
 
         /// <summary>
         ///     Notes count in the route.
         /// </summary>
         [DataMember(Name = "notes_count", EmitDefaultValue = false)]
-        public int? NotesCount { get; set; }
+        public long? NotesCount { get; set; }
 
         /// <summary>
         ///     The route parameters. See <see cref="RouteParameters" />

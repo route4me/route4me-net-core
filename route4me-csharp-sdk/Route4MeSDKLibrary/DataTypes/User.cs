@@ -12,7 +12,7 @@ namespace Route4MeSDK.DataTypes
         ///     Unique ID of the member inside the Route4Me system.
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Unique ID of the account type.

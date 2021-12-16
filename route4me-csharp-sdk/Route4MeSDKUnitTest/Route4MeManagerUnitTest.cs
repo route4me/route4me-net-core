@@ -13834,7 +13834,7 @@ namespace Route4MeSDKUnitTest
 
             var customParams = new MemberParametersV4
             {
-                member_id = memberId,
+                MemberId = memberId,
                 custom_data = new Dictionary<string, string> {{"Custom Key 2", "Custom Value 2"}}
             };
 
@@ -13861,7 +13861,7 @@ namespace Route4MeSDKUnitTest
             var route4Me = new Route4MeManager(c_ApiKey);
 
             var memberID = Convert.ToInt32(lsMembers[0]);
-            var @params = new MemberParametersV4 {member_id = memberID};
+            var @params = new MemberParametersV4 {MemberId = memberID};
 
             // Run the query
             var result = route4Me.GetUserById(@params, out var errorString);
@@ -13894,7 +13894,7 @@ namespace Route4MeSDKUnitTest
 
             var @params = new MemberParametersV4
             {
-                member_id = createdMemberID != null
+                MemberId = createdMemberID != null
                     ? createdMemberID
                     : Convert.ToInt32(lsMembers[lsMembers.Count - 1]),
                 member_phone = "571-259-5939"
@@ -13981,7 +13981,7 @@ namespace Route4MeSDKUnitTest
 
             var @params = new MemberParametersV4
             {
-                member_id = Convert.ToInt32(lsMembers[lsMembers.Count - 1])
+                MemberId = Convert.ToInt32(lsMembers[lsMembers.Count - 1])
             };
 
             // Run the query
@@ -14002,7 +14002,7 @@ namespace Route4MeSDKUnitTest
 
             foreach (var memberId in lsMembers)
             {
-                parameters.member_id = Convert.ToInt32(memberId);
+                parameters.MemberId = Convert.ToInt32(memberId);
                 result = route4Me.UserDelete(parameters, out var errorString);
             }
         }

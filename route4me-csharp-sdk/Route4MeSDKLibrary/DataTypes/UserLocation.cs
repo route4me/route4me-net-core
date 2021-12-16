@@ -157,7 +157,7 @@ namespace Route4MeSDK.DataTypes
         ///     Day ID
         /// </summary>
         [DataMember(Name = "day_id", EmitDefaultValue = false)]
-        public int? DayId { get; set; }
+        public long? DayId { get; set; }
 
         /// <summary>
         ///     Device type
@@ -169,13 +169,13 @@ namespace Route4MeSDK.DataTypes
         ///     Unique ID of the member inside the Route4Me system.
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Root member ID
         /// </summary>
         [DataMember(Name = "root_member_id", EmitDefaultValue = false)]
-        public int? RootMemberId { get; set; }
+        public long? RootMemberId { get; set; }
 
         /// <summary>
         ///     Activity timestamp friendly.

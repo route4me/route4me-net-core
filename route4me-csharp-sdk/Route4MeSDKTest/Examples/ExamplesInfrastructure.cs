@@ -1661,7 +1661,7 @@ namespace Route4MeSDK.Examples
 
             foreach (var userId in usersToRemove)
             {
-                var @params = new MemberParametersV4 { member_id = Convert.ToInt32(userId) };
+                var @params = new MemberParametersV4 { MemberId = Convert.ToInt32(userId) };
 
                 bool result = route4Me.UserDelete(@params, out string errorString);
 

@@ -18,7 +18,7 @@ namespace Route4MeSDK.Examples
 
             var @customParams = new  MemberParametersV4
             {
-                member_id = memberId,
+                MemberId = memberId,
                 custom_data = new Dictionary<string, string>() { { "Custom Key 2", "Custom Value 2" } }
             };
 
