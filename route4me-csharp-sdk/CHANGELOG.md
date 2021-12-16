@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.0.0.0] - 2021-12-16
+
+Some field's types are switched from int32 to int64.
+
+## [1.1.3.0] - 2021-12-14
+
+External dependencies are updated
+
 ## [1.1.2.0] - 2021-11-19
 
 ### Changed
