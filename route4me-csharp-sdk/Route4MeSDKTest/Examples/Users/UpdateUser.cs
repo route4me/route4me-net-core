@@ -20,7 +20,7 @@ namespace Route4MeSDK.Examples
 
             var @params = new MemberParametersV4
             {
-                member_id = memberId,
+                MemberId = memberId,
                 member_phone = "571-259-5939"
             };
 

@@ -275,7 +275,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     </remarks>
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Specify the ip address of the remote user making this optimization request.

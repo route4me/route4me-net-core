@@ -82,7 +82,7 @@
         ///     Owner of a telematicss connection.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public uint? MemberID { get; set; }
+        public long? MemberID { get; set; }
 
         /// <summary>
         ///     Is a user real or virtual

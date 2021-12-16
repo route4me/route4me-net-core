@@ -13,7 +13,7 @@ namespace Route4MeSDK.DataTypes
         ///     The member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int MemberId { get; set; }
+        public long MemberId { get; set; }
 
         /// <summary>
         ///     The member's config key

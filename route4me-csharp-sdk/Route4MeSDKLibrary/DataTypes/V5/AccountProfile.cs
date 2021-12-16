@@ -18,7 +18,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Acount member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberIId { get; set; }
+        public long? MemberIId { get; set; }
 
         /// <summary>
         ///     Account API key
@@ -30,7 +30,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Account root member ID
         /// </summary>
         [DataMember(Name = "root_member_id", EmitDefaultValue = false)]
-        public int? RootMemberId { get; set; }
+        public long? RootMemberId { get; set; }
 
         /// <summary>
         ///     Prefered unnits of the account

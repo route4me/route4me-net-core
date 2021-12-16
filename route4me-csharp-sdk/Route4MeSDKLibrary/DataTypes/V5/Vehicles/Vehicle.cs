@@ -19,7 +19,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Member ID assigned to the vehicle.
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     If true, the vehicle is marked as deleted.

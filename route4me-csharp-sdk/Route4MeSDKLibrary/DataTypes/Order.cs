@@ -129,7 +129,7 @@ namespace Route4MeSDK.DataTypes
         ///     The id of the member inside the route4me system
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int MemberId { get; set; }
+        public long MemberId { get; set; }
 
         /// <summary>
         ///     First name

@@ -26,7 +26,7 @@
         ///     </remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Unique ID of a route the device assigned to.

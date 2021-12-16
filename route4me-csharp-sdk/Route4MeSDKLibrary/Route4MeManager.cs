@@ -1589,7 +1589,7 @@ namespace Route4MeSDK
 
             /// <value>The member ID</value>
             [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-            public int? MemberId { get; set; }
+            public long? MemberId { get; set; }
 
             /// <value>The response format (json, xml)</value>
             [HttpQueryMemberAttribute(Name = "format", EmitDefaultValue = false)]
@@ -2422,7 +2422,7 @@ namespace Route4MeSDK
 
             /// <value>The member ID</value>
             [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-            public int? MemberId { get; set; }
+            public long? MemberId { get; set; }
         }
 
         /// <summary>

@@ -232,7 +232,7 @@ namespace Route4MeSDK
 
             var r4me = new Route4MeManager(_mApiKey);
 
-            var memPars = new MemberParametersV4 {member_id = ownerId};
+            var memPars = new MemberParametersV4 {MemberId = ownerId};
 
             var user = r4me.GetUserById(memPars, out var errorString);
 

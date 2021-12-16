@@ -99,7 +99,7 @@ namespace Route4MeSDK.Examples
             return members[i];
         }
 
-        private int? GetOwnerMemberId()
+        private long? GetOwnerMemberId()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
@@ -124,7 +124,7 @@ namespace Route4MeSDK.Examples
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
-            int? ownerId = GetOwnerMemberId();
+            long? ownerId = GetOwnerMemberId();
 
             if (ownerId == null) return;
 

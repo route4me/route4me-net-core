@@ -19,62 +19,62 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Organization ID
         /// </summary>
         [DataMember(Name = "organization_id", EmitDefaultValue = false)]
-        public int? OrganizationId { get; set; }
+        public long? OrganizationId { get; set; }
 
         /// <summary>
         ///     Route progress
         /// </summary>
         [DataMember(Name = "route_progress", EmitDefaultValue = false)]
-        public int? RouteProgress { get; set; }
+        public long? RouteProgress { get; set; }
 
         /// <summary>
         ///     Depot address ID
         /// </summary>
         [DataMember(Name = "depot_address_id", EmitDefaultValue = false)]
-        public int? DepotAddressId { get; set; }
+        public long? DepotAddressId { get; set; }
 
         /// <summary>
         ///     Route member ID
         /// </summary>
         [DataMember(Name = "root_member_id", EmitDefaultValue = false)]
-        public int? RootMemberId { get; set; }
+        public long? RootMemberId { get; set; }
 
         /// <summary>
         ///     Day ID
         /// </summary>
         [DataMember(Name = "day_id", EmitDefaultValue = false)]
-        public int? DayId { get; set; }
+        public long? DayId { get; set; }
 
         /// <summary>
         ///     Number of the visited route's addresses.
         /// </summary>
         [DataMember(Name = "addresses_visited_count", EmitDefaultValue = false)]
-        public int? AddressesVisitedCount { get; set; }
+        public long? AddressesVisitedCount { get; set; }
 
         /// <summary>
         ///     Route start time.
         /// </summary>
         [DataMember(Name = "route_start_time", EmitDefaultValue = false)]
-        public int? RouteStartTime { get; set; }
+        public long? RouteStartTime { get; set; }
 
         /// <summary>
         ///     Route end time.
         /// </summary>
         [DataMember(Name = "route_end_time", EmitDefaultValue = false)]
-        public int? RouteEndTime { get; set; }
+        public long? RouteEndTime { get; set; }
 
         /// <summary>
         ///     User route rating [0, 5]. A null value means no rating was given.
         ///     Users can rate routes so that future optimizations take these ratings into account.
         /// </summary>
         [DataMember(Name = "user_route_rating", EmitDefaultValue = false)]
-        public int? UserRouteRating { get; set; }
+        public long? UserRouteRating { get; set; }
 
         /// <summary>
         ///     The member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     The member's email
@@ -124,7 +124,7 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "approved_revisions_counter", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public int? ApprovedRevisionsCounter { get; set; }
+        public long? ApprovedRevisionsCounter { get; set; }
 
         /// <summary>
         ///     Vehicle alias
@@ -223,7 +223,7 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "actual_footsteps", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public int? ActualFootsteps { get; set; }
+        public long? ActualFootsteps { get; set; }
 
         /// <summary>
         ///     Working time.
@@ -264,21 +264,21 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Geofence polygon size.
         /// </summary>
         [DataMember(Name = "geofence_polygon_size", EmitDefaultValue = false)]
-        public int? GeofencePolygonSize { get; set; }
+        public long? GeofencePolygonSize { get; set; }
 
         /// <summary>
         ///     Destination count.
         /// </summary>
         [DataMember(Name = "destination_count", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public int? DestinationCount { get; set; }
+        public long? DestinationCount { get; set; }
 
         /// <summary>
         ///     Notes count in the route.
         /// </summary>
         [DataMember(Name = "notes_count", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public int? NotesCount { get; set; }
+        public long? NotesCount { get; set; }
 
         /// <summary>
         ///     Route notes

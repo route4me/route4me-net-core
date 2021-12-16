@@ -52,7 +52,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Unique ID of the member.
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     The contact's alias.
@@ -340,7 +340,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Unique ID of the member.
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     The first name of the contact person.

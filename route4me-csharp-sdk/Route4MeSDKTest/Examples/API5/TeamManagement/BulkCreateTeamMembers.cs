@@ -15,7 +15,7 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
-            int? ownerId = GetOwnerMemberId();
+            long? ownerId = GetOwnerMemberId();
 
             if (ownerId == null) return;
 

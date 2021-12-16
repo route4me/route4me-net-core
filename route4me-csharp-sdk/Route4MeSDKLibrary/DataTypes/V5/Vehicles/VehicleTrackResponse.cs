@@ -31,7 +31,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     The member ID
         /// </summary>
         [DataMember(Name = "member_id", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Latitude of a vehicle position.
