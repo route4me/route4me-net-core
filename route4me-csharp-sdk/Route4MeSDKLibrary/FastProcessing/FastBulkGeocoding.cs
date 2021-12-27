@@ -252,7 +252,7 @@ namespace Route4MeSDK.FastProcessing
                     ExportFormat = "json"
                 };
 
-                var geocodedAddresses = route4MeV4.BatchGeocodingAsync(geoParams, out var errorString);
+                var geocodedAddresses = route4MeV4.BatchGeocoding(geoParams, out var errorString);
 
                 if ((geocodedAddresses?.Length ?? 0) > 50)
                 {
