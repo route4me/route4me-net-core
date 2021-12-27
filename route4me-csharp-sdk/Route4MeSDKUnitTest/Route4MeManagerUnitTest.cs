@@ -6035,7 +6035,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            dataObject = route4Me.RunAsyncOptimization(
+            dataObject = route4Me.RunOptimization(
                 optimizationParameters,
                 out var errorString);
 
@@ -10009,7 +10009,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var dataObject = route4Me.RunAsyncOptimization(optimizationParameters, out var errorString);
+            var dataObject = route4Me.RunOptimization(optimizationParameters, out var errorString);
 
             if (dataObject != null)
                 Console.WriteLine("Optimization finished with the state: " + dataObject.State);
@@ -14547,7 +14547,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
-        public void BatchGeocodingForwardAsyncTest()
+        public async void BatchGeocodingForwardAsyncTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -14558,9 +14558,9 @@ namespace Route4MeSDKUnitTest
             };
 
             //Run the query
-            var result = route4Me.BatchGeocodingAsync(geoParams, out var errorString);
+            var result = await route4Me.BatchGeocodingAsync(geoParams).ConfigureAwait(false);
 
-            Assert.IsNotNull(result, "GeocodingForwardTest failed. " + errorString);
+            Assert.IsNotNull(result.Item1, "GeocodingForwardTest failed. " + result.Item2);
         }
 
 

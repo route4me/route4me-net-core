@@ -2754,8 +2754,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            var dataObject = route4Me.RunAsyncOptimization(
-                                        optimizationParameters,
+            var dataObject = route4Me.RunOptimization(optimizationParameters,
                                         out string errorString);
 
             OptimizationsToRemove = new List<string>()
