@@ -69,7 +69,7 @@ namespace Route4MeSDK.Examples
         private class AddressInfo : GenericParameters
         {
             [DataMember(Name = "route_destination_id")]
-            public int DestinationId { get; set; }
+            public long DestinationId { get; set; }
 
             [DataMember(Name = "sequence_no")]
             public int SequenceNo { get; set; }

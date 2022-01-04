@@ -35,7 +35,7 @@ namespace Route4MeSDK.DataTypes
         ///     Member ID.
         /// </summary>
         [DataMember(Name = "m", EmitDefaultValue = false)]
-        public int? MemberId { get; set; }
+        public long? MemberId { get; set; }
 
         /// <summary>
         ///     Longitude at the time of the location transaction event.

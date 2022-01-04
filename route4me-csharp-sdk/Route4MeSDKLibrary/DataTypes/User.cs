@@ -18,7 +18,7 @@ namespace Route4MeSDK.DataTypes
         ///     Unique ID of the account type.
         /// </summary>
         [DataMember(Name = "account_type_id", EmitDefaultValue = false)]
-        public int? AccountTypeId { get; set; }
+        public long? AccountTypeId { get; set; }
 
         /// <summary>
         ///     Member type of the user account.

@@ -56,7 +56,7 @@ namespace Route4MeSDK
         /// <param name="contactIDs">The array of the contract IDs</param>
         /// <param name="resultResponse">out: Result response</param>
         /// <returns>If true the contacts were removed successfully</returns>
-        public bool RemoveAddressBookContacts(int[] contactIDs, out ResultResponse resultResponse)
+        public bool RemoveAddressBookContacts(long[] contactIDs, out ResultResponse resultResponse)
         {
             var request = new AddressBookContactsRequest
             {
@@ -76,7 +76,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contactIDs">The array of the contract IDs</param>
         /// <returns>If true the contacts were removed successfully</returns>
-        public async Task<Tuple<bool, ResultResponse>> RemoveAddressBookContactsAsync(int[] contactIDs)
+        public async Task<Tuple<bool, ResultResponse>> RemoveAddressBookContactsAsync(long[] contactIDs)
         {
             var request = new AddressBookContactsRequest
             {
@@ -131,7 +131,7 @@ namespace Route4MeSDK
         /// <param name="contactId">contact ID</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns>An AddressBookContact type object</returns>
-        public AddressBookContact GetAddressBookContactById(int contactId, out ResultResponse resultResponse)
+        public AddressBookContact GetAddressBookContactById(long contactId, out ResultResponse resultResponse)
         {
             var gparams = new GenericParameters();
             gparams.ParametersCollection.Add("address_id", contactId.ToString());
@@ -149,7 +149,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contactId">contact ID</param>
         /// <returns>An AddressBookContact type object</returns>
-        public Task<Tuple<AddressBookContact, ResultResponse>> GetAddressBookContactByIdAsync(int contactId)
+        public Task<Tuple<AddressBookContact, ResultResponse>> GetAddressBookContactByIdAsync(long contactId)
         {
             var gparams = new GenericParameters();
             gparams.ParametersCollection.Add("address_id", contactId.ToString());
@@ -167,7 +167,7 @@ namespace Route4MeSDK
         {
             /// The array of the address IDs
             [DataMember(Name = "address_ids", EmitDefaultValue = false)]
-            public int[] AddressIds { get; set; }
+            public long[] AddressIds { get; set; }
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Route4MeSDK
         /// <param name="contactIDs">An array of address IDs</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns>An AddressBookContactsResponse type object</returns>
-        public AddressBookContactsResponse GetAddressBookContactsByIds(int[] contactIDs,
+        public AddressBookContactsResponse GetAddressBookContactsByIds(long[] contactIDs,
             out ResultResponse resultResponse)
         {
             var request = new AddressBookContactsRequest
@@ -197,7 +197,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contactIDs">An array of address IDs</param>
         /// <returns>An AddressBookContactsResponse type object</returns>
-        public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsByIdsAsync(int[] contactIDs)
+        public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsByIdsAsync(long[] contactIDs)
         {
             var request = new AddressBookContactsRequest
             {

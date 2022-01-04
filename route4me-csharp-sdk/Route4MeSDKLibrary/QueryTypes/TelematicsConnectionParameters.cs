@@ -23,7 +23,7 @@ namespace Route4MeSDK.QueryTypes
         ///     An unique ID of a telematics vendor.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vendor_id", EmitDefaultValue = false)]
-        public uint? VendorID { get; set; }
+        public ulong? VendorID { get; set; }
 
         /// <summary>
         ///     Telematics connection name
@@ -47,13 +47,13 @@ namespace Route4MeSDK.QueryTypes
         ///     Connection user ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "user_id", EmitDefaultValue = false)]
-        public int? UserId { get; set; }
+        public long? UserId { get; set; }
 
         /// <summary>
         ///     Connection ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "id", EmitDefaultValue = false)]
-        public int? ID { get; set; }
+        public long? ID { get; set; }
 
         /// <summary>
         ///     Telemetics connection type <see cref="Enum.TelematicsVendorType" />

@@ -20,7 +20,7 @@ namespace Route4MeSDK.DataTypes
         ///     Route destination ID
         /// </summary>
         [DataMember(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int? RouteDestinationId { get; set; }
+        public long? RouteDestinationId { get; set; }
 
         /// <summary>
         ///     Route alias
@@ -163,7 +163,7 @@ namespace Route4MeSDK.DataTypes
         ///     favorite addresses.
         /// </summary>
         [DataMember(Name = "contact_id", EmitDefaultValue = false)]
-        public int? ContactId { get; set; }
+        public long? ContactId { get; set; }
 
         /// <summary>
         ///     The status flag to mark an address as visited (aka check in).

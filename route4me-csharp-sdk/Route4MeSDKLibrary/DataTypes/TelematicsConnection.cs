@@ -45,7 +45,7 @@ namespace Route4MeSDKLibrary.DataTypes
         ///     Telemetics connection type ID
         /// </summary>
         [DataMember(Name = "vendor_id", EmitDefaultValue = false)]
-        public int? VendorId { get; set; }
+        public long? VendorId { get; set; }
 
         /// <summary>
         ///     Telemetics connection name
@@ -99,7 +99,7 @@ namespace Route4MeSDKLibrary.DataTypes
         ///     Connection user ID
         /// </summary>
         [DataMember(Name = "user_id", EmitDefaultValue = false)]
-        public int? UserId { get; set; }
+        public long? UserId { get; set; }
 
         /// <summary>
         ///     When the connection updated
@@ -117,7 +117,7 @@ namespace Route4MeSDKLibrary.DataTypes
         ///     Telemetics connection ID
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         ///     Metadata, custom key-value storage.

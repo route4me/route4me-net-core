@@ -26,9 +26,9 @@ namespace Route4MeSDK.Examples
                 addressBookParameters,
                 out ResultResponse resultResponse);
 
-            int[] addressIDs = response.Results
+            long[] addressIDs = response.Results
                 .Where(x => x.AddressId != null)
-                .Select(x => (int)x.AddressId)
+                .Select(x => (long)x.AddressId)
                 .ToArray();
 
             Console.WriteLine("Length:", String.Join(",", addressIDs));

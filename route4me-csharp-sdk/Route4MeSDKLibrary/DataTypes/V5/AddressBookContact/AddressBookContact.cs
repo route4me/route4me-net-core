@@ -34,7 +34,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Unique ID of the contact.
         /// </summary>
         [DataMember(Name = "address_id", EmitDefaultValue = false)]
-        public int? AddressId { get; set; }
+        public long? AddressId { get; set; }
 
         /// <summary>
         ///     The geographic address of the contact.

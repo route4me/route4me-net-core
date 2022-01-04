@@ -60,7 +60,7 @@ namespace Route4MeSDK.QueryTypes.V5
         ///     The user's account owner ID
         /// </summary>
         [DataMember(Name = "OWNER_MEMBER_ID", EmitDefaultValue = false)]
-        public int? OwnerMemberId { get; set; }
+        public long? OwnerMemberId { get; set; }
 
         /// <summary>
         ///     User's phone number

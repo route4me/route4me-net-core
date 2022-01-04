@@ -13,7 +13,7 @@ namespace Route4MeSDK.Examples
 
             CreateTestOrderCustomUserField();
 
-            int orderCustomFieldId = OrderCustomFieldsToRemove[OrderCustomFieldsToRemove.Count - 1];
+            long orderCustomFieldId = OrderCustomFieldsToRemove[OrderCustomFieldsToRemove.Count - 1];
 
             var orderCustomFieldParams = new OrderCustomFieldParameters()
             {

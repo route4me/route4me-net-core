@@ -13,7 +13,7 @@ namespace Route4MeSDK.DataTypes
         ///     Custom order field ID.
         /// </summary>
         [DataMember(Name = "order_custom_field_id", EmitDefaultValue = false)]
-        public int OrderCustomFieldId { get; set; }
+        public long OrderCustomFieldId { get; set; }
 
         /// <summary>
         ///     Custom order field name.

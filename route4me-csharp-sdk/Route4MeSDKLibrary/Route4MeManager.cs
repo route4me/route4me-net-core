@@ -343,7 +343,7 @@ namespace Route4MeSDK
 
             /// <value>ID of a removed destination</value>
             [System.Runtime.Serialization.DataMember(Name = "route_destination_id")]
-            public int RouteDestinationId { get; set; }
+            public long RouteDestinationId { get; set; }
         }
 
         /// <summary>
@@ -1448,7 +1448,7 @@ namespace Route4MeSDK
         {
             /// <value>The destination ID</value>
             [System.Runtime.Serialization.DataMember(Name = "route_destination_id")]
-            public int DestinationId { get; set; }
+            public long DestinationId { get; set; }
 
             /// <value>The destination's sequence number in a route</value>
             [System.Runtime.Serialization.DataMember(Name = "sequence_no")]
@@ -1622,7 +1622,7 @@ namespace Route4MeSDK
 
             /// <value>A route destination ID to be updated</value>
             [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public int? RouteDestinationId { get; set; }
+            public long? RouteDestinationId { get; set; }
 
             /// <value>The changed/new custom fields of a route destination</value>
             [System.Runtime.Serialization.DataMember(Name = "custom_fields", EmitDefaultValue = false)]
@@ -1693,7 +1693,7 @@ namespace Route4MeSDK
 
             /// <value>A route destination ID to be updated</value>
             [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public new int? RouteDestinationId { get; set; }
+            public new long? RouteDestinationId { get; set; }
 
             /*
             /// <value>The route destination alias</value>
@@ -3178,7 +3178,7 @@ namespace Route4MeSDK
         {
             /// <value>A custom note type ID></value>
             [System.Runtime.Serialization.DataMember(Name = "id", EmitDefaultValue = false)]
-            public int Id { get; set; }
+            public long Id { get; set; }
         }
 
         /// <summary>
@@ -3187,7 +3187,7 @@ namespace Route4MeSDK
         /// <param name="customNoteId">The custom note type ID</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>if succefful, returns non-negative affected number, otherwise: -1</returns>
-        public object RemoveCustomNoteType(int customNoteId, out string errorString)
+        public object RemoveCustomNoteType(long customNoteId, out string errorString)
         {
             var request = new RemoveCustomNoteTypeRequest {Id = customNoteId};
 
@@ -3615,7 +3615,7 @@ namespace Route4MeSDK
         /// <param name="addresses">An array of the addresses</param>
         /// <param name="errorString">Error string</param>
         /// <returns>An array of the added address IDs</returns>
-        public int?[] AddOptimizationDestinations(string optimizationId, Address[] addresses, out string errorString)
+        public long?[] AddOptimizationDestinations(string optimizationId, Address[] addresses, out string errorString)
         {
             var request = new AddRouteDestinationRequest
             {
@@ -3638,7 +3638,7 @@ namespace Route4MeSDK
         /// <param name="optimizationId">Optimization ID</param>
         /// <param name="addresses">An array of the addresses</param>
         /// <returns>An array of the added address IDs</returns>
-        public async Task<Tuple<int?[], string>> AddOptimizationDestinationsAsync(string optimizationId, Address[] addresses)
+        public async Task<Tuple<long?[], string>> AddOptimizationDestinationsAsync(string optimizationId, Address[] addresses)
         {
             var request = new AddRouteDestinationRequest
             {
@@ -3651,7 +3651,7 @@ namespace Route4MeSDK
             var dataObject = await GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put).ConfigureAwait(false);
 
-            return new Tuple<int?[], string>(dataObject.Item1?.Addresses?.Where(x => addressesList.Contains(x.AddressString))
+            return new Tuple<long?[], string>(dataObject.Item1?.Addresses?.Where(x => addressesList.Contains(x.AddressString))
                 .Select(y => y.RouteDestinationId).ToArray(), dataObject.Item2);
         }
 
@@ -3667,7 +3667,7 @@ namespace Route4MeSDK
 
             /// <value>The route destination ID</value>
             [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public int RouteDestinationId { get; set; }
+            public long RouteDestinationId { get; set; }
         }
 
         /// <summary>
@@ -3682,7 +3682,7 @@ namespace Route4MeSDK
 
             /// <value>Removed route destination ID</value>
             [System.Runtime.Serialization.DataMember(Name = "route_destination_id")]
-            public int RouteDestinationId { get; set; }
+            public long RouteDestinationId { get; set; }
         }
 
         /// <summary>
@@ -3752,7 +3752,7 @@ namespace Route4MeSDK
         /// <param name="afterDestinationId">The route destination ID after which will be inserted the moved destination </param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>Ture if a destination was moved uccessfully</returns>
-        public bool MoveDestinationToRoute(string toRouteId, int routeDestinationId, int afterDestinationId,
+        public bool MoveDestinationToRoute(string toRouteId, long routeDestinationId, int afterDestinationId,
             out string errorString)
         {
             var keyValues = new List<KeyValuePair<string, string>>
@@ -3783,7 +3783,7 @@ namespace Route4MeSDK
         /// <param name="routeDestinationId">The route destiantion ID to be moved</param>
         /// <param name="afterDestinationId">The route destination ID after which will be inserted the moved destination </param>
         /// <returns>Ture if a destination was moved uccessfully</returns>
-        public async Task<Tuple<bool, string>> MoveDestinationToRouteAsync(string toRouteId, int routeDestinationId, int afterDestinationId)
+        public async Task<Tuple<bool, string>> MoveDestinationToRouteAsync(string toRouteId, long routeDestinationId, int afterDestinationId)
         {
             var keyValues = new List<KeyValuePair<string, string>>
             {
@@ -3819,7 +3819,7 @@ namespace Route4MeSDK
 
             /// <value>The route destination ID</value>
             [HttpQueryMemberAttribute(Name = "address_id", EmitDefaultValue = false)]
-            public int? AddressId { get; set; }
+            public long? AddressId { get; set; }
 
             /// <value>If true an addres will be marked as departed</value>
             [IgnoreDataMember]
@@ -3957,7 +3957,7 @@ namespace Route4MeSDK
 
             /// <value>The route destination ID</value>
             [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public int? RouteDestinationId { get; set; }
+            public long? RouteDestinationId { get; set; }
 
             /// <value>If true an address will be marked as marked as departed</value>
             [IgnoreDataMember]
