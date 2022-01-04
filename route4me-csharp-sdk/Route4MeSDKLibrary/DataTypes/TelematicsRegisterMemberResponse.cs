@@ -31,6 +31,6 @@ namespace Route4MeSDK.DataTypes
         ///     Telemetics member  ID
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
-        public int? Id { get; set; }
+        public long? Id { get; set; }
     }
 }

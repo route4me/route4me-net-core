@@ -198,7 +198,7 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int? RouteDestinationId { get; set; }
+        public long? RouteDestinationId { get; set; }
 
         /// <summary>
         ///     If true, HTTP request will be redirected.

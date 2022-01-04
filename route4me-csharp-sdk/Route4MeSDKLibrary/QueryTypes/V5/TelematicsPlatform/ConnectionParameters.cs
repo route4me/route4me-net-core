@@ -18,7 +18,7 @@ namespace Route4MeSDK.QueryTypes.V5
         ///     Telemetics connection type ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vendor_id", EmitDefaultValue = false)]
-        public int? VendorId { get; set; }
+        public ulong? VendorId { get; set; }
 
         /// <summary>
         ///     Telemetics connection name

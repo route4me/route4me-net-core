@@ -30,7 +30,7 @@ namespace Route4MeSDK.QueryTypes
         ///     </remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "address_id", EmitDefaultValue = false)]
-        public int AddressId { get; set; }
+        public long AddressId { get; set; }
 
         /// <summary>
         ///     Latitude of a device position.

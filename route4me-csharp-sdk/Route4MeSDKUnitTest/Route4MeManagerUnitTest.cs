@@ -1066,7 +1066,7 @@ namespace Route4MeSDKUnitTest
         private static TestDataRepository tdr;
         private static List<string> lsOptimizationIDs;
 
-        private static int lastCustomNoteTypeID;
+        private static long lastCustomNoteTypeID;
         //static int firstCustomNoteTypeID; // rezerved for future.
 
         [ClassInitialize]
@@ -12168,7 +12168,7 @@ namespace Route4MeSDKUnitTest
                 .ActualApiKey; // This group allowed only for business and higher account types --- put in the parameter an appropriate API key
 
         private static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey; //
-        private static List<int> lsOrderCustomUserFieldIDs = new List<int>();
+        private static List<long> lsOrderCustomUserFieldIDs = new List<long>();
 
         [ClassInitialize]
         public static void OrderCustomUserFieldsInitialize(TestContext context)
@@ -12182,7 +12182,7 @@ namespace Route4MeSDKUnitTest
 
             var orderCustomUserFields = route4Me.GetOrderCustomUserFields(out var errorString);
 
-            int customFieldId;
+            long customFieldId;
 
             if (orderCustomUserFields
                 .Where(x => x.OrderCustomFieldName == "CustomField33")
@@ -12219,7 +12219,7 @@ namespace Route4MeSDKUnitTest
                 customFieldId = createdCustomField.Data.OrderCustomFieldId;
             }
 
-            lsOrderCustomUserFieldIDs = new List<int> {customFieldId};
+            lsOrderCustomUserFieldIDs = new List<long> {customFieldId};
         }
 
 
@@ -16436,7 +16436,7 @@ namespace Route4MeSDKUnitTest
     internal class AddressInfo : GenericParameters
     {
         [DataMember(Name = "route_destination_id")]
-        public int DestinationId { get; set; }
+        public long DestinationId { get; set; }
 
         [DataMember(Name = "sequence_no")] public int SequenceNo { get; set; }
 

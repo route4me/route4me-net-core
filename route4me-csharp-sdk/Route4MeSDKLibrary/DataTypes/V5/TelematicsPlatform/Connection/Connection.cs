@@ -62,7 +62,7 @@ namespace Route4MeSDK.DataTypes.V5.TelematicsPlatform
         ///     Telemetics connection type ID
         /// </summary>
         [DataMember(Name = "vendor_id", EmitDefaultValue = false)]
-        public int? VendorId { get; set; }
+        public long? VendorId { get; set; }
 
         /// <summary>
         ///     Disable/enable vehicle tracking

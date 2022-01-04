@@ -19,7 +19,7 @@
         ///     Route destination ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int? RouteDestinationId { get; set; }
+        public long? RouteDestinationId { get; set; }
 
         /// <summary>
         ///     Limit the number of records in response.
