@@ -5907,8 +5907,8 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
         /// <param name="errorString">out: Error as string</param>
-        /// <returns>An array of the street data</returns>
-        public ArrayList RapidStreetData(GeocodingParameters geoParams, out string errorString)
+        /// <returns>An list of the street data</returns>
+        public List<Dictionary<string, string>> RapidStreetData(GeocodingParameters geoParams, out string errorString)
         {
             var request = new GeocodingRequest
             {
@@ -5918,7 +5918,7 @@ namespace Route4MeSDK
 
             var url = R4MEInfrastructureSettings.RapidStreetData;
 
-            var result = new ArrayList();
+            var result = new List<Dictionary<string, string>>();
 
             if (geoParams.Pk > 0)
             {
@@ -6023,8 +6023,8 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
         /// <param name="errorString">out: Error as string</param>
-        /// <returns>An array of the street zipcodes</returns>
-        public ArrayList RapidStreetZipcode(GeocodingParameters geoParams, out string errorString)
+        /// <returns>An list of the street zipcodes</returns>
+        public List<Dictionary<string, string>> RapidStreetZipcode(GeocodingParameters geoParams, out string errorString)
         {
             var request = new GeocodingRequest
             {
@@ -6034,7 +6034,7 @@ namespace Route4MeSDK
 
             var url = R4MEInfrastructureSettings.RapidStreetZipcode;
 
-            var result = new ArrayList();
+            var result = new List<Dictionary<string, string>>();
 
             if (geoParams.Zipcode != null)
             {
@@ -6122,7 +6122,7 @@ namespace Route4MeSDK
         /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>An array of the street services</returns>
-        public ArrayList RapidStreetService(GeocodingParameters geoParams, out string errorString)
+        public List<Dictionary<string, string>> RapidStreetService(GeocodingParameters geoParams, out string errorString)
         {
             var request = new GeocodingRequest
             {
@@ -6132,7 +6132,7 @@ namespace Route4MeSDK
 
             var url = R4MEInfrastructureSettings.RapidStreetService;
 
-            var result = new ArrayList();
+            var result = new List<Dictionary<string, string>>();
 
             if (geoParams.Zipcode != null)
             {

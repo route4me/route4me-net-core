@@ -955,12 +955,11 @@ namespace Route4MeSDK.Examples
                 case GeocodingPrintOption.StreetZipCode:
                     Console.WriteLine("");
 
-                    if (result != null && result.GetType() == typeof(ArrayList))
+                    if (result != null && result.GetType() == typeof(List<Dictionary<string, string>>))
                     {
                         Console.WriteLine(testName + " executed successfully");
-                        foreach (Dictionary<string, string> res1 in (ArrayList)result)
+                        foreach (Dictionary<string, string> res1 in (List<Dictionary<string, string>>)result)
                         {
-
                             Console.WriteLine("Zipcode: " + res1["zipcode"]);
                             Console.WriteLine("Street name: " + res1["street_name"]);
                             Console.WriteLine("---------------------------");
