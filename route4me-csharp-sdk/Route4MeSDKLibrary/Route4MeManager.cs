@@ -5873,8 +5873,6 @@ namespace Route4MeSDK
                     HttpMethodType.Post,
                     content, false, false).GetAwaiter().GetResult();
 
-                Thread.SpinWait(5000);
-
                 errorString = result.Item2;
 
                 return result.Item1;
@@ -6257,8 +6255,6 @@ namespace Route4MeSDK
                     content,
                     false,
                     false).GetAwaiter().GetResult();
-
-            Thread.SpinWait(5000);
 
             errorString = result.Item2;
 

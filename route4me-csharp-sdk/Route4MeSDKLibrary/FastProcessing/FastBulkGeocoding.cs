@@ -387,11 +387,8 @@ namespace Route4MeSDK.FastProcessing
             _socket.On("error", message =>
             {
                 Debug.Print("Error -> " + message);
-                //await Task.Delay(500);
-                Thread.Sleep(500);
                 _manualResetEvent.Set();
                 _socket.Disconnect();
-                //manualResetEvent.Set();
             });
 
             _socket.On(Socket.EVENT_ERROR, e =>
@@ -400,64 +397,32 @@ namespace Route4MeSDK.FastProcessing
                 Console.WriteLine("EVENT_ERROR. " + exception.Message);
                 Console.WriteLine("BASE EXCEPTION. " + exception.GetBaseException());
                 Console.WriteLine("DATA COUNT. " + exception.Data.Count);
-                //events.Enqueue(exception.code);
                 _socket.Disconnect();
-                //manager.Close();
                 _manualResetEvent.Set();
-                ;
             });
 
             _socket.On(Socket.EVENT_MESSAGE, message =>
             {
-                //Debug.Print("Error -> " + message);
-                //await Task.Delay(500);
-                Thread.Sleep(500);
-                //manualResetEvent.Set();
             });
 
             _socket.On("data", d =>
             {
-                //Debug.Print("data -> " + d.ToString());
-                //await Task.Delay(1000);
-                Thread.Sleep(1000);
-                //manualResetEvent.Set();
             });
 
             _socket.On(Socket.EVENT_CONNECT, () =>
             {
-                //Debug.Print("Socket opened");
-                //socket.Close();
-                //await Task.Delay(500);
-                Thread.Sleep(500);
-
-                //manualResetEvent.Set();
             });
 
             _socket.On(Socket.EVENT_DISCONNECT, () =>
             {
-                //Debug.Print("Socket disconnected");
-                //socket.Close();
-                //await Task.Delay(500);
-                Thread.Sleep(700);
-
-                //manualResetEvent.Set();
             });
 
             _socket.On(Socket.EVENT_RECONNECT_ATTEMPT, () =>
             {
-                //Debug.Print("Socket reconnect attempt");
-                //socket.Close();
-                //await Task.Delay(1000);
-                Thread.Sleep(1500);
-
-                //manualResetEvent.Set();
             });
 
             _socket.On("addresses_bulk", addresses_chunk =>
             {
-                //Debug.Print("addresses_chunk received");
-
-                //await Task.Delay(500);
 
                 var jsonChunkText = addresses_chunk.ToString();
 

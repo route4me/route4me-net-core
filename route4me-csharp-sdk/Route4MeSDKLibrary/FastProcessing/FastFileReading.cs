@@ -106,10 +106,7 @@ namespace Route4MeSDK.FastProcessing
                             sJsonAddressesChunk = "";
                             curJsonObjects = 0;
 
-                            //manualResetEvent.Set();
                             OnJsonFileChunkIsReady(chunkIsReady);
-                            Thread.Sleep(chunkPause);
-                            //manualResetEvent.WaitOne();
                         }
                     }
                 }
@@ -121,8 +118,6 @@ namespace Route4MeSDK.FastProcessing
                     chunkIsReady.AddressesChunk = sJsonAddressesChunk;
                     sJsonAddressesChunk = "";
                     OnJsonFileChunkIsReady(chunkIsReady);
-
-                    Thread.Sleep(chunkPause);
                 }
 
                 var args = new JsonFileReadingIsDoneArgs {IsDone = true};
@@ -319,7 +314,6 @@ namespace Route4MeSDK.FastProcessing
                         curJsonObjects = 0;
 
                         OnCsvFileChunkIsReady(chunkIsReady);
-                        Thread.Sleep(chunkPause);
 
                         lsMultiContacts = new List<AddressBookContact>();
                     }
@@ -331,8 +325,6 @@ namespace Route4MeSDK.FastProcessing
                     chunkIsReady.multiContacts = lsMultiContacts;
 
                     OnCsvFileChunkIsReady(chunkIsReady);
-
-                    Thread.Sleep(chunkPause);
 
                     lsMultiContacts = new List<AddressBookContact>();
                 }
@@ -431,31 +423,22 @@ namespace Route4MeSDK.FastProcessing
                     if (curJsonObjects >= jsonObjectsChunkSize)
                     {
                         sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
-                        //JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
                         var chunkIsReady = new CsvFileChunkIsReadyArgs();
                         chunkIsReady.AddressesChunk = sJsonAddressesChunk;
                         sJsonAddressesChunk = "";
                         curJsonObjects = 0;
 
-                        //manualResetEvent.Set();
-                        //OnJsonFileChunkIsReady(chunkIsReady);
                         OnCsvFileChunkIsReady(chunkIsReady);
-                        Thread.Sleep(5000);
-                        //manualResetEvent.WaitOne();
                     }
                 }
 
                 if (sJsonAddressesChunk != "")
                 {
                     sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
-                    //JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
                     var chunkIsReady = new CsvFileChunkIsReadyArgs();
                     chunkIsReady.AddressesChunk = sJsonAddressesChunk;
                     sJsonAddressesChunk = "";
-                    //OnJsonFileChunkIsReady(chunkIsReady);
                     OnCsvFileChunkIsReady(chunkIsReady);
-
-                    Thread.Sleep(5000);
                 }
 
                 //JsonFileReadingIsDoneArgs args = new JsonFileReadingIsDoneArgs() { IsDone = true };
