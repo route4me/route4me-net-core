@@ -1066,7 +1066,7 @@ namespace Route4MeSDKUnitTest
         private static TestDataRepository tdr;
         private static List<string> lsOptimizationIDs;
 
-        private static int lastCustomNoteTypeID;
+        private static long lastCustomNoteTypeID;
         //static int firstCustomNoteTypeID; // rezerved for future.
 
         [ClassInitialize]
@@ -6035,7 +6035,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            dataObject = route4Me.RunAsyncOptimization(
+            dataObject = route4Me.RunOptimization(
                 optimizationParameters,
                 out var errorString);
 
@@ -10009,7 +10009,7 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var dataObject = route4Me.RunAsyncOptimization(optimizationParameters, out var errorString);
+            var dataObject = route4Me.RunOptimization(optimizationParameters, out var errorString);
 
             if (dataObject != null)
                 Console.WriteLine("Optimization finished with the state: " + dataObject.State);
@@ -12168,7 +12168,7 @@ namespace Route4MeSDKUnitTest
                 .ActualApiKey; // This group allowed only for business and higher account types --- put in the parameter an appropriate API key
 
         private static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey; //
-        private static List<int> lsOrderCustomUserFieldIDs = new List<int>();
+        private static List<long> lsOrderCustomUserFieldIDs = new List<long>();
 
         [ClassInitialize]
         public static void OrderCustomUserFieldsInitialize(TestContext context)
@@ -12182,7 +12182,7 @@ namespace Route4MeSDKUnitTest
 
             var orderCustomUserFields = route4Me.GetOrderCustomUserFields(out var errorString);
 
-            int customFieldId;
+            long customFieldId;
 
             if (orderCustomUserFields
                 .Where(x => x.OrderCustomFieldName == "CustomField33")
@@ -12219,7 +12219,7 @@ namespace Route4MeSDKUnitTest
                 customFieldId = createdCustomField.Data.OrderCustomFieldId;
             }
 
-            lsOrderCustomUserFieldIDs = new List<int> {customFieldId};
+            lsOrderCustomUserFieldIDs = new List<long> {customFieldId};
         }
 
 
@@ -14547,7 +14547,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
-        public void BatchGeocodingForwardAsyncTest()
+        public async void BatchGeocodingForwardAsyncTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -14558,16 +14558,16 @@ namespace Route4MeSDKUnitTest
             };
 
             //Run the query
-            var result = route4Me.BatchGeocodingAsync(geoParams, out var errorString);
+            var result = await route4Me.BatchGeocodingAsync(geoParams).ConfigureAwait(false);
 
-            Assert.IsNotNull(result, "GeocodingForwardTest failed. " + errorString);
+            Assert.IsNotNull(result.Item1, "GeocodingForwardTest failed. " + result.Item2);
         }
 
 
         [TestMethod]
         public void UploadAndGeocodeLargeJsonFile()
         {
-            var fastProcessing = new FastBulkGeocoding(c_ApiKey, false);
+            var fastProcessing = new FastBulkGeocoding(c_ApiKey);
             var lsGeocodedAddressTotal = new List<AddressGeocoded>();
             var lsAddresses = new List<string>();
 
@@ -14595,7 +14595,7 @@ namespace Route4MeSDKUnitTest
             };
 
             var stPath = AppDomain.CurrentDomain.BaseDirectory;
-            fastProcessing.uploadAndGeocodeLargeJsonFile(
+            fastProcessing.UploadAndGeocodeLargeJsonFile(
                 stPath + @"\Data\JSON\batch_socket_upload_error_addresses_data_5.json");
         }
 
@@ -16436,7 +16436,7 @@ namespace Route4MeSDKUnitTest
     internal class AddressInfo : GenericParameters
     {
         [DataMember(Name = "route_destination_id")]
-        public int DestinationId { get; set; }
+        public long DestinationId { get; set; }
 
         [DataMember(Name = "sequence_no")] public int SequenceNo { get; set; }
 

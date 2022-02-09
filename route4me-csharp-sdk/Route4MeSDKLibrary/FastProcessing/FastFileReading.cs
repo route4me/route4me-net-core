@@ -5,11 +5,12 @@ using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 using CsvHelper;
 using fastJSON;
 using Newtonsoft.Json;
 using Route4MeSDK.DataTypes;
+using Route4MeSDKLibrary;
 using AddressBookContact = Route4MeSDK.DataTypes.V5.AddressBookContact;
 
 namespace Route4MeSDK.FastProcessing
@@ -19,11 +20,6 @@ namespace Route4MeSDK.FastProcessing
     /// </summary>
     public class FastFileReading
     {
-        private const long offset = 0x10000000; // 256 megabytes
-        private const long length = 0x20000000; // 512 megabytesv
-
-        public int chunkPause { get; set; } = 2000;
-
         public int jsonObjectsChunkSize { get; set; } = 300;
         public int csvObjectsChunkSize { get; set; } = 300;
 
@@ -106,10 +102,7 @@ namespace Route4MeSDK.FastProcessing
                             sJsonAddressesChunk = "";
                             curJsonObjects = 0;
 
-                            //manualResetEvent.Set();
                             OnJsonFileChunkIsReady(chunkIsReady);
-                            Thread.Sleep(chunkPause);
-                            //manualResetEvent.WaitOne();
                         }
                     }
                 }
@@ -121,8 +114,6 @@ namespace Route4MeSDK.FastProcessing
                     chunkIsReady.AddressesChunk = sJsonAddressesChunk;
                     sJsonAddressesChunk = "";
                     OnJsonFileChunkIsReady(chunkIsReady);
-
-                    Thread.Sleep(chunkPause);
                 }
 
                 var args = new JsonFileReadingIsDoneArgs {IsDone = true};
@@ -130,17 +121,69 @@ namespace Route4MeSDK.FastProcessing
             }
         }
 
-        private void FbGeocoding_GeocodingIsFinished(object sender, FastBulkGeocoding.GeocodingIsFinishedArgs e)
+        /// <summary>
+        ///     Read content from A large JSON file by chunks
+        /// </summary>
+        /// <param name="fileName">JSON file name</param>
+        public async Task ReadingChunksFromLargeJsonFileAsync(string fileName)
         {
-            //manualResetEvent.Set();
+            var serializer = new JsonSerializer();
+
+            AddressField o = null;
+
+            var sJsonAddressesChunk = "";
+            var curJsonObjects = 0;
+            using (var s = File.Open(fileName, FileMode.Open))
+            using (var sr = new StreamReader(s))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                //reader.SupportMultipleContent = true;
+                var blStartAdresses = false;
+                while (await reader.ReadAsync().ConfigureAwait(false))
+                {
+                    if (reader.TokenType == JsonToken.StartArray) blStartAdresses = true;
+
+                    if (reader.TokenType == JsonToken.StartObject && blStartAdresses)
+                    {
+                        o = serializer.Deserialize<AddressField>(reader);
+
+                        if (o.Address == null) continue;
+
+                        sJsonAddressesChunk += JsonConvert.SerializeObject(o, Formatting.None) + ",";
+                        curJsonObjects++;
+
+                        if (curJsonObjects >= jsonObjectsChunkSize)
+                        {
+                            sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
+                            var chunkIsReady = new JsonFileChunkIsReadyArgs();
+                            chunkIsReady.AddressesChunk = sJsonAddressesChunk;
+                            sJsonAddressesChunk = "";
+                            curJsonObjects = 0;
+
+                            await AsyncEventRaiser.SafeRaiseSequentiallyAsync(JsonFileChunkIsReadyAsync, chunkIsReady).ConfigureAwait(false);
+                        }
+                    }
+                }
+
+                if (sJsonAddressesChunk != "")
+                {
+                    sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
+                    var chunkIsReady = new JsonFileChunkIsReadyArgs();
+                    chunkIsReady.AddressesChunk = sJsonAddressesChunk;
+                    sJsonAddressesChunk = "";
+                    await AsyncEventRaiser.SafeRaiseSequentiallyAsync(JsonFileChunkIsReadyAsync, chunkIsReady).ConfigureAwait(false);
+                }
+
+                var args = new JsonFileReadingIsDoneArgs { IsDone = true };
+                OnJsonFileReadingIsDone(args);
+            }
         }
 
         public void readingChunksFromLargeCsvFile(string fileName, out string errorString)
         {
+            List<List<AddressBookContact>> totalResult = new List<List<AddressBookContact>>();
             errorString = null;
             var curJsonObjects = 0;
-            //string sJsonAddressesChunk = "";
-            //var serializer = new JsonSerializer();
 
             var wrongCoordPattern =
                 @"^\-{0,1}\d{1,3}\.\d$"; // TO DO: API 5 contacts Batch uploading recognizes numbers with only one digit after point as wrong
@@ -181,12 +224,6 @@ namespace Route4MeSDK.FastProcessing
                         if ((fieldValue?.Length ?? 0) > 0)
                         {
                             var propinfo = abContact.GetType().GetProperty(csvAddressMapping[csvHeader]);
-                            //string fieldType = propinfo.PropertyType.FullName;
-
-                            //if (Nullable.GetUnderlyingType(propinfo.PropertyType) != null)
-                            //{
-                            //    fieldType = Nullable.GetUnderlyingType(propinfo.PropertyType).Name;
-                            //}
 
                             var fieldType = Nullable.GetUnderlyingType(propinfo.PropertyType) != null
                                 ? Nullable.GetUnderlyingType(propinfo.PropertyType).Name
@@ -314,12 +351,11 @@ namespace Route4MeSDK.FastProcessing
 
                     if (curJsonObjects >= csvObjectsChunkSize)
                     {
-                        var chunkIsReady = new CsvFileChunkIsReadyArgs();
-                        chunkIsReady.multiContacts = lsMultiContacts;
+                        totalResult.Add(lsMultiContacts);
+                        var chunkIsReady = new CsvFileChunkIsReadyArgs(lsMultiContacts, totalResult);
                         curJsonObjects = 0;
 
                         OnCsvFileChunkIsReady(chunkIsReady);
-                        Thread.Sleep(chunkPause);
 
                         lsMultiContacts = new List<AddressBookContact>();
                     }
@@ -327,144 +363,17 @@ namespace Route4MeSDK.FastProcessing
 
                 if (lsMultiContacts.Count > 0)
                 {
-                    var chunkIsReady = new CsvFileChunkIsReadyArgs();
-                    chunkIsReady.multiContacts = lsMultiContacts;
+                    totalResult.Add(lsMultiContacts);
+                    var chunkIsReady = new CsvFileChunkIsReadyArgs(lsMultiContacts, totalResult);
 
                     OnCsvFileChunkIsReady(chunkIsReady);
-
-                    Thread.Sleep(chunkPause);
-
-                    lsMultiContacts = new List<AddressBookContact>();
                 }
 
-                var args = new CsvFileReadingIsDoneArgs {IsDone = true};
+                var args = new CsvFileReadingIsDoneArgs(totalResult, true);
 
                 OnCsvFileReadingIsDone(args);
             }
         }
-
-        public void readingChunksFromLargeCsvFileOld(string fileName, out string errorString)
-        {
-            errorString = null;
-            var curJsonObjects = 0;
-            var sJsonAddressesChunk = "";
-            var serializer = new JsonSerializer();
-
-            using (TextReader reader = File.OpenText(fileName))
-            {
-                var csv = new CsvReader(reader);
-
-                csv.ReadHeader();
-                var csvHeaders = csv.FieldHeaders;
-
-                foreach (var csvHeader in csvHeaders)
-                    if (!csvAddressMapping.ContainsKey(csvHeader))
-                    {
-                        errorString = "CSV file header " + csvHeader + " is not specified in the CSV address mapping.";
-                        return;
-                    }
-
-                foreach (var k1 in csvAddressMapping.Keys)
-                    if (!csvHeaders.Contains(k1))
-                    {
-                        errorString = "The CSV address mapping key " + k1 + " is not found in the CSV header";
-                        return;
-                    }
-
-                while (csv.Read())
-                {
-                    var abContact = new DataTypes.AddressBookContact();
-
-                    foreach (var csvHeader in csvHeaders)
-                    {
-                        var fieldIndex = Array.IndexOf(csvHeaders, csvHeader);
-                        var fieldValue = csv.GetField(fieldIndex);
-
-                        if (fieldValue != null)
-                        {
-                            var fieldType = abContact.GetType().GetProperty(csvAddressMapping[csvHeader]).PropertyType
-                                .Name;
-
-                            switch (fieldType)
-                            {
-                                case "String":
-                                    abContact
-                                        .GetType()
-                                        .GetProperty(csvAddressMapping[csvHeader])
-                                        .SetValue(abContact, fieldValue);
-                                    break;
-                                case "Int32":
-                                    if (int.TryParse(fieldValue, out var __32))
-                                        abContact
-                                            .GetType()
-                                            .GetProperty(csvAddressMapping[csvHeader])
-                                            .SetValue(abContact, Convert.ToInt32(fieldValue));
-                                    break;
-                                case "Int64":
-                                    if (long.TryParse(fieldValue, out var __64))
-                                        abContact
-                                            .GetType()
-                                            .GetProperty(csvAddressMapping[csvHeader])
-                                            .SetValue(abContact, Convert.ToInt64(fieldValue));
-                                    break;
-                                case "Double":
-                                    if (double.TryParse(fieldValue, out var __d))
-                                        abContact
-                                            .GetType()
-                                            .GetProperty(csvAddressMapping[csvHeader])
-                                            .SetValue(abContact, Convert.ToDouble(fieldValue));
-                                    break;
-                                case "Boolean":
-                                    if (bool.TryParse(fieldValue, out var __b))
-                                        abContact
-                                            .GetType()
-                                            .GetProperty(csvAddressMapping[csvHeader])
-                                            .SetValue(abContact, Convert.ToBoolean(fieldValue));
-                                    break;
-                            }
-                        }
-                    }
-
-                    sJsonAddressesChunk += JsonConvert.SerializeObject(abContact, Formatting.None) + ",";
-                    curJsonObjects++;
-
-                    if (curJsonObjects >= jsonObjectsChunkSize)
-                    {
-                        sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
-                        //JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
-                        var chunkIsReady = new CsvFileChunkIsReadyArgs();
-                        chunkIsReady.AddressesChunk = sJsonAddressesChunk;
-                        sJsonAddressesChunk = "";
-                        curJsonObjects = 0;
-
-                        //manualResetEvent.Set();
-                        //OnJsonFileChunkIsReady(chunkIsReady);
-                        OnCsvFileChunkIsReady(chunkIsReady);
-                        Thread.Sleep(5000);
-                        //manualResetEvent.WaitOne();
-                    }
-                }
-
-                if (sJsonAddressesChunk != "")
-                {
-                    sJsonAddressesChunk = "{\"rows\":[" + sJsonAddressesChunk.TrimEnd(',') + "]}";
-                    //JsonFileChunkIsReadyArgs chunkIsReady = new JsonFileChunkIsReadyArgs();
-                    var chunkIsReady = new CsvFileChunkIsReadyArgs();
-                    chunkIsReady.AddressesChunk = sJsonAddressesChunk;
-                    sJsonAddressesChunk = "";
-                    //OnJsonFileChunkIsReady(chunkIsReady);
-                    OnCsvFileChunkIsReady(chunkIsReady);
-
-                    Thread.Sleep(5000);
-                }
-
-                //JsonFileReadingIsDoneArgs args = new JsonFileReadingIsDoneArgs() { IsDone = true };
-                var args = new CsvFileReadingIsDoneArgs {IsDone = true};
-                //OnJsonFileReadingIsDone(args);
-                OnCsvFileReadingIsDone(args);
-            }
-        }
-
 
         public string readJsonTextFromFile(string sFileName)
         {
@@ -498,6 +407,8 @@ namespace Route4MeSDK.FastProcessing
         #region // Event handler for the JsonFileChunkIsReady event
 
         public event EventHandler<JsonFileChunkIsReadyArgs> JsonFileChunkIsReady;
+
+        public event Func<JsonFileChunkIsReadyArgs, Task> JsonFileChunkIsReadyAsync;
 
         public event EventHandler<JsonFileReadingIsDoneArgs> JsonFileReadingIsDone;
 
@@ -545,9 +456,17 @@ namespace Route4MeSDK.FastProcessing
 
         public class CsvFileChunkIsReadyArgs : EventArgs
         {
-            public string AddressesChunk { get; set; }
+            public CsvFileChunkIsReadyArgs(List<AddressBookContact> currentChunk,
+                List<List<AddressBookContact>> totalResult, string addressesChunk = null)
+            {
+                AddressesChunk = addressesChunk;
+                CurrentChunk = currentChunk;
+                TotalResult = totalResult;
+            }
 
-            public List<AddressBookContact> multiContacts { get; set; }
+            public string AddressesChunk { get;  }
+            public List<AddressBookContact> CurrentChunk { get; }
+            public List<List<AddressBookContact>> TotalResult { get; }
         }
 
         protected virtual void OnCsvFileChunkIsReady(CsvFileChunkIsReadyArgs e)
@@ -572,7 +491,14 @@ namespace Route4MeSDK.FastProcessing
 
         public class CsvFileReadingIsDoneArgs : EventArgs
         {
-            public bool IsDone { get; set; }
+            public List<List<AddressBookContact>> Packages { get; }
+            public bool IsDone { get; }
+
+            public CsvFileReadingIsDoneArgs(List<List<AddressBookContact>> packages, bool isDone)
+            {
+                Packages = packages;
+                IsDone = isDone;
+            }
         }
 
         #endregion

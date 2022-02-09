@@ -10,7 +10,7 @@
         ///     An unique ID of a telematics vendor.
         /// </summary>
         [HttpQueryMemberAttribute(Name = "vendor_id", EmitDefaultValue = false)]
-        public uint? VendorID { get; set; }
+        public ulong? VendorID { get; set; }
 
         /// <summary>
         ///     Specifies if a vendor is integrated in the Route4Me system.

@@ -83,7 +83,7 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
                 //foreach (int loc1 in lsRemoveContacts) lsRemLocations.Add(loc1.ToString());
 
                 var contactIDs = lsCreatedContacts.Where(x => x != null && x.AddressId != null)
-                    .Select(x => (int) x.AddressId);
+                    .Select(x => (long) x.AddressId);
 
                 var removed = route4Me.RemoveAddressBookContacts(
                     contactIDs.ToArray(),
@@ -129,10 +129,10 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
         {
             var route4Me = new Route4MeManagerV5(c_ApiKey);
 
-            var addressId1 = (int) lsCreatedContacts[lsCreatedContacts.Count - 1].AddressId;
-            var addressId2 = (int) lsCreatedContacts[lsCreatedContacts.Count - 2].AddressId;
+            var addressId1 = (long)lsCreatedContacts[lsCreatedContacts.Count - 1].AddressId;
+            var addressId2 = (long) lsCreatedContacts[lsCreatedContacts.Count - 2].AddressId;
 
-            int[] addressIDs = {addressId1, addressId2};
+            long[] addressIDs = {addressId1, addressId2};
 
             var response = route4Me.GetAddressBookContactsByIds(addressIDs, out var resultResponse);
 
@@ -146,8 +146,8 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
 
             var lsSize = lsCreatedContacts.Count - 1;
 
-            int[] addressIDs =
-                {(int) lsCreatedContacts[lsSize - 1].AddressId, (int) lsCreatedContacts[lsSize - 2].AddressId};
+            long[] addressIDs =
+                {(long) lsCreatedContacts[lsSize - 1].AddressId, (long) lsCreatedContacts[lsSize - 2].AddressId};
 
             var response = route4Me.RemoveAddressBookContacts(addressIDs, out var resultResponse);
 

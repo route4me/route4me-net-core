@@ -1,6 +1,30 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.0.0.0] - 2022-02-09
+
+Async API is intoduced for Route4MeManager and Route4MeManagerV5.
+Mix of sync/async context is removed for async flow.
+IDs are switched from 32 bit integer to 64 bit integer (both signed and unsigned).
+Async API for FastProcessing (JSON) is introduced.
+Unnesessary internal state is removed from FastProcessing.
+ArrayList is removed from geocoding API.
+Internal sleeps and spin waits are removed.
+Naming is updated to follow CamelCase.
+Internal code smells are removed.
+NewtonJson usage is fixed.
+
+### Changed
+
+The topmost changes contains in the following files:
+
+The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
+The file [Route4MeManagerV5cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)
+The file [FastBulkGeocoding.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastBulkGeocoding.cs)
+The file [FastFileReading.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastFileReading.cs)
+The file [FastValidateData.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/FastProcessing/FastValidateData.cs)
+
+
 ## [2.0.0.0] - 2021-12-16
 
 Some field's types are switched from Int32 to Int64:

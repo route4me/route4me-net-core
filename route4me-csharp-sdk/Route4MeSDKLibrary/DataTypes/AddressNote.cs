@@ -12,7 +12,7 @@ namespace Route4MeSDK.DataTypes
         ///     An unique ID of a note
         /// </summary>
         [DataMember(Name = "note_id", EmitDefaultValue = false)]
-        public int NoteId { get; set; }
+        public long NoteId { get; set; }
 
         /// <summary>
         ///     The route ID
@@ -24,7 +24,7 @@ namespace Route4MeSDK.DataTypes
         ///     The route destination ID
         /// </summary>
         [DataMember(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int RouteDestinationId { get; set; }
+        public long RouteDestinationId { get; set; }
 
         /// <summary>
         ///     An unique ID of an uploaded file

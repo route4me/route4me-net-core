@@ -23,7 +23,7 @@ namespace Route4MeSDK.QueryTypes.V5
         ///     Route destination ID
         /// </summary>
         [DataMember(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int RouteDestinationId { get; set; }
+        public long RouteDestinationId { get; set; }
 
         /// <summary>
         ///     Barcodes to be saved

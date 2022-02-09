@@ -1,5 +1,4 @@
 ﻿using Route4MeSDK.QueryTypes;
-using System.Collections;
 
 namespace Route4MeSDK.Examples
 {
@@ -20,7 +19,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            ArrayList result = route4Me.RapidStreetData(geoParams, out string errorString);
+            var result = route4Me.RapidStreetData(geoParams, out string errorString);
 
             PrintExampleGeocodings(result, GeocodingPrintOption.StreetData, errorString);
         }

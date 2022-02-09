@@ -12,7 +12,7 @@ namespace Route4MeSDK.DataTypes
         ///     The custom note type ID
         /// </summary>
         [DataMember(Name = "note_custom_type_id", EmitDefaultValue = false)]
-        public int NoteCustomTypeID { get; set; }
+        public long NoteCustomTypeID { get; set; }
 
         /// <summary>
         ///     The custom type

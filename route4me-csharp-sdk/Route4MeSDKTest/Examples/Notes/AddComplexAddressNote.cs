@@ -22,7 +22,7 @@ namespace Route4MeSDK.Examples
 
             string routeIdToMoveTo = SDRT_route_id;
 
-            int addressId = (SDRT_route != null &&
+            long addressId = (SDRT_route != null &&
                             SDRT_route.Addresses.Length > 1 &&
                             SDRT_route.Addresses[1].RouteDestinationId != null)
                 ? SDRT_route.Addresses[1].RouteDestinationId.Value

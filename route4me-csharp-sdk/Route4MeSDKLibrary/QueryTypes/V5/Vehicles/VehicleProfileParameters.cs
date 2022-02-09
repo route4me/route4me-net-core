@@ -27,6 +27,6 @@
         ///     Vehicle profile ID
         /// </summary>
         [HttpQueryMemberAttribute(Name = "id", EmitDefaultValue = false)]
-        public int? VehicleProfileId { get; set; }
+        public long? VehicleProfileId { get; set; }
     }
 }

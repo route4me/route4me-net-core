@@ -12,7 +12,7 @@ namespace Route4MeSDK.Examples
         /// </summary>
         public void uploadAndGeocodeLargeJsonFile()
         {
-            var fastProcessing = new FastBulkGeocoding(ActualApiKey, false);
+            var fastProcessing = new FastBulkGeocoding(ActualApiKey);
             var lsGeocodedAddressTotal = new List<AddressGeocoded>();
             var lsAddresses = new List<string>();
 
@@ -61,7 +61,7 @@ namespace Route4MeSDK.Examples
             };
 
             var stPath = AppDomain.CurrentDomain.BaseDirectory;
-            fastProcessing.uploadAndGeocodeLargeJsonFile(stPath + @"\Data\JSON\batch_socket_upload_error_addresses_data_5.json");
+            fastProcessing.UploadAndGeocodeLargeJsonFile(stPath + @"\Data\JSON\batch_socket_upload_error_addresses_data_5.json");
         }
     }
 }
