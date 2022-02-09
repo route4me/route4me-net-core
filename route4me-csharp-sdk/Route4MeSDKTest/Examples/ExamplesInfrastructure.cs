@@ -37,7 +37,7 @@ namespace Route4MeSDK.Examples
         public List<string> configKeysToRemove = new List<string>();
         public List<string> CustomNoteTypesToRemove = new List<string>();
         public List<string> OrdersToRemove = new List<string>();
-        public List<int> OrderCustomFieldsToRemove = new List<int>();
+        public List<long> OrderCustomFieldsToRemove = new List<long>();
 
         Order lastCreatedOrder;
 
@@ -955,12 +955,11 @@ namespace Route4MeSDK.Examples
                 case GeocodingPrintOption.StreetZipCode:
                     Console.WriteLine("");
 
-                    if (result != null && result.GetType() == typeof(ArrayList))
+                    if (result != null && result.GetType() == typeof(List<Dictionary<string, string>>))
                     {
                         Console.WriteLine(testName + " executed successfully");
-                        foreach (Dictionary<string, string> res1 in (ArrayList)result)
+                        foreach (Dictionary<string, string> res1 in (List<Dictionary<string, string>>)result)
                         {
-
                             Console.WriteLine("Zipcode: " + res1["zipcode"]);
                             Console.WriteLine("Street name: " + res1["street_name"]);
                             Console.WriteLine("---------------------------");
@@ -1213,7 +1212,7 @@ namespace Route4MeSDK.Examples
 
             foreach (string customNoteType in CustomNoteTypesToRemove)
             {
-                int? customNoteTypeId = allCustomNoteTypes
+                long? customNoteTypeId = allCustomNoteTypes
                     .Where(x => x.NoteCustomType == customNoteType)
                     .FirstOrDefault()
                     ?.NoteCustomTypeID ?? -1;
@@ -1251,7 +1250,7 @@ namespace Route4MeSDK.Examples
             }
         }
 
-        private int? GetCustomNoteIdByName(string customNoteTypeName)
+        private long? GetCustomNoteIdByName(string customNoteTypeName)
         {
             var route4Me = new Route4MeManager(ActualApiKey);
 
@@ -1264,7 +1263,7 @@ namespace Route4MeSDK.Examples
 
             if (allCustomNoteTypes == null || allCustomNoteTypes.Count < 1) return null;
 
-            int? customNoteTypeId = allCustomNoteTypes
+            long? customNoteTypeId = allCustomNoteTypes
                     .Where(x => x.NoteCustomType == customNoteTypeName)
                     .FirstOrDefault()
                     ?.NoteCustomTypeID ?? null;

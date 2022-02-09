@@ -11,7 +11,7 @@
 
             CreateCustomNoteType();
 
-            int? customNoteTypeId = GetCustomNoteIdByName("To Do 5");
+            long? customNoteTypeId = GetCustomNoteIdByName("To Do 5");
 
             if (customNoteTypeId == null) return;
 

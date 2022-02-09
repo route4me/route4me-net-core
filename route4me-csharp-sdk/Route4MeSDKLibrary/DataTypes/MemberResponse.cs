@@ -24,7 +24,7 @@ namespace Route4MeSDK.DataTypes
         ///     Session ID
         /// </summary>
         [DataMember(Name = "session_id")]
-        public int? SessionId { get; set; }
+        public long? SessionId { get; set; }
 
         /// <summary>
         ///     Session GUID
@@ -96,7 +96,7 @@ namespace Route4MeSDK.DataTypes
         ///     The account type ID
         /// </summary>
         [DataMember(Name = "account_type_id")]
-        public int? AccountTypeId { get; set; }
+        public long? AccountTypeId { get; set; }
 
         /// <summary>
         ///     Account type alias

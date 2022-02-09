@@ -257,7 +257,7 @@ namespace Route4MeSDK.QueryTypes
         ///     </remarks>
         /// </summary>
         [DataMember(Name = "OWNER_MEMBER_ID", EmitDefaultValue = false)]
-        public int? OWNER_MEMBER_ID { get; set; }
+        public long? OWNER_MEMBER_ID { get; set; }
 
         // <summary>
         /// First name of a member.

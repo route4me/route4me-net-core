@@ -175,21 +175,12 @@ namespace Route4MeSDK.Examples
                 Parameters = parameters
             };
 
-            DataObject dataObject = null;
+            var result = await route4Me.RunOptimizationAsync(
+                optimizationParameters);
 
-            // Run the query
-            await Task<DataObject>.Run(() =>
-            {
-                dataObject = route4Me.RunAsyncOptimization(
-                    optimizationParameters, 
-                    out string errorString);
+            PrintExampleOptimizationResult(result.Item1, result.Item2);
 
-                PrintExampleOptimizationResult(dataObject, errorString);
-
-                return dataObject;
-            });
-
-            return dataObject;
+            return result.Item1;
         }
     }
 }

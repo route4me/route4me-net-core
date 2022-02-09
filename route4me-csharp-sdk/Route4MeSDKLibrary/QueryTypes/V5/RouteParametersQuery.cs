@@ -152,7 +152,7 @@ namespace Route4MeSDK.QueryTypes.V5
 
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int? RouteDestinationId { get; set; }
+        public long? RouteDestinationId { get; set; }
 
         /// <summary>
         ///     If true, will be redirected

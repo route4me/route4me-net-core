@@ -7,7 +7,7 @@ namespace Route4MeSDK.QueryTypes
     public sealed class OrderCustomFieldParameters : GenericParameters
     {
         [DataMember(Name = "order_custom_field_id", EmitDefaultValue = false)]
-        public int OrderCustomFieldId { get; set; }
+        public long OrderCustomFieldId { get; set; }
 
         /// <summary>
         ///     Custom order field name.

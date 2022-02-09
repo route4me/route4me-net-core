@@ -22,7 +22,7 @@
         ///     </remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int RouteDestinationId { get; set; }
+        public long RouteDestinationId { get; set; }
 
         /// <summary>
         ///     Unique ID of a route destination.
@@ -31,7 +31,7 @@
         ///     </remarks>
         /// </summary>
         [HttpQueryMemberAttribute(Name = "address_id", EmitDefaultValue = false)]
-        public int AddressId { get; set; }
+        public long AddressId { get; set; }
 
         /// <summary>
         ///     If true, the route destination notes will be included in a response.

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client.Transports;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.SocketIoClientDotNet.Client;
+using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using AddressBookContact = Route4MeSDK.DataTypes.V5.AddressBookContact;
@@ -25,39 +25,18 @@ namespace Route4MeSDK.FastProcessing
     /// </summary>
     public class FastBulkGeocoding : Connection
     {
-        public static Connection con = new Connection();
-        public string Message;
-
-        private static List<List<AddressBookContact>> _threadPackage;
         private FastFileReading _fileReading;
         private bool _geocodedAddressesDownloadingIsDone;
         private bool _largeJsonFileProcessingIsDone;
         private int _loadedAddressesCount;
-        private ManualResetEvent _mainResetEvent;
-        private ManualResetEvent _manualResetEvent;
         private int _nextDownloadStage;
         private int _requestedAddresses;
-        private List<AddressGeocoded> _savedAddresses;
         private Socket _socket;
-        private string _temporaryAddressesStorageId;
         private int _totalCsvChunks;
-
-        [Obsolete("EnableTraceSource is not used anymore. Use overloaded constructor without EnableTraceSource")]
-        public FastBulkGeocoding(string ApiKey, bool EnableTraceSource = false) : this(ApiKey)
-        {
-        }
-
-        public FastBulkGeocoding(string ApiKey)
-        {
-            if (ApiKey != "") apiKey = ApiKey;
-            _threadPackage = new List<List<AddressBookContact>>();
-        }
-
-        public string apiKey { get; set; }
+        private readonly string _apiKey;
 
         public int CsvChunkSize { get; set; } = 300;
         public int JsonChunkSize { get; set; } = 300;
-        public int ChunkPause { get; set; } = 2000;
 
         public string[] MandatoryFields { get; set; }
 
@@ -68,12 +47,17 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         public bool GeocodeOnlyEmpty { get; set; } = false;
 
+        public FastBulkGeocoding(string apiKey, bool enableTraceSource = false)
+        {
+            if (apiKey != "") _apiKey = apiKey;
+            Quobject.SocketIoClientDotNet.TraceSourceTools.LogTraceSource.TraceSourceLogging(enableTraceSource);
+        }
 
         /// <summary>
         ///     Upload and geocode large JSON file
         /// </summary>
         /// <param name="fileName">JSON file name</param>
-        public void uploadAndGeocodeLargeJsonFile(string fileName)
+        public void UploadAndGeocodeLargeJsonFile(string fileName)
         {
             _largeJsonFileProcessingIsDone = false;
 
@@ -81,15 +65,30 @@ namespace Route4MeSDK.FastProcessing
 
             _fileReading.jsonObjectsChunkSize = 200;
 
-            _savedAddresses = new List<AddressGeocoded>();
+            _fileReading.JsonFileChunkIsReady += OnJsonFileChunkIsReady;
 
-            _fileReading.JsonFileChunkIsReady += FileReading_JsonFileChunkIsReady;
-
-            _fileReading.JsonFileReadingIsDone += FileReading_JsonFileReadingIsDone;
-
-            _mainResetEvent = new ManualResetEvent(false);
+            _fileReading.JsonFileReadingIsDone += OnJsonFileReadingIsDone;
 
             _fileReading.readingChunksFromLargeJsonFile(fileName);
+        }
+
+        /// <summary>
+        ///     Upload and geocode large JSON file
+        /// </summary>
+        /// <param name="fileName">JSON file name</param>
+        public Task UploadAndGeocodeLargeJsonFileAsync(string fileName)
+        {
+            _largeJsonFileProcessingIsDone = false;
+
+            _fileReading = new FastFileReading();
+
+            _fileReading.jsonObjectsChunkSize = 200;
+
+            _fileReading.JsonFileChunkIsReadyAsync += OnJsonFileChunkIsReadyAsync;
+
+            _fileReading.JsonFileReadingIsDone += OnJsonFileReadingIsDone;
+
+            return _fileReading.ReadingChunksFromLargeJsonFileAsync(fileName);
         }
 
         /// <summary>
@@ -97,13 +96,12 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         /// <param name="sender">Event raiser object</param>
         /// <param name="e">Event arguments of the type JsonFileReadingIsDoneArgs</param>
-        private void FileReading_JsonFileReadingIsDone(object sender, FastFileReading.JsonFileReadingIsDoneArgs e)
+        private void OnJsonFileReadingIsDone(object sender, FastFileReading.JsonFileReadingIsDoneArgs e)
         {
             var isDone = e.IsDone;
             if (isDone)
             {
                 _largeJsonFileProcessingIsDone = true;
-                _mainResetEvent.Set();
                 if (_geocodedAddressesDownloadingIsDone)
                     OnGeocodingIsFinished(new GeocodingIsFinishedArgs {isFinished = true});
                 // fire here event for external (test) code
@@ -116,11 +114,11 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         /// <param name="sender">Event raiser object</param>
         /// <param name="e">Event arguments of the type JsonFileChunkIsReadyArgs</param>
-        private void FileReading_JsonFileChunkIsReady(object sender, FastFileReading.JsonFileChunkIsReadyArgs e)
+        private void OnJsonFileChunkIsReady(object sender, FastFileReading.JsonFileChunkIsReadyArgs e)
         {
             var jsonAddressesChunk = e.AddressesChunk;
 
-            var uploadAddressesResponse = uploadAddressesToTemporaryStorage(jsonAddressesChunk);
+            var uploadAddressesResponse = UploadAddressesToTemporaryStorage(jsonAddressesChunk);
 
             if (uploadAddressesResponse != null)
             {
@@ -130,11 +128,29 @@ namespace Route4MeSDK.FastProcessing
                 if (addressesInChunk < _fileReading.jsonObjectsChunkSize)
                     _requestedAddresses = addressesInChunk; // last chunk
 
-                downloadGeocodedAddresses(tempAddressesStorageID, addressesInChunk);
+                DownloadGeocodedAddresses(tempAddressesStorageID, addressesInChunk);
             }
         }
 
-        public void uploadLargeContactsCsvFile(string fileName, out string errorString)
+        private async Task OnJsonFileChunkIsReadyAsync(FastFileReading.JsonFileChunkIsReadyArgs arg)
+        {
+            var jsonAddressesChunk = arg.AddressesChunk;
+
+            var uploadAddressesResponse = await UploadAddressesToTemporaryStorageAsync(jsonAddressesChunk).ConfigureAwait(false);
+
+            if (uploadAddressesResponse != null)
+            {
+                var tempAddressesStorageID = uploadAddressesResponse.OptimizationProblemId;
+                var addressesInChunk = (int)uploadAddressesResponse.AddressCount;
+
+                if (addressesInChunk < _fileReading.jsonObjectsChunkSize)
+                    _requestedAddresses = addressesInChunk; // last chunk
+
+                DownloadGeocodedAddresses(tempAddressesStorageID, addressesInChunk);
+            }
+        }
+
+        public void UploadLargeContactsCsvFile(string fileName, out string errorString)
         {
             errorString = null;
             _totalCsvChunks = 0;
@@ -148,18 +164,11 @@ namespace Route4MeSDK.FastProcessing
             _fileReading = new FastFileReading();
 
             _fileReading.csvObjectsChunkSize = CsvChunkSize;
-            _fileReading.chunkPause = ChunkPause;
             _fileReading.jsonObjectsChunkSize = JsonChunkSize;
 
             _fileReading.CsvFileChunkIsReady += FileReading_CsvFileChunkIsReady;
 
-            //fileReading.CsvFileReadingIsDone += FileReading_CsvFileReadingIsDone;
-
-            //fileReading.JsonFileChunkIsReady += FileReading_JsonFileChunkIsReady;
-
             _fileReading.CsvFileReadingIsDone += FileReading_CsvFileReadingIsDone;
-
-            _mainResetEvent = new ManualResetEvent(false);
 
             _fileReading.readingChunksFromLargeCsvFile(fileName, out errorString);
 
@@ -172,51 +181,26 @@ namespace Route4MeSDK.FastProcessing
             var isDone = e.IsDone;
             if (isDone)
             {
-                Parallel.ForEach(_threadPackage,
+                Parallel.ForEach(e.Packages,
                     new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, CsvFileChunkIsReady);
-
-                _threadPackage = new List<List<AddressBookContact>>();
-
-                /*
-                largeCsvFileProcessingIsDone = true;
-                mainResetEvent.Set();
-                if (geocodedAddressesDownloadingIsDone)
-                {
-                    OnGeocodingIsFinished(new GeocodingIsFinishedArgs() { isFinished = true });
-                }
-                */
-                // fire here event for external (test) code
             }
         }
 
         private void FileReading_CsvFileChunkIsReady(object sender, FastFileReading.CsvFileChunkIsReadyArgs e)
         {
-            _threadPackage.Add(e.multiContacts);
-
-            if (_threadPackage.Count > 15)
+            if (e.TotalResult.Count > 15)
             {
-                Parallel.ForEach(_threadPackage,
+                Parallel.ForEach(e.TotalResult,
                     new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, CsvFileChunkIsReady);
 
-                _threadPackage = new List<List<AddressBookContact>>();
+                e.TotalResult.Clear();
             }
-
-            /* This works: 30 000 contacts in 3 min
-            taskList.Add(Task.Run(() => CsvFileChunkIsReady(e.multiContacts)));
-
-            if (taskList.Count>9)
-            {
-                Task.WaitAll(taskList.ToArray());
-
-                taskList = new List<Task>();
-            }
-            */
         }
 
         private void CsvFileChunkIsReady(List<AddressBookContact> contactsChunk)
         {
-            var route4Me = new Route4MeManagerV5(apiKey);
-            var route4MeV4 = new Route4MeManager(apiKey);
+            var route4Me = new Route4MeManagerV5(_apiKey);
+            var route4MeV4 = new Route4MeManager(_apiKey);
 
             if (DoGeocoding && contactsChunk != null)
             {
@@ -252,7 +236,7 @@ namespace Route4MeSDK.FastProcessing
                     ExportFormat = "json"
                 };
 
-                var geocodedAddresses = route4MeV4.BatchGeocodingAsync(geoParams, out var errorString);
+                var geocodedAddresses = route4MeV4.BatchGeocoding(geoParams, out var errorString);
 
                 if ((geocodedAddresses?.Length ?? 0) > 50)
                 {
@@ -322,24 +306,20 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         /// <param name="streamSource">Input stream source - file name or JSON text</param>
         /// <returns>Response object of the type uploadAddressesToTemporaryStorageResponse</returns>
-        public Route4MeManager.UploadAddressesToTemporaryStorageResponse uploadAddressesToTemporaryStorage(
+        public Route4MeManager.UploadAddressesToTemporaryStorageResponse UploadAddressesToTemporaryStorage(
             string streamSource)
         {
-            var route4Me = new Route4MeManager(apiKey);
+            var route4Me = new Route4MeManager(_apiKey);
 
-            //List<AddressField> lsAddresses = readLargeJsonFileOfAddresse(sFileName);
-
-            var jsonText = "";
+            string jsonText;
 
             if (streamSource.Contains("{") && streamSource.Contains("}"))
                 jsonText = streamSource;
             else
-                jsonText = readJsonTextFromLargeJsonFileOfAddresses(streamSource);
-
-            var errorString = "";
+                jsonText = ReadJsonTextFromLargeJsonFileOfAddresses(streamSource);
 
             var uploadResponse =
-                route4Me.UploadAddressesToTemporaryStorage(jsonText, out errorString);
+                route4Me.UploadAddressesToTemporaryStorage(jsonText, out _);
 
 
             if (uploadResponse == null || !uploadResponse.Status) return null;
@@ -348,11 +328,37 @@ namespace Route4MeSDK.FastProcessing
         }
 
         /// <summary>
+        ///     Upload JSON addresses to a temporary storage
+        /// </summary>
+        /// <param name="streamSource">Input stream source - file name or JSON text</param>
+        /// <returns>Response object of the type uploadAddressesToTemporaryStorageResponse</returns>
+        public async Task<Route4MeManager.UploadAddressesToTemporaryStorageResponse> UploadAddressesToTemporaryStorageAsync(
+            string streamSource)
+        {
+            var route4Me = new Route4MeManager(_apiKey);
+
+            string jsonText;
+
+            if (streamSource.Contains("{") && streamSource.Contains("}"))
+                jsonText = streamSource;
+            else
+                jsonText = ReadJsonTextFromLargeJsonFileOfAddresses(streamSource);
+
+            var uploadResponse =
+                await route4Me.UploadAddressesToTemporaryStorageAsync(jsonText).ConfigureAwait(false);
+
+
+            if (uploadResponse == null || !uploadResponse.Item1.Status) return null;
+
+            return uploadResponse.Item1;
+        }
+
+        /// <summary>
         ///     Geocode and download the addresses from the temporary storage.
         /// </summary>
         /// <param name="temporaryAddressesStorageID">ID of the temporary storage</param>
         /// <param name="addressesInFile">Chunk size of the addresses to be geocoded</param>
-        public async void downloadGeocodedAddresses(string temporaryAddressesStorageID, int addressesInFile)
+        public void DownloadGeocodedAddresses(string temporaryAddressesStorageID, int addressesInFile)
         {
             //bool done = false;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
@@ -362,195 +368,153 @@ namespace Route4MeSDK.FastProcessing
 
             _geocodedAddressesDownloadingIsDone = false;
 
-            _savedAddresses = new List<AddressGeocoded>();
+            var savedAddresses = new List<AddressGeocoded>();
 
-            _temporaryAddressesStorageId = temporaryAddressesStorageID;
-            if (addressesInFile != null) _requestedAddresses = addressesInFile;
+            _requestedAddresses = addressesInFile;
 
-            _manualResetEvent = new ManualResetEvent(false);
-
-            var options = CreateOptions();
-            options.Path = "/socket.io";
-            options.Host = "validator.route4me.com/";
-            options.AutoConnect = true;
-            options.IgnoreServerCertificateValidation = true;
-            options.Timeout = 60000;
-            options.Upgrade = true;
-            options.ForceJsonp = true;
-            options.Transports = ImmutableList.Create(Polling.NAME, WebSocket.NAME);
-
-
-            var uri = CreateUri();
-            _socket = IO.Socket(uri, options);
-
-
-            _socket.On("error", message =>
+            using (var manualResetEvent = new ManualResetEvent(false))
             {
-                Debug.Print("Error -> " + message);
-                //await Task.Delay(500);
-                Thread.Sleep(500);
-                _manualResetEvent.Set();
-                _socket.Disconnect();
-                //manualResetEvent.Set();
-            });
+                var options = CreateOptions();
+                options.Path = "/socket.io";
+                options.Host = "validator.route4me.com/";
+                options.AutoConnect = true;
+                options.IgnoreServerCertificateValidation = true;
+                options.Timeout = 60000;
+                options.Upgrade = true;
+                options.ForceJsonp = true;
+                options.Transports = ImmutableList.Create(Polling.NAME, WebSocket.NAME);
 
-            _socket.On(Socket.EVENT_ERROR, e =>
-            {
-                var exception = (EngineIOException) e;
-                Console.WriteLine("EVENT_ERROR. " + exception.Message);
-                Console.WriteLine("BASE EXCEPTION. " + exception.GetBaseException());
-                Console.WriteLine("DATA COUNT. " + exception.Data.Count);
-                //events.Enqueue(exception.code);
-                _socket.Disconnect();
-                //manager.Close();
-                _manualResetEvent.Set();
-                ;
-            });
 
-            _socket.On(Socket.EVENT_MESSAGE, message =>
-            {
-                //Debug.Print("Error -> " + message);
-                //await Task.Delay(500);
-                Thread.Sleep(500);
-                //manualResetEvent.Set();
-            });
+                var uri = CreateUri();
+                _socket = IO.Socket(uri, options);
 
-            _socket.On("data", d =>
-            {
-                //Debug.Print("data -> " + d.ToString());
-                //await Task.Delay(1000);
-                Thread.Sleep(1000);
-                //manualResetEvent.Set();
-            });
 
-            _socket.On(Socket.EVENT_CONNECT, () =>
-            {
-                //Debug.Print("Socket opened");
-                //socket.Close();
-                //await Task.Delay(500);
-                Thread.Sleep(500);
-
-                //manualResetEvent.Set();
-            });
-
-            _socket.On(Socket.EVENT_DISCONNECT, () =>
-            {
-                //Debug.Print("Socket disconnected");
-                //socket.Close();
-                //await Task.Delay(500);
-                Thread.Sleep(700);
-
-                //manualResetEvent.Set();
-            });
-
-            _socket.On(Socket.EVENT_RECONNECT_ATTEMPT, () =>
-            {
-                //Debug.Print("Socket reconnect attempt");
-                //socket.Close();
-                //await Task.Delay(1000);
-                Thread.Sleep(1500);
-
-                //manualResetEvent.Set();
-            });
-
-            _socket.On("addresses_bulk", addresses_chunk =>
-            {
-                //Debug.Print("addresses_chunk received");
-
-                //await Task.Delay(500);
-
-                var jsonChunkText = addresses_chunk.ToString();
-
-                var errors = new List<string>();
-
-                var jsonSettings = new JsonSerializerSettings
+                _socket.On("error", message =>
                 {
-                    Error = delegate(object sender, ErrorEventArgs args)
+                    Debug.Print("Error -> " + message);
+                    manualResetEvent.Set();
+                    _socket.Disconnect();
+                });
+
+                _socket.On(Socket.EVENT_ERROR, e =>
+                {
+                    var exception = (EngineIOException)e;
+                    Console.WriteLine("EVENT_ERROR. " + exception.Message);
+                    Console.WriteLine("BASE EXCEPTION. " + exception.GetBaseException());
+                    Console.WriteLine("DATA COUNT. " + exception.Data.Count);
+                    _socket.Disconnect();
+                    manualResetEvent.Set();
+                });
+
+                _socket.On(Socket.EVENT_MESSAGE, message =>
+                {
+                });
+
+                _socket.On("data", d =>
+                {
+                });
+
+                _socket.On(Socket.EVENT_CONNECT, () =>
+                {
+                });
+
+                _socket.On(Socket.EVENT_DISCONNECT, () =>
+                {
+                });
+
+                _socket.On(Socket.EVENT_RECONNECT_ATTEMPT, () =>
+                {
+                });
+
+                _socket.On("addresses_bulk", addresses_chunk =>
+                {
+
+                    var jsonChunkText = addresses_chunk.ToString();
+
+                    var errors = new List<string>();
+
+                    var jsonSettings = new JsonSerializerSettings
                     {
-                        errors.Add(args.ErrorContext.Error.Message);
-                        args.ErrorContext.Handled = true;
-                    },
-                    NullValueHandling = NullValueHandling.Ignore
-                };
+                        Error = delegate (object sender, ErrorEventArgs errorArgs)
+                        {
+                            errors.Add(errorArgs.ErrorContext.Error.Message);
+                            errorArgs.ErrorContext.Handled = true;
+                        },
+                        NullValueHandling = NullValueHandling.Ignore
+                    };
 
-                var addressesChunk = JsonConvert.DeserializeObject<AddressGeocoded[]>(jsonChunkText, jsonSettings);
+                    var addressesChunk = JsonConvert.DeserializeObject<AddressGeocoded[]>(jsonChunkText, jsonSettings);
 
-                if (errors.Count > 0)
+                    if (errors.Count > 0)
+                    {
+                        Debug.Print("Json serializer errors:");
+                        foreach (var errMessage in errors) Debug.Print(errMessage);
+                    }
+
+                    if (addressesChunk != null)
+                    {
+                        savedAddresses = savedAddresses.Concat(addressesChunk).ToList();
+                        _loadedAddressesCount += addressesChunk.Length;
+                    }
+
+                    if (_loadedAddressesCount == _nextDownloadStage)
+                        Download(_loadedAddressesCount, temporaryAddressesStorageID);
+
+                    if (_loadedAddressesCount == _requestedAddresses)
+                    {
+                        _socket.Emit("disconnect", temporaryAddressesStorageID);
+                        _loadedAddressesCount = 0;
+                        var addressesChunkGeocodedArgs = new AddressesChunkGeocodedArgs { lsAddressesChunkGeocoded = savedAddresses };
+                        OnAddressesChunkGeocoded(addressesChunkGeocodedArgs);
+
+                        manualResetEvent.Set();
+
+                        _geocodedAddressesDownloadingIsDone = true;
+
+                        if (_largeJsonFileProcessingIsDone)
+                            OnGeocodingIsFinished(new GeocodingIsFinishedArgs { isFinished = true });
+
+                        _socket.Close();
+                    }
+                });
+
+                _socket.On("geocode_progress", message =>
                 {
-                    Debug.Print("Json serializer errors:");
-                    foreach (var errMessage in errors) Debug.Print(errMessage);
+                    var progressMessage = JsonConvert.DeserializeObject<clsProgress>(message.ToString());
+
+                    if (progressMessage.total == progressMessage.done)
+                    {
+                        if (_requestedAddresses == default) _requestedAddresses = progressMessage.total;
+                            Download(0, temporaryAddressesStorageID);
+                    }
+                });
+
+                var jobj = new JObject();
+                jobj.Add("temporary_addresses_storage_id", temporaryAddressesStorageID);
+                jobj.Add("force_restart", true);
+
+                var args = new List<object>();
+                args.Add(jobj);
+
+                try
+                {
+                    _socket.Emit("geocode", args);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print("Socket connection failed. " + ex.Message);
                 }
 
-                _savedAddresses = _savedAddresses.Concat(addressesChunk).ToList();
-
-                _loadedAddressesCount += addressesChunk.Length;
-
-                //Debug.Print(addressesChunk.Length.ToString());
-
-                //Debug.Print("Got chunks from websocket %s / %s", loadedAddressesCount, requestedAddresses);
-                if (_loadedAddressesCount == _nextDownloadStage)
-                    //Debug.Print("Downloading");
-                    download(_loadedAddressesCount);
-
-                if (_loadedAddressesCount == _requestedAddresses)
-                {
-                    //Debug.Print("First address:", savedAddresses[0].geocodedAddress);
-                    //Debug.Print("Done, saved addresses %s", savedAddresses.Count);
-
-                    _socket.Emit("disconnect", _temporaryAddressesStorageId);
-                    _loadedAddressesCount = 0;
-                    var args = new AddressesChunkGeocodedArgs {lsAddressesChunkGeocoded = _savedAddresses};
-                    OnAddressesChunkGeocoded(args);
-
-                    _manualResetEvent.Set();
-
-                    _geocodedAddressesDownloadingIsDone = true;
-
-                    if (_largeJsonFileProcessingIsDone)
-                        OnGeocodingIsFinished(new GeocodingIsFinishedArgs {isFinished = true});
-
-                    _socket.Close();
-                }
-            });
-
-            _socket.On("geocode_progress", message =>
-            {
-                //Debug.Print("Progress from websocket:", message.ToString());
-
-                var progressMessage = JsonConvert.DeserializeObject<clsProgress>(message.ToString());
-
-                if (progressMessage.total == progressMessage.done)
-                {
-                    //Debug.Print("Geocoding Done, Downloading...");
-                    if (_requestedAddresses == default) _requestedAddresses = progressMessage.total;
-                    download(0);
-                }
-            });
-
-            var jobj = new JObject();
-            jobj.Add("temporary_addresses_storage_id", _temporaryAddressesStorageId);
-            jobj.Add("force_restart", true);
-
-            var _args = new List<object>();
-            _args.Add(jobj);
-
-            try
-            {
-                _socket.Emit("geocode", _args);
+                manualResetEvent.WaitOne();
             }
-            catch (Exception ex)
-            {
-                Debug.Print("Socket connection failed. " + ex.Message);
-            }
-
-            _manualResetEvent.WaitOne();
         }
 
         /// <summary>
         ///     Download chunk of the geocoded addresses
         /// </summary>
         /// <param name="start">Download addresses starting from</param>
-        public void download(int start)
+        /// <param name="temporaryAddressesStorageId">ID of the temporary storage</param>
+        public void Download(int start, string temporaryAddressesStorageId)
         {
             var bufferFailSafeMaxAddresses = 100;
             var chunkSize = (int) Math.Round((decimal) Math.Min(200, Math.Max(10, _requestedAddresses / 100)));
@@ -562,7 +526,7 @@ namespace Route4MeSDK.FastProcessing
             // from_index = (chunks_limit * chunk_size);
             var jobj = new JObject();
 
-            jobj.Add("temporary_addresses_storage_id", _temporaryAddressesStorageId);
+            jobj.Add("temporary_addresses_storage_id", temporaryAddressesStorageId);
             jobj.Add("from_index", start);
             jobj.Add("chunks_limit", chunksLimit);
             jobj.Add("chunk_size", chunkSize);
@@ -574,7 +538,7 @@ namespace Route4MeSDK.FastProcessing
             _socket.Emit("download", _args);
         }
 
-        public string readJsonTextFromLargeJsonFileOfAddresses(string sFileName)
+        public string ReadJsonTextFromLargeJsonFileOfAddresses(string sFileName)
         {
             var fileRead = new FastFileReading();
 

@@ -11,10 +11,9 @@ namespace Route4MeSDK.Examples
     {
         public void validateLargeContactsCsvFile()
         {
-            var fastValidating = new FastValidateData(ActualApiKey, false)
+            var fastValidating = new FastValidateData(ActualApiKey)
             {
                 CsvChunkSize = 500,
-                ChunkPause = 0,
                 ConsoleWriteMessage = true
             };
 
