@@ -7,13 +7,13 @@ namespace Route4MeSDK.FastProcessing
 {
     public class FastBulkRemoveContacts
     {
-        private static List<List<int>> _threadPackage; // Threads package with address IDs to remove.
+        private static List<List<long>> _threadPackage; // Threads package with address IDs to remove.
 
         public FastBulkRemoveContacts(string ApiKey)
         {
             if (ApiKey != "") apiKey = ApiKey;
 
-            _threadPackage = new List<List<int>>();
+            _threadPackage = new List<List<long>>();
         }
 
         public int TotalRemovedContacts { get; set; }
@@ -26,7 +26,7 @@ namespace Route4MeSDK.FastProcessing
 
         public bool PrintMessagesOnConsole { get; set; } = false;
 
-        public int RemoveAddressBookContacts(int[] contactIDs, out string errorString)
+        public int RemoveAddressBookContacts(long[] contactIDs, out string errorString)
         {
             errorString = "";
             TotalRemovedContacts = 0;
@@ -47,7 +47,7 @@ namespace Route4MeSDK.FastProcessing
             return TotalRemovedContacts;
         }
 
-        private void RemoveContactsChunks(List<int> chunk)
+        private void RemoveContactsChunks(List<long> chunk)
         {
             var route4Me = new Route4MeManagerV5(apiKey);
 

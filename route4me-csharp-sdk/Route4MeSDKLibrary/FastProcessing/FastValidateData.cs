@@ -9,23 +9,20 @@ namespace Route4MeSDK.FastProcessing
 {
     public class FastValidateData
     {
-        public static Connection con = new Connection();
-        public string Message;
-
-        private static List<List<AddressBookContact>> _threadPackage;
         private FastFileReading _fileReading;
 
-        public FastValidateData(string ApiKey, bool EnableTraceSource = false)
+        public FastValidateData(string apiKey)
         {
-            if (ApiKey != "") apiKey = ApiKey;
-            _threadPackage = new List<List<AddressBookContact>>();
+            if (apiKey != "")
+            {
+                ApiKey = apiKey;
+            }
         }
 
-        public string apiKey { get; set; }
+        public string ApiKey { get; set; }
 
         public int CsvChunkSize { get; set; } = 300;
         public int JsonChunkSize { get; set; } = 300;
-        public int ChunkPause { get; set; } = 2000;
 
         public string[] MandatoryFields { get; set; }
 
@@ -52,7 +49,6 @@ namespace Route4MeSDK.FastProcessing
             _fileReading = new FastFileReading();
 
             _fileReading.csvObjectsChunkSize = CsvChunkSize;
-            _fileReading.chunkPause = ChunkPause;
             _fileReading.jsonObjectsChunkSize = JsonChunkSize;
 
             _fileReading.CsvFileChunkIsReady += FileReading_CsvFileChunkIsReady;
@@ -64,10 +60,8 @@ namespace Route4MeSDK.FastProcessing
 
         private void FileReading_CsvFileReadingIsDone(object sender, FastFileReading.CsvFileReadingIsDoneArgs e)
         {
-            Parallel.ForEach(_threadPackage, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
+            Parallel.ForEach(e.Packages, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
                 CsvFileChunkIsReady);
-
-            _threadPackage = new List<List<AddressBookContact>>();
         }
 
         /// <summary>
@@ -77,14 +71,12 @@ namespace Route4MeSDK.FastProcessing
         /// <param name="e">Sent args</param>
         private void FileReading_CsvFileChunkIsReady(object sender, FastFileReading.CsvFileChunkIsReadyArgs e)
         {
-            _threadPackage.Add(e.multiContacts);
-
-            if (_threadPackage.Count > 15)
+            if (e.TotalResult.Count > 15)
             {
-                Parallel.ForEach(_threadPackage,
+                Parallel.ForEach(e.TotalResult,
                     new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, CsvFileChunkIsReady);
 
-                _threadPackage = new List<List<AddressBookContact>>();
+                e.TotalResult.Clear();
             }
         }
 

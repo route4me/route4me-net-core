@@ -24,12 +24,12 @@ namespace Route4MeSDK.Examples
             var initialRoute = R4MeUtils.ObjectDeepClone<DataObjectRoute>(SDRT_route);
 
             SDRT_route.Addresses[0].IsDepot = false;
-            int? addressId0 = SDRT_route.Addresses[0].RouteDestinationId;
+            long? addressId0 = SDRT_route.Addresses[0].RouteDestinationId;
             SDRT_route.Addresses[0].Alias = addressId0.ToString();
             initialRoute.Addresses[0].Alias = addressId0.ToString();
 
             SDRT_route.Addresses[1].IsDepot = true;
-            int? addressId1 = SDRT_route.Addresses[1].RouteDestinationId;
+            long? addressId1 = SDRT_route.Addresses[1].RouteDestinationId;
             SDRT_route.Addresses[1].Alias = addressId1.ToString();
             initialRoute.Addresses[1].Alias = addressId1.ToString();
 

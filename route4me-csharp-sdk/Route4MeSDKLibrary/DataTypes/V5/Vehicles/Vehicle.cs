@@ -144,7 +144,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     External telematics vehicle IDs
         /// </summary>
         [DataMember(Name = "external_telematics_vehicle_ids", EmitDefaultValue = false)]
-        public int? ExternalTelematicsVehicleIDs { get; set; }
+        public long? ExternalTelematicsVehicleIDs { get; set; }
 
         /// <summary>
         ///     When the vehcile was marked as deleted.

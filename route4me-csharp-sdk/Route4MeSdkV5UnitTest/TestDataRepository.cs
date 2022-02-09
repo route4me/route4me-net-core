@@ -660,7 +660,7 @@ namespace Route4MeSdkV5UnitTest.V5
             }
         }
 
-        public bool RemoveAddressBookContacts(List<int> lsRemLocations, string ApiKey)
+        public bool RemoveAddressBookContacts(List<long> lsRemLocations, string ApiKey)
         {
             var route4Me = new Route4MeManagerV5(ApiKey);
 

@@ -11,9 +11,8 @@ namespace Route4MeSDK.Examples
 
         public void uploadLargeContactsCsvFile()
         {
-            var fastProcessing = new FastBulkGeocoding(ActualApiKey, false)
+            var fastProcessing = new FastBulkGeocoding(ActualApiKey)
             {
-                ChunkPause = 0,
                 CsvChunkSize = 500,
                 DoGeocoding = true,
                 GeocodeOnlyEmpty = true
@@ -46,7 +45,7 @@ namespace Route4MeSDK.Examples
             Console.WriteLine("Start: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
             var stPath = AppDomain.CurrentDomain.BaseDirectory;
-            fastProcessing.uploadLargeContactsCsvFile(stPath + @"Data\CSV\60k_prob.csv", out string errorString);
+            fastProcessing.UploadLargeContactsCsvFile(stPath + @"Data\CSV\60k_prob.csv", out string errorString);
 
             Console.WriteLine("End: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }

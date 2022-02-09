@@ -92,6 +92,6 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Route destination ID
         /// </summary>
         [DataMember(Name = "route_destination_id", EmitDefaultValue = false)]
-        public int? RouteDestinationId { get; set; }
+        public long? RouteDestinationId { get; set; }
     }
 }

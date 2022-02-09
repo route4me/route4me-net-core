@@ -1,5 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.SocketIoClientDotNet.Client;
+﻿using Quobject.SocketIoClientDotNet.Client;
+using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Modules;
 
 namespace Route4MeSDK.FastProcessing
 {
@@ -14,7 +14,6 @@ namespace Route4MeSDK.FastProcessing
 
         protected IO.Options CreateOptions()
         {
-            var _ = LogManager.GetLogger(Global.CallerName());
             var config = ConfigBase.Load();
             var options = new IO.Options
             {
@@ -36,24 +35,6 @@ namespace Route4MeSDK.FastProcessing
                       string.Format("{0}://{1}:{2}/{3}/", options.Secure ? "https" : "http", options.Hostname,
                           options.Port, ConnectionConstants.ROUTE);
             return uri;
-        }
-
-        protected IO.Options CreateOptionsSecure()
-        {
-            var log = LogManager.GetLogger(Global.CallerName());
-
-            var config = ConfigBase.Load();
-            var options = new IO.Options
-            {
-                Port = config.Server.SslPort,
-                Hostname = config.Server.Hostname,
-                Secure = true,
-                IgnoreServerCertificateValidation = true
-            };
-
-            log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
-
-            return options;
         }
     }
 

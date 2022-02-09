@@ -21,9 +21,9 @@ namespace Route4MeSDK.Examples
             };
 
             //Run the query
-            var result = route4Me.BatchGeocodingAsync(geoParams, out string errorString);
+            var result = route4Me.BatchGeocodingAsync(geoParams).GetAwaiter().GetResult();
 
-            PrintExampleGeocodings(result, GeocodingPrintOption.Geocodings, errorString);
+            PrintExampleGeocodings(result.Item1, GeocodingPrintOption.Geocodings, result.Item2);
         }
     }
 }
