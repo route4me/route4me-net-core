@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes
@@ -156,24 +155,10 @@ namespace Route4MeSDK.DataTypes
         public string ExtFieldPhone { get; set; }
 
         /// <summary>
-        ///     Not serialized - for prevention wrong data (e.g. Dictionary<string, string>[])
-        /// </summary>
-        [JsonIgnore]
-        public Dictionary<string, string> ExtFieldCustomData
-        {
-            get =>
-                ExtFieldCustomData2 != null && ExtFieldCustomData2.GetType() == typeof(Dictionary<string, string>)
-                    ? (Dictionary<string, string>) ExtFieldCustomData2
-                    : null;
-            set => ExtFieldCustomData2 = value;
-        }
-
-        /// <summary>
-        ///     Custom data - serialized
+        ///     Custom data
         /// </summary>
         [DataMember(Name = "EXT_FIELD_custom_data", EmitDefaultValue = false)]
-        private object ExtFieldCustomData2 { get; set; }
-
+        public Dictionary<string, string> ExtFieldCustomData { get; set; }
 
         /// <summary>
         ///     Local timezone string
@@ -212,14 +197,5 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "tracking_number", EmitDefaultValue = false)]
         [ReadOnly(true)]
         public string TrackingNumber { get; set; }
-
-        public bool ShouldSerializeExtFieldCustomData()
-        {
-            return ExtFieldCustomData == null
-                ? false
-                : ExtFieldCustomData.GetType() == typeof(Dictionary<string, string>)
-                    ? true
-                    : false;
-        }
     }
 }
