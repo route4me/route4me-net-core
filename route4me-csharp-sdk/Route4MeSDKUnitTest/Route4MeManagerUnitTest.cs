@@ -11812,6 +11812,46 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void AddScheduledOrderAndCheckExtFieldCustomDataTest()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var orderParams = new Order
+            {
+                Address1 = "318 S 39th St, Louisville, KY 40212, USA",
+                CachedLat = 38.259326,
+                CachedLng = -85.814979,
+                CurbsideLat = 38.259326,
+                CurbsideLng = -85.814979,
+                AddressAlias = "318 S 39th St 40212",
+                AddressCity = "Louisville",
+                ExtFieldFirstName = "Lui",
+                ExtFieldLastName = "Carol",
+                ExtFieldEmail = "lcarol654@yahoo.com",
+                ExtFieldPhone = "897946541",
+                ExtFieldCustomData = new Dictionary<string, string> { { "order_type", "scheduled order" } },
+                DayScheduledFor_YYYYMMDD = "2020-12-20",
+                LocalTimeWindowEnd = 39000,
+                LocalTimeWindowEnd2 = 46200,
+                LocalTimeWindowStart = 37800,
+                LocalTimeWindowStart2 = 45000,
+                LocalTimezoneString = "America/New_York",
+                OrderIcon = "emoji/emoji-bank"
+            };
+
+            var newOrder = route4Me.AddOrder(orderParams, out _);
+
+            Assert.IsNotNull(newOrder.ExtFieldCustomData);
+            Assert.IsTrue(newOrder.ExtFieldCustomData.Count == 1);
+            Assert.IsTrue(newOrder.ExtFieldCustomData.ContainsKey("order_type"));
+            Assert.IsTrue(newOrder.ExtFieldCustomData["order_type"] == "scheduled order");
+
+            lsOrders.Add(newOrder);
+        }
+
+        [TestMethod]
         public void AddOrdersToOptimizationTest()
         {
             if (skip == "yes") return;
