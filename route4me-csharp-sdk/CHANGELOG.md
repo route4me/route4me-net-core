@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.0.1.0] - 2022-02-23
+
+### Changed
+
+The file [Order.cs: ](https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/Order.cs)  
+– Fixed ExtFieldCustomData deserialization.
+
 ## [3.0.0.0] - 2022-02-09
 
 Async API is intoduced for Route4MeManager and Route4MeManagerV5.
