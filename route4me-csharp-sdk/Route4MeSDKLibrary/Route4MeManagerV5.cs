@@ -13,6 +13,8 @@ using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary;
+using Route4MeSDKLibrary.DataTypes.V5.Orders;
+using Route4MeSDKLibrary.QueryTypes.V5.Orders;
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
 using OptimizationParameters = Route4MeSDK.QueryTypes.V5.OptimizationParameters;
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
@@ -2494,6 +2496,60 @@ namespace Route4MeSDK
         }
 
         #endregion
+
+        #endregion
+
+        #region Orders
+
+        /// <summary>
+        ///  Display the Archive Orders.
+        /// </summary>
+        /// <param name="parameters">Request payload</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>Archived Orders</returns>
+        public ArchiveOrdersResponse ArchiveOrders(ArchiveOrdersParameters parameters, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<ArchiveOrdersResponse>(parameters,
+                R4MEInfrastructureSettingsV5.OrdersArchive,
+                HttpMethodType.Post, out resultResponse);
+        }
+
+        /// <summary>
+        ///  Display the Archive Orders.
+        /// </summary>
+        /// <param name="parameters">Request payload</param>
+        /// <returns>Archived Orders</returns>
+        public Task<Tuple<ArchiveOrdersResponse, ResultResponse>> ArchiveOrdersAsync(ArchiveOrdersParameters parameters)
+        {
+            return GetJsonObjectFromAPIAsync<ArchiveOrdersResponse>(parameters,
+                R4MEInfrastructureSettingsV5.OrdersArchive,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
+        ///  Display the order history.
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>Order history</returns>
+        public OrderHistoryResponse GetOrderHistory(OrderHistoryParameters parameters, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<OrderHistoryResponse>(parameters,
+                R4MEInfrastructureSettingsV5.OrdersHistory,
+                HttpMethodType.Get, false, true, out resultResponse);
+        }
+
+        /// <summary>
+        ///  Display the order history.
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <returns>Order history</returns>
+        public Task<Tuple<OrderHistoryResponse, ResultResponse>> GetOrderHistoryAsync(OrderHistoryParameters parameters)
+        {
+            return GetJsonObjectFromAPIAsync<OrderHistoryResponse>(parameters,
+                R4MEInfrastructureSettingsV5.OrdersHistory,
+                HttpMethodType.Get, null, true, false);
+        }
 
         #endregion
 

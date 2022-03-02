@@ -218,6 +218,14 @@
 
         public const string AddressBarcodes = MainHost + "/address-barcodes";
 
+        #region Orders
+
+        public const string Orders = MainHost + "/orders";
+        public const string OrdersArchive = Orders + "/archive";
+        public const string OrdersHistory = Orders + "/history";
+
+        #endregion
+
         #endregion
     }
 }
