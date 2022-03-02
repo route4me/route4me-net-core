@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.1.0.0] - 2022-03-02
+
+Orders History and Archive API are supported.
+
+### Changed
+
+The file [Route4MeManagerV5cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)
+
+### Added
+
+The file [ArchiveOrdersResponse.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/ArchiveOrdersResponse.cs)
+The file [ArchivedOrder.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/ArchivedOrder.cs)
+The file [OrderDiff.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/OrderDiff.cs)
+The file [OrderHistory.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/OrderHistory.cs)
+The file [OrderHistoryInternal.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/OrderHistoryInternal.cs)
+The file [OrderHistoryModel.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/OrderHistoryModel.cs)
+The file [OrderHistoryResponse.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/OrderHistoryResponse.cs)
+The file [OrderHistoryResponseInternal.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/Orders/OrderHistoryResponseInternal.cs)
+The file [ArchiveOrdersFilters.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/Orders/ArchiveOrdersFilters.cs)
+The file [ArchiveOrdersParameters.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/Orders/ArchiveOrdersParameters.cs)
+The file [OrderHistoryParameters.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/QueryTypes/V5/Orders/OrderHistoryParameters.cs)
+
 ## [3.0.1.0] - 2022-02-23
 
 ### Changed
