@@ -12,6 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Route4MeSDK.DataTypes;
+using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using static Route4MeSDK.Route4MeManager;
 using ReadOnlyAttribute = Route4MeSDK.DataTypes.ReadOnlyAttribute;
 
@@ -67,6 +69,37 @@ namespace Route4MeSDK
                 var rslt = rgx.Match(text);
 
                 if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "[" + rslt.Groups[1] + "]");
+            }
+
+            if (typeof(T) == typeof(OrderHistoryResponse))
+            {
+                OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal) JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
+                OrderHistoryResponse externalResponse = new OrderHistoryResponse();
+
+                externalResponse.NextPageCursor = internalResponse.NextPageCursor;
+                var results = new List<OrderHistory>();
+
+                foreach (var internalResponseResult in internalResponse.Results)
+                {
+                    OrderHistory orderHistory = new OrderHistory();
+
+                    orderHistory.CreatedTimestamp = internalResponseResult.CreatedTimestamp;
+                    orderHistory.OrderId = internalResponseResult.OrderId;
+                    orderHistory.EventType = internalResponseResult.EventType;
+                    orderHistory.MemberId = internalResponseResult.MemberId;
+                    orderHistory.RootMemberId = internalResponseResult.RootMemberId;
+                    var diff = (OrderDiff[])JsonConvert.DeserializeObject(internalResponseResult.Diffs, typeof(OrderDiff[]));
+                    var model = (OrderHistoryModel)JsonConvert.DeserializeObject(internalResponseResult.OrderModel, typeof(OrderHistoryModel));
+
+                    orderHistory.OrderModel = model;
+                    orderHistory.Diffs = diff.ToArray();
+
+                    results.Add(orderHistory);
+                }
+
+                externalResponse.Results = results.ToArray();
+
+                text = JsonConvert.SerializeObject(externalResponse);
             }
 
             return JsonConvert.DeserializeObject<T>(text, jsonSettings);
