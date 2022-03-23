@@ -2653,7 +2653,6 @@ namespace Route4MeSDK
             string[] mandatoryFields = null)
             where T : class
         {
-            //out string errorMessage return this parameter in the tuple
 
             var result = default(T);
             var resultResponse = default(ResultResponse);
@@ -2692,7 +2691,7 @@ namespace Route4MeSDK
                             var isPut = httpMethod == HttpMethodType.Put;
                             var isPatch = httpMethod == HttpMethodType.Patch;
                             var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content = null;
+                            HttpContent content;
                             if (httpContent != null)
                             {
                                 content = httpContent;
@@ -2706,7 +2705,7 @@ namespace Route4MeSDK
                                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             }
 
-                            HttpResponseMessage response = null;
+                            HttpResponseMessage response;
                             if (isPut)
                             {
                                 response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
@@ -2767,34 +2766,12 @@ namespace Route4MeSDK
                             }
                             else
                             {
-                                var streamTask = await ((StreamContent) response.Content).ReadAsStreamAsync().ConfigureAwait(false);
-
                                 Task<string> errorMessageContent = null;
 
                                 if (response.Content.GetType() != typeof(StreamContent))
                                     errorMessageContent = response.Content.ReadAsStringAsync();
 
-
-                                try
-                                {
-                                    resultResponse = streamTask.ReadObject<ResultResponse>();
-                                }
-                                catch // (Exception e)
-                                {
-                                    resultResponse = default;
-                                }
-
-                                if (resultResponse != null && resultResponse.Messages != null &&
-                                    resultResponse.Messages.Count > 0)
-                                {
-                                    //foreach (String error in errorResponse.Errors)
-                                    //{
-                                    //    if (errorMessage.Length > 0)
-                                    //        errorMessage += "; ";
-                                    //    errorMessage += error;
-                                    //}
-                                }
-                                else if (errorMessageContent != null)
+                                if (errorMessageContent != null)
                                 {
                                     resultResponse = new ResultResponse
                                     {
@@ -2890,8 +2867,8 @@ namespace Route4MeSDK
             var result = default(T);
             resultResponse = default;
 
-            var parametersURI = optimizationParameters.Serialize(_mApiKey);
-            var uri = new Uri($"{url}{parametersURI}");
+            var parametersUri = optimizationParameters.Serialize(_mApiKey);
+            var uri = new Uri($"{url}{parametersUri}");
 
             try
             {
@@ -2925,7 +2902,7 @@ namespace Route4MeSDK
                             var isPut = httpMethod == HttpMethodType.Put;
                             var isPatch = httpMethod == HttpMethodType.Patch;
                             var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content = null;
+                            HttpContent content;
                             if (httpContent != null)
                             {
                                 content = httpContent;
@@ -2939,7 +2916,7 @@ namespace Route4MeSDK
                                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             }
 
-                            Task<HttpResponseMessage> response = null;
+                            Task<HttpResponseMessage> response;
                             if (isPut)
                             {
                                 response = httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
@@ -3029,25 +3006,15 @@ namespace Route4MeSDK
 
                                 try
                                 {
-                                    resultResponse = streamTask.Result.ReadObject<ResultResponse>();
+                                    resultResponse = streamTask?.Result.ReadObject<ResultResponse>();
                                 }
-                                catch // (Exception e)
+                                catch
                                 {
                                     resultResponse = default;
                                 }
 
 
-                                if (resultResponse != null && resultResponse.Messages != null &&
-                                    resultResponse.Messages.Count > 0)
-                                {
-                                    //foreach (var error in resultResponse.Messages)
-                                    //{
-                                    //    if (errorMessage.Length > 0)
-                                    //        errorMessage += "; ";
-                                    //    errorMessage += error.Key + ":" + error.Value;
-                                    //}
-                                }
-                                else if (errorMessageContent != null)
+                                if (errorMessageContent != null)
                                 {
                                     resultResponse = new ResultResponse
                                     {
