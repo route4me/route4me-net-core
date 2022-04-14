@@ -4,6 +4,7 @@ using System.Linq;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSdkV5UnitTest.V5;
 using Xunit;
 using Xunit.Abstractions;
@@ -211,7 +212,7 @@ namespace Route4MeSdkV5UnitTest.AddressBookContactApi
                 R4MeUtils.GetPropertyName(() => lsContacts[0].AddressStopType)
             };
 
-            var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest
+            var contactParams = new BatchCreatingAddressBookContactsRequest
             {
                 Data = lsContacts.ToArray()
             };

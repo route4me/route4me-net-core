@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +12,10 @@ using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary;
+using Route4MeSDKLibrary.DataTypes.Internal.Requests;
+using Route4MeSDKLibrary.DataTypes.Internal.Response;
+using Route4MeSDKLibrary.DataTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
@@ -162,17 +165,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameter for the address book contacts removing process.
-        /// </summary>
-        [DataContract]
-        public sealed class AddressBookContactsRequest : GenericParameters
-        {
-            /// The array of the address IDs
-            [DataMember(Name = "address_ids", EmitDefaultValue = false)]
-            public long[] AddressIds { get; set; }
-        }
-
-        /// <summary>
         ///     Get address book contacts by sending an array of address IDs.
         /// </summary>
         /// <param name="contactIDs">An array of address IDs</param>
@@ -245,17 +237,6 @@ namespace Route4MeSDK
                 null,
                 true,
                 false);
-        }
-
-        /// <summary>
-        ///     The request parameter for the multiple address book contacts creating process.
-        /// </summary>
-        [DataContract]
-        public sealed class BatchCreatingAddressBookContactsRequest : GenericParameters
-        {
-            /// The array of the address IDs
-            [DataMember(Name = "data", EmitDefaultValue = false)]
-            public AddressBookContact[] Data { get; set; }
         }
 
         /// <summary>
@@ -435,27 +416,6 @@ namespace Route4MeSDK
         #endregion
 
         #region Team Management
-
-        /// <summary>
-        ///     The request parameters for retrieving team members.
-        /// </summary>
-        [DataContract]
-        public sealed class MemberQueryParameters : GenericParameters
-        {
-            /// <value>Team user ID</value>
-            [HttpQueryMember(Name = "user_id", EmitDefaultValue = false)]
-            public string UserId { get; set; }
-        }
-
-        /// <summary>
-        ///     The request class to bulk create the team members.
-        /// </summary>
-        [DataContract]
-        private sealed class BulkMembersRequest : GenericParameters
-        {
-            // Array of the team member requests
-            [DataMember(Name = "users")] public TeamRequest[] Users { get; set; }
-        }
 
         /// <summary>
         ///     Retrieve all existing sub-users associated with the Member’s account.
@@ -1481,36 +1441,6 @@ namespace Route4MeSDK
                 null,
                 false,
                 false);
-        }
-
-        /// <summary>
-        ///     The response returned by the remove optimization command
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveOptimizationResponse
-        {
-            /// <value>True if an optimization was removed successfuly </value>
-            [DataMember(Name = "status")]
-            public bool Status { get; set; }
-
-            /// <value>The number of the removed optimizations </value>
-            [DataMember(Name = "removed")]
-            public int Removed { get; set; }
-        }
-
-        /// <summary>
-        ///     The request parameters for an optimization removing
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveOptimizationRequest : GenericParameters
-        {
-            /// <value>If true will be redirected</value>
-            [HttpQueryMember(Name = "redirect", EmitDefaultValue = false)]
-            public int Redirect { get; set; }
-
-            /// <value>The array of the optimization problem IDs to be removed</value>
-            [DataMember(Name = "optimization_problem_ids", EmitDefaultValue = false)]
-            public string[] OptimizationProblemIds { get; set; }
         }
 
         /// <summary>

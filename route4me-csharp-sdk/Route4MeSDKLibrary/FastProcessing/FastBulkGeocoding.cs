@@ -14,6 +14,8 @@ using Quobject.SocketIoClientDotNet.Client;
 using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+using Route4MeSDKLibrary.DataTypes;
+using Route4MeSDKLibrary.DataTypes.V5;
 using AddressBookContact = Route4MeSDK.DataTypes.V5.AddressBookContact;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using Socket = Quobject.SocketIoClientDotNet.Client.Socket;
@@ -268,7 +270,7 @@ namespace Route4MeSDK.FastProcessing
                 }
             }
 
-            var contactParams = new Route4MeManagerV5.BatchCreatingAddressBookContactsRequest
+            var contactParams = new BatchCreatingAddressBookContactsRequest
             {
                 Data = contactsChunk.ToArray()
             };
@@ -306,7 +308,7 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         /// <param name="streamSource">Input stream source - file name or JSON text</param>
         /// <returns>Response object of the type uploadAddressesToTemporaryStorageResponse</returns>
-        public Route4MeManager.UploadAddressesToTemporaryStorageResponse UploadAddressesToTemporaryStorage(
+        public UploadAddressesToTemporaryStorageResponse UploadAddressesToTemporaryStorage(
             string streamSource)
         {
             var route4Me = new Route4MeManager(_apiKey);
@@ -332,7 +334,7 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         /// <param name="streamSource">Input stream source - file name or JSON text</param>
         /// <returns>Response object of the type uploadAddressesToTemporaryStorageResponse</returns>
-        public async Task<Route4MeManager.UploadAddressesToTemporaryStorageResponse> UploadAddressesToTemporaryStorageAsync(
+        public async Task<UploadAddressesToTemporaryStorageResponse> UploadAddressesToTemporaryStorageAsync(
             string streamSource)
         {
             var route4Me = new Route4MeManager(_apiKey);
