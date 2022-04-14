@@ -2,6 +2,7 @@
 using Route4MeSDK.QueryTypes;
 using System;
 using System.Collections.Generic;
+using Route4MeSDKLibrary.DataTypes;
 using static Route4MeSDK.Route4MeManager;
 
 namespace Route4MeSDK.Examples
