@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +14,9 @@ using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDKLibrary;
 using Route4MeSDKLibrary.DataTypes;
+using Route4MeSDKLibrary.DataTypes.Internal.QueryTypes;
+using Route4MeSDKLibrary.DataTypes.Internal.Requests;
+using Route4MeSDKLibrary.DataTypes.Internal.Response;
 using Address = Route4MeSDK.DataTypes.Address;
 using AddressBookContact = Route4MeSDK.DataTypes.AddressBookContact;
 using AddressBookContactsResponse = Route4MeSDK.DataTypes.AddressBookContactsResponse;
@@ -162,21 +163,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The response returned by the get optimizations command
-        /// </summary>
-        [DataContract]
-        private sealed class DataObjectOptimizations
-        {
-            /// <value>Array of the returned optimization problems </value>
-            [System.Runtime.Serialization.DataMember(Name = "optimizations")]
-            public DataObject[] Optimizations { get; set; }
-
-            /// <value>The number of the returned optimization problems </value>
-            [System.Runtime.Serialization.DataMember(Name = "totalRecords")]
-            public int TotalRecords { get; set; }
-        }
-
-        /// <summary>
         ///     For getting optimization problems limited by the parameters: offset, limit.
         /// </summary>
         /// <param name="queryParameters">
@@ -188,12 +174,12 @@ namespace Route4MeSDK
         /// <returns>Array of the optimization problems</returns>
         public DataObject[] GetOptimizations(OptimizationParameters queryParameters, out string errorString)
         {
-            var dataObjectOptimizations = GetJsonObjectFromAPI<DataObjectOptimizations>(queryParameters,
+            var result = GetJsonObjectFromAPI<DataObject[]>(queryParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Get,
                 out errorString);
 
-            return dataObjectOptimizations?.Optimizations;
+            return result;
         }
 
         /// <summary>
@@ -207,11 +193,11 @@ namespace Route4MeSDK
         /// <returns>Array of the optimization problems</returns>
         public async Task<Tuple<DataObject[], string>> GetOptimizationsAsync(OptimizationParameters queryParameters)
         {
-            var dataObjectOptimizations = await GetJsonObjectFromAPIAsync<DataObjectOptimizations>(queryParameters,
+            var dataObjectOptimizations = await GetJsonObjectFromAPIAsync<DataObject[]>(queryParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Get).ConfigureAwait(false);
 
-            return new Tuple<DataObject[], string>(dataObjectOptimizations.Item1?.Optimizations,
+            return new Tuple<DataObject[], string>(dataObjectOptimizations.Item1,
                 dataObjectOptimizations.Item2);
         }
 
@@ -245,35 +231,6 @@ namespace Route4MeSDK
                 HttpMethodType.Put);
         }
 
-        /// <summary>
-        ///     The response returned by the remove optimization command
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveOptimizationResponse
-        {
-            /// <value>True if an optimization was removed successfuly </value>
-            [System.Runtime.Serialization.DataMember(Name = "status")]
-            public bool Status { get; set; }
-
-            /// <value>The number of the removed optimizations </value>
-            [System.Runtime.Serialization.DataMember(Name = "removed")]
-            public int Removed { get; set; }
-        }
-
-        /// <summary>
-        ///     The request parameters for an optimization removing
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveOptimizationRequest : GenericParameters
-        {
-            /// <value>If true will be redirected</value>
-            [HttpQueryMemberAttribute(Name = "redirect", EmitDefaultValue = false)]
-            public int Redirect { get; set; }
-
-            /// <value>The array of the optimization problem IDs to be removed</value>
-            [System.Runtime.Serialization.DataMember(Name = "optimization_problem_ids", EmitDefaultValue = false)]
-            public string[] OptimizationProblemIds { get; set; }
-        }
 
         /// <summary>
         ///     Remove an existing optimization belonging to an user.
@@ -329,21 +286,6 @@ namespace Route4MeSDK
             if (response.Item2 == "")
                 response = new Tuple<RemoveOptimizationResponse, string>(response.Item1, "Error removing optimization");
             return new Tuple<bool, string>(false, response.Item2);
-        }
-
-        /// <summary>
-        ///     The response from a destination removing process from an optimization
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveDestinationFromOptimizationResponse
-        {
-            /// <value>True if a destination was successuly removed from an optimization</value>
-            [System.Runtime.Serialization.DataMember(Name = "deleted")]
-            public bool Deleted { get; set; }
-
-            /// <value>ID of a removed destination</value>
-            [System.Runtime.Serialization.DataMember(Name = "route_destination_id")]
-            public long RouteDestinationId { get; set; }
         }
 
         /// <summary>
@@ -1163,21 +1105,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The response from a route duplicating process
-        /// </summary>
-        [DataContract]
-        public sealed class DuplicateRouteResponse
-        {
-            /// If true, the route(s) duplicated successfully
-            [System.Runtime.Serialization.DataMember(Name = "status")]
-            public bool Status { get; set; }
-
-            /// An array of the duplicated route IDs
-            [System.Runtime.Serialization.DataMember(Name = "route_ids")]
-            public string[] RouteIDs { get; set; }
-        }
-
-        /// <summary>
         ///     Duplicates a route
         /// </summary>
         /// <param name="queryParameters">The query parameters containing a route ID to be duplicated</param>
@@ -1204,29 +1131,6 @@ namespace Route4MeSDK
             return GetJsonObjectFromAPIAsync<DuplicateRouteResponse>(queryParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Post);
-        }
-
-        /// <summary>
-        ///     The response from the route deleting process
-        /// </summary>
-        [DataContract]
-        private sealed class DeleteRouteResponse
-        {
-            /// <value>If true, the route was deleted successfuly</value>
-            [System.Runtime.Serialization.DataMember(Name = "deleted")]
-            public bool Deleted { get; set; }
-
-            /// <value>The array of the error strings</value>
-            [System.Runtime.Serialization.DataMember(Name = "errors")]
-            public List<string> Errors { get; set; }
-
-            /// <value>The deleted route ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "route_id")]
-            public string RouteId { get; set; }
-
-            /// <value>The array of the deleted routes IDs</value>
-            [System.Runtime.Serialization.DataMember(Name = "route_ids")]
-            public string[] RouteIds { get; set; }
         }
 
         /// <summary>
@@ -1426,40 +1330,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for manually resequencing of a route
-        /// </summary>
-        [DataContract]
-        private sealed class ManuallyResequenceRouteRequest : GenericParameters
-        {
-            /// <value>The route ID to be resequenced</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>The manually resequenced addresses</value>
-            [System.Runtime.Serialization.DataMember(Name = "addresses")]
-            public AddressInfo[] Addresses { get; set; }
-        }
-
-        /// <summary>
-        ///     The information about an address
-        /// </summary>
-        [DataContract]
-        private class AddressInfo : GenericParameters
-        {
-            /// <value>The destination ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "route_destination_id")]
-            public long DestinationId { get; set; }
-
-            /// <value>The destination's sequence number in a route</value>
-            [System.Runtime.Serialization.DataMember(Name = "sequence_no")]
-            public int SequenceNo { get; set; }
-
-            /// <value>If true the destination is depot</value>
-            [System.Runtime.Serialization.DataMember(Name = "is_depot")]
-            public bool IsDepot { get; set; }
-        }
-
-        /// <summary>
         ///     Re-sequences manually a route
         /// </summary>
         /// <param name="rParams">The parameters object RouteParametersQuery containing the parameter RouteId </param>
@@ -1611,25 +1481,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for the route custom data updating process
-        /// </summary>
-        [DataContract]
-        private sealed class UpdateRouteCustomDataRequest : GenericParameters
-        {
-            /// <value>A route ID to be updated</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>A route destination ID to be updated</value>
-            [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public long? RouteDestinationId { get; set; }
-
-            /// <value>The changed/new custom fields of a route destination</value>
-            [System.Runtime.Serialization.DataMember(Name = "custom_fields", EmitDefaultValue = false)]
-            public Dictionary<string, string> CustomFields { get; set; }
-        }
-
-        /// <summary>
         ///     Updates a route's custom data
         /// </summary>
         /// <param name="routeParameters">
@@ -1675,187 +1526,6 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPIAsync<Address>(request, R4MEInfrastructureSettings.GetAddress, HttpMethodType.Put);
-        }
-
-        /// <summary>
-        ///     The request parameters for the updating process of a route destination
-        /// </summary>
-        [DataContract]
-        private sealed class UpdateRouteDestinationRequest : Address
-        {
-            /// <value>A route ID to be updated</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public new string RouteId { get; set; }
-
-            /// <value>A optimization ID to be updated</value>
-            [HttpQueryMemberAttribute(Name = "optimization_problem_id", EmitDefaultValue = false)]
-            public new string OptimizationProblemId { get; set; }
-
-            /// <value>A route destination ID to be updated</value>
-            [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public new long? RouteDestinationId { get; set; }
-
-            /*
-            /// <value>The route destination alias</value>
-            [DataMember(Name = "alias", EmitDefaultValue = false)]
-            public string Alias { get; set; }
-
-            /// <value>The first name of a person at the destination</value>
-            [DataMember(Name = "first_name", EmitDefaultValue = false)]
-            public string FirstName { get; set; }
-
-            /// <value>The first name of a person at the destination</value>
-            [DataMember(Name = "last_name", EmitDefaultValue = false)]
-            public string LastName { get; set; }
-
-            /// <value>The destination's address</value>
-            [DataMember(Name = "address", EmitDefaultValue = false)]
-            public string AddressString { get; set; }
-
-            /// <value>The address stop type</value>
-            [DataMember(Name = "address_stop_type", EmitDefaultValue = false)]
-            public string AddressStopType { get; set; }
-
-            /// <value>If true the destination is a depot</value>
-            [DataMember(Name = "is_depot", EmitDefaultValue = false)]
-            public bool? IsDepot { get; set; }
-
-            /// <value>the latitude of the address</value>
-            [DataMember(Name = "lat", EmitDefaultValue = false)]
-            public double Latitude { get; set; }
-
-            /// <value>the longitude of the address</value>
-            [DataMember(Name = "lng", EmitDefaultValue = false)]
-            public double Longitude { get; set; }
-
-            /// <value>the sequence number of the address</value>
-            [DataMember(Name = "sequence_no", EmitDefaultValue = false)]
-            public int? SequenceNo { get; set; }
-
-            /// <value>status flag to mark an address as visited (aka check in)</value>
-            [DataMember(Name = "is_visited", EmitDefaultValue = false)]
-            public bool? IsVisited { get; set; }
-
-            /// <value>status flag to mark an address as departed (aka check out)</value>
-            [DataMember(Name = "is_departed", EmitDefaultValue = false)]
-            public bool? IsDeparted { get; set; }
-
-            /// <value>the last known visited timestamp of this address</value>
-            [DataMember(Name = "timestamp_last_visited", EmitDefaultValue = false)]
-            public long? TimestampLastVisited { get; set; }
-
-            /// <value>The last known departed timestamp of this address</value>
-            [DataMember(Name = "timestamp_last_departed", EmitDefaultValue = false)]
-            public long? TimestampLastDeparted { get; set; }
-
-            /// <value>the address group</value>
-            [DataMember(Name = "group", EmitDefaultValue = false)]
-            public object Group { get; set; }
-
-            //pass-through data about this route destination
-            //the data will be visible on the manifest, website, and mobile apps
-            /// <value>The customer PO of the address</value>
-            [DataMember(Name = "customer_po", EmitDefaultValue = false)]
-            public object CustomerPo { get; set; }
-
-            //pass-through data about this route destination
-            //the data will be visible on the manifest, website, and mobile apps
-            /// <value>The invoice NO of the address</value>
-            [DataMember(Name = "invoice_no", EmitDefaultValue = false)]
-            public object InvoiceNo { get; set; }
-
-            //pass-through data about this route destination
-            //the data will be visible on the manifest, website, and mobile apps
-            /// <value>The reference NO of the address</value>
-            [DataMember(Name = "reference_no", EmitDefaultValue = false)]
-            public object ReferenceNo { get; set; }
-
-            //pass-through data about this route destination
-            //the data will be visible on the manifest, website, and mobile apps
-            /// <value>The order NO of the address</value>
-            [DataMember(Name = "order_no", EmitDefaultValue = false)]
-            public object OrderNo { get; set; }
-
-            /// <value>The order ID of the address</value>
-            [DataMember(Name = "order_id", EmitDefaultValue = false)]
-            public int? OrderId { get; set; }
-
-            /// <value>The weight of the cargo</value>
-            [DataMember(Name = "weight", EmitDefaultValue = false)]
-            public object Weight { get; set; }
-
-            /// <value>The cost of the address</value>
-            [DataMember(Name = "cost", EmitDefaultValue = false)]
-            public object Cost { get; set; }
-
-            /// <value>The revenue from the address</value>
-            [DataMember(Name = "revenue", EmitDefaultValue = false)]
-            public object Revenue { get; set; }
-
-            //the cubic volume that this destination/order/line-item consumes/contains
-            //this is how much space it will take up on a vehicle
-            /// <value>The cubic volume of the cargo</value>
-            [DataMember(Name = "cube", EmitDefaultValue = false)]
-            public object Cube { get; set; }
-
-            //the number of pieces/palllets that this destination/order/line-item consumes/contains on a vehicle
-            /// <value>Number of pieces for an address</value>
-            [DataMember(Name = "pieces", EmitDefaultValue = false)]
-            public object Pieces { get; set; }
-
-            /// <value>The address email</value>
-            [DataMember(Name = "email", EmitDefaultValue = false)]
-            public string Email { get; set; }
-
-            /// <value>The address phone</value>
-            [DataMember(Name = "phone", EmitDefaultValue = false)]
-            public string Phone { get; set; }
-
-            /// <value>The time window start</value>
-            [DataMember(Name = "time_window_start", EmitDefaultValue = false)]
-            public long? TimeWindowStart { get; set; }
-
-            /// <value>The time window end</value>
-            [DataMember(Name = "time_window_end", EmitDefaultValue = false)]
-            public long? TimeWindowEnd { get; set; }
-
-            // <value>The expected amount of time that will be spent at this address by the driver/user</value>
-            [DataMember(Name = "time", EmitDefaultValue = false)]
-            public long? Time { get; set; }
-
-            //if present, the priority will sequence addresses in all the optimal routes so that
-            //higher priority addresses are general at the beginning of the route sequence
-            //1 is the highest priority, 100000 is the lowest
-            /// <value>The priority level of an address</value>
-            [DataMember(Name = "priority", EmitDefaultValue = false)]
-            public int? Priority { get; set; }
-
-            //generate optimal routes and driving directions to this curbside lat
-            /// <value>The curbside latitude</value>
-            [DataMember(Name = "curbside_lat", EmitDefaultValue = false)]
-            public double? CurbsideLatitude { get; set; }
-
-            //generate optimal routes and driving directions to the curbside lang
-            /// <value>The curbside longitude</value>
-            [DataMember(Name = "curbside_lng", EmitDefaultValue = false)]
-            public double? CurbsideLongitude { get; set; }
-
-            /// <value>The time window start 2</value>
-            [DataMember(Name = "time_window_start_2", EmitDefaultValue = false)]
-            public long? TimeWindowStart2 { get; set; }
-
-            /// <value>The time window end 2</value>
-            [DataMember(Name = "time_window_end_2", EmitDefaultValue = false)]
-            public long? TimeWindowEnd2 { get; set; }
-
-            /// <value>The custom fields of an address</value>
-            [DataMember(Name = "custom_fields", EmitDefaultValue = false)]
-            public Dictionary<string, string> CustomFields { get; set; }
-
-            /// <value>The person's contact ID at an address</value>
-            [DataMember(Name = "contact_id", EmitDefaultValue = false)]
-            public int? ContactId { get; set; }
-            */
         }
 
         /// <summary>
@@ -2018,17 +1688,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The response from getting the device location history
-        /// </summary>
-        [DataContract]
-        public sealed class GetDeviceLocationHistoryResponse
-        {
-            /// <value>The array of the TrackingHistory objects </value>
-            [System.Runtime.Serialization.DataMember(Name = "data")]
-            public TrackingHistory[] Data { get; set; }
-        }
-
-        /// <summary>
         ///     Returns device location history from the specified date range.
         /// </summary>
         /// <param name="gpsParameters">Query parameters</param>
@@ -2122,17 +1781,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for the find asset process.
-        /// </summary>
-        [DataContract]
-        private sealed class FindAssetRequest : GenericParameters
-        {
-            /// <value>The tracking code</value>
-            [HttpQueryMemberAttribute(Name = "tracking", EmitDefaultValue = false)]
-            public string Tracking { get; set; }
-        }
-
-        /// <summary>
         ///     Searchs for an asset
         /// </summary>
         /// <param name="tracking">The tracking code</param>
@@ -2190,17 +1838,6 @@ namespace Route4MeSDK
         #endregion
 
         #region Users
-
-        /// <summary>
-        ///     The response for the get users process
-        /// </summary>
-        [DataContract]
-        public sealed class GetUsersResponse
-        {
-            /// <value>The array of the User objects</value>
-            [System.Runtime.Serialization.DataMember(Name = "results")]
-            public MemberResponseV4[] Results { get; set; }
-        }
 
         /// <summary>
         ///     Returns the object containing array of the user objects
@@ -2470,25 +2107,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for the session validation process.
-        /// </summary>
-        [DataContract]
-        private sealed class ValidateSessionRequest : GenericParameters
-        {
-            /// <value>The session ID</value>
-            [HttpQueryMemberAttribute(Name = "session_guid", EmitDefaultValue = false)]
-            public string SessionGuid { get; set; }
-
-            /// <value>The member ID</value>
-            [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-            public long? MemberId { get; set; }
-
-            /// <value>The response format (json, xml)</value>
-            [HttpQueryMemberAttribute(Name = "format", EmitDefaultValue = false)]
-            public string Format { get; set; }
-        }
-
-        /// <summary>
         ///     Validates user session
         /// </summary>
         /// <param name="memParams">An object of the type MemberParameters</param>
@@ -2612,16 +2230,6 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.UserConfiguration, HttpMethodType.Delete);
         }
 
-        /// <summary>
-        ///     The request parameters for the configuration data request process.
-        /// </summary>
-        [DataContract]
-        private sealed class GetConfigurationDataRequest : GenericParameters
-        {
-            /// <value>A user's configuration key</value>
-            [HttpQueryMemberAttribute(Name = "config_key", EmitDefaultValue = false)]
-            public string ConfigKey { get; set; }
-        }
 
         /// <summary>
         ///     Returns configuration data from a user's account.
@@ -2831,29 +2439,6 @@ namespace Route4MeSDK
             var address = await GetAddressAsync(addressParameters).ConfigureAwait(false);
 
             return new Tuple<AddressNote[], string>(address.Item1?.Notes, address.Item2);
-        }
-
-        /// <summary>
-        ///     The response from the address note adding process.
-        /// </summary>
-        [DataContract]
-        private sealed class AddAddressNoteResponse
-        {
-            /// <value>If true an address note added successfuly</value>
-            [System.Runtime.Serialization.DataMember(Name = "status")]
-            public bool Status { get; set; }
-
-            /// <value>The address note ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "note_id")]
-            public string NoteID { get; set; }
-
-            /// <value>The upload ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "upload_id")]
-            public string UploadID { get; set; }
-
-            /// <value>The AddressNote type object</value>
-            [System.Runtime.Serialization.DataMember(Name = "note")]
-            public AddressNote Note { get; set; }
         }
 
         /// <summary>
@@ -3097,36 +2682,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for the custom note type adding process.
-        /// </summary>
-        [DataContract]
-        private sealed class AddCustomNoteTypeRequest : GenericParameters
-        {
-            /// <value>The custom note type</value>
-            [System.Runtime.Serialization.DataMember(Name = "type", EmitDefaultValue = false)]
-            public string Type { get; set; }
-
-            /// <value>An array of the custom note values</value>
-            [System.Runtime.Serialization.DataMember(Name = "values", EmitDefaultValue = false)]
-            public string[] Values { get; set; }
-        }
-
-        /// <summary>
-        ///     The response from the custom note type adding process.
-        /// </summary>
-        [DataContract]
-        private sealed class AddCustomNoteTypeResponse
-        {
-            /// <value>Added custom note</value>
-            [System.Runtime.Serialization.DataMember(Name = "result")]
-            public string Result { get; set; }
-
-            /// <value>How many destination were affected by adding process</value>
-            [System.Runtime.Serialization.DataMember(Name = "affected")]
-            public int Affected { get; set; }
-        }
-
-        /// <summary>
         ///     Adds custom note type to a route destination.
         /// </summary>
         /// <param name="customType">A custom note type</param>
@@ -3168,17 +2723,6 @@ namespace Route4MeSDK
                 HttpMethodType.Post).ConfigureAwait(false);
 
             return new Tuple<object, string>(response.Item1 != null ? response.Item1.Result == "OK" ? response.Item1.Affected : -1 : (object)response.Item2, response.Item2);
-        }
-
-        /// <summary>
-        ///     The request parameter for the customer removing process.
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveCustomNoteTypeRequest : GenericParameters
-        {
-            /// <value>A custom note type ID></value>
-            [System.Runtime.Serialization.DataMember(Name = "id", EmitDefaultValue = false)]
-            public long Id { get; set; }
         }
 
         /// <summary>
@@ -3311,21 +2855,6 @@ namespace Route4MeSDK
         #endregion
 
         #region Activities
-
-        /// <summary>
-        ///     The response from the activities getting process.
-        /// </summary>
-        [DataContract]
-        private sealed class GetActivitiesResponse
-        {
-            /// <value>An array of the Activity type objects</value>
-            [System.Runtime.Serialization.DataMember(Name = "results")]
-            public Activity[] Results { get; set; }
-
-            /// <value>The number of the Activity type objects/value>
-            [System.Runtime.Serialization.DataMember(Name = "total")]
-            public uint Total { get; set; }
-        }
 
         /// <summary>
         ///     Returns the activity feed
@@ -3482,29 +3011,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for the route destination adding process.
-        /// </summary>
-        [DataContract]
-        private sealed class AddRouteDestinationRequest : GenericParameters
-        {
-            /// <value>The route ID</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>The optimization ID</value>
-            [HttpQueryMemberAttribute(Name = "optimization_problem_id", EmitDefaultValue = false)]
-            public string OptimizationProblemId { get; set; }
-
-            /// <value>The array of the Address type objects</value>
-            [System.Runtime.Serialization.DataMember(Name = "addresses", EmitDefaultValue = false)]
-            public Address[] Addresses { get; set; }
-
-            /// <value>If true, an address will be inserted at optimal position of a route</value>
-            [System.Runtime.Serialization.DataMember(Name = "optimal_position", EmitDefaultValue = true)]
-            public bool OptimalPosition { get; set; }
-        }
-
-        /// <summary>
         ///     Adds address(es) into a route.
         /// </summary>
         /// <param name="routeId"> The route ID </param>
@@ -3656,36 +3162,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for a route destination removing process.
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveRouteDestinationRequest : GenericParameters
-        {
-            /// <value>The route ID</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>The route destination ID</value>
-            [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public long RouteDestinationId { get; set; }
-        }
-
-        /// <summary>
-        ///     The response object from a route destination removing process.
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveRouteDestinationResponse
-        {
-            /// <value>If true the destination was removed successfully</value>
-            [System.Runtime.Serialization.DataMember(Name = "deleted")]
-            public bool Deleted { get; set; }
-
-            /// <value>Removed route destination ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "route_destination_id")]
-            public long RouteDestinationId { get; set; }
-        }
-
-        /// <summary>
         ///     Removes a route dstination from a route
         /// </summary>
         /// <param name="routeId">The route ID</param>
@@ -3727,21 +3203,6 @@ namespace Route4MeSDK
                 HttpMethodType.Delete).ConfigureAwait(false);
 
             return new Tuple<bool, string>(response.Item1 != null && response.Item1.Deleted, response.Item2);
-        }
-
-        /// <summary>
-        ///     The response object from a route destination moving process.
-        /// </summary>
-        [DataContract]
-        private sealed class MoveDestinationToRouteResponse
-        {
-            /// <value>If true the destination was removed successfully</value>
-            [System.Runtime.Serialization.DataMember(Name = "success")]
-            public bool Success { get; set; }
-
-            /// <value>The error string</value>
-            [System.Runtime.Serialization.DataMember(Name = "error")]
-            public string Error { get; set; }
         }
 
         /// <summary>
@@ -3808,35 +3269,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameters for a address marking as the departed process.
-        /// </summary>
-        [DataContract]
-        private sealed class MarkAddressDepartedRequest : GenericParameters
-        {
-            /// <value>The route ID</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>The route destination ID</value>
-            [HttpQueryMemberAttribute(Name = "address_id", EmitDefaultValue = false)]
-            public long? AddressId { get; set; }
-
-            /// <value>If true an addres will be marked as departed</value>
-            [IgnoreDataMember]
-            [HttpQueryMemberAttribute(Name = "is_departed", EmitDefaultValue = false)]
-            public bool IsDeparted { get; set; }
-
-            /// <value>If true an addres will be marked as visited</value>
-            [IgnoreDataMember]
-            [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
-            public bool IsVisited { get; set; }
-
-            /// <value>The member ID</value>
-            [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
-            public long? MemberId { get; set; }
-        }
-
-        /// <summary>
         ///     Marks an address as visited
         /// </summary>
         /// <param name="aParams">
@@ -3886,21 +3318,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The response from an address marking process as departed.
-        /// </summary>
-        [DataContract]
-        private sealed class MarkAddressDepartedResponse
-        {
-            /// <value>If true marking process finished successfully</value>
-            [System.Runtime.Serialization.DataMember(Name = "status")]
-            public bool Status { get; set; }
-
-            /// <value>The error string</value>
-            [System.Runtime.Serialization.DataMember(Name = "error")]
-            public string Error { get; set; }
-        }
-
-        /// <summary>
         ///     Marks an address as departed.
         /// </summary>
         /// <param name="aParams">An AddressParameters type object as the input parameters</param>
@@ -3943,31 +3360,6 @@ namespace Route4MeSDK
                 HttpMethodType.Get).ConfigureAwait(false);
 
             return new Tuple<int, string>(response.Item1 != null ? response.Item1.Status ? 1 : 0 : 0, response.Item2);
-        }
-
-        /// <summary>
-        ///     The request parameters for an adress marking process as marked as departed.
-        /// </summary>
-        [DataContract]
-        private sealed class MarkAddressAsMarkedAsDepartedRequest : GenericParameters
-        {
-            /// <value>The route ID</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>The route destination ID</value>
-            [HttpQueryMemberAttribute(Name = "route_destination_id", EmitDefaultValue = false)]
-            public long? RouteDestinationId { get; set; }
-
-            /// <value>If true an address will be marked as marked as departed</value>
-            [IgnoreDataMember]
-            [System.Runtime.Serialization.DataMember(Name = "is_departed")]
-            public bool IsDeparted { get; set; }
-
-            /// <value>If true an address will be marked as marked as visited</value>
-            [IgnoreDataMember]
-            [System.Runtime.Serialization.DataMember(Name = "is_visited")]
-            public bool IsVisited { get; set; }
         }
 
         /// <summary>
@@ -4057,21 +3449,6 @@ namespace Route4MeSDK
         #endregion
 
         #region Address Book
-
-        /// <summary>
-        ///     The response from the getting process of the address book contacts
-        /// </summary>
-        [DataContract]
-        public sealed class GetAddressBookContactsResponse : GenericParameters
-        {
-            /// <value>Array of the AddressBookContact type objects</value>
-            [System.Runtime.Serialization.DataMember(Name = "results", IsRequired = false)]
-            public AddressBookContact[] Results { get; set; }
-
-            /// <value>Number of the returned address book contacts</value>
-            [System.Runtime.Serialization.DataMember(Name = "total", IsRequired = false)]
-            public uint Total { get; set; }
-        }
 
         /// <summary>
         ///     Returns address book contacts
@@ -4166,52 +3543,6 @@ namespace Route4MeSDK
             var total = response.Item1?.Total ?? 0;
 
             return new Tuple<AddressBookContact[], uint, string>(response.Item1?.Results, total, response.Item2);
-        }
-
-        /// <summary>
-        ///     The request parameters for the address book locations searching process.
-        /// </summary>
-        [DataContract]
-        private sealed class SearchAddressBookLocationRequest : GenericParameters
-        {
-            /// <value>Comma-delimited list of the contact IDs</value>
-            [HttpQueryMemberAttribute(Name = "address_id", EmitDefaultValue = false)]
-            public string AddressId { get; set; }
-
-            /// <value>The query text</value>
-            [HttpQueryMemberAttribute(Name = "query", EmitDefaultValue = false)]
-            public string Query { get; set; }
-
-            /// <value>The comma-delimited list of the fields</value>
-            [HttpQueryMemberAttribute(Name = "fields", EmitDefaultValue = false)]
-            public string Fields { get; set; }
-
-            /// <value>Search starting position</value>
-            [HttpQueryMemberAttribute(Name = "offset", EmitDefaultValue = false)]
-            public int? Offset { get; set; }
-
-            /// <value>The number of records to return</value>
-            [HttpQueryMemberAttribute(Name = "limit", EmitDefaultValue = false)]
-            public int? Limit { get; set; }
-        }
-
-        /// <summary>
-        ///     The response from the address book locations searching process.
-        /// </summary>
-        [DataContract]
-        public sealed class SearchAddressBookLocationResponse
-        {
-            /// <value>The list of the selected fields values</value>
-            [System.Runtime.Serialization.DataMember(Name = "results")]
-            public List<object[]> Results { get; set; }
-
-            /// <value>Number of the returned address book contacts</value>
-            [System.Runtime.Serialization.DataMember(Name = "total")]
-            public uint Total { get; set; }
-
-            /// <value>Array of the selected fields</value>
-            [System.Runtime.Serialization.DataMember(Name = "fields")]
-            public string[] Fields { get; set; }
         }
 
         /// <summary>
@@ -4609,17 +3940,6 @@ namespace Route4MeSDK
             }
 
             return Task.FromResult(new Tuple<AddressBookContact, string>(null, errorString));
-        }
-
-        /// <summary>
-        ///     The request parameter for the address book contacts removing process.
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveAddressBookContactsRequest : GenericParameters
-        {
-            /// <value>The array of the address IDs</value>
-            [System.Runtime.Serialization.DataMember(Name = "address_ids", EmitDefaultValue = false)]
-            public string[] AddressIds { get; set; }
         }
 
         /// <summary>
@@ -5173,50 +4493,6 @@ namespace Route4MeSDK
         #region Orders
 
         /// <summary>
-        ///     The response for the orders getting process.
-        /// </summary>
-        [DataContract]
-        public sealed class GetOrdersResponse
-        {
-            /// <value>
-            ///     An arrary of the objects
-            ///     Available types of the array item: Order (default),
-            ///     object[] (search by fields)
-            /// </value>
-            [System.Runtime.Serialization.DataMember(Name = "results")]
-            public Order[] Results { get; set; }
-
-            /// <value>Number of the returned orders</value>
-            [System.Runtime.Serialization.DataMember(Name = "total")]
-            public uint Total { get; set; }
-
-            [System.Runtime.Serialization.DataMember(Name = "fields", EmitDefaultValue = false)]
-            public string[] Fields { get; set; }
-        }
-
-        /// <summary>
-        ///     The response from the orders searching process (contains specified fields).
-        /// </summary>
-        [DataContract]
-        public sealed class SearchOrdersResponse
-        {
-            /// <value>
-            ///     An arrary of the objects
-            ///     Available types of the array item: Order (default),
-            ///     object[] (search by fields)
-            /// </value>
-            [System.Runtime.Serialization.DataMember(Name = "results")]
-            public IList<object[]> Results { get; set; }
-
-            /// <value>Number of the returned orders</value>
-            [System.Runtime.Serialization.DataMember(Name = "total")]
-            public uint Total { get; set; }
-
-            [System.Runtime.Serialization.DataMember(Name = "fields", EmitDefaultValue = false)]
-            public string[] Fields { get; set; }
-        }
-
-        /// <summary>
         ///     Gets the Orders
         /// </summary>
         /// <param name="ordersQuery"> The query parameters for the orders request process </param>
@@ -5408,17 +4684,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     The request parameter containing the array of the order IDs.
-        /// </summary>
-        [DataContract]
-        private sealed class RemoveOrdersRequest : GenericParameters
-        {
-            /// <value>The array of the order IDs</value>
-            [System.Runtime.Serialization.DataMember(Name = "order_ids", EmitDefaultValue = false)]
-            public string[] OrderIds { get; set; }
-        }
-
-        /// <summary>
         ///     Removes the orders
         /// </summary>
         /// <param name="orderIds"> The array of the order IDs </param>
@@ -5456,29 +4721,6 @@ namespace Route4MeSDK
                 HttpMethodType.Delete).ConfigureAwait(false);
 
             return new Tuple<bool, string>(response.Item1 != null && response.Item1.Status, response.Item2);
-        }
-
-        /// <summary>
-        ///     The request parameters for the process of adding the orders to a route.
-        /// </summary>
-        [DataContract]
-        private sealed class AddOrdersToRouteRequest : GenericParameters
-        {
-            /// <value>The route ID</value>
-            [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
-            public string RouteId { get; set; }
-
-            /// <value>If equal to 1, it will be redirected</value>
-            [HttpQueryMemberAttribute(Name = "redirect", EmitDefaultValue = false)]
-            public int? Redirect { get; set; }
-
-            /// <value>The array of the addresses</value>
-            [System.Runtime.Serialization.DataMember(Name = "addresses", EmitDefaultValue = false)]
-            public Address[] Addresses { get; set; }
-
-            /// <value>The route parameters</value>
-            [System.Runtime.Serialization.DataMember(Name = "parameters", EmitDefaultValue = false)]
-            public RouteParameters Parameters { get; set; }
         }
 
         /// <summary>
@@ -5524,29 +4766,6 @@ namespace Route4MeSDK
 
             return GetJsonObjectFromAPIAsync<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put, null, false, false);
-        }
-
-        /// <summary>
-        ///     The request parameters for the orders adding process to an optimization.
-        /// </summary>
-        [DataContract]
-        private sealed class AddOrdersToOptimizationRequest : GenericParameters
-        {
-            /// <value>The optimization problem ID</value>
-            [HttpQueryMemberAttribute(Name = "optimization_problem_id", EmitDefaultValue = false)]
-            public string OptimizationProblemId { get; set; }
-
-            /// <value>If equal to 1, it will be redirected</value>
-            [HttpQueryMemberAttribute(Name = "redirect", EmitDefaultValue = false)]
-            public int? Redirect { get; set; }
-
-            /// <value>The array of the addresses</value>
-            [System.Runtime.Serialization.DataMember(Name = "addresses", EmitDefaultValue = false)]
-            public Address[] Addresses { get; set; }
-
-            /// <value>The route parameters</value>
-            [System.Runtime.Serialization.DataMember(Name = "parameters", EmitDefaultValue = false)]
-            public RouteParameters Parameters { get; set; }
         }
 
         /// <summary>
@@ -5715,36 +4934,6 @@ namespace Route4MeSDK
         #region Geocoding
 
         /// <summary>
-        ///     The request parameters for the geocoding process.
-        /// </summary>
-        [DataContract]
-        private sealed class GeocodingRequest : GenericParameters
-        {
-            /// <value>The list of the addresses delimited by the symbol '|'</value>
-            [HttpQueryMemberAttribute(Name = "addresses", EmitDefaultValue = false)]
-            public string Addresses { get; set; }
-
-            /// <value>The response format (son, xml)</value>
-            [HttpQueryMemberAttribute(Name = "format", EmitDefaultValue = false)]
-            public string Format { get; set; }
-        }
-
-        /// <summary>
-        ///     The response for the rapid street data request
-        /// </summary>
-        [DataContract]
-        private sealed class RapidStreetResponse
-        {
-            /// <value>The zip code</value>
-            [System.Runtime.Serialization.DataMember(Name = "zipcode")]
-            public string Zipcode { get; set; }
-
-            /// <value>The street name</value>
-            [System.Runtime.Serialization.DataMember(Name = "street_name")]
-            public string StreetName { get; set; }
-        }
-
-        /// <summary>
         ///     Geocoding of the addresses
         /// </summary>
         /// <param name="geoParams">The GeocodingParameters type object as the request parameters</param>
@@ -5828,29 +5017,6 @@ namespace Route4MeSDK
                 return await GetJsonObjectFromAPIAsync<string>(request, R4MEInfrastructureSettings.Geocoder, HttpMethodType.Post,
                     httpContent, true, false).ConfigureAwait(false);
             }
-        }
-
-        /// <summary>
-        ///     The response from the addresses uploading process to temporary storage.
-        /// </summary>
-        [DataContract]
-        public sealed class UploadAddressesToTemporaryStorageResponse : GenericParameters
-        {
-            /// <value>The optimization problem ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "optimization_problem_id", IsRequired = false)]
-            public string OptimizationProblemId { get; set; }
-
-            /// <value>The temporary addresses storage ID</value>
-            [System.Runtime.Serialization.DataMember(Name = "temporary_addresses_storage_id", IsRequired = false)]
-            public string TemporaryAddressesStorageId { get; set; }
-
-            /// <value>Number of the uploaded addresses</value>
-            [System.Runtime.Serialization.DataMember(Name = "address_count", IsRequired = false)]
-            public uint AddressCount { get; set; }
-
-            /// <value>Status of the process: true, false</value>
-            [System.Runtime.Serialization.DataMember(Name = "status", IsRequired = false)]
-            public bool Status { get; set; }
         }
 
         /// <summary>
