@@ -11,6 +11,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
         [Fact]
         public void AddressBarcodesGetSaveTest()
         {
+            // The test requires special subscription.
             var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
 
             var getAddressBarcodesParameters = new GetAddressBarcodesParameters

@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Route4MeSDKLibrary.DataTypes;
 using static Route4MeSDK.Route4MeManager;
 
 namespace Route4MeSDK.Examples
@@ -1623,9 +1622,9 @@ namespace Route4MeSDK.Examples
                     var user = (MemberResponseV4)result;
                     Console.WriteLine("Member: {0}", user.MemberFirstName + " " + user.MemberLastName);
                 }
-                else if (result.GetType() == typeof(GetUsersResponse))
+                else if (result.GetType() == typeof(Route4MeManager.GetUsersResponse))
                 {
-                    var users = ((GetUsersResponse)result).Results;
+                    var users = ((Route4MeManager.GetUsersResponse)result).Results;
 
                     foreach (var user in users)
                     {

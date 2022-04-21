@@ -31,6 +31,11 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
             var parameters = new ArchiveOrdersParameters()
             {
                 PerPage = 100
+                //Cursor = "data",
+                //Filters = new ArchiveOrdersFilters()
+                //{
+                //    DayAdded = new string[] { "2020-12-20", "2021-06-12"}
+                //}
             };
             var result = await route4me.ArchiveOrdersAsync(parameters);
             Assert.NotNull(result.Item1);
