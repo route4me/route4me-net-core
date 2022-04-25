@@ -76,6 +76,8 @@
 
         public const string ScheduleCalendar = MainHost + "/api/schedule_calendar_data.php";
 
+        public const string TimePrediction = MainHost + "/api.v4/predict-optimization-time.php";
+
         #endregion
     }
 
@@ -104,6 +106,7 @@
         public const string RoutesDatatable = MainHost + "/routes/datatable";
         public const string RoutesDatatableConfig = MainHost + "/routes/datatable/config";
         public const string RoutesDatatableConfigFallback = MainHost + "/routes/fallback/datatable/config";
+        public const string RouteBreaks = MainHost + "/route-breaks";
 
         public const string TeamUsers = MainHost + "/team/users";
 
@@ -213,6 +216,7 @@
         public const string ContactsExportByAreaIds = ContactHost + "/addresses/export-by-area-ids";
         public const string ContactsGetAsyncJobStatus = ContactHost + "/addresses/job-tracker/status/{job_id}";
         public const string ContactsGetAsyncJobResult = ContactHost + "/addresses/job-tracker/result/{job_id}";
+        public const string AddressBookDepots = ContactHost + "/addresses/depots";
 
         #endregion
 
