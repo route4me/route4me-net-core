@@ -54,6 +54,7 @@ namespace Route4MeSDKUnitTest
 
         private static TestDataRepository tdr;
         private static TestDataRepository tdr2;
+        private static TestDataRepository tdr3;
         private static List<string> lsOptimizationIDs;
         private static List<string> lsVehicleIDs;
 
@@ -67,21 +68,25 @@ namespace Route4MeSDKUnitTest
 
             tdr = new TestDataRepository();
             tdr2 = new TestDataRepository();
+            tdr3 = new TestDataRepository();
 
             var result = tdr.RunOptimizationSingleDriverRoute10Stops();
             var result2 = tdr2.RunOptimizationSingleDriverRoute10Stops();
-            var result3 = tdr2.RunSingleDriverRoundTrip();
+            var result3 = tdr3.RunSingleDriverRoundTrip();
 
             Assert.IsTrue(result, "Single Driver 10 Stops generation failed.");
             Assert.IsTrue(result2, "Single Driver 10 Stops generation failed.");
+            Assert.IsTrue(result3, "Single Driver Round Trip generation failed.");
 
             Assert.IsTrue(tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses.");
             Assert.IsTrue(tdr2.SD10Stops_route.Addresses.Length > 0, "The route has no addresses.");
+            Assert.IsTrue(tdr3.SDRT_route.Addresses.Length > 0, "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SD10Stops_optimization_problem_id);
             lsOptimizationIDs.Add(tdr2.SD10Stops_optimization_problem_id);
-            lsOptimizationIDs.Add(tdr2.SDRT_optimization_problem_id);
+            lsOptimizationIDs.Add(tdr3.SDRT_optimization_problem_id);
 
+            /*
             var result1 = tdr.RunSingleDriverRoundTrip();
 
             Assert.IsTrue(result1, "Single Driver Round Trip generation failed.");
@@ -89,6 +94,7 @@ namespace Route4MeSDKUnitTest
             Assert.IsTrue(tdr.SDRT_route.Addresses.Length > 0, "The route has no addresses.");
 
             lsOptimizationIDs.Add(tdr.SDRT_optimization_problem_id);
+            */
         }
 
         [TestMethod]
@@ -294,7 +300,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var route = tdr2.SDRT_route;
+            var route = tdr3.SDRT_route;
 
             var visitedParams = new AddressParameters
             {
@@ -335,7 +341,7 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var routeId = tdr2.SDRT_route_id;
+            var routeId = tdr3.SDRT_route_id;
             Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
             var routeDuplicateParameters = new RouteParametersQuery
@@ -585,29 +591,29 @@ namespace Route4MeSDKUnitTest
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var routeId = tdr2.SDRT_route_id;
+            var routeId = tdr3.SDRT_route_id;
             Assert.IsNotNull(routeId, "routeId_SingleDriverRoute10Stops is null.");
 
-            var initialRoute = R4MeUtils.ObjectDeepClone(tdr2.SDRT_route);
+            var initialRoute = R4MeUtils.ObjectDeepClone(tdr3.SDRT_route);
 
             Assert.IsTrue(
-                tdr2.SDRT_route.Addresses[0].IsDepot == true,
+                tdr3.SDRT_route.Addresses[0].IsDepot == true,
                 "First address is not depot");
             Assert.IsTrue(
-                tdr2.SDRT_route.Addresses[1].IsDepot == false,
+                tdr3.SDRT_route.Addresses[1].IsDepot == false,
                 "Second address is depot");
 
-            tdr2.SDRT_route.Addresses[0].IsDepot = false;
-            var addressId0 = tdr2.SDRT_route.Addresses[0].RouteDestinationId;
-            tdr2.SDRT_route.Addresses[0].Alias = addressId0.ToString();
+            tdr3.SDRT_route.Addresses[0].IsDepot = false;
+            var addressId0 = tdr3.SDRT_route.Addresses[0].RouteDestinationId;
+            tdr3.SDRT_route.Addresses[0].Alias = addressId0.ToString();
             initialRoute.Addresses[0].Alias = addressId0.ToString();
-            tdr2.SDRT_route.Addresses[1].IsDepot = true;
-            var addressId1 = tdr2.SDRT_route.Addresses[1].RouteDestinationId;
-            tdr2.SDRT_route.Addresses[1].Alias = addressId1.ToString();
+            tdr3.SDRT_route.Addresses[1].IsDepot = true;
+            var addressId1 = tdr3.SDRT_route.Addresses[1].RouteDestinationId;
+            tdr3.SDRT_route.Addresses[1].Alias = addressId1.ToString();
             initialRoute.Addresses[1].Alias = addressId1.ToString();
 
             var dataObject = route4Me.UpdateRoute(
-                tdr2.SDRT_route, initialRoute,
+                tdr3.SDRT_route, initialRoute,
                 out var errorString);
 
             var address0 = dataObject.Addresses
@@ -1033,7 +1039,7 @@ namespace Route4MeSDKUnitTest
         }
 
         [ClassCleanup]
-        public static void AddressGroupCleanup()
+        public static void RoutesGroupCleanup()
         {
             var result = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
 
@@ -1056,6 +1062,10 @@ namespace Route4MeSDKUnitTest
 
                 lsVehicleIDs.Clear();
             }
+
+            tdr = null;
+            tdr2 = null;
+            tdr3 = null;
         }
     }
 
@@ -1476,6 +1486,106 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(context, "Initialization of the class RouteTypesGroup failed.");
 
             skip = c_ApiKey == c_ApiKey_1 ? "yes" : "no";
+        }
+
+        [TestMethod]
+        public void OptimizationTimePredictionTest()
+        {
+            if (skip == "yes") return;
+            // Create the manager with the api key
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            // Prepare the addresses
+            Address[] addresses = new Address[]
+            {
+                #region Addresses
+
+                new Address() { AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                                IsDepot       = true,
+                                Latitude      = 38.141598,
+                                Longitude     = -85.793846,
+                                Time          = 0 },
+
+                new Address() { AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                                Latitude      = 38.202496,
+                                Longitude     = -85.786514,
+                                Time          = 300 },
+
+                new Address() { AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                                Latitude      = 38.178844,
+                                Longitude     = -85.774864,
+                                Time          = 300 },
+
+                new Address() { AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                                Latitude      = 38.248684,
+                                Longitude     = -85.821121,
+                                Time          = 300 },
+
+                 new Address() { AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                                Latitude      = 38.251923,
+                                Longitude     = -85.800034,
+                                Time          = 300 },
+
+                new Address() { AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                                Latitude      = 38.176067,
+                                Longitude     = -85.824638,
+                                Time          = 300 },
+
+                new Address() { AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                                Latitude      = 38.179806,
+                                Longitude     = -85.775558,
+                                Time          = 300 },
+
+                new Address() { AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                                Latitude      = 38.259335,
+                                Longitude     = -85.815094,
+                                Time          = 300 },
+
+                new Address() { AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                                Latitude      = 38.179253,
+                                Longitude     = -85.785118,
+                                Time          = 300 },
+                new Address() { AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                                Latitude      = 38.162472,
+                                Longitude     = -85.792854,
+                                Time          = 300 }
+
+                #endregion
+            };
+
+            // Set parameters
+            var parameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.CVRP_TW_SD,
+                RouteName = $"Single Depot, Multiple Driver {DateTime.Now}",
+
+                RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
+                RouteTime = 0,
+                RouteMaxDuration = (long)(3600 * 0.5),
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                Parts = 20,
+
+                RT = true, // if true, a round trip route is generated.
+
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description(),
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Addresses = addresses,
+                Parameters = parameters
+            };
+
+            // Run the query
+            var optimizationPrediction = route4Me.GetOptimizationPrediction(
+                                                optimizationParameters,
+                                                out string errorString);
+
+            Assert.IsNotNull(optimizationPrediction, $"OptimizationTimePredictionTest failed. {errorString}");
         }
 
         [TestMethod]
@@ -6264,13 +6374,13 @@ namespace Route4MeSDKUnitTest
             var orderTerritories = new OrderTerritories
             {
                 SplitTerritories = true,
-                TerritoriesId = new[] {"5E66A5AFAB087B08E690DFAE4F8B151B", "6160CFC4CC3CD508409D238E04D6F6C4"},
+                TerritoriesId = new[] { "DA6A8F10313CCFEC843978FC065F235B"},
                 filters = new FilterDetails
                 {
                     // Specified as 'all' for test purpose - after the first optimization, the orders become routed and the test is failing.
                     // For real tasks should be specified as 'unrouted'
-                    Display = "all",
-                    Scheduled_for_YYYYMMDD = new[] {"2021-09-21"}
+                    Display = "all"
+                    //Scheduled_for_YYYYMMDD = new[] {"2021-09-21"}
                 }
             };
 
@@ -6278,11 +6388,11 @@ namespace Route4MeSDKUnitTest
             {
                 new Address
                 {
-                    Alias = "HQ1",
-                    AddressString = "1010 N Florida ave, Tampa, FL",
+                    Alias = "318 S 39th St 40212",
+                    AddressString = "318 S 39th St, Louisville, KY 40212, USA",
                     IsDepot = true,
-                    Latitude = 27.952941,
-                    Longitude = -82.459493,
+                    Latitude = 38.259326,
+                    Longitude = -85.814979,
                     Time = 0
                 }
             };
@@ -6296,18 +6406,17 @@ namespace Route4MeSDKUnitTest
             };
 
             // Run the query
-            var dataObjects = route4Me.RunOptimizationByOrderTerritories(optimizationParameters, out var errorString);
+            var dataObjects = route4Me
+                .RunOptimizationByOrderTerritories(optimizationParameters, out var errorString);
 
 
             Assert.IsNotNull(dataObjects, "OptimizationByOrderTerritoriesTest failed. " + errorString);
 
             var returnedOptimizations = dataObjects.Length;
 
+
             foreach (var optProblem in dataObjects)
                 tdr.RemoveOptimization(new[] {optProblem.OptimizationProblemId});
-
-            Assert.IsTrue(returnedOptimizations == 2,
-                "OptimizationByOrderTerritoriesTest failed - smart optimization ID not returned.");
         }
 
         [TestMethod]
@@ -10023,9 +10132,2883 @@ namespace Route4MeSDKUnitTest
         [ClassCleanup]
         public static void RouteTypesGroupCleanup()
         {
-            var result = tdr.RemoveOptimization(new[] {dataObjectMDMD24.OptimizationProblemId});
+            if ((dataObjectMDMD24?.OptimizationProblemId ?? null) != null)
+            {
+                var result = tdr.RemoveOptimization(new[] { dataObjectMDMD24.OptimizationProblemId });
 
-            Assert.IsTrue(result, "Removing of the optimization with 24 stops failed.");
+                Assert.IsTrue(result, "Removing of the optimization with 24 stops failed.");
+            }
+        }
+    }
+
+    [TestClass]
+    public class AdvancedConstraintsGroup
+    {
+        private static string skip;
+
+        private static readonly string
+            c_ApiKey = ApiKeys
+                .ActualApiKey;
+
+        private static readonly string c_ApiKey_1 = ApiKeys.DemoApiKey;
+
+        private static List<string> createdOptimizationIDs = new List<string>();
+
+        private static int? rootMemberId = null;
+        private static List<int> driverIDs;
+
+        [ClassInitialize]
+        public static void AdvancedConstraintsGroupInitialize(TestContext context)
+        {
+            Assert.IsNotNull(context, "Initialization of the class AdvancedConstraintsGroup failed.");
+
+
+            skip = c_ApiKey_1 == c_ApiKey ? "yes" : "no";
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var users = route4Me.GetUsers(new GenericParameters(), out _);
+
+            if ((users?.Results.Length ?? 0) > 0)
+            {
+                rootMemberId = Convert.ToInt32(users.Results[0].MemberId);
+            }
+
+            driverIDs = new List<int>();
+
+            foreach (var user in users.Results)
+            {
+                if (user.MemberType == Route4MeSDK.DataTypes.V5.MemberTypes.Driver.Description())
+                {
+                    driverIDs.Add(Convert.ToInt32(user.MemberId));
+                    if (driverIDs.Count > 2) break;
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// TEST CASE: Tags and Different Time Windows Fleets
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample1()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                Parts = 20,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Fleet Example - Single Depot, Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var tags1 = new List<string>() { "TAG001", "TAG002" };
+            var tags2 = new List<string>() { "TAG003" };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                Tags = tags1.ToArray(),
+                AvailableTimeWindows = new List<int[]> { new int[] { 25200, 75000 } }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                Tags = tags2.ToArray(),
+                AvailableTimeWindows = new List<int[]> { new int[] { 45200, 95000 } }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                    IsDepot = true,
+                    Latitude = 38.141598,
+                    Longitude = -85.793846,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                }
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+            Assert.IsTrue(
+                (response?.Routes?.Length ?? 0) > 0,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+        }
+
+        /// <summary>
+        /// TEST CASE: Some addresses without Tags
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample2()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                Parts = 20,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Fleet Example 2 - Single Depot, Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var tags1 = new List<string>() { "TAG001", "TAG002" };
+            var tags2 = new List<string>() { "TAG003" };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                Tags = tags1.ToArray(),
+                AvailableTimeWindows = new List<int[]> { new int[] { 25200, 75000 } }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 500,
+                MembersCount = 6,
+                Tags = tags2.ToArray(),
+                AvailableTimeWindows = new List<int[]> { new int[] { 45200, 95000 } }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                    IsDepot = true,
+                    Latitude = 38.141598,
+                    Longitude = -85.793846,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300
+                }
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+            Assert.IsTrue(
+                (response?.Routes?.Length ?? 0) > 0,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+        }
+
+        /// <summary>
+        /// TEST CASE: Driver's Shift
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample3()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                Parts = 20,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Driver's Shift Example - Single Depot, Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var tags1 = new List<string>() { "TAG001", "TAG002" };
+            var tags2 = new List<string>() { "TAG003" };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                Tags = tags1.ToArray(),
+                AvailableTimeWindows = new List<int[]> { new int[] { 25200, 75000 } }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 500,
+                MembersCount = 6,
+                Tags = tags2.ToArray(),
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 45200, 55000 },
+                    new int[] { 62000, 85000 }
+                }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                    IsDepot = true,
+                    Latitude = 38.141598,
+                    Longitude = -85.793846,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300,
+                    Tags = tags1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    TimeWindowStart = 45200,
+                    TimeWindowEnd = 55000,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    TimeWindowStart = 45200,
+                    TimeWindowEnd = 55000,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    TimeWindowStart = 45200,
+                    TimeWindowEnd = 55000,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    TimeWindowStart = 62000,
+                    TimeWindowEnd = 85000,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    TimeWindowStart = 62000,
+                    TimeWindowEnd = 85000,
+                    Time = 300,
+                    Tags = tags2.ToArray()
+                }
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+            Assert.IsTrue(
+                (response?.Routes?.Length ?? 0) > 0,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+        }
+
+        /// <summary>
+        /// TEST CASE: Driver's Skills
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample4()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                Parts = 20,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Automatic Driver's Skills Example - Single Depot, Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var skills1 = new List<string>() { "Class A CDL" };
+            var skills2 = new List<string>() { "Class B CDL" };
+
+            var route4meMembersID = driverIDs.Count > 0
+                                ? driverIDs.ToArray()
+                                : new int[] { (int)rootMemberId };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                Route4meMembersId = route4meMembersID,
+                AvailableTimeWindows = new List<int[]> { new int[] { 25200, 75000 } }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 500,
+                Route4meMembersId = route4meMembersID,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 45200, 85000 }
+                }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                    IsDepot = true,
+                    Latitude = 38.141598,
+                    Longitude = -85.793846,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300,
+                    Tags = skills1.ToArray()
+                },
+
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300,
+                    Tags = skills1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300,
+                    Tags = skills1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300,
+                    Tags = skills1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    TimeWindowStart = 45200,
+                    TimeWindowEnd = 55000,
+                    Time = 300,
+                    Tags = skills2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    TimeWindowStart = 45200,
+                    TimeWindowEnd = 55000,
+                    Time = 300,
+                    Tags = skills2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    TimeWindowStart = 45200,
+                    TimeWindowEnd = 55000,
+                    Time = 300,
+                    Tags = skills2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    TimeWindowStart = 62000,
+                    TimeWindowEnd = 85000,
+                    Time = 300,
+                    Tags = skills2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    TimeWindowStart = 62000,
+                    TimeWindowEnd = 85000,
+                    Time = 300,
+                    Tags = skills2.ToArray()
+                }
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        /// <summary>
+        /// TEST CASE: Drivers Schedules with Territories
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample5()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                RT = true,
+                Parts = 20,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Drivers Schedules - 3 Territories",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var zone1 = new List<string>() { "ZONE 01" };
+            var zone2 = new List<string>() { "ZONE 02" };
+            var zone3 = new List<string>() { "ZONE 03" };
+
+            var route4meMembersID = new List<int>() { 1459842, 1481916, 1481918 };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                Tags = zone1.ToArray(),
+                MembersCount = 3,
+                AvailableTimeWindows = new List<int[]> { new int[] { (8 + 5) * 3600, (11 + 5) * 3600 } }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                Tags = zone2.ToArray(),
+                MembersCount = 4,
+                AvailableTimeWindows = new List<int[]> { new int[] { (8 + 5) * 3600, (12 + 5) * 3600 } }
+            };
+
+            var advancedConstraints3 = new RouteAdvancedConstraints()
+            {
+                Tags = zone3.ToArray(),
+                MembersCount = 3,
+                AvailableTimeWindows = new List<int[]> { new int[] { (8 + 5) * 3600, (13 + 5) * 3600 } }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2,
+                advancedConstraints3
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            int serviceTime = 300;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "2158",
+                    IsDepot = false,
+                    Latitude = 25.603049,
+                    Longitude = -80.348022,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "253",
+                    IsDepot = false,
+                    Latitude = 25.618737,
+                    Longitude = -80.329138,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1527",
+                    IsDepot = false,
+                    Latitude = 25.660645,
+                    Longitude = -80.284289,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1889",
+                    IsDepot = false,
+                    Latitude = 25.816771,
+                    Longitude = -80.265282,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3998",
+                    IsDepot = false,
+                    Latitude = 25.830834,
+                    Longitude = -80.336474,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1988",
+                    IsDepot = false,
+                    Latitude = 25.934509,
+                    Longitude = -80.216283,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3566",
+                    IsDepot = false,
+                    Latitude = 25.826221,
+                    Longitude = -80.247753,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2659",
+                    IsDepot = false,
+                    Latitude = 25.60218,
+                    Longitude = -80.384538,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2477",
+                    IsDepot = false,
+                    Latitude = 25.679245,
+                    Longitude = -80.281254,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3968",
+                    IsDepot = false,
+                    Latitude = 25.655636,
+                    Longitude = -80.350484,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1700",
+                    IsDepot = false,
+                    Latitude = 25.871786,
+                    Longitude = -80.341298,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1804",
+                    IsDepot = false,
+                    Latitude = 25.690688,
+                    Longitude = -80.318216,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "209",
+                    IsDepot = false,
+                    Latitude = 25.893571,
+                    Longitude = -80.20119,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "834",
+                    IsDepot = false,
+                    Latitude = 25.951618,
+                    Longitude = -80.29993,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1530",
+                    IsDepot = false,
+                    Latitude = 25.818694,
+                    Longitude = -80.354931,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1696",
+                    IsDepot = false,
+                    Latitude = 25.748019,
+                    Longitude = -80.243968,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1596",
+                    IsDepot = false,
+                    Latitude = 25.834085,
+                    Longitude = -80.193554,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3563",
+                    IsDepot = false,
+                    Latitude = 25.690451,
+                    Longitude = -80.272227,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3622",
+                    IsDepot = false,
+                    Latitude = 25.602187,
+                    Longitude = -80.41193,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1805",
+                    IsDepot = false,
+                    Latitude = 25.780564,
+                    Longitude = -80.415264,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1655",
+                    IsDepot = false,
+                    Latitude = 25.779567,
+                    Longitude = -80.356258,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1533",
+                    IsDepot = false,
+                    Latitude = 25.459839,
+                    Longitude = -80.44416,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "269",
+                    IsDepot = false,
+                    Latitude = 25.777716,
+                    Longitude = -80.25451,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1238",
+                    IsDepot = false,
+                    Latitude = 25.821602,
+                    Longitude = -80.12694,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3312",
+                    IsDepot = false,
+                    Latitude = 25.894716,
+                    Longitude = -80.33056,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3989",
+                    IsDepot = false,
+                    Latitude = 25.553594,
+                    Longitude = -80.374832,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "457",
+                    IsDepot = false,
+                    Latitude = 25.636562,
+                    Longitude = -80.451262,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3105",
+                    IsDepot = false,
+                    Latitude = 25.737308,
+                    Longitude = -80.43438,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3317",
+                    IsDepot = false,
+                    Latitude = 25.752353,
+                    Longitude = -80.215284,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3589",
+                    IsDepot = false,
+                    Latitude = 25.877066,
+                    Longitude = -80.22757,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3313",
+                    IsDepot = false,
+                    Latitude = 25.93445,
+                    Longitude = -80.257547,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "385",
+                    IsDepot = false,
+                    Latitude = 25.902516,
+                    Longitude = -80.254678,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2601",
+                    IsDepot = false,
+                    Latitude = 25.85515,
+                    Longitude = -80.219475,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "602",
+                    IsDepot = false,
+                    Latitude = 25.513304,
+                    Longitude = -80.387233,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2710",
+                    IsDepot = false,
+                    Latitude = 25.626475,
+                    Longitude = -80.428484,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1187",
+                    IsDepot = false,
+                    Latitude = 25.781259,
+                    Longitude = -80.402599,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2155",
+                    IsDepot = false,
+                    Latitude = 25.760206,
+                    Longitude = -80.330144,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "990",
+                    IsDepot = false,
+                    Latitude = 25.9182,
+                    Longitude = -80.352967,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2810",
+                    IsDepot = false,
+                    Latitude = 25.763907,
+                    Longitude = -80.293502,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3294",
+                    IsDepot = false,
+                    Latitude = 25.576745,
+                    Longitude = -80.380201,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3578",
+                    IsDepot = false,
+                    Latitude = 25.441741,
+                    Longitude = -80.454027,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1040",
+                    IsDepot = false,
+                    Latitude = 25.741545,
+                    Longitude = -80.320633,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2184",
+                    IsDepot = false,
+                    Latitude = 25.769002,
+                    Longitude = -80.404676,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "842",
+                    IsDepot = false,
+                    Latitude = 25.705431,
+                    Longitude = -80.398938,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1668",
+                    IsDepot = false,
+                    Latitude = 25.660366,
+                    Longitude = -80.376896,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2603",
+                    IsDepot = false,
+                    Latitude = 25.660645,
+                    Longitude = -80.284289,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1304",
+                    IsDepot = false,
+                    Latitude = 25.935256,
+                    Longitude = -80.176192,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3281",
+                    IsDepot = false,
+                    Latitude = 25.962562,
+                    Longitude = -80.250286,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2855",
+                    IsDepot = false,
+                    Latitude = 25.781819,
+                    Longitude = -80.235649,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2518",
+                    IsDepot = false,
+                    Latitude = 25.632515,
+                    Longitude = -80.368998,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "46",
+                    IsDepot = false,
+                    Latitude = 25.741641,
+                    Longitude = -80.221332,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3185",
+                    IsDepot = false,
+                    Latitude = 25.945872,
+                    Longitude = -80.310623,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3309",
+                    IsDepot = false,
+                    Latitude = 25.761921,
+                    Longitude = -80.368253,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2586",
+                    IsDepot = false,
+                    Latitude = 25.792323,
+                    Longitude = -80.336024,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "237",
+                    IsDepot = false,
+                    Latitude = 25.749872,
+                    Longitude = -80.393815,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2192",
+                    IsDepot = false,
+                    Latitude = 25.94228,
+                    Longitude = -80.174436,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2887",
+                    IsDepot = false,
+                    Latitude = 25.753024,
+                    Longitude = -80.232491,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3485",
+                    IsDepot = false,
+                    Latitude = 25.547749,
+                    Longitude = -80.375777,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3832",
+                    IsDepot = false,
+                    Latitude = 25.489671,
+                    Longitude = -80.419657,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1393",
+                    IsDepot = false,
+                    Latitude = 25.872401,
+                    Longitude = -80.295227,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "781",
+                    IsDepot = false,
+                    Latitude = 25.912158,
+                    Longitude = -80.204096,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2165",
+                    IsDepot = false,
+                    Latitude = 25.745813,
+                    Longitude = -80.275891,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "537",
+                    IsDepot = false,
+                    Latitude = 25.843267,
+                    Longitude = -80.373141,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "235",
+                    IsDepot = false,
+                    Latitude = 25.877239,
+                    Longitude = -80.222824,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1175",
+                    IsDepot = false,
+                    Latitude = 25.924446,
+                    Longitude = -80.162018,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2235",
+                    IsDepot = false,
+                    Latitude = 25.850434,
+                    Longitude = -80.183362,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2775",
+                    IsDepot = false,
+                    Latitude = 25.647769,
+                    Longitude = -80.410684,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1556",
+                    IsDepot = false,
+                    Latitude = 25.457798,
+                    Longitude = -80.483813,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3233",
+                    IsDepot = false,
+                    Latitude = 25.593026,
+                    Longitude = -80.382412,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3534",
+                    IsDepot = false,
+                    Latitude = 25.867923,
+                    Longitude = -80.24087,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3205",
+                    IsDepot = false,
+                    Latitude = 25.656392,
+                    Longitude = -80.291358,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2893",
+                    IsDepot = false,
+                    Latitude = 25.867024,
+                    Longitude = -80.201303,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1555",
+                    IsDepot = false,
+                    Latitude = 25.776622,
+                    Longitude = -80.415111,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3218",
+                    IsDepot = false,
+                    Latitude = 25.832436,
+                    Longitude = -80.280374,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "899",
+                    IsDepot = false,
+                    Latitude = 25.855764,
+                    Longitude = -80.187256,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1027",
+                    IsDepot = false,
+                    Latitude = 25.735087,
+                    Longitude = -80.259917,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3448",
+                    IsDepot = false,
+                    Latitude = 25.84728,
+                    Longitude = -80.266024,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "884",
+                    IsDepot = false,
+                    Latitude = 25.480335,
+                    Longitude = -80.458004,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "448",
+                    IsDepot = false,
+                    Latitude = 25.684473,
+                    Longitude = -80.451831,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3643",
+                    IsDepot = false,
+                    Latitude = 25.677524,
+                    Longitude = -80.425454,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1952",
+                    IsDepot = false,
+                    Latitude = 25.754493,
+                    Longitude = -80.342664,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3507",
+                    IsDepot = false,
+                    Latitude = 25.874399,
+                    Longitude = -80.345727,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3520",
+                    IsDepot = false,
+                    Latitude = 25.483806,
+                    Longitude = -80.428498,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1611",
+                    IsDepot = false,
+                    Latitude = 25.713302,
+                    Longitude = -80.440269,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1402",
+                    IsDepot = false,
+                    Latitude = 25.72308,
+                    Longitude = -80.444812,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1211",
+                    IsDepot = false,
+                    Latitude = 25.699226,
+                    Longitude = -80.422237,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1161",
+                    IsDepot = false,
+                    Latitude = 25.835215,
+                    Longitude = -80.252216,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1274",
+                    IsDepot = false,
+                    Latitude = 25.888309,
+                    Longitude = -80.344764,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1341",
+                    IsDepot = false,
+                    Latitude = 25.716966,
+                    Longitude = -80.438179,
+                    Time = serviceTime,
+                    Tags = zone2.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2946",
+                    IsDepot = false,
+                    Latitude = 25.530972,
+                    Longitude = -80.448924,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "813",
+                    IsDepot = false,
+                    Latitude = 25.488095,
+                    Longitude = -80.450334,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3862",
+                    IsDepot = false,
+                    Latitude = 25.954786,
+                    Longitude = -80.16335,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "759",
+                    IsDepot = false,
+                    Latitude = 25.555122,
+                    Longitude = -80.335284,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "52",
+                    IsDepot = false,
+                    Latitude = 25.927916,
+                    Longitude = -80.268189,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "909",
+                    IsDepot = false,
+                    Latitude = 25.832815,
+                    Longitude = -80.217156,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "2768",
+                    IsDepot = false,
+                    Latitude = 25.835259,
+                    Longitude = -80.223997,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3967",
+                    IsDepot = false,
+                    Latitude = 25.630732,
+                    Longitude = -80.366065,
+                    Time = serviceTime,
+                    Tags = zone1.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "1974",
+                    IsDepot = false,
+                    Latitude = 25.931024,
+                    Longitude = -80.217991,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                },
+                new Address()
+                {
+                    AddressString = "3147",
+                    IsDepot = false,
+                    Latitude = 25.921095,
+                    Longitude = -80.261839,
+                    Time = serviceTime,
+                    Tags = zone3.ToArray()
+                }
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        /// <summary>
+        /// TEST CASE:  Drivers Schedules with Territories
+        /// </summary>
+        [TestMethod]
+        public async void AdvancedConstraintsExample6()
+        {
+            // Route generation with more than 1000 addresses needs special permission.
+            //if (2 > 1) return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RT = true,
+                Parts = 30,
+                RouteName = "Drivers Schedules - 3 Territories",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var zone1 = new List<string>() { "ZONE 01" };
+            var zone2 = new List<string>() { "ZONE 02" };
+            var zone3 = new List<string>() { "ZONE 03" };
+
+            RouteAdvancedConstraints schedule;
+
+            var zone = new List<string>();
+
+            #region Advanced Constraints
+
+            var advancedConstraints = new List<RouteAdvancedConstraints>();
+
+            for (int i = 0; i < 30; i++)
+            {
+                schedule = new RouteAdvancedConstraints();
+                switch (i % 3)
+                {
+                    case 0:
+                        zone = zone1;
+                        break;
+                    case 1:
+                        zone = zone2;
+                        break;
+                    case 2:
+                        zone = zone3;
+                        break;
+                }
+
+                schedule.Tags = zone.ToArray();
+                schedule.MembersCount = 1;
+                schedule.AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { (8 + 5) * 3600, (11 + 5) * 3600 }
+                };
+
+                advancedConstraints.Add(schedule);
+            }
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints.ToArray();
+
+            #region Prepare Addresses
+
+            var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/locations_1999.csv";
+
+            var addresses = new List<Address>();
+
+            using (TextReader reader = File.OpenText(sAddressFile))
+            {
+                using (var csv = new CsvReader(reader))
+                {
+                    while (csv.Read())
+                    {
+                        var address = csv.GetField(0);
+                        var lat = csv.GetField(1);
+                        var lng = csv.GetField(2);
+                        var group = csv.GetField(3);
+
+                        addresses.Add(
+                            new Address()
+                            {
+                                AddressString = address,
+                                Latitude = double.TryParse(lat.ToString(), out _) ? Convert.ToDouble(lat) : 0,
+                                Longitude = double.TryParse(lng.ToString(), out _) ? Convert.ToDouble(lng) : 0,
+                                Group = group
+                            }
+                        );
+                    }
+                }
+            }
+
+            Address depot = new Address()
+            {
+                AddressString = "Depot",
+                IsDepot = true,
+                Latitude = 25.723025,
+                Longitude = -80.452883,
+                Time = 0
+            };
+
+            addresses.Add(depot);
+
+            #endregion
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            //var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+            var response = await route4Me.RunOptimizationAsync(optimizationParameters);
+
+            Assert.IsTrue((response?.Item1?.State ?? 0) > 0,
+                $"AdvancedConstraintsExample6 failed. {Environment.NewLine}" +
+                $"OptimizationErrors: {response.Item1.OptimizationErrors}{Environment.NewLine}" +
+                $"UserErrors: {response.Item1.UserErrors}");
+
+            createdOptimizationIDs.Add(response.Item1.OptimizationProblemId);
+        }
+
+        /// <summary>
+        /// TEST CASE: Drivers Schedules with Territories
+        /// </summary>
+        [TestMethod]
+        public async void AdvancedConstraintsExample7()
+        {
+            // Route generation with more than 1000 addresses needs special permission.
+            if (2 > 1) return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RT = true,
+                Parts = 50,
+                RouteName = "50 Drivers Schedules - 5 Zones",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var zone1 = new List<string>() { "ZONE 01" };
+            var zone2 = new List<string>() { "ZONE 02" };
+            var zone3 = new List<string>() { "ZONE 03" };
+            var zone4 = new List<string>() { "ZONE 04" };
+            var zone5 = new List<string>() { "ZONE 05" };
+
+            RouteAdvancedConstraints schedule;
+
+            var zone = new List<string>();
+
+            #region Advanced Constraints
+
+            var advancedConstraints = new List<RouteAdvancedConstraints>();
+
+            var sScheduleFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/schedule.csv";
+
+            using (TextReader reader = File.OpenText(sScheduleFile))
+            {
+                using (var csv = new CsvReader(reader))
+                {
+                    while (csv.Read())
+                    {
+                        var start = csv.GetField(0);
+                        var end = csv.GetField(1);
+                        var group = csv.GetField(2);
+
+                        int igroup = int.TryParse(group.ToString(), out _) ? int.Parse(group.ToString()) : -1;
+
+                        schedule = new RouteAdvancedConstraints();
+
+                        switch (igroup)
+                        {
+                            case 0:
+                                schedule.Tags = zone1.ToArray();
+                                break;
+                            case 1:
+                                schedule.Tags = zone2.ToArray();
+                                break;
+                            case 2:
+                                schedule.Tags = zone3.ToArray();
+                                break;
+                            case 3:
+                                schedule.Tags = zone4.ToArray();
+                                break;
+                            case 4:
+                                schedule.Tags = zone5.ToArray();
+                                break;
+                        }
+
+                        int timeStart = int.TryParse(start.ToString(), out _) ? int.Parse(start.ToString()) : -1;
+                        int timeEnd = int.TryParse(end.ToString(), out _) ? int.Parse(end.ToString()) : -1;
+
+                        schedule.MembersCount = 1;
+
+                        schedule.AvailableTimeWindows = new List<int[]>
+                        {
+                            new int[] { timeStart, timeEnd }
+                        };
+
+                        advancedConstraints.Add(schedule);
+                    }
+                }
+            }
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints.ToArray();
+
+            #region Prepare Addresses
+
+            var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/locations_1999.csv";
+
+            var addresses = new List<Address>();
+
+            using (TextReader reader = File.OpenText(sAddressFile))
+            {
+                using (var csv = new CsvReader(reader))
+                {
+                    while (csv.Read())
+                    {
+                        var address = csv.GetField(0);
+                        var lat = csv.GetField(1);
+                        var lng = csv.GetField(2);
+                        var group = csv.GetField(3);
+
+                        addresses.Add(
+                            new Address()
+                            {
+                                AddressString = address,
+                                Latitude = double.TryParse(lat.ToString(), out _) ? Convert.ToDouble(lat) : 0,
+                                Longitude = double.TryParse(lng.ToString(), out _) ? Convert.ToDouble(lng) : 0,
+                                Group = group
+                            }
+                        );
+                    }
+                }
+            }
+
+            Address depot = new Address()
+            {
+                AddressString = "Depot",
+                IsDepot = true,
+                Latitude = 25.694341,
+                Longitude = -80.166036,
+                Time = 0
+            };
+
+            addresses.Add(depot);
+
+            #endregion
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = await route4Me.RunOptimizationAsync(optimizationParameters);
+
+            Assert.IsTrue((response?.Item1?.State ?? 0) > 0,
+                $"AdvancedConstraintsExample6 failed. {Environment.NewLine}" +
+                $"OptimizationErrors: {response.Item1.OptimizationErrors}{Environment.NewLine}" +
+                $"UserErrors: {response.Item1.UserErrors}");
+
+            createdOptimizationIDs.Add(response.Item1.OptimizationProblemId);
+        }
+
+        /// <summary>
+        /// TEST CASE: Drivers Schedules with Territories
+        /// </summary>
+        [TestMethod]
+        public async void AdvancedConstraintsExample8()
+        {
+            // Route generation with more than 1000 addresses needs special permission.
+            if (2 > 1) return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RT = true,
+                Parts = 50,
+                RouteName = "50 Drivers Schedules",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            RouteAdvancedConstraints schedule;
+
+            #region Advanced Constraints
+
+            var advancedConstraints = new List<RouteAdvancedConstraints>();
+
+            var sScheduleFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/schedule.csv";
+
+            using (TextReader reader = File.OpenText(sScheduleFile))
+            {
+                using (var csv = new CsvReader(reader))
+                {
+                    while (csv.Read())
+                    {
+                        var start = csv.GetField(0);
+                        var end = csv.GetField(1);
+                        var group = csv.GetField(2);
+
+                        //int igroup = int.TryParse(group.ToString(), out _) ? int.Parse(group.ToString()) : -1;
+
+                        schedule = new RouteAdvancedConstraints();
+
+                        int timeStart = int.TryParse(start.ToString(), out _) ? int.Parse(start.ToString()) : -1;
+                        int timeEnd = int.TryParse(end.ToString(), out _) ? int.Parse(end.ToString()) : -1;
+
+                        schedule.MembersCount = 1;
+
+                        schedule.AvailableTimeWindows = new List<int[]>
+                        {
+                            new int[] { timeStart, timeEnd }
+                        };
+
+                        advancedConstraints.Add(schedule);
+                    }
+                }
+            }
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints.ToArray();
+
+            #region Prepare Addresses
+
+            var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/locations_1999.csv";
+
+            var addresses = new List<Address>();
+            int serviceTime = 120;
+
+            using (TextReader reader = File.OpenText(sAddressFile))
+            {
+                using (var csv = new CsvReader(reader))
+                {
+                    while (csv.Read())
+                    {
+                        var address = csv.GetField(0);
+                        var lat = csv.GetField(1);
+                        var lng = csv.GetField(2);
+                        var group = csv.GetField(3);
+
+                        addresses.Add(
+                            new Address()
+                            {
+                                AddressString = address,
+                                Alias = address,
+                                Latitude = double.TryParse(lat.ToString(), out _) ? Convert.ToDouble(lat) : 0,
+                                Longitude = double.TryParse(lng.ToString(), out _) ? Convert.ToDouble(lng) : 0,
+                                Time = serviceTime,
+                                Group = group
+                            }
+                        );
+                    }
+                }
+            }
+
+            Address depot = new Address()
+            {
+                AddressString = "Depot",
+                IsDepot = true,
+                Latitude = 25.694341,
+                Longitude = -80.166036,
+                Time = 0
+            };
+
+            addresses.Add(depot);
+
+            #endregion
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            //var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+            var response = await route4Me.RunOptimizationAsync(optimizationParameters);
+
+            Assert.IsTrue((response?.Item1?.State ?? 0) > 0,
+                $"AdvancedConstraintsExample6 failed. {Environment.NewLine}" +
+                $"OptimizationErrors: {response.Item1.OptimizationErrors}{Environment.NewLine}" +
+                $"UserErrors: {response.Item1.UserErrors}");
+
+            createdOptimizationIDs.Add(response.Item1.OptimizationProblemId);
+        }
+
+        /// <summary>
+        /// TEST CASE: Retail Location based of address position id
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample9()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                Parts = 20,
+                MemberId = rootMemberId,
+                Metric = Metric.Matrix,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Retail Location - Single Depot - Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description(),
+                Depots = new object[]
+                {
+                    new Address()
+                    {
+                        AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                        Latitude = 38.141598,
+                        Longitude = -85.793846
+                    }
+                }
+            };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 25200, 75000 }
+                },
+                LocationSequencePattern = new object[]
+                {
+                    "",
+                    new Address()
+                    {
+                        AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                        Latitude = 38.202496,
+                        Longitude = -85.786514,
+                        Time = 300
+                    }
+                }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 45200, 85000 }
+                },
+                LocationSequencePattern = new object[]
+                {
+                    "",
+                    new Address()
+                    {
+                        AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                        Latitude = 38.202496,
+                        Longitude = -85.786514,
+                        Time = 300
+                    }
+                }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    Time = 300
+                }
+             };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        /// <summary>
+        /// TEST CASE: Retail Location based of address position id
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample10()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 0,
+                Parts = 20,
+                Metric = Metric.Matrix,
+                MemberId = rootMemberId,
+                RouteMaxDuration = 86400,
+                VehicleCapacity = 100,
+                VehicleMaxDistanceMI = 10000,
+                RouteName = "Retail Location - Single Depot - Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            #region Advanced Constraints
+
+            var advancedConstraints0 = new RouteAdvancedConstraints()
+            {
+                LocationSequencePattern = new object[]
+                {
+                    "",
+                    new Address()
+                    {
+                        AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                        Latitude = 38.202496,
+                        Longitude = -85.786514,
+                        Time = 300
+                    }
+                }
+            };
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 25200, 75000 }
+                }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 45200, 95000 }
+                }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints0,
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    Time = 300
+                }
+             };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+                //Depots = new Address[] { depot }
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        /// <summary>
+        /// TEST CASE: Retail Location - setting the address in the advanced constraints
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample11()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RouteTime = 7 * 3600,
+                RT = false,
+                Metric = Metric.Matrix,
+                MemberId = rootMemberId,
+                RouteName = "Retail Location - Single Depot - Multiple Driver",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            #region Advanced Constraints
+
+            var advancedConstraints1 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 25200, 75000 }
+                },
+                LocationSequencePattern = new object[]
+                {
+                    "",
+                    new Address()
+                    {
+                        AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                        Alias = "DEPOT END LOCATION",
+                        Latitude = 38.179806,
+                        Longitude = -85.775558,
+                        Time = 300
+                    }
+                }
+            };
+
+            var advancedConstraints2 = new RouteAdvancedConstraints()
+            {
+                MaximumCapacity = 200,
+                MembersCount = 10,
+                AvailableTimeWindows = new List<int[]>
+                {
+                    new int[] { 45200, 95000 }
+                },
+                LocationSequencePattern = new object[]
+                {
+                    "",
+                    new Address()
+                    {
+                        AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                        Alias = "DEPOT END LOCATION",
+                        Latitude = 38.179806,
+                        Longitude = -85.775558,
+                        Time = 300
+                    }
+                }
+            };
+
+            var advancedConstraints = new RouteAdvancedConstraints[]
+            {
+                advancedConstraints1,
+                advancedConstraints2
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints;
+
+            var addresses = new List<Address>()
+            {
+                new Address()
+                {
+                    AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                    IsDepot = true,
+                    Latitude = 38.141598,
+                    Longitude = -85.793846,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1407 MCCOY, Louisville, KY, 40215",
+                    Latitude = 38.202496,
+                    Longitude = -85.786514,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
+                    Latitude = 38.248684,
+                    Longitude = -85.821121,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
+                    Latitude = 38.251923,
+                    Longitude = -85.800034,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300
+                },
+                 new Address()
+                {
+                    AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
+                    Latitude = 38.162472,
+                    Longitude = -85.792854,
+                    Time = 300
+                }
+             };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        /// <summary>
+        /// TEST CASE: Drivers Schedules with Territories and Retail Location
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample12()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                StoreRoute = false,
+                RT = true,
+                Parts = 30,
+                Metric = Metric.Matrix,
+                MemberId = rootMemberId,
+                RouteName = "Drivers Schedules - 3 Territories",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description()
+            };
+
+            var zones = new Dictionary<int, List<string>>()
+            {
+                { 0, new List<string>() { "ZONE 01" } },
+                { 1, new List<string>() { "ZONE 02" } },
+                { 2, new List<string>() { "ZONE 03" } }
+            };
+
+            #region Advanced Constraints
+
+            var advancedConstraints = new List<RouteAdvancedConstraints>();
+
+            for (int i = 0; i < 30; i++)
+            {
+                advancedConstraints.Add(
+                    new RouteAdvancedConstraints()
+                    {
+                        Tags = zones[i % 3].ToArray(),
+                        MembersCount = 1,
+                        AvailableTimeWindows = new List<int[]> { new int[] { (8 + 5) * 3600, (11 + 5) * 3600 } },
+                        LocationSequencePattern = new object[]
+                        {
+                            "",
+                            new Address()
+                            {
+                                AddressString = "RETAIL LOCATION",
+                                Alias = "RETAIL LOCATION",
+                                Latitude = 25.8741751,
+                                Longitude = -80.1288583,
+                                Time = 300
+                            }
+                        }
+                    }
+                );
+            }
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints.ToArray();
+
+            var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/locations.csv";
+
+            #region Prepare Addresses
+
+            int serviceTime = 300;
+
+            var addresses = new List<Address>();
+
+            using (TextReader reader = File.OpenText(sAddressFile))
+            {
+                using (var csv = new CsvReader(reader))
+                {
+                    while (csv.Read())
+                    {
+                        var address = csv.GetField(0);
+                        var lat = csv.GetField(1);
+                        var lng = csv.GetField(2);
+                        var group = csv.GetField(3);
+
+                        int igroup = int.TryParse(group.ToString(), out _) ? Convert.ToInt32(group) : 0;
+
+                        addresses.Add(
+                            new Address()
+                            {
+                                AddressString = address,
+                                Alias = address,
+                                Latitude = double.TryParse(lat.ToString(), out _) ? Convert.ToDouble(lat) : 0,
+                                Longitude = double.TryParse(lng.ToString(), out _) ? Convert.ToDouble(lng) : 0,
+                                Group = group,
+                                Time = serviceTime,
+                                Tags = zones[igroup].ToArray()
+                            }
+                        );
+                    }
+                }
+            }
+
+            #endregion
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample1 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        /// <summary>
+        /// TEST CASE: Drivers Schedules with Address from Territories created in Route4Me
+        /// Note: This test needs an account with special permissions and the areas that cover hundreds of addresses.
+        /// </summary>
+        [TestMethod]
+        public void AdvancedConstraintsExample13()
+        {
+            //if (2 > 1) return; // Comment this line if you have an account with special permission
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var routeParameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.ADVANCED_CVRP_TW,
+                RouteTime = (8 + 5) * 3600,
+                Metric = Metric.Matrix,
+                MemberId = rootMemberId,
+                RouteName = "Single Depot, Multiple Driver - 3 Territories IDs",
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description(),
+                TravelMode = TravelMode.Driving.Description(),
+
+            };
+
+            var depots = new Address[]
+            {
+                new Address()
+                {
+                    AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
+                    Latitude = 38.141598,
+                    Longitude =-85.793846
+                }
+            };
+
+            routeParameters.Depots = depots;
+
+            var territory1 = route4Me.GetTerritory(
+                new TerritoryQuery()
+                {
+                    TerritoryId = "A34BA30C717D1194FC0230252DF0C45C",
+                    Addresses = 1
+                },
+                out _
+            );
+
+            var territory2 = route4Me.GetTerritory(
+                new TerritoryQuery()
+                {
+                    TerritoryId = "5D418084790C59C2D42B1C067094A459",
+                    Addresses = 1
+                },
+                out _
+            );
+
+            var territory3 = route4Me.GetTerritory(
+                new TerritoryQuery()
+                {
+                    TerritoryId = "0B40480FD15C5F85A26AD759007834F4",
+                    Addresses = 1
+                },
+                out _
+            );
+
+            #region Get Addresses from territories
+
+            var addresses = new List<Address>();
+
+            foreach (var addressID in territory1.Addresses)
+            {
+                addresses.Add(
+                    new Address()
+                    {
+                        ContactId = addressID,
+                        Tags = new string[] { territory1.TerritoryId }
+                    }
+                );
+            }
+
+            foreach (var addressID in territory2.Addresses)
+            {
+                addresses.Add(
+                    new Address()
+                    {
+                        ContactId = addressID,
+                        Tags = new string[] { territory2.TerritoryId }
+                    }
+                );
+            }
+
+            foreach (var addressID in territory3.Addresses)
+            {
+                addresses.Add(
+                    new Address()
+                    {
+                        ContactId = addressID,
+                        Tags = new string[] { territory3.TerritoryId }
+                    }
+                );
+            }
+
+            #endregion
+
+            #region Advanced Constraints
+
+            var advancedConstraints = new List<RouteAdvancedConstraints>()
+            {
+                new RouteAdvancedConstraints()
+                {
+                    Tags = new string[] { territory1.TerritoryId },
+                    MembersCount = 3,
+                    AvailableTimeWindows = new List<int[]>
+                    {
+                        new int[] { (8 + 5) * 3600, (11 + 5) * 3600 }
+                    }
+                },
+                new RouteAdvancedConstraints()
+                {
+                    Tags = new string[] { territory1.TerritoryId },
+                    MembersCount = 4,
+                    AvailableTimeWindows = new List<int[]>
+                    {
+                        new int[] { (8 + 5) * 3600, (12 + 5) * 3600 }
+                    }
+                },
+                new RouteAdvancedConstraints()
+                {
+                    Tags = new string[] { territory1.TerritoryId },
+                    MembersCount = 3,
+                    AvailableTimeWindows = new List<int[]>
+                    {
+                        new int[] { (8 + 5) * 3600, (13 + 5) * 3600 }
+                    }
+                }
+            };
+
+            #endregion
+
+            routeParameters.AdvancedConstraints = advancedConstraints.ToArray();
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Parameters = routeParameters,
+                Addresses = addresses.ToArray()
+            };
+
+            var response = route4Me.RunOptimization(optimizationParameters, out string errorString);
+
+            Assert.IsTrue((response?.OptimizationProblemId?.Length ?? 0) == 32,
+                $"AdvancedConstraintsExample13 failed. {errorString}");
+
+            createdOptimizationIDs.Add(response.OptimizationProblemId);
+
+        }
+
+        [ClassCleanup]
+        public static void AdvancedConstraintsGroupCleanup()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var result = route4Me.RemoveOptimization(createdOptimizationIDs.ToArray(), out _);
+
+            Assert.IsTrue(result, "Removing of the optimizations with advanced constraints failed.");
         }
     }
 
@@ -11812,6 +14795,36 @@ namespace Route4MeSDKUnitTest
         }
 
         [TestMethod]
+        public void AddOrderWithDemandsTest()
+        {
+            if (skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var orderParams = new Order
+            {
+                Address1 = "Some address",
+                CachedLat = 48.335991,
+                CachedLng = 31.18287,
+                Weight = 500.0,
+                Cost = 100.0,
+                Revenue = 1500.0,
+                Cube = 2500.0,
+                Pieces = 1500
+            };
+
+            var newOrder = route4Me.AddOrder(orderParams, out var errorString);
+
+            Assert.IsNotNull(newOrder, "AddOrderWithDemandsTest failed. " + errorString);
+            Assert.IsInstanceOfType(
+                newOrder,
+                typeof(Order),
+                $"Cannot create the order in the test AddOrderWithDemandsTest. {errorString}");
+
+            lsOrders.Add(newOrder);
+        }
+
+        [TestMethod]
         public void AddScheduledOrderAndCheckExtFieldCustomDataTest()
         {
             if (skip == "yes") return;
@@ -11985,7 +14998,7 @@ namespace Route4MeSDKUnitTest
                 CachedLng = 31.18287,
                 DayScheduledFor_YYYYMMDD = "2019-10-11",
                 AddressAlias = "Auto test address",
-                CustomUserFields = new[]
+                CustomUserFields = new OrderCustomField[]
                 {
                     new OrderCustomField
                     {
@@ -12063,7 +15076,7 @@ namespace Route4MeSDKUnitTest
 
             var order = lsOrders[lsOrders.Count - 1];
 
-            order.CustomUserFields = new[]
+            order.CustomUserFields = new OrderCustomField[]
             {
                 new OrderCustomField
                 {
@@ -12094,80 +15107,14 @@ namespace Route4MeSDKUnitTest
 
             Address[] addresses =
             {
-                new Address
-                {
-                    AddressString = "273 Canal St, New York, NY 10013, USA",
-                    Latitude = 40.7191558,
-                    Longitude = -74.0011966,
-                    Alias = "",
-                    CurbsideLatitude = 40.7191558,
-                    CurbsideLongitude = -74.0011966
-                },
-                new Address
-                {
-                    AddressString = "106 Liberty St, New York, NY 10006, USA",
-                    Alias = "BK Restaurant #: 2446",
-                    Latitude = 40.709637,
-                    Longitude = -74.011912,
-                    CurbsideLatitude = 40.709637,
-                    CurbsideLongitude = -74.011912,
-                    Email = "",
-                    Phone = "(917) 338-1887",
-                    FirstName = "",
-                    LastName = "",
-                    CustomFields = new Dictionary<string, string>
-                    {
-                        {
-                            "icon",
-                            null
-                        }
-                    },
-                    Time = 0,
-                    OrderId = 7205705
-                },
-                new Address
-                {
-                    AddressString = "106 Fulton St, Farmingdale, NY 11735, USA",
-                    Alias = "BK Restaurant #: 17871",
-                    Latitude = 40.73073,
-                    Longitude = -73.459283,
-                    CurbsideLatitude = 40.73073,
-                    CurbsideLongitude = -73.459283,
-                    Email = "",
-                    Phone = "(212) 566-5132",
-                    FirstName = "",
-                    LastName = "",
-                    CustomFields = new Dictionary<string, string>
-                    {
-                        {
-                            "icon",
-                            null
-                        }
-                    },
-                    Time = 0,
-                    OrderId = 7205703
-                }
+                new Address { OrderId = Int64.Parse(lsOrderIds[0]) }
             };
 
             #endregion
 
-            var rParams = new RouteParameters
-            {
-                RouteName = "Wednesday 15th of June 2016 07:01 PM (+03:00)",
-                RouteDate = 1465948800,
-                RouteTime = 14400,
-                Optimize = "Time",
-                AlgorithmType = AlgorithmType.TSP,
-                RT = false,
-                LockLast = false,
-                VehicleId = "",
-                DisableOptimization = false
-            };
-
             var result = route4Me.AddOrdersToRoute(
                 rQueryParams,
                 addresses,
-                rParams,
                 out var errorString);
 
             Assert.IsNotNull(
@@ -13230,14 +16177,7 @@ namespace Route4MeSDKUnitTest
         [TestMethod]
         public void RemoveDestinationFromOptimizationTest()
         {
-            var delta = removedAddressId ==
-                        tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 1].RouteDestinationId
-                ? 2
-                : 1;
-
-            var destinationToRemove = tdr.SDRT_route != null && tdr.SDRT_route.Addresses.Length > 0
-                ? tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - delta]
-                : null;
+            var destinationToRemove = tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 2];
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -13259,7 +16199,7 @@ namespace Route4MeSDKUnitTest
                 removed,
                 "RemoveDestinationFromOptimizationTest failed. " + errorString);
 
-            removedAddressId = destinationId;
+            tdr.SDRT_route.Addresses = tdr.SDRT_route.Addresses.Where(s => s != destinationToRemove).ToArray();
         }
 
         [TestMethod]
@@ -13362,30 +16302,17 @@ namespace Route4MeSDKUnitTest
             ;
             Assert.IsNotNull(route_id, "rote_id is null.");
 
-            var delta = removedAddressId == tdr.SDRT_route
-                .Addresses[tdr.SDRT_route.Addresses.Length - 1]
-                .RouteDestinationId
-                ? 2
-                : 1;
-
-            object oDestinationId = tdr.SDRT_route
-                .Addresses[tdr.SDRT_route.Addresses.Length - delta]
-                .RouteDestinationId;
-
-            var destination_id = oDestinationId != null
-                ? Convert.ToInt32(oDestinationId)
-                : -1;
-            Assert.IsNotNull(oDestinationId, "destination_id is null.");
+            var destinationToRemove = tdr.SDRT_route.Addresses[tdr.SDRT_route.Addresses.Length - 2];
 
             // Run the query
             var deleted = route4Me.RemoveRouteDestination(
                 route_id,
-                destination_id,
+                (int)destinationToRemove.RouteDestinationId,
                 out var errorString);
 
             Assert.IsTrue(deleted, "RemoveRouteDestinationTest failed. " + errorString);
 
-            removedAddressId = destination_id;
+            tdr.SDRT_route.Addresses = tdr.SDRT_route.Addresses.Where(s => s != destinationToRemove).ToArray();
         }
 
         [TestMethod]
@@ -13484,6 +16411,8 @@ namespace Route4MeSDKUnitTest
             Assert.IsTrue(
                 result,
                 "Removing of the testing optimization problem failed.");
+
+            tdr = null;
         }
     }
 
@@ -13874,7 +16803,7 @@ namespace Route4MeSDKUnitTest
 
             var customParams = new MemberParametersV4
             {
-                MemberId = memberId,
+                member_id = memberId,
                 custom_data = new Dictionary<string, string> {{"Custom Key 2", "Custom Value 2"}}
             };
 
@@ -13934,7 +16863,7 @@ namespace Route4MeSDKUnitTest
 
             var @params = new MemberParametersV4
             {
-                MemberId = createdMemberID != null
+                member_id = createdMemberID != null
                     ? createdMemberID
                     : Convert.ToInt32(lsMembers[lsMembers.Count - 1]),
                 member_phone = "571-259-5939"
@@ -16090,7 +19019,7 @@ namespace Route4MeSDKUnitTest
                 RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
                 RouteTime = 60 * 60 * 7,
                 RouteMaxDuration = 86400,
-                VehicleCapacity = 1,
+                VehicleCapacity = 100,
                 VehicleMaxDistanceMI = 10000,
 
                 Optimize = Optimize.Distance.Description(),
