@@ -89,13 +89,13 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         ///     The latitude of this address
         /// </summary>
-        [DataMember(Name = "lat")]
+        [DataMember(Name = "lat", EmitDefaultValue = false)]
         public double Latitude { get; set; }
 
         /// <summary>
         ///     The longitude of this address
         /// </summary>
-        [DataMember(Name = "lng")]
+        [DataMember(Name = "lng", EmitDefaultValue = false)]
         public double Longitude { get; set; }
 
         /// <summary>
@@ -576,5 +576,20 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "tags", EmitDefaultValue = false)]
         [DefaultValue(false)]
         public string[] Tags { get; set; }
+
+        public bool ShouldSerializeLatitude()
+        {
+            return (Latitude != 0 || Longitude != 0);
+        }
+
+        public bool ShouldSerializeLongitude()
+        {
+            return (Latitude != 0 || Longitude != 0);
+        }
+
+        public bool ShouldSerializeCustomFields()
+        {
+            return (CustomFields!=null && CustomFields.GetType()!=typeof(Dictionary<string, string>) ? false : true);
+        }
     }
 }
