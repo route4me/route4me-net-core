@@ -13,7 +13,6 @@ using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Route4MeSDK.DataTypes;
-using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using static Route4MeSDK.Route4MeManager;
 using ReadOnlyAttribute = Route4MeSDK.DataTypes.ReadOnlyAttribute;
@@ -74,40 +73,78 @@ namespace Route4MeSDK
 
             if (typeof(T) == typeof(OrderHistoryResponse))
             {
-                try
+                OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal) JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
+                OrderHistoryResponse externalResponse = new OrderHistoryResponse();
+
+                externalResponse.NextPageCursor = internalResponse.NextPageCursor;
+                var results = new List<OrderHistory>();
+
+                foreach (var internalResponseResult in internalResponse.Results)
                 {
-                    return JsonConvert.DeserializeObject<T>(text, jsonSettings);
+                    OrderHistory orderHistory = new OrderHistory();
+
+                    orderHistory.CreatedTimestamp = internalResponseResult.CreatedTimestamp;
+                    orderHistory.OrderId = internalResponseResult.OrderId;
+                    orderHistory.EventType = internalResponseResult.EventType;
+                    orderHistory.MemberId = internalResponseResult.MemberId;
+                    orderHistory.RootMemberId = internalResponseResult.RootMemberId;
+                    var diff = (OrderDiff[])JsonConvert.DeserializeObject(internalResponseResult.Diffs, typeof(OrderDiff[]));
+                    var model = (OrderHistoryModel)JsonConvert.DeserializeObject(internalResponseResult.OrderModel, typeof(OrderHistoryModel));
+
+                    orderHistory.OrderModel = model;
+                    orderHistory.Diffs = diff.ToArray();
+
+                    results.Add(orderHistory);
                 }
 
-                catch (JsonSerializationException)
+                externalResponse.Results = results.ToArray();
+
+                text = JsonConvert.SerializeObject(externalResponse);
+            }
+
+            if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
+            {
+                var pattern = string.Concat(
+                    "\\\"EXT_FIELD_custom_data\\\"",
+                    @":(\[\]),",
+                    "\"");
+
+                var rgx = new Regex(pattern);
+                var rslt = rgx.Match(text);
+
+                if (rslt?.Success ?? false) text = text.Replace("\"EXT_FIELD_custom_data\":[]", "\"EXT_FIELD_custom_data\":null");
+
+                pattern = string.Concat(
+                    "(\"EXT_FIELD_custom_data\"",
+                    @":(\[{)[^\]]*(}\])),");
+
+                string pattern2 = string.Concat(
+                    "(\"EXT_FIELD_custom_data\"",
+                    @":{[^\]]*}),");
+
+                var map = new Dictionary<string, string>()
                 {
-                    OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal)JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
-                    OrderHistoryResponse externalResponse = new OrderHistoryResponse();
+                   {pattern,pattern2}
+                   
+                };
 
-                    externalResponse.NextPageCursor = internalResponse.NextPageCursor;
-                    var results = new List<OrderHistory>();
+                rgx = new Regex(pattern);
 
-                    foreach (var internalResponseResult in internalResponse.Results)
+                var mathes = rgx.Matches(text);
+
+                if (mathes.Count>0)
+                {
+                    for (int i = 0; i< mathes.Count; i++)
                     {
-                        OrderHistory orderHistory = new OrderHistory();
+                        if (mathes[i].Success && mathes[i].Captures.Count>0)
+                        {
+                            string sub2 = mathes[i].Captures[0].Value
+                                            .Replace("[{", "{")
+                                            .Replace("}]", "}");
 
-                        orderHistory.CreatedTimestamp = internalResponseResult.CreatedTimestamp;
-                        orderHistory.OrderId = internalResponseResult.OrderId;
-                        orderHistory.EventType = internalResponseResult.EventType;
-                        orderHistory.MemberId = internalResponseResult.MemberId;
-                        orderHistory.RootMemberId = internalResponseResult.RootMemberId;
-                        var diff = (OrderDiff[])JsonConvert.DeserializeObject(internalResponseResult.Diffs, typeof(OrderDiff[]));
-                        var model = (OrderHistoryModel)JsonConvert.DeserializeObject(internalResponseResult.OrderModel, typeof(OrderHistoryModel));
-
-                        orderHistory.OrderModel = model;
-                        orderHistory.Diffs = diff.ToArray();
-
-                        results.Add(orderHistory);
+                            text = text.Replace(mathes[i].Captures[0].Value, sub2);
+                        }
                     }
-
-                    externalResponse.Results = results.ToArray();
-
-                    text = JsonConvert.SerializeObject(externalResponse);
                 }
             }
 
@@ -187,8 +224,8 @@ namespace Route4MeSDK
         {
             var jsonSettings = new JsonSerializerSettings
             {
-                //NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-                //DefaultValueHandling = DefaultValueHandling.Include,
+                NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
+                DefaultValueHandling = DefaultValueHandling.Include,
                 ContractResolver = new DataContractResolver()
             };
 
