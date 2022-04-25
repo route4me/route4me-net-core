@@ -651,6 +651,21 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "advanced_constraints", EmitDefaultValue = false)]
         [DefaultValue(false)]
         public RouteAdvancedConstraints[] AdvancedConstraints { get; set; }
+
+        /// <summary>
+        /// An array of the depots (a mix of the Address and Source object types).
+        /// You can use this property when you create or update a route with the advanced constraints.
+        /// </summary>
+        [DataMember(Name = "depots", EmitDefaultValue = false)]
+        [DefaultValue(false)]
+        public object[] Depots { get; set; }
+
+        /// <summary>
+        /// If true, the mixed pickup delivery demands are enabled.
+        /// </summary>
+        [DataMember(Name = "use_mixed_pickup_delivery_demands", EmitDefaultValue = false)]
+        [DefaultValue(false)]
+        public bool UseMixedPickupDeliveryDemands { get; set; }
     }
 
     /// <summary>
