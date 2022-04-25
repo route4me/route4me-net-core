@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
-using Route4MeSDKLibrary.DataTypes.V5;
 using static Route4MeSDK.Route4MeManagerV5;
 
 namespace Route4MeSDK.Examples
@@ -253,6 +252,56 @@ namespace Route4MeSDK.Examples
             return (reviewList?.Data?.Length ?? 0) > 0
                 ? reviewList.Data[reviewList.Data.Length - 1]
                 : null;
+        }
+
+        #endregion
+
+        #region AddressBook Contacts
+
+        private void PrintExampleContact(object contacts, ResultResponse resultResponse)
+        {
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            if (contacts == null ||
+                (contacts.GetType() != typeof(AddressBookContact) &&
+                contacts.GetType() != typeof(AddressBookContact[])))
+            {
+                PrintFailResponse(resultResponse, testName);
+                return;
+            }
+
+            if (contacts.GetType() == typeof(AddressBookContact))
+            {
+                var contact = (AddressBookContact)contacts;
+                Console.WriteLine($"Contact data: {Environment.NewLine}" +
+                    $"ID: {contact.AddressId}{Environment.NewLine} Address: {contact.Address1}");
+            }
+            else if (contacts.GetType() == typeof(AddressBookContact[]))
+            {
+                var allContacts = (AddressBookContact[])contacts;
+                Console.WriteLine($"Total contacts: {allContacts.Length} {Environment.NewLine}");
+
+                foreach (var contact in allContacts)
+                {
+                    Console.WriteLine($"ID: {contact.AddressId}{Environment.NewLine} Address: {contact.Address1}");
+                }
+            }
+            else if (contacts.GetType() == typeof(AddressBookContactsResponse))
+            {
+                var contactsResponse = (AddressBookContactsResponse)contacts;
+                Console.WriteLine($"Total contacts: {contactsResponse.Total} {Environment.NewLine}");
+
+                foreach (var contact in contactsResponse.Results)
+                {
+                    Console.WriteLine($"ID: {contact.AddressId}{Environment.NewLine} Address: {contact.Address1}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Unknown error, cannot print contact(s)");
+            }
+
         }
 
         #endregion
