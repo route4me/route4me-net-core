@@ -30,6 +30,15 @@ namespace Route4MeSDK.QueryTypes
         public string device_id { get; set; }
 
         /// <summary>
+        ///    Unique ID of a member.
+        ///     <remarks>
+        ///         <para>Body parameter.</para>
+        ///     </remarks>
+        /// </summary>
+        [DataMember(Name = "member_id", EmitDefaultValue = false)]
+        public long? member_id { get; set; }
+
+        /// <summary>
         ///     If true, routed addresses will be hidden.
         ///     <remarks>
         ///         <para>Data member parameter.</para>
