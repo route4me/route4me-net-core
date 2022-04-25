@@ -1,7 +1,5 @@
 ﻿using System;
 using Route4MeSDK.DataTypes.V5;
-using Route4MeSDKLibrary.DataTypes.V5;
-using static Route4MeSDK.Route4MeManagerV5;
 
 namespace Route4MeSDK.Examples
 {
@@ -27,7 +25,7 @@ namespace Route4MeSDK.Examples
 
             #endregion
 
-            var memberParams = new MemberQueryParameters()
+            var memberParams = new Route4MeManagerV5.MemberQueryParameters()
             {
                 UserId = randomMember.MemberId.ToString()
             };
