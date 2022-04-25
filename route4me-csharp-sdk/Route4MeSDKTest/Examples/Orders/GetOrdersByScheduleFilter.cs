@@ -19,6 +19,7 @@ namespace Route4MeSDK.Examples
 
             var oParams = new OrderFilterParameters()
             {
+                Offset = 0,
                 Limit = 10,
                 Filter = new FilterDetails()
                 {
