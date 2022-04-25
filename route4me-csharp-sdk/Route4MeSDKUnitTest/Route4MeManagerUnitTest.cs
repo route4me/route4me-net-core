@@ -14,7 +14,6 @@ using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.FastProcessing;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDKLibrary.DataTypes;
-using static Route4MeSDK.Route4MeManager;
 using Address = Route4MeSDK.DataTypes.Address;
 using AddressBookContact = Route4MeSDK.DataTypes.AddressBookContact;
 using AddressBookContactsResponse = Route4MeSDK.DataTypes.AddressBookContactsResponse;
@@ -838,7 +837,7 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(result, "DuplicateRouteTest failed. " + errorString);
             Assert.IsInstanceOfType(
                 result,
-                typeof(DuplicateRouteResponse),
+                typeof(Route4MeManager.DuplicateRouteResponse),
                 "DeleteRoutesTest failed. " + errorString);
             Assert.IsTrue(result.Status, "DuplicateRouteTest failed");
 
@@ -14585,7 +14584,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 orders,
-                typeof(GetOrdersResponse),
+                typeof(Route4MeManager.GetOrdersResponse),
                 "GetOrderByInsertedDateTest failed. " + errorString
             );
         }
@@ -14608,7 +14607,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 orders,
-                typeof(GetOrdersResponse),
+                typeof(Route4MeManager.GetOrdersResponse),
                 "GetOrderByScheduledDateTest failed. " + errorString
             );
         }
@@ -14686,7 +14685,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 orders,
-                typeof(GetOrdersResponse),
+                typeof(Route4MeManager.GetOrdersResponse),
                 "GetOrdersBySpecifiedTextTest failed. " + errorString
             );
         }
@@ -16850,7 +16849,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 dataObjects,
-                typeof(GetUsersResponse),
+                typeof(Route4MeManager.GetUsersResponse),
                 "GetUsersTest failed. " + errorString);
         }
 
