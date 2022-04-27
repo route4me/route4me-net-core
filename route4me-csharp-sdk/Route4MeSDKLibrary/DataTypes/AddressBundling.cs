@@ -67,7 +67,7 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         ///     Mode of the non-first items of the bundled addresses.
         /// </summary>
-        [DataMember(Name = "additional_items_mode", EmitDefaultValue = false)]
+        [DataMember(Name = "additional_items_mode", EmitDefaultValue = true)]
         [DefaultValue(AddressBundlingAdditionalItemsMode.KeepOriginal)]
         [Range((int) AddressBundlingAdditionalItemsMode.KeepOriginal,
             (int) AddressBundlingAdditionalItemsMode.InheritFromPrimary)]

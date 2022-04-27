@@ -319,15 +319,4 @@ namespace Route4MeSDK.DataTypes.V5
 
         [Description("SUB_ACCOUNT_VENDOR")] Vendor
     }
-
-    public enum RouteBreakTypes
-    {
-        [Description("certain_number_of_total_elapsed_time")] CERTAIN_NUMBER_OF_TOTAL_ELAPSED_TIME,
-
-        [Description("certain_number_of_locations")] CERTAIN_NUMBER_OF_LOCATIONS,
-
-        [Description("certain_number_of_travel_time")] CERTAIN_NUMBER_OF_TRAVEL_TIME,
-
-        [Description("certain_number_of_service_time")] CERTAIN_NUMBER_OF_SERVICE_TIME
-    }
 }

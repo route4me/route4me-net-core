@@ -49,7 +49,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     An array of the skilled driver IDs.
         /// </summary>
         [DataMember(Name = "location_sequence_pattern", EmitDefaultValue = false)]
-        public object[] LocationSequencePattern { get; set; }
+        public LocationSequencePattern[] LocationSequencePattern { get; set; }
     }
 
 
