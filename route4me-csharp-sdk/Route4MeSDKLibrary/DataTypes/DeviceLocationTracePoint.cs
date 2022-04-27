@@ -10,7 +10,7 @@ namespace Route4MeSDK.DataTypes
 
         [DataMember(Name = "waypoint_index")] public int? WaypointIndex { get; set; }
 
-        [DataMember(Name = "location")] public double[] Location { get; set; }
+        [DataMember(Name = "location")] public int[] Location { get; set; }
 
         [DataMember(Name = "name")] public string Name { get; set; }
 
