@@ -2537,22 +2537,9 @@ namespace Route4MeSDK
         /// <returns>Archived Orders</returns>
         public ArchiveOrdersResponse ArchiveOrders(ArchiveOrdersParameters parameters, out ResultResponse resultResponse)
         {
-            var genParams = new GenericParameters();
-
-            string jsonText = R4MeUtils.SerializeObjectToJson(parameters);
-
-            var httpContent = new StringContent(jsonText, Encoding.UTF8, "application/json");
-
-            var response = GetJsonObjectFromAPI<ArchiveOrdersResponse>
-            (genParams, R4MEInfrastructureSettingsV5.OrdersArchive,
-                HttpMethodType.Post, httpContent, false, true, out ResultResponse resultResponse2);
-
-            resultResponse = resultResponse2;
-            return response;
-
-            //return GetJsonObjectFromAPI<ArchiveOrdersResponse>(parameters,
-            //    R4MEInfrastructureSettingsV5.OrdersArchive,
-            //    HttpMethodType.Post, out resultResponse);
+            return GetJsonObjectFromAPI<ArchiveOrdersResponse>(parameters,
+                R4MEInfrastructureSettingsV5.OrdersArchive,
+                HttpMethodType.Post, out resultResponse);
         }
 
         /// <summary>
@@ -2562,17 +2549,9 @@ namespace Route4MeSDK
         /// <returns>Archived Orders</returns>
         public Task<Tuple<ArchiveOrdersResponse, ResultResponse>> ArchiveOrdersAsync(ArchiveOrdersParameters parameters)
         {
-            var genParams = new GenericParameters();
-
-            string jsonText = R4MeUtils.SerializeObjectToJson(parameters);
-
-            var httpContent = new StringContent(jsonText, Encoding.UTF8, "application/json");
-
-            var response = GetJsonObjectFromAPIAsync<ArchiveOrdersResponse>
-            (genParams, R4MEInfrastructureSettingsV5.OrdersArchive,
-                HttpMethodType.Post, httpContent, true, false);
-
-            return response;
+            return GetJsonObjectFromAPIAsync<ArchiveOrdersResponse>(parameters,
+                R4MEInfrastructureSettingsV5.OrdersArchive,
+                HttpMethodType.Post);
         }
 
         /// <summary>
