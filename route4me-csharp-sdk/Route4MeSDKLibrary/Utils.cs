@@ -73,33 +73,40 @@ namespace Route4MeSDK
 
             if (typeof(T) == typeof(OrderHistoryResponse))
             {
-                OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal) JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
-                OrderHistoryResponse externalResponse = new OrderHistoryResponse();
-
-                externalResponse.NextPageCursor = internalResponse.NextPageCursor;
-                var results = new List<OrderHistory>();
-
-                foreach (var internalResponseResult in internalResponse.Results)
+                try
                 {
-                    OrderHistory orderHistory = new OrderHistory();
-
-                    orderHistory.CreatedTimestamp = internalResponseResult.CreatedTimestamp;
-                    orderHistory.OrderId = internalResponseResult.OrderId;
-                    orderHistory.EventType = internalResponseResult.EventType;
-                    orderHistory.MemberId = internalResponseResult.MemberId;
-                    orderHistory.RootMemberId = internalResponseResult.RootMemberId;
-                    var diff = (OrderDiff[])JsonConvert.DeserializeObject(internalResponseResult.Diffs, typeof(OrderDiff[]));
-                    var model = (OrderHistoryModel)JsonConvert.DeserializeObject(internalResponseResult.OrderModel, typeof(OrderHistoryModel));
-
-                    orderHistory.OrderModel = model;
-                    orderHistory.Diffs = diff.ToArray();
-
-                    results.Add(orderHistory);
+                    return JsonConvert.DeserializeObject<T>(text, jsonSettings);
                 }
+                catch (JsonSerializationException)
+                {
+                    OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal)JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
+                    OrderHistoryResponse externalResponse = new OrderHistoryResponse();
 
-                externalResponse.Results = results.ToArray();
+                    externalResponse.NextPageCursor = internalResponse.NextPageCursor;
+                    var results = new List<OrderHistory>();
 
-                text = JsonConvert.SerializeObject(externalResponse);
+                    foreach (var internalResponseResult in internalResponse.Results)
+                    {
+                        OrderHistory orderHistory = new OrderHistory();
+
+                        orderHistory.CreatedTimestamp = internalResponseResult.CreatedTimestamp;
+                        orderHistory.OrderId = internalResponseResult.OrderId;
+                        orderHistory.EventType = internalResponseResult.EventType;
+                        orderHistory.MemberId = internalResponseResult.MemberId;
+                        orderHistory.RootMemberId = internalResponseResult.RootMemberId;
+                        var diff = (OrderDiff[])JsonConvert.DeserializeObject(internalResponseResult.Diffs, typeof(OrderDiff[]));
+                        var model = (OrderHistoryModel)JsonConvert.DeserializeObject(internalResponseResult.OrderModel, typeof(OrderHistoryModel));
+
+                        orderHistory.OrderModel = model;
+                        orderHistory.Diffs = diff.ToArray();
+
+                        results.Add(orderHistory);
+                    }
+
+                    externalResponse.Results = results.ToArray();
+
+                    text = JsonConvert.SerializeObject(externalResponse);
+                }
             }
 
             if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
