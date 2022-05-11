@@ -1,4 +1,5 @@
 ﻿using Route4MeSDK.QueryTypes;
+using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -15,7 +16,7 @@ namespace Route4MeSDK.Examples
             var parameters = new GenericParameters();
 
             // Run the query
-            Route4MeManager.GetUsersResponse dataObjects = route4Me.GetUsers(parameters, out string errorString);
+            GetUsersResponse dataObjects = route4Me.GetUsers(parameters, out string errorString);
 
             PrintTestUsers(dataObjects, errorString);
         }

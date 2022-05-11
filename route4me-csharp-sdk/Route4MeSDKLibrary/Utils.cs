@@ -12,9 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Route4MeSDK.DataTypes;
+using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
-using static Route4MeSDK.Route4MeManager;
 using ReadOnlyAttribute = Route4MeSDK.DataTypes.ReadOnlyAttribute;
 
 namespace Route4MeSDK
