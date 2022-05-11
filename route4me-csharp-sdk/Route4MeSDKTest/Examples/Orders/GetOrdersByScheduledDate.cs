@@ -2,6 +2,7 @@
 using Route4MeSDK.QueryTypes;
 using System;
 using System.Collections.Generic;
+using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -29,11 +30,11 @@ namespace Route4MeSDK.Examples
 
             PrintExampleOrder(result, errorString);
 
-            if (isInnerExample && result != null && result.GetType() == typeof(Route4MeManager.GetOrdersResponse))
+            if (isInnerExample && result != null && result.GetType() == typeof(GetOrdersResponse))
             {
                 OrdersToRemove = new List<string>();
 
-                foreach (Order ord in ((Route4MeManager.GetOrdersResponse)result).Results)
+                foreach (Order ord in ((GetOrdersResponse)result).Results)
                     OrdersToRemove.Add(ord.OrderId.ToString());
 
                 RemoveTestOrders();

@@ -837,7 +837,7 @@ namespace Route4MeSDKUnitTest
             Assert.IsNotNull(result, "DuplicateRouteTest failed. " + errorString);
             Assert.IsInstanceOfType(
                 result,
-                typeof(Route4MeManager.DuplicateRouteResponse),
+                typeof(DuplicateRouteResponse),
                 "DeleteRoutesTest failed. " + errorString);
             Assert.IsTrue(result.Status, "DuplicateRouteTest failed");
 
@@ -14584,7 +14584,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 orders,
-                typeof(Route4MeManager.GetOrdersResponse),
+                typeof(GetOrdersResponse),
                 "GetOrderByInsertedDateTest failed. " + errorString
             );
         }
@@ -14607,7 +14607,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 orders,
-                typeof(Route4MeManager.GetOrdersResponse),
+                typeof(GetOrdersResponse),
                 "GetOrderByScheduledDateTest failed. " + errorString
             );
         }
@@ -14685,7 +14685,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 orders,
-                typeof(Route4MeManager.GetOrdersResponse),
+                typeof(GetOrdersResponse),
                 "GetOrdersBySpecifiedTextTest failed. " + errorString
             );
         }
@@ -16849,7 +16849,7 @@ namespace Route4MeSDKUnitTest
 
             Assert.IsInstanceOfType(
                 dataObjects,
-                typeof(Route4MeManager.GetUsersResponse),
+                typeof(GetUsersResponse),
                 "GetUsersTest failed. " + errorString);
         }
 
