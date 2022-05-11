@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Route4MeSDK.DataTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5;
 
 namespace Route4MeSDK.Examples
 {
@@ -26,7 +27,7 @@ namespace Route4MeSDK.Examples
 
             #endregion
 
-            var queryParams = new Route4MeManagerV5.MemberQueryParameters()
+            var queryParams = new MemberQueryParameters()
             {
                 UserId = member.MemberId.ToString()
             };
