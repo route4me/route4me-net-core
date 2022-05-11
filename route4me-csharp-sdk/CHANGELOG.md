@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.2.0.0] - 2022-05-11
+
+Data types are adjusted.
+Internal HTTP logic is cleaned up.
+
 ## [3.1.0.0] - 2022-03-02
 
 Orders History and Archive API are supported.
