@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Route4MeSDK.DataTypes
 {
@@ -47,11 +46,33 @@ namespace Route4MeSDK.DataTypes
 
         /// <summary>
         ///     Information about an order's custom field.
-        ///     You can specify the propertiesof the different types in this property,
+        ///     You can specify the properties of the different types in this property,
         ///     but the property "short_label" is reserved - it specifies custom field column header
         ///     in the orders table in the page: https://route4me.com/orders
         /// </summary>
         [DataMember(Name = "order_custom_field_type_info", EmitDefaultValue = false)]
-        public Dictionary<string, object> OrderCustomFieldTypeInfo { get; set; }
+        public CustomOrderTypeInfo OrderCustomFieldTypeInfo { get; set; }
+    }
+
+    [DataContract]
+    public class CustomOrderTypeInfo
+    {
+        /// <summary>
+        ///     Short label.
+        /// </summary>
+        [DataMember(Name = "short_label", EmitDefaultValue = false)]
+        public string ShortLabel { get; set; }
+
+        /// <summary>
+        ///     Short caption.
+        /// </summary>
+        [DataMember(Name = "short_caption", EmitDefaultValue = false)]
+        public string ShortCaption { get; set; }
+
+        /// <summary>
+        ///     Allowed values.
+        /// </summary>
+        [DataMember(Name = "allowed_values", EmitDefaultValue = false)]
+        public string[] AllowedValues { get; set; }
     }
 }

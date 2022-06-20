@@ -4438,6 +4438,7 @@ namespace Route4MeSDKUnitTest.Tests
             MergeRoutesTest();
         }
 
+        [Test]
         public void MoveDestinationToRouteTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);

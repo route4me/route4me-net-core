@@ -34,6 +34,8 @@ namespace Route4MeSdkV5UnitTest.V5
         public DataObjectRoute MDMD24_route { get; set; }
         public string MDMD24_route_id { get; set; }
 
+        public string VehicleId { get; set; }
+
         public bool RunOptimizationSingleDriverRoute10Stops()
         {
             var r4mm = new Route4MeManagerV5(c_ApiKey);
@@ -293,7 +295,8 @@ namespace Route4MeSdkV5UnitTest.V5
                 Optimize = Optimize.Distance.Description(),
                 DistanceUnit = DistanceUnit.MI.Description(),
                 DeviceType = DeviceType.Web.Description(),
-                TravelMode = TravelMode.Driving.Description()
+                TravelMode = TravelMode.Driving.Description(),
+                VehicleId = VehicleId
             };
 
             var optimizationParameters = new OptimizationParameters
@@ -684,6 +687,147 @@ namespace Route4MeSdkV5UnitTest.V5
             var removed = route4Me.RemoveOrders(lsOrders.ToArray(), out var errorString);
 
             return removed;
+        }
+
+        /// <summary>
+        /// Retruns an array of the team members (all or limited number)
+        /// </summary>
+        /// <param name="limit">Limit of the retrieved record. If equal to 0, all the found memebrs are returned</param>
+        /// <param name="offset">Starting position in the retrieved records to return from</param>
+        /// <param name="ApiKey">API key of the account</param>
+        /// <returns>An array of the memebrs</returns>
+        public TeamResponse[] GetTeamMembers(int limit = 0, int offset = 0, string ApiKey = null)
+        {
+            ApiKey = ApiKey ?? c_ApiKey;
+            var route4Me = new Route4MeManagerV5(ApiKey);
+
+            var members = route4Me.GetTeamMembers(out ResultResponse resultResponse);
+
+            if ((members?.Length ?? 0) == 0)
+            {
+                Console.WriteLine("Cannot retrieve themembers.");
+                return null;
+            }
+
+            limit = limit > 0
+                ? (limit + offset > members.Length
+                    ? (offset >= members.Length ? 0 : members.Length - offset)
+                    : limit)
+                : 0;
+
+            if (limit > 0)
+            {
+                members = new ArraySegment<TeamResponse>(members, offset, limit).Array;
+            }
+
+            return members;
+        }
+
+        /// <summary>
+        /// Restores and returns deleted vehicle
+        /// </summary>
+        /// <param name="queryText">Queery text to serach for</param>
+        /// <param name="ApiKey"></param>
+        /// <returns></returns>
+        public Tuple<Vehicle, string> RestoreTestVehicle(string queryText, string ApiKey = null)
+        {
+            ApiKey = ApiKey ?? c_ApiKey;
+            var route4Me = new Route4MeManagerV5(ApiKey);
+
+            var vehParams = new VehicleParameters()
+            {
+                Page = 1,
+                PerPage = 10,
+                Show = VehicleStates.DELETED.Description(),
+                SearchQuery = queryText
+            };
+
+            var vehicles = route4Me.GetPaginatedVehiclesList(vehParams, out _);
+
+            if ((vehicles?.Data?.Length ?? 0) > 0)
+            {
+                var restoreParams = new VehicleParameters()
+                {
+                    VehicleIdItem = vehicles.Data[0].VehicleId
+                };
+
+                var vehicleIDs = new string[] { vehicles.Data[0].VehicleId };
+
+                var restoredVehicles = route4Me.RestoreVehicles(vehicleIDs);
+
+                restoredVehicles.Wait();
+
+                if (restoredVehicles.IsCompleted)
+                {
+                    var vehicle = route4Me.GetVehicleById(vehicles.Data[0].VehicleId, out _);
+                    return new Tuple<Vehicle, string>(vehicle, restoredVehicles.Result.Item3);
+                }
+                return null;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Sets GPS positions to the route.
+        /// The Coordinates are taken from the 2nd and 3rd addresses.
+        /// </summary>
+        /// <param name="route">Test route</param>
+        /// <param name="vehicleId">Test vehicle ID</param>
+        /// <param name="errorString">Failure message</param>
+        /// <returns>True if the GPS positions were sat successfully.</returns>
+        public bool SetGpsPositionToRouteAndVehicle(DataObjectRoute route, string vehicleId, out string errorString)
+        {
+            if ((this?.SDRT_route?.Addresses?.Length ?? 0) < 3)
+            {
+                errorString = $"The route has not enough addresses for the test";
+                return false;
+            }
+
+            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+
+            var lat = this.SDRT_route.Addresses.Length > 1
+                ? this.SDRT_route.Addresses[1].Latitude
+                : 33.14384;
+            var lng = this.SDRT_route.Addresses.Length > 1
+                ? this.SDRT_route.Addresses[1].Longitude
+                : -83.22466;
+
+            // Create the gps parametes
+            var gpsParameters = new Route4MeSDK.QueryTypes.GPSParameters
+            {
+                Format = Format.Csv.Description(),
+                RouteId = this.SDRT_route_id,
+                Latitude = lat,
+                Longitude = lng,
+                Course = 1,
+                Speed = 120,
+                DeviceType = DeviceType.IPhone.Description(),
+                MemberId = (int)this.SDRT_route.Addresses[1].MemberId,
+                DeviceGuid = "TEST_GPS",
+                DeviceTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+
+            var response = route4Me.SetGPS(gpsParameters, out errorString);
+
+            if (response == null && errorString != null) return false;
+
+            var lat2 = this.SDRT_route.Addresses.Length > 1
+                ? this.SDRT_route.Addresses[0].Latitude
+                : 33.14374;
+            var lng2 = this.SDRT_route.Addresses.Length > 1
+                ? this.SDRT_route.Addresses[0].Longitude
+                : -83.22476;
+
+            gpsParameters.Latitude = lat2;
+            gpsParameters.Longitude = lng2;
+            gpsParameters.Course = 2;
+            gpsParameters.Speed = 110;
+            gpsParameters.DeviceTimestamp = (DateTime.Now + new TimeSpan(0, 0, 20)).ToString("yyyy-MM-dd HH:mm:ss");
+
+            response = route4Me.SetGPS(gpsParameters, out errorString);
+
+            return response != null ? true : false;
         }
     }
 }

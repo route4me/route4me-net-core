@@ -17,6 +17,9 @@ namespace Route4MeSDK.Examples
 
         private string testRatingId;
 
+        List<int> vehicleProfilesToRemove = new List<int>();
+        List<int> vehicleCapacityProfilesToRemove = new List<int>();
+
         #region Team Management
 
         private string GetTestEmail()
@@ -257,54 +260,232 @@ namespace Route4MeSDK.Examples
 
         #endregion
 
-        #region AddressBook Contacts
+        #region Vehicles V5
 
-        private void PrintExampleContact(object contacts, ResultResponse resultResponse)
+        private void PrintTestVehcilesV5(object result, ResultResponse resultResponse)
         {
+            Console.WriteLine("");
+
             string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
             testName = testName != null ? testName : "";
 
-            if (contacts == null ||
-                (contacts.GetType() != typeof(AddressBookContact) &&
-                contacts.GetType() != typeof(AddressBookContact[])))
+            if (result != null)
             {
-                PrintFailResponse(resultResponse, testName);
-                return;
-            }
+                Console.WriteLine(testName + " executed successfully");
 
-            if (contacts.GetType() == typeof(AddressBookContact))
-            {
-                var contact = (AddressBookContact)contacts;
-                Console.WriteLine($"Contact data: {Environment.NewLine}" +
-                    $"ID: {contact.AddressId}{Environment.NewLine} Address: {contact.Address1}");
-            }
-            else if (contacts.GetType() == typeof(AddressBookContact[]))
-            {
-                var allContacts = (AddressBookContact[])contacts;
-                Console.WriteLine($"Total contacts: {allContacts.Length} {Environment.NewLine}");
-
-                foreach (var contact in allContacts)
+                if (result.GetType() == typeof(Vehicle))
                 {
-                    Console.WriteLine($"ID: {contact.AddressId}{Environment.NewLine} Address: {contact.Address1}");
+                    var vehicle = (Vehicle)result;
+
+                    Console.WriteLine(
+                        "Vehicle ID: {0}, Alias: {1}",
+                        vehicle.VehicleId,
+                        vehicle.VehicleAlias
+                    );
                 }
-            }
-            else if (contacts.GetType() == typeof(AddressBookContactsResponse))
-            {
-                var contactsResponse = (AddressBookContactsResponse)contacts;
-                Console.WriteLine($"Total contacts: {contactsResponse.Total} {Environment.NewLine}");
-
-                foreach (var contact in contactsResponse.Results)
+                else if (result.GetType() == typeof(VehicleOrderResponse))
                 {
-                    Console.WriteLine($"ID: {contact.AddressId}{Environment.NewLine} Address: {contact.Address1}");
+                    var vehicleOrder = (VehicleOrderResponse)result;
+
+                    Console.WriteLine(
+                        "Vehicle ID: {0}, Order: {1}",
+                        vehicleOrder.VehicleId,
+                        vehicleOrder.OrderId
+                    );
+                }
+                else if (result.GetType() == typeof(VehicleResponse))
+                {
+                    var vehicles = ((VehicleResponse)result).Data;
+
+                    foreach (var vehicle in vehicles)
+                    {
+                        Console.WriteLine(
+                        "Vehicle ID: {0}, Alias: {1}",
+                        vehicle.VehicleId,
+                        vehicle.VehicleAlias
+                        );
+                    }
+                }
+                else if (result.GetType() == typeof(VehiclesResults))
+                {
+                    var vehicles = ((VehiclesResults)result).Results;
+
+                    if ((vehicles?.Length ?? 0)>0)
+                    {
+                        foreach (var vehicle in vehicles)
+                        {
+                            Console.WriteLine(
+                            "Vehicle ID: {0}, Alias: {1}",
+                            vehicle.VehicleId,
+                            vehicle.VehicleAlias
+                            );
+                        }
+                    }
+                }
+                else if (result.GetType() == typeof(Vehicle[]))
+                {
+                    var vehicles = (Vehicle[])result;
+
+                    foreach (var vehicle in vehicles)
+                    {
+                        Console.WriteLine(
+                        "Vehicle ID: {0}, Alias: {1}",
+                        vehicle.VehicleId,
+                        vehicle.VehicleAlias
+                        );
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(testName + ": unknown response type");
                 }
             }
             else
             {
-                Console.WriteLine("Unknown error, cannot print contact(s)");
+                PrintFailResponse(resultResponse, testName);
             }
+        }
 
+        private void PrintTestVehcileProfilesV5(object result, ResultResponse resultResponse)
+        {
+            Console.WriteLine("");
+
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            if (result != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                if (result.GetType() == typeof(VehicleProfile))
+                {
+                    var vehicleProfile = (VehicleProfile)result;
+
+                    Console.WriteLine(
+                        "Vehicle profile ID: {0}, Name: {1}",
+                        vehicleProfile.VehicleProfileId,
+                        vehicleProfile.Name
+                    );
+                }
+                else if (result.GetType() == typeof(VehicleProfilesResponse))
+                {
+                    var vehicleProfileResponse = (VehicleProfilesResponse)result;
+
+                    Console.WriteLine($"URL to the paginated list: {vehicleProfileResponse.FirstPageUrl}");
+                    Console.WriteLine($"Tota; number in the list: {vehicleProfileResponse.Total}");
+                }
+                else
+                {
+                    PrintFailResponse(resultResponse, testName);
+                }
+            }
+            
+        }
+
+        private void PrintTestVehcileCapacityProfilesV5(object result, ResultResponse resultResponse)
+        {
+            Console.WriteLine("");
+
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            if (result != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                if (result.GetType() == typeof(VehicleCapacityProfileResponse))
+                {
+                    var vehicleCapacityProfile = (VehicleCapacityProfileResponse)result;
+
+                    Console.WriteLine(
+                        "Vehicle capacity profile ID: {0}, Name: {1}",
+                        vehicleCapacityProfile.Data.VehicleCapacityProfileId,
+                        vehicleCapacityProfile.Data.Name
+                    );
+                }
+                else if (result.GetType() == typeof(VehicleCapacityProfilesResponse))
+                {
+                    var vehicleProfiles = (VehicleCapacityProfilesResponse)result;
+
+                    Console.WriteLine($"URL to the paginated list: {vehicleProfiles.Links.First}");
+                    Console.WriteLine($"Total number in the list: {vehicleProfiles.Data.Length}");
+                }
+                else
+                {
+                    PrintFailResponse(resultResponse, testName);
+                }
+            }
+        }
+
+
+        private void RemoveTestVehiclesV5()
+        {
+            var route4Me = new Route4MeManagerV5(ActualApiKey);
+
+            // Run the query
+            if ((vehiclesToRemove?.Count ?? 0) < 1) return;
+
+            foreach (var vehicleId in vehiclesToRemove)
+            {
+                var result = route4Me.DeleteVehicle(vehicleId, out ResultResponse resultResponse);
+
+                Console.WriteLine(
+                    (result != null && result.GetType() == typeof(Vehicle))
+                    ? String.Format("The vehicle {0} removed successfully.", vehicleId)
+                    : String.Format("Cannot remove the vehicle {0}.", vehicleId)
+                );
+            }
+        }
+
+        private void RemoveTestVehicleProfilesV5()
+        {
+            var route4Me = new Route4MeManagerV5(ActualApiKey);
+
+            // Run the query
+            if ((vehicleProfilesToRemove?.Count ?? 0) < 1) return;
+
+            foreach (var vehicleProfileId in vehicleProfilesToRemove)
+            {
+                var profileParams = new VehicleProfileParameters()
+                {
+                    VehicleProfileId = (long)vehicleProfileId
+                };
+
+                var result = route4Me.DeleteVehicleProfile(profileParams, out ResultResponse resultResponse);
+
+                Console.WriteLine(
+                    (result != null && resultResponse==null)
+                    ? String.Format("The vehicle profile {0} removed successfully.", vehicleProfileId)
+                    : String.Format("Cannot remove the vehicle profile {0}.", vehicleProfileId)
+                );
+            }
+        }
+
+        private void RemoveTestVehicleCapacityProfilesV5()
+        {
+            var route4Me = new Route4MeManagerV5(ActualApiKey);
+
+            // Run the query
+            if ((vehicleCapacityProfilesToRemove?.Count ?? 0) < 1) return;
+
+            foreach (var vehicleCapacityProfileId in vehicleCapacityProfilesToRemove)
+            {
+                var capacityProfileParams = new VehicleCapacityProfileParameters()
+                {
+                    VehicleCapacityProfileId = (long)vehicleCapacityProfileId
+                };
+
+                var result = route4Me.DeleteVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
+
+                Console.WriteLine(
+                    (result != null && resultResponse == null)
+                    ? String.Format("The vehicle profile {0} removed successfully.", vehicleCapacityProfileId)
+                    : String.Format("Cannot remove the vehicle profile {0}.", vehicleCapacityProfileId)
+                );
+            }
         }
 
         #endregion
+
     }
 }
