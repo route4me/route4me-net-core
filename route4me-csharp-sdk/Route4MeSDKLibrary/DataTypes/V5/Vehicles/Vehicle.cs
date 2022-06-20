@@ -7,7 +7,7 @@ namespace Route4MeSDK.DataTypes.V5
     ///     Response from the vehicle request
     /// </summary>
     [DataContract]
-    public sealed class Vehicle : GenericParameters
+    public class Vehicle : GenericParameters
     {
         /// <summary>
         ///     The vehicle ID

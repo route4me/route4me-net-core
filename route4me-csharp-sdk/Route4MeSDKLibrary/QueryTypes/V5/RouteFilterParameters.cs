@@ -9,17 +9,14 @@ namespace Route4MeSDK.QueryTypes.V5
     [DataContract]
     public sealed class RouteFilterParameters : GenericParameters
     {
-        [DataMember(Name = "query", EmitDefaultValue = false)]
-        public string Query { get; set; }
-
         [DataMember(Name = "filters", EmitDefaultValue = false)]
         public RouteFilterParametersFilters Filters { get; set; }
 
-        [DataMember(Name = "directions", EmitDefaultValue = false)]
-        public bool? Directions { get; set; }
+        //[DataMember(Name = "directions", EmitDefaultValue = false)]
+        //public bool? Directions { get; set; }
 
-        [DataMember(Name = "notes", EmitDefaultValue = false)]
-        public bool? Notes { get; set; }
+        //[DataMember(Name = "notes", EmitDefaultValue = false)]
+        //public bool? Notes { get; set; }
 
         [DataMember(Name = "page", EmitDefaultValue = false)]
         public int? Page { get; set; }
@@ -34,8 +31,12 @@ namespace Route4MeSDK.QueryTypes.V5
         public string Timezone { get; set; }
     }
 
+    [DataContract]
     public class RouteFilterParametersFilters : GenericParameters
     {
+        [DataMember(Name = "query", EmitDefaultValue = false)]
+        public string Query { get; set; }
+
         /// <summary>
         ///     An array of the scheduled dates.
         /// </summary>

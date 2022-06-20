@@ -92,10 +92,13 @@
         public const string ApiVersion = "5";
 
         public const string MainHost = "https://wh.route4me.com/modules/api/v5.0";
+        public const string MainHost51 = "https://wh.route4me.com/modules/api/v5.1";
 
         public const string MainHostWeb = "https://wh.route4me.com/modules/webapi/v5.0";
 
         public const string Routes = MainHost + "/routes";
+        public const string Routes51 = MainHost51 + "/routes";
+
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
         public const string RoutesMerge = MainHost + "/routes/merge";
         public const string RoutesPaginate = MainHost + "/routes/paginate";
@@ -107,6 +110,7 @@
         public const string RoutesDatatableConfig = MainHost + "/routes/datatable/config";
         public const string RoutesDatatableConfigFallback = MainHost + "/routes/fallback/datatable/config";
         public const string RouteBreaks = MainHost + "/route-breaks";
+        public const string RouteAddressDynamicInsert = MainHost + "/routes/lookup-for-new-destination";
 
         public const string TeamUsers = MainHost + "/team/users";
 
@@ -120,17 +124,39 @@
 
         public const string Vehicles = MainHost + "/vehicles";
 
+        public const string VehiclePaginated = MainHost + "/vehicles/paginate";
+
         public const string VehicleTemporary = MainHost + "/vehicles/assign";
 
         public const string VehicleExecuteOrder = MainHost + "/vehicles/execute";
 
         public const string VehicleLocation = MainHost + "/vehicles/location";
 
-        public const string VehicleProfiles = MainHost + "/vehicle-profiles";
+        public const string VehicleSyncTelematics = MainHost + "/vehicles/sync/pending";
 
         public const string VehicleLicense = MainHost + "/vehicles/license";
 
         public const string VehicleSearch = MainHost + "/vehicles/search";
+
+
+        public const string VehicleProfiles = MainHost + "/vehicle-profiles";
+
+        public const string VehicleCapacityProfiles = MainHost + "/vehicle-capacity-profiles";
+
+
+        public const string VehicleBulkActivate = MainHost + "/vehicles/bulk/activate";
+
+        public const string VehicleBulkDeactivate = MainHost + "/vehicles/bulk/deactivate";
+
+        public const string VehicleBulkDelete = MainHost + "/vehicles/bulk/delete";
+
+        public const string VehicleBulkRestore = MainHost + "/vehicles/bulk/restore";
+
+        public const string VehicleBulkUpdate = MainHost + "/vehicles/bulk/update";
+
+        public const string VehicleJobResult = MainHost + "/vehicles/job-tracker/result";
+
+        public const string VehicleJobStatus = MainHost + "/vehicles/job-tracker/status";
 
         #endregion
 

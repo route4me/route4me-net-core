@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5
@@ -58,7 +59,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     When the profile deleted
         /// </summary>
         [DataMember(Name = "deleted_at", EmitDefaultValue = false)]
-        public string DeletedAt { get; set; }
+        public VehicleProfileDeletedAt DeletedAt { get; set; }
 
         /// <summary>
         ///     When the profile created
@@ -111,43 +112,51 @@ namespace Route4MeSDK.DataTypes.V5
         public bool? IsDefault { get; set; }
 
         /// <summary>
-        ///     Height units (e.g. 'ft', 'm')
+        ///     Vehicle Profile Code.
+        ///     Maximum length = 6.
         /// </summary>
-        [DataMember(Name = "height_units", EmitDefaultValue = false)]
-        public string HeightUnits { get; set; }
+        [DataMember(Name = "vehicle_profile_code", EmitDefaultValue = false)]
+        [MaxLength(6)]
+        public string VehicleProfileCode { get; set; }
 
         /// <summary>
-        ///     Width units (e.g. 'ft', 'm')
+        ///     Height unit (e.g. 'ft', 'm')
         /// </summary>
-        [DataMember(Name = "width_units", EmitDefaultValue = false)]
-        public string WidthUnits { get; set; }
+        [DataMember(Name = "height_unit", EmitDefaultValue = false)]
+        public string HeightUnit { get; set; }
 
         /// <summary>
-        ///     Length units (e.g. 'ft', 'm')
+        ///     Width unit (e.g. 'ft', 'm')
         /// </summary>
-        [DataMember(Name = "length_units", EmitDefaultValue = false)]
-        public string LengthUnits { get; set; }
+        [DataMember(Name = "width_unit", EmitDefaultValue = false)]
+        public string WidthUnit { get; set; }
 
         /// <summary>
-        ///     Weight units (e.g. 'lb', 'kg')
+        ///     Length unit (e.g. 'ft', 'm')
         /// </summary>
-        [DataMember(Name = "weight_units", EmitDefaultValue = false)]
-        public string WeightUnits { get; set; }
+        [DataMember(Name = "length_unit", EmitDefaultValue = false)]
+        public string LengthUnit { get; set; }
 
         /// <summary>
-        ///     Maximum weight per axle units (e.g. 'lb', 'kg')
+        ///     Weight unit (e.g. 'lb', 'kg')
         /// </summary>
-        [DataMember(Name = "max_weight_per_axle_units", EmitDefaultValue = false)]
-        public string MaxWeightPerAxleUnits { get; set; }
+        [DataMember(Name = "weight_unit", EmitDefaultValue = false)]
+        public string WeightUnit { get; set; }
 
         /// <summary>
-        ///     Fuel consumption units in the city area (e.g. mpg)
+        ///     Maximum weight per axle unit (e.g. 'lb', 'kg')
+        /// </summary>
+        [DataMember(Name = "max_weight_per_axle_unit", EmitDefaultValue = false)]
+        public string MaxWeightPerAxleUnit { get; set; }
+
+        /// <summary>
+        ///     Fuel consumption unit in the city area (e.g. mpg)
         /// </summary>
         [DataMember(Name = "fuel_consumption_city_unit", EmitDefaultValue = false)]
         public string FuelConsumptionCityUnit { get; set; }
 
         /// <summary>
-        ///     Fuel consumption units in the highway area (e.g. mpg)
+        ///     Fuel consumption unit in the highway area (e.g. mpg)
         /// </summary>
         [DataMember(Name = "fuel_consumption_highway_unit", EmitDefaultValue = false)]
         public string FuelConsumptionHighwayUnit { get; set; }
@@ -193,5 +202,26 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "fuel_consumption_highway_uf_value", EmitDefaultValue = false)]
         public string FuelConsumptionHighwayUfValue { get; set; }
+    }
+
+    [DataContract]
+    public sealed class VehicleProfileDeletedAt
+    {
+        // <summary>
+        ///     When the profile was deleted
+        [DataMember(Name = "date", EmitDefaultValue = false)]
+        public string Date { get; set; }
+
+
+        /// <summary>
+        ///     Timezone type
+        /// </summary>
+        [DataMember(Name = "timezone_type", EmitDefaultValue = false)]
+        public int TimezoneType { get; set; }
+
+        // <summary>
+        ///     Timezone
+        [DataMember(Name = "timezone", EmitDefaultValue = false)]
+        public string Timezone { get; set; }
     }
 }

@@ -250,14 +250,16 @@ namespace Route4MeSDK.DataTypes.V5
     ///     <para>Address = 1, group locations by address</para>
     ///     <para>Coordinates = 2, group locations by coordinates</para>
     ///     <para>AddressId = 3, group locations by list of the address IDs</para>
-    ///     <para>Address = 4, group locations by address custom fields</para>
+    ///     <para>AddressCustomField = 4, group locations by address custom fields</para>
+    ///     <para>MultipleFields = 5, group locations by multiple address fields</para>
     /// </summary>
     public enum AddressBundlingMode : uint
     {
         Address = 1,
         Coordinates = 2,
         AddressId = 3,
-        AddressCustomField = 4
+        AddressCustomField = 4,
+        MultipleFields = 5
     }
 
     /// <summary>
@@ -330,4 +332,140 @@ namespace Route4MeSDK.DataTypes.V5
 
         [Description("certain_number_of_service_time")] CERTAIN_NUMBER_OF_SERVICE_TIME
     }
+
+    [DefaultValue(VehicleStates.ACTIVE)]
+    public enum VehicleStates
+    {
+        [Description("active")] ACTIVE,
+        [Description("all")] ALL,
+        [Description("pending")] PENDING,
+        [Description("deleted")] DELETED
+
+    }
+
+    public enum VehicleTypes
+    {
+        [Description("18wheeler")] WHEELER_18,
+        [Description("bigrig")] BIG_RIG,
+        [Description("cabin")] CABIN,
+        [Description("cement_mixer")] CEMENT_MIXER,
+        [Description("coupe")] COUPE,
+        [Description("dairy")] DAIRY,
+        [Description("hatchback")] HATCHBACK,
+        [Description("livestock_carrier")] LIVESTOCK_CARRIER,
+        [Description("motorcyle")] MOTORCYCLE,
+        [Description("pickup_truck")] PICKUP_TRUCK,
+        [Description("sedan")] SEDAN,
+        [Description("suv")] SUV,
+        [Description("tractor_trailer")] TRACTOR_TRAILER,
+        [Description("tree_cutting")] TREE_CUTTING,
+        [Description("van")] VAN,
+        [Description("waste_disposal")] WASTE_DISPOSAL
+    }
+
+    public enum FuelTypes
+    {
+        [Description("unleaded 87")] UNLEADED_87,
+        [Description("unleaded 89")] UNLEADED_89,
+        [Description("unleaded 91")] UNLEADED_91,
+        [Description("unleaded 93")] UNLEADED_93,
+        [Description("diesel")] DIESEL,
+        [Description("electric")] ELECTRIC,
+        [Description("hybrid")] Hybrid
+    }
+
+    public enum VehicleMakes
+    {
+        [Description("Acura")] Acura,
+        [Description("Alfa-Romeo")] Alfa_Romeo,
+        [Description("American Coleman")] American_Coleman,
+        [Description("Aston-Martin")] Aston_Martin,
+        [Description("Audi")] Audi,
+        [Description("Bentley")] Bentley,
+        [Description("Bugatti")] Bugatti,
+        [Description("Buick")] Buick,
+        [Description("BMW")] BMW,
+        [Description("Cadillac")] Cadillac,
+        [Description("Chevrolet")] Chevrolet,
+        [Description("Chrysler")] Chrysler,
+        [Description("Citroen")] Citroen,
+        [Description("Dodge")] Dodge,
+        [Description("Ferrari")] Ferrari,
+        [Description("Fiat")] Fiat,
+        [Description("Ford")] Ford,
+        [Description("Freightliner")] Freightliner,
+        [Description("Geely")] Geely,
+        [Description("Genesis")] Genesis,
+        [Description("GMC")] GMC,
+        [Description("Hino")] Hino,
+        [Description("Honda")] Honda,
+        [Description("Hyundai")] Hyundai,
+        [Description("Infiniti")] Infiniti,
+        [Description("International trucks")] International_trucks,
+        [Description("Isuzu")] Isuzu,
+        [Description("Jaguar")] Jaguar,
+        [Description("Jeep")] Jeep,
+        [Description("Kenworth")] Kenworth,
+        [Description("Kia")] Kia,
+        [Description("Koenigsegg")] Koenigsegg,
+        [Description("Lamborghini")] Lamborghini,
+        [Description("Lancia")] Lancia,
+        [Description("Land Rover")] Land_Rover,
+        [Description("Lexus")] Lexus,
+        [Description("Lincoln")] Lincoln,
+        [Description("Lotus")] Lotus,
+        [Description("Mack")] Mack,
+        [Description("Maserati")] Maserati,
+        [Description("Maybach")] Maybach,
+        [Description("Mazda")] Mazda,
+        [Description("McLaren")] McLaren,
+        [Description("Mercedes-Benz")] Mercedes_Benz,
+        [Description("Mini")] Mini,
+        [Description("Mitsubishi")] Mitsubishi,
+        [Description("Navistar")] Navistar,
+        [Description("Nissan")] Nissan,
+        [Description("Opel")] Opel,
+        [Description("Pagani")] Pagani,
+        [Description("Peugeot")] Peugeot,
+        [Description("Peterbilt")] Peterbilt,
+        [Description("Pontiac")] Pontiac,
+        [Description("Porsche")] Porsche,
+        [Description("Ram")] Ram,
+        [Description("Renault")] Renault,
+        [Description("Rolls-Royce")] Rolls_Royce,
+        [Description("Scania")] Scania,
+        [Description("Skoda")] Skoda,
+        [Description("Smart")] Smart,
+        [Description("Sterling")] Sterling,
+        [Description("Subaru")] Subaru,
+        [Description("Suzuki")] Suzuki,
+        [Description("Tesla")] Tesla,
+        [Description("Toyota")] Toyota,
+        [Description("Volkswagen")] Volkswagen,
+        [Description("Volvo")] Volvo,
+        [Description("Western Star")] Western_Star
+    }
+
+    #region Dynamic Insert
+
+    /// <summary>
+    /// Dynamic insert modes of the addresses in a route.
+    /// </summary>
+    [DefaultValue(DynamicInsertMode.OptimalAfterLastVisited)]
+    public enum DynamicInsertMode
+    {
+        [Description("optimal_anywhere")] OptimalAnywhere,
+        [Description("optimal_after_last_visited")] OptimalAfterLastVisited,
+        [Description("end_of_route")] EndOfRoute,
+        [Description("beginning_of_route")] BeginningOfRoute
+    }
+
+    public enum DynamicInsertRecomendBy
+    {
+        [Description("distance")] Distance,
+
+        [Description("duration")] Duration,
+    }
+
+    #endregion
 }

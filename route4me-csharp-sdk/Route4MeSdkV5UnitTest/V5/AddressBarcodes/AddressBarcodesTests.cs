@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
@@ -9,82 +11,100 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
     [TestFixture]
     public class AddressBarcodesTests
     {
-        [Test]
-        public void AddressBarcodesGetSaveTest()
+        private static TestDataRepository tdr;
+        private static List<string> lsOptimizationIDs;
+
+        Address barCodeAddress;
+
+        [SetUp]
+        public void Setup()
         {
-            var route4Me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+            lsOptimizationIDs = new List<string>();
 
-            var getAddressBarcodesParameters = new GetAddressBarcodesParameters
-            {
-                RouteId = "893E6C33F0494572DEB2FAE34B2D3E0B",
-                RouteDestinationId = 705601646
-            };
-            var readResult1 = route4Me.GetAddressBarcodes(getAddressBarcodesParameters, out _);
-            Assert.That(readResult1.Data, Is.Not.Empty);
+            tdr = new TestDataRepository();
 
-            var saveAddressBarcodesResponse = route4Me.SaveAddressBarcodes(new SaveAddressBarcodesParameters
-            {
-                RouteId = "893E6C33F0494572DEB2FAE34B2D3E0B",
-                RouteDestinationId = 705601646,
-                Barcodes = new[]
-                {
-                    new BarcodeDataRequest
-                    {
-                        Barcode = "TEST2",
-                        Latitude = 40.610804,
-                        Longitude = -73.920172,
-                        TimestampDate = 1634169600,
-                        TimestampUtc = 1634198666,
-                        ScanType = "picked_up",
-                        ScannedAt = "2021-10-15 19:18:11"
-                    }
-                }
-            }, out _);
+            var result = tdr.RunOptimizationSingleDriverRoute10Stops();
+            Assert.True(result, "Single Driver 10 Stops generation failed.");
 
-            Assert.True(saveAddressBarcodesResponse.status);
+            barCodeAddress = tdr.SD10Stops_route.Addresses[1];
 
-            var readResult2 = route4Me.GetAddressBarcodes(getAddressBarcodesParameters, out _);
+            lsOptimizationIDs.Add(tdr.SD10Stops_optimization_problem_id);
 
-            Assert.True(readResult2.Data.Length - readResult1.Data.Length == 1);
+            SaveAddressBacodeTest();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            var optimizationResult = tdr.RemoveOptimization(lsOptimizationIDs.ToArray());
+
+            Assert.True(optimizationResult, "Removing of the testing optimization problem failed.");
         }
 
         [Test]
-        public async Task AddressBarcodesGetSaveAsyncTest()
+        public void SaveAddressBacodeTest()
         {
-            var route4Me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+            var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+
+            var barCodeParams = new SaveAddressBarcodesParameters()
+            {
+                RouteId = tdr.SD10Stops_route_id,
+                RouteDestinationId = (long)barCodeAddress.RouteDestinationId,
+                Barcodes = new BarcodeDataRequest[]
+                {
+                    new BarcodeDataRequest()
+                    {
+                        Barcode = "some barcode",
+                        Latitude = barCodeAddress.Latitude,
+                        Longitude = barCodeAddress.Longitude,
+                        TimestampDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.Now),
+                        TimestampUtc = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow),
+                        ScannedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        ScanType = "QR-code"
+                    }
+                }
+            };
+
+            var result = route4me.SaveAddressBarcodes(barCodeParams, out ResultResponse resultResponse);
+
+
+            Assert.True(result?.status ?? false);
+        }
+
+        [Test]
+        public void GetAddressBarcodesTest()
+        {
+            // The test requires special subscription.
+            var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
 
             var getAddressBarcodesParameters = new GetAddressBarcodesParameters
             {
-                RouteId = "893E6C33F0494572DEB2FAE34B2D3E0B",
-                RouteDestinationId = 705601646
+                RouteId = tdr.SD10Stops_route_id,
+                RouteDestinationId = (long)barCodeAddress.RouteDestinationId,
+                Limit = 10
             };
-            var readResult1 = await route4Me.GetAddressBarcodesAsync(getAddressBarcodesParameters);
-            Assert.That(readResult1.Item1.Data, Is.Not.Empty);
 
-            var saveAddressBarcodesResponse = await route4Me.SaveAddressBarcodesAsync(new SaveAddressBarcodesParameters
-            {
-                RouteId = "893E6C33F0494572DEB2FAE34B2D3E0B",
-                RouteDestinationId = 705601646,
-                Barcodes = new[]
-                {
-                    new BarcodeDataRequest
-                    {
-                        Barcode = "TEST2",
-                        Latitude = 40.610804,
-                        Longitude = -73.920172,
-                        TimestampDate = 1634169600,
-                        TimestampUtc = 1634198666,
-                        ScanType = "picked_up",
-                        ScannedAt = "2021-10-15 19:18:11"
-                    }
-                }
-            });
+            var readResult1 = route4me.GetAddressBarcodes(getAddressBarcodesParameters, out var resultResponse);
 
-            Assert.True(saveAddressBarcodesResponse.Item1.status);
-
-            var readResult2 = await route4Me.GetAddressBarcodesAsync(getAddressBarcodesParameters);
-
-            Assert.True(readResult2.Item1.Data.Length - readResult1.Item1.Data.Length == 1);
+            Assert.IsNotEmpty(readResult1.Data);
         }
+
+        [Test]
+        public async Task GetAddressBarcodesAsyncTest()
+        {
+            var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+
+            var getAddressBarcodesParameters = new GetAddressBarcodesParameters
+            {
+                RouteId = tdr.SD10Stops_route_id,
+                RouteDestinationId = (long)barCodeAddress.RouteDestinationId,
+                Limit = 10
+            };
+
+            var readResult1 = await route4me.GetAddressBarcodesAsync(getAddressBarcodesParameters);
+
+            Assert.IsNotEmpty(readResult1.Item1.Data);
+        }
+
     }
 }

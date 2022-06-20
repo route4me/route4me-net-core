@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -641,6 +642,12 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "advanced_constraints", EmitDefaultValue = false)]
         [DefaultValue(false)]
         public RouteAdvancedConstraints[] AdvancedConstraints { get; set; }
+
+        /// <summary>
+        /// Specifies a maximum number of the routes by advanced constraint groups.
+        /// </summary>
+        [DataMember(Name = "group_max_routes", EmitDefaultValue = false)]
+        public List<object[]> GroupMaxRoutes { get; set; }
     }
 
     /// <summary>

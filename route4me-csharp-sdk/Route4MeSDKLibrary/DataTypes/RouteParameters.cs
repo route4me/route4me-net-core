@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -262,8 +263,6 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "metric", EmitDefaultValue = false)]
         public Metric Metric { get; set; }
-
-        //the type of algorithm to use when optimizing the route
 
         /// <summary>
         ///     The algorithm type to use when optimizing the route. See <see cref="DataTypes.AlgorithmType" />
@@ -666,6 +665,18 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "use_mixed_pickup_delivery_demands", EmitDefaultValue = false)]
         [DefaultValue(false)]
         public bool UseMixedPickupDeliveryDemands { get; set; }
+
+        /// <summary>
+        /// Route balancing.
+        /// </summary>
+        [DataMember(Name = "balance", EmitDefaultValue = false)]
+        public Balance Balance { get; set; }
+
+        /// <summary>
+        /// Specifies a maximum number of the routes by advanced constraint groups.
+        /// </summary>
+        [DataMember(Name = "group_max_routes", EmitDefaultValue = false)]
+        public List<object[]> GroupMaxRoutes { get; set; }
     }
 
     /// <summary>
@@ -728,5 +739,14 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "travel_time", EmitDefaultValue = false)]
         public int? TravelTime { get; set; }
+    }
+
+    public class Balance
+    {
+        /// <summary>
+        /// Route balancing modes. <see cref="BalanceModes"/>
+        /// </summary>
+        [DataMember(Name = "mode", EmitDefaultValue = false)]
+        public string Mode { get; set; }
     }
 }

@@ -251,13 +251,15 @@ namespace Route4MeSDK.DataTypes
     ///     <para>Coordinates = 2, group locations by coordinates</para>
     ///     <para>AddressId = 3, group locations by list of the address IDs</para>
     ///     <para>Address = 4, group locations by address custom fields</para>
+    ///     <para>MultipleFields = 5, group locations by multiple address fields</para>
     /// </summary>
     public enum AddressBundlingMode : uint
     {
         Address = 1,
         Coordinates = 2,
         AddressId = 3,
-        AddressCustomField = 4
+        AddressCustomField = 4,
+        MultipleFields = 5
     }
 
     /// <summary>
@@ -314,4 +316,39 @@ namespace Route4MeSDK.DataTypes
     }
 
     #endregion
+
+    /// <summary>
+    ///     Enumeration of the order statuses
+    /// </summary>
+    public enum OrderStatuses : uint
+    {
+        New = 0,
+        InboundScan = 1,
+        SortedByTerritory = 2,
+        Loaded = 3,
+        Missing = 4,
+        Damaged = 5,
+        ManuallyLoaded = 6,
+        Routed = 7,
+        Unrouted = 8,
+        SortedByRoute = 9,
+        RouteStarted = 10,
+        Failed = 11,
+        Skipped = 12,
+        Done = 13,
+        Cancelled = 14,
+        Scheduled = 15
+    }
+
+    /// <summary>
+    /// Route balancing modes
+    /// </summary>
+    public enum BalanceModes : uint
+    {
+        [Description("distance")] Distance,
+
+        [Description("time")] Time,
+
+        [Description("destinations_count")] DestinationsCount
+    }
 }

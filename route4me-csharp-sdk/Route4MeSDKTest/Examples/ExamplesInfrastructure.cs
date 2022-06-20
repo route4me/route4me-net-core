@@ -7,8 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Route4MeSDKLibrary.DataTypes;
 using static Route4MeSDK.Route4MeManager;
+using Route4MeSDKLibrary.DataTypes;
+
 
 namespace Route4MeSDK.Examples
 {
@@ -74,7 +75,7 @@ namespace Route4MeSDK.Examples
 
         #region Optimizations, Routes, Destinations
 
-        private void PrintExampleRouteResult(object dataObjectRoute, string errorString)
+        private void PrintExampleRouteResult(object dataObjectRoute, string errorString, DataTypes.V5.ResultResponse resultResponse = null)
         {
             string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
             testName = testName != null ? testName : "";
@@ -83,7 +84,14 @@ namespace Route4MeSDK.Examples
 
             if (dataObjectRoute == null)
             {
-                Console.WriteLine("{0} error {1}", testName, errorString);
+                if (resultResponse==null)
+                {
+                    Console.WriteLine("{0} error {1}", testName, errorString);
+                }
+                else
+                {
+                    PrintFailResponse(resultResponse, testName);
+                }
             }
             else if (dataObjectRoute.GetType() == typeof(DataObjectRoute[]))
             {
@@ -92,6 +100,15 @@ namespace Route4MeSDK.Examples
                 foreach (var route in (DataObjectRoute[])dataObjectRoute)
                 {
                     Console.WriteLine("Route ID: {0}", route.RouteId);
+                }
+            }
+            else if (dataObjectRoute.GetType() == typeof(DataTypes.V5.DataObjectRoute[]))
+            {
+                Console.WriteLine("{0} executed successfully", testName);
+
+                foreach (var route in (DataTypes.V5.DataObjectRoute[])dataObjectRoute)
+                {
+                    Console.WriteLine("Route ID: {0}", route.RouteID);
                 }
             }
             else
@@ -1524,6 +1541,35 @@ namespace Route4MeSDK.Examples
         #region Telematics GateWay API
 
         private void PrintExampleTelematicsVendor(object result, string errorString)
+        {
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            Console.WriteLine("");
+
+            if (result != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                if (result.GetType() == typeof(TelematicsVendorResponse))
+                {
+                    Console.WriteLine("Vendor :" + ((TelematicsVendorResponse)result).Vendor.Name);
+                }
+                else
+                {
+                    foreach (var vendor in ((TelematicsVendorsResponse)result).Vendors)
+                    {
+                        Console.WriteLine("Vendor :" + vendor.Name);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine(testName + " error: {0}", errorString);
+            }
+        }
+
+        private void PrintExampleTelematicsConnection(object result, string errorString)
         {
             string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
             testName = testName != null ? testName : "";

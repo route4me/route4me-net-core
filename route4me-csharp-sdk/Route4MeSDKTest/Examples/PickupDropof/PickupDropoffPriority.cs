@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
         public void PickupDropoffPriority()
         {
             // Note: use an API key with permission for pickup/dropoff operations.
-            var route4Me = new Route4MeManager("E60AA4276C4A321FE4AF62D0705D346E");
+            var route4Me = new Route4MeManager(ActualApiKey);
 
             var routeParams = new RouteParameters()
             {
