@@ -76,6 +76,7 @@ namespace Route4MeSDK
                 {
                     return JsonConvert.DeserializeObject<T>(text, jsonSettings);
                 }
+
                 catch (JsonSerializationException)
                 {
                     OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal)JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
@@ -231,7 +232,7 @@ namespace Route4MeSDK
             var jsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-                DefaultValueHandling = DefaultValueHandling.Include,
+                //DefaultValueHandling = DefaultValueHandling.Include,
                 ContractResolver = new DataContractResolver()
             };
 

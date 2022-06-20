@@ -150,4 +150,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Examples\PickupDropof\" />
+    <Folder Include="Examples\Routes\Breaks\" />
+  </ItemGroup>
+
 </Project>
