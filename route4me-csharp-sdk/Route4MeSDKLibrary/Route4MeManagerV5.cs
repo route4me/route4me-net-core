@@ -1213,14 +1213,24 @@ namespace Route4MeSDK
                 HttpMethodType.Get);
         }
 
-        public DataTypes.DataObjectRoute[] GetRoutesByFilter(RouteFilterParameters routeFilterParameters,
+        public RouteFilterResponse GetRoutesByFilter(RouteFilterParameters routeFilterParameters,
             out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataTypes.DataObjectRoute[]>(
+            var result = GetJsonObjectFromAPI<RouteFilterResponse>(
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.Routes51,
                 HttpMethodType.Post,
                 out resultResponse);
+
+            return result;
+        }
+
+        public Task<Tuple<RouteFilterResponse, ResultResponse>> GetRoutesByFilterAsync(RouteFilterParameters routeFilterParameters)
+        {
+            var result = GetJsonObjectFromAPIAsync<RouteFilterResponse>(
+                routeFilterParameters,
+                R4MEInfrastructureSettingsV5.Routes51,
+                HttpMethodType.Post);
 
             return result;
         }

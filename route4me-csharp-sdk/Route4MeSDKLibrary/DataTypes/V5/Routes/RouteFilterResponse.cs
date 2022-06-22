@@ -35,7 +35,7 @@ namespace Route4MeSDK.DataTypes.V5
 
     }
 
-
+    [DataContract]
     public class RouteFilterResponseData
     {
         /// <summary>
@@ -153,7 +153,7 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "route_progress", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public long RouteProgress { get; set; }
+        public double RouteProgress { get; set; }
 
         /// <summary>
         ///     Route status
