@@ -111,6 +111,15 @@ namespace Route4MeSDK.Examples
                     Console.WriteLine("Route ID: {0}", route.RouteID);
                 }
             }
+            else if (dataObjectRoute.GetType() == typeof(DataTypes.V5.RouteFilterResponse))
+            {
+                Console.WriteLine("{0} executed successfully", testName);
+
+                foreach (var route in ((DataTypes.V5.RouteFilterResponse)dataObjectRoute).Data)
+                {
+                    Console.WriteLine("Route ID: {0}", route.RouteID);
+                }
+            }
             else
             {
                 var route1 = dataObjectRoute.GetType() == typeof(DataObjectRoute)
