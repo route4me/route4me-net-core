@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client.Transports;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Quobject.EngineIoClientDotNet.Client;
+using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.SocketIoClientDotNet.Client;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDKLibrary.DataTypes;
@@ -49,10 +49,17 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         public bool GeocodeOnlyEmpty { get; set; } = false;
 
+        [Obsolete("enableTraceSource is not used anymore. Use overloaded constructor without enableTraceSource")]
         public FastBulkGeocoding(string apiKey, bool enableTraceSource = false)
         {
-            if (apiKey != "") _apiKey = apiKey;
-            Quobject.SocketIoClientDotNet.TraceSourceTools.LogTraceSource.TraceSourceLogging(enableTraceSource);
+        }
+
+        public FastBulkGeocoding(string apiKey)
+        {
+            if (apiKey != "")
+            {
+                _apiKey = apiKey;
+            }
         }
 
         /// <summary>
