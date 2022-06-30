@@ -1,5 +1,5 @@
-﻿using Quobject.SocketIoClientDotNet.Client;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Modules;
+﻿using Quobject.EngineIoClientDotNet.Modules;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace Route4MeSDK.FastProcessing
 {
