@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.0.0] - 2022-06-30
+
+Switched from SocketIoClientDotNet.core_2.2 to SocketIoClientDotNet.Standard usage.
+
 ## [3.2.0.0] - 2022-05-11
 
 Data types are adjusted.
