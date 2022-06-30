@@ -19,7 +19,7 @@ The service is typically used by organizations who must route many drivers to ma
     <Version>3.3.0.0</Version>
     <PackageReleaseNotes>See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/CHANGELOG.md for release note details.</PackageReleaseNotes>
     <AssemblyVersion>3.3.0.0</AssemblyVersion>
-    <FileVersion>3.2.0.0</FileVersion>
+    <FileVersion>3.3.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
