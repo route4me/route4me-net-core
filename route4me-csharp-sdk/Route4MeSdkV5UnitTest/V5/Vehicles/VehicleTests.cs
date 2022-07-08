@@ -302,7 +302,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
             var vehicleData = route4me.GetPaginatedVehiclesList(vehicleParams, out ResultResponse resultResponse);
 
             Assert.NotNull(vehicleData);
-            Assert.That(vehicleData.GetType(), Is.EqualTo(typeof(VehicleResponse)));
+            Assert.That(vehicleData.GetType(), Is.EqualTo(typeof(VehiclesResponse)));
         }
 
     }

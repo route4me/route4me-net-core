@@ -5,6 +5,19 @@ using Route4MeSDK.QueryTypes;
 namespace Route4MeSDK.DataTypes.V5
 {
     /// <summary>
+    ///     The data structure of a driver review response (create, update).
+    /// </summary>
+    [DataContract]
+    public sealed class DriverReviewResponse
+    {
+        /// <summary>
+        ///     The data object containing a driver review object.
+        /// </summary>
+        [DataMember(Name = "data")]
+        public DriverReview Data { get; set; }
+    }
+
+    /// <summary>
     ///     The data structure of a retrieved driver review.
     /// </summary>
     [DataContract]
@@ -46,6 +59,7 @@ namespace Route4MeSDK.DataTypes.V5
     /// <summary>
     ///     The data structure of a retrieved driver reviews list.
     /// </summary>
+    [DataContract]
     public sealed class DriverReviewsResponse
     {
         /// <summary>
@@ -70,6 +84,7 @@ namespace Route4MeSDK.DataTypes.V5
     /// <summary>
     ///     Data structure of the response pagination info.
     /// </summary>
+    [DataContract]
     public sealed class SimplePaginationData
     {
         /// <summary>
@@ -92,14 +107,15 @@ namespace Route4MeSDK.DataTypes.V5
 
         [DataMember(Name = "first")] public string First { get; set; }
 
-        [DataMember(Name = "prev")] public int? Previous { get; set; }
+        [DataMember(Name = "prev")] public string Previous { get; set; }
 
-        [DataMember(Name = "next")] public int? Next { get; set; }
+        [DataMember(Name = "next")] public string Next { get; set; }
     }
 
     /// <summary>
     ///     Driver rating quantity by types.
     /// </summary>
+    [DataContract]
     public sealed class TypeQuantity
     {
         [DataMember(Name = "type")] public int Type { get; set; }

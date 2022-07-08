@@ -35,9 +35,7 @@ namespace Route4MeSDK.Examples
 
             PrintTestVehcileCapacityProfilesV5(vehicleCapacityProfile, resultResponse);
 
-            //RemoveTestVehicleCapacityProfilesV5();
-
-
+            RemoveTestVehicleCapacityProfilesV5();
         }
     }
 }
