@@ -3530,7 +3530,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.AddressBook,
                 HttpMethodType.Get,
                 false,
-                true,
+                false,
                 out errorString);
 
             total = response?.Total ?? 0;

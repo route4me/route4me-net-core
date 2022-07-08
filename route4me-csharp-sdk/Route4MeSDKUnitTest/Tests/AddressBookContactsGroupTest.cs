@@ -15,7 +15,7 @@ namespace Route4MeSDKUnitTest.Tests
 
         private AddressBookContact _contact1, _contact2;
 
-        private readonly List<int> _lsRemoveContacts = new List<int>();
+        private readonly List<long> _lsRemoveContacts = new List<long>();
         private AddressBookContact _scheduledContact1, _scheduledContact1Response;
         private AddressBookContact _scheduledContact2, _scheduledContact2Response;
         private AddressBookContact _scheduledContact3, _scheduledContact3Response;
@@ -23,17 +23,33 @@ namespace Route4MeSDKUnitTest.Tests
         private AddressBookContact _scheduledContact5, _scheduledContact5Response;        
         private AddressBookContact _contactToRemove;
 
+        private TestDataRepository _tdr;
+        private List<string> _lsOptimizationIDs;
+
         [OneTimeSetUp]
         public void AddAddressBookContactsTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
+
+            string scheduledDate = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
+
+            var sched1 = new Schedule("daily", false)
+            {
+                Enabled = true,
+                From = scheduledDate,
+                Mode = "daily",
+                Daily = new ScheduleDaily(1)
+            };
+
+            #region Create 1st Contact
 
             var contact = new AddressBookContact
             {
                 FirstName = "Test FirstName " + new Random().Next(),
                 Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024654,
-                CachedLng = -77.338814
+                CachedLng = -77.338814,
+                Schedule = new List<Schedule>() { sched1 }
             };
 
             // Run the query
@@ -41,9 +57,13 @@ namespace Route4MeSDKUnitTest.Tests
 
             Assert.IsNotNull(_contact1, "AddAddressBookContactsTest failed. " + errorString);
 
-            var location1 = _contact1.AddressId != null ? Convert.ToInt32(_contact1.AddressId) : -1;
+            var location1 = _contact1.AddressId != null ? Convert.ToInt64(_contact1.AddressId) : -1;
 
             if (location1 > 0) _lsRemoveContacts.Add(location1);
+
+            #endregion
+
+            #region Create 2nd Contact
 
             var dCustom = new Dictionary<string, string>
             {
@@ -56,16 +76,21 @@ namespace Route4MeSDKUnitTest.Tests
                 Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024654,
                 CachedLng = -77.338814,
-                AddressCustomData = dCustom
+                AddressCustomData = dCustom,
+                Schedule = new List<Schedule>() { sched1 }
             };
 
             _contact2 = route4Me.AddAddressBookContact(contact, out errorString);
 
             Assert.IsNotNull(_contact2, "AddAddressBookContactsTest failed. " + errorString);
 
-            var location2 = _contact2.AddressId != null ? Convert.ToInt32(_contact2.AddressId) : -1;
+            var location2 = _contact2.AddressId != null ? Convert.ToInt64(_contact2.AddressId) : -1;
 
             if (location2 > 0) _lsRemoveContacts.Add(location2);
+
+            #endregion
+
+            #region Create 3rd Contact for removing
 
             var contactParams = new AddressBookContact
             {
@@ -76,6 +101,45 @@ namespace Route4MeSDKUnitTest.Tests
             };
 
             _contactToRemove = route4Me.AddAddressBookContact(contactParams, out errorString);
+
+            if ((_contactToRemove?.AddressId ?? 0) > 0) _lsRemoveContacts.Add((long)_contactToRemove.AddressId);
+
+            #endregion
+
+            _lsOptimizationIDs = new List<string>();
+
+            #region Create Single Driver 10 Stops Route
+            _tdr = new TestDataRepository();
+
+            var result = _tdr.RunOptimizationSingleDriverRoute10Stops();
+
+            Assert.IsTrue(result, "Single Driver 10 Stops generation failed.");
+
+            _lsOptimizationIDs.Add(_tdr.SD10Stops_optimization_problem_id);
+
+            #endregion
+
+            #region Dynamically insert the created contacts to a route
+
+            var addressToInsert1 = new Address()
+            {
+                ContactId = _contact1.AddressId,
+                Latitude = _contact1.CachedLat,
+                Longitude = _contact1.CachedLng
+            };
+
+            var addressToInsert2 = new Address()
+            {
+                ContactId = _contact2.AddressId,
+                Latitude = _contact2.CachedLat,
+                Longitude = _contact2.CachedLng
+            };
+
+            _tdr.SD10Stops_route = _tdr.AddAddressesToRoute(
+                new Address[] { addressToInsert1, addressToInsert2 }, 
+                _tdr.SD10Stops_route_id);
+
+            #endregion
         }
 
         [Test]
@@ -710,6 +774,10 @@ namespace Route4MeSDKUnitTest.Tests
 
                 Assert.IsTrue(removed, "RemoveAddressBookContactsTest failed. " + errorString);
             }
+
+            var result = _tdr.RemoveOptimization(_lsOptimizationIDs.ToArray());
+
+            Assert.IsTrue(result, "Removing of the testing optimization problem failed.");
         }
     }
 }

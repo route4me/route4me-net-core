@@ -176,10 +176,11 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
                 Address1 = "Test Address1 " + new Random().Next(),
                 CachedLat = 38.024654,
                 CachedLng = -77.338814,
+                ScheduleBlacklist = new string[] {"2022-06-28"},
                 AddressStopType = AddressStopType.PickUp.Description()
             };
 
-            var contact = route4Me.AddAddressBookContact(contactParams, out _);
+            var contact = route4Me.AddAddressBookContact(contactParams, out ResultResponse resultResponse);
             Assert.That(contact.GetType(), Is.EqualTo(typeof(AddressBookContact)));
 
             lsCreatedContacts.Add(contact);

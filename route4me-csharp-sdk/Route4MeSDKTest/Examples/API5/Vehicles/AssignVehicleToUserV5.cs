@@ -17,7 +17,7 @@ namespace Route4MeSDK.Examples
 
             var vehicleParams = new VehicleTemporary()
             {
-                VehicleId = "FFBBFE7960518F7B4A79C5767C9B10CF",
+                VehicleId = "68F3545D3DA82DBF007B20FA9A1875EB",
                 ForceAssignment = false,
                 AssignedMemberId = randomMember.MemberId.ToString(),
                 ExpiresAt = R4MeUtils.ConvertToUnixTimestamp(DateTime.Now + (new TimeSpan(2, 0, 0, 0))).ToString()

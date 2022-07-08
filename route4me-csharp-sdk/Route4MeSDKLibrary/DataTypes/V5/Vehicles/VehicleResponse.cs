@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using Route4MeSDK.QueryTypes;
+﻿using Route4MeSDK.QueryTypes;
+using System.Runtime.Serialization;
 
 namespace Route4MeSDK.DataTypes.V5
 {
@@ -7,24 +7,22 @@ namespace Route4MeSDK.DataTypes.V5
     ///     Response for the endpoint /vehicles/license
     /// </summary>
     [DataContract]
-    public sealed class VehicleResponse : GenericParameters
+    public sealed class VehicleResponse
     {
         /// <summary>
         ///     Vehicle data
         /// </summary>
         [DataMember(Name = "data", EmitDefaultValue = false)]
-        public Vehicle[] Data { get; set; }
+        public DataVehicle Data { get; set; }
+    }
 
+    [DataContract]
+    public class DataVehicle
+    {
         /// <summary>
-        ///     Total found vehicles
+        ///     The vehicle ID
         /// </summary>
-        [DataMember(Name = "total", EmitDefaultValue = false)]
-        public int Total { get; set; }
-
-        /// <summary>
-        ///     An array of the error messages.
-        /// </summary>
-        [DataMember(Name = "error", EmitDefaultValue = false)]
-        public string[] Error { get; set; }
+        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        public VehicleBase Vehicle { get; set; }
     }
 }

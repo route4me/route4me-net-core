@@ -129,13 +129,20 @@ namespace Route4MeSDK.Examples
                 var route2 = dataObjectRoute.GetType() == typeof(RouteResponse)
                     ? (RouteResponse)dataObjectRoute
                     : null;
+                var route3 = dataObjectRoute.GetType() == typeof(DataTypes.V5.DataObjectRoute)
+                    ? (DataTypes.V5.DataObjectRoute)dataObjectRoute
+                    : null;
 
                 Console.WriteLine("{0} executed successfully", testName);
                 Console.WriteLine("");
 
                 Console.WriteLine(
                     "Optimization Problem ID: {0}",
-                    route1 != null ? route1.OptimizationProblemId : route2.OptimizationProblemId
+                    route1 != null 
+                    ? route1.OptimizationProblemId 
+                    : route2 !=null 
+                        ? route2.OptimizationProblemId 
+                        : route3.OptimizationProblemId
                     );
 
                 Console.WriteLine("");
@@ -147,26 +154,14 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine("Address: {0}", address.AddressString);
                         Console.WriteLine("Route ID: {0}", address.RouteId);
                     });
-
-                    if ((route1?.Directions?.Length ?? 0) > 0)
+                }
+                else if (route3 != null)
+                {
+                    route3.Addresses.ForEach(address =>
                     {
-                        Console.WriteLine("");
-
-                        Console.WriteLine(
-                            String.Format("Directions length: {0}",
-                            route1.Directions.Length)
-                        );
-                    }
-
-                    if ((route1?.Path?.Length ?? 0) > 0)
-                    {
-                        Console.WriteLine("");
-
-                        Console.WriteLine(
-                            String.Format("Path points: {0}",
-                            route1.Path.Length)
-                        );
-                    }
+                        Console.WriteLine("Address: {0}", address.AddressString);
+                        Console.WriteLine("Route ID: {0}", address.RouteId);
+                    });
                 }
                 else
                 {
@@ -175,26 +170,6 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine("Address: {0}", address.AddressString);
                         Console.WriteLine("Route ID: {0}", address.RouteId);
                     });
-
-                    if ((route2?.Directions?.Length ?? 0) > 0)
-                    {
-                        Console.WriteLine("");
-
-                        Console.WriteLine(
-                            String.Format("Directions length: {0}",
-                            route2.Directions.Length)
-                        );
-                    }
-
-                    if ((route2?.Path?.Length ?? 0) > 0)
-                    {
-                        Console.WriteLine("");
-
-                        Console.WriteLine(
-                            String.Format("Path points: {0}",
-                            route2.Path.Length)
-                        );
-                    }
                 }
             }
         }
@@ -672,7 +647,7 @@ namespace Route4MeSDK.Examples
         {
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            if (ContactsToRemove.Count > 0)
+            if ((ContactsToRemove?.Count ?? 0) > 0)
             {
                 try
                 {
@@ -693,7 +668,10 @@ namespace Route4MeSDK.Examples
         {
             if (contacts == null ||
                 (contacts.GetType() != typeof(AddressBookContact) &&
-                contacts.GetType() != typeof(AddressBookContact[])))
+                contacts.GetType() != typeof(AddressBookContact[]) &&
+                contacts.GetType() != typeof(DataTypes.V5.AddressBookContact[]) &&
+                contacts.GetType() != typeof(DataTypes.V5.AddressBookContact)
+                ))
             {
                 Console.WriteLine("Wrong contact(s). Cannot print." + Environment.NewLine + errorString);
                 return;
@@ -703,7 +681,7 @@ namespace Route4MeSDK.Examples
 
             if (contacts.GetType() == typeof(AddressBookContact))
             {
-                AddressBookContact resultContact = (AddressBookContact)contacts;
+                var resultContact = (AddressBookContact)contacts;
 
                 Console.WriteLine("AddAddressBookContact executed successfully");
 
@@ -715,6 +693,30 @@ namespace Route4MeSDK.Examples
                 {
                     Console.WriteLine(cdata.Key + ": " + cdata.Value);
                 }
+            }
+            else if (contacts.GetType() == typeof(DataTypes.V5.AddressBookContact))
+            {
+                var resultContact = (DataTypes.V5.AddressBookContact)contacts;
+
+                Console.WriteLine("AddAddressBookContact executed successfully");
+
+                Console.WriteLine("AddressId: {0}", resultContact.AddressId);
+
+                Console.WriteLine("Custom data:");
+                if ((resultContact?.AddressCustomData ?? null)!=null)
+                {
+                    foreach (var cdata in (Dictionary<string, string>)resultContact.AddressCustomData)
+                    {
+                        Console.WriteLine(cdata.Key + ": " + cdata.Value);
+                    }
+                }
+            }
+            else if(contacts.GetType() == typeof(DataTypes.V5.AddressBookContact[]))
+            {
+                Console.WriteLine(
+                    "GetAddressBookContacts executed successfully, {0} contacts returned, total = {1}", 
+                    ((DataTypes.V5.AddressBookContact[])contacts).Length, total);
+                Console.WriteLine("");
             }
             else
             {

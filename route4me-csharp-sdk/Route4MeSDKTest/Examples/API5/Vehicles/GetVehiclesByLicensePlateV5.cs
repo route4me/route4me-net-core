@@ -11,9 +11,9 @@ namespace Route4MeSDK.Examples
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
-            var vehicles = route4Me.GetVehicleByLicensePlate("PPV7516", out ResultResponse resultResponse);
+            var vehicles = route4Me.GetVehicleByLicensePlate("CVH4561", out ResultResponse resultResponse);
 
-            PrintTestVehcilesV5(vehicles, resultResponse);
+            PrintTestVehcilesV5(vehicles.Data.Vehicle, resultResponse);
         }
     }
 }

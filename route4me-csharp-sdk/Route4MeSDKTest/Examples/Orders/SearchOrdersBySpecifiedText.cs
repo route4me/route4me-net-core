@@ -5,12 +5,14 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// Get Orders be containing specified text in any text field
+        /// Search the orders be containing specified text in any text field
         /// </summary>
-        public void GetOrdersBySpecifiedText(string query = null)
+        public void SearchOrdersBySpecifiedText(string query = null)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
+
+            #region Preapre query parameters
 
             bool isInnerExample = query == null ? true : false;
 
@@ -27,10 +29,15 @@ namespace Route4MeSDK.Examples
                 Limit = 20
             };
 
+            #endregion
+
+            // Send a request to the server
             var result = route4Me.SearchOrders(oParams, out string errorString);
 
+            // Print the result on the console
             PrintExampleOrder(result, errorString);
 
+            // Remove test data
             if (isInnerExample) RemoveTestOrders();
         }
     }
