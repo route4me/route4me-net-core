@@ -73,7 +73,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
             };
 
             // Run the query
-            var dataObjects = route4Me.GetRoutes(routeParameters, out _);
+            var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
 
             Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
         }
@@ -236,11 +236,15 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
-        [Ignore("Will be finished after implementing Route Destinations API")]
         public void UpdateRouteTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
+            var _tdr = new TestDataRepository();
+
+            _tdr.RunOptimizationSingleDriverRoute10Stops();
+
+            /*
             _tdr.SD10Stops_route.Parameters.DistanceUnit = DistanceUnit.KM.Description();
             _tdr.SD10Stops_route.Parameters.Parts = 2;
             _tdr.SD10Stops_route.Parameters = null;
@@ -257,11 +261,38 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
             addresses.Add(_tdr.SD10Stops_route.Addresses[3]);
 
             _tdr.SD10Stops_route.Addresses = addresses.ToArray();
+            */
 
-            var updatedRoute = route4Me.UpdateRoute(_tdr.SD10Stops_route, out _);
+            var routeParams = new RouteParametersQuery()
+            {
+                RouteId = _tdr.SD10Stops_route.RouteID,
+                Parameters = new RouteParameters()
+                {
+                    RouteName = _tdr.SD10Stops_route.Parameters.RouteName + " Updated"
+                },
+                Addresses = new Address[]
+                {
+                    new Address()
+                    {
+                        RouteDestinationId = _tdr.SD10Stops_route.Addresses[2].RouteDestinationId,
+                        Alias = "Address 2",
+                        AddressStopType = AddressStopType.Delivery.Description(),
+                        SequenceNo = 4
+                    },
+                    new Address()
+                    {
+                        RouteDestinationId = _tdr.SD10Stops_route.Addresses[3].RouteDestinationId,
+                        Alias = "Address 3",
+                        AddressStopType = AddressStopType.PickUp.Description(),
+                        SequenceNo = 3
+                    }
+                }
+            };
+
+            var updatedRoute = route4Me.UpdateRoute(routeParams, out ResultResponse resultResponse);
 
             Assert.NotNull(updatedRoute);
-            Assert.That(updatedRoute.GetType(), Is.EqualTo(typeof(RouteDataTableConfigResponse)));
+            Assert.That(updatedRoute.GetType(), Is.EqualTo(typeof(DataObjectRoute)));
         }
     }
 }

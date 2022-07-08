@@ -6,7 +6,7 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// The example refers to the process of gettting a vehicle capacity profile by ID using the API 5 endpoint.
+        /// The example refers to the process of retrieving a vehicle capacity profile by ID using the API 5 endpoint.
         /// </summary>
         public void GetVehicleCapacityProfileByIdV5()
         {

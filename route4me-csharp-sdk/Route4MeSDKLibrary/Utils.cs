@@ -70,6 +70,19 @@ namespace Route4MeSDK
                 if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "[" + rslt.Groups[1] + "]");
             }
 
+            if (typeof(T) == typeof(DataTypes.V5.AddressBookContact) || typeof(T) == typeof(DataTypes.V5.AddressBookContact[]))
+            {
+                var pattern = string.Concat(
+                    "\\\"schedule_blacklist\\\"",
+                    @":(\[\[[\s\S\n\d\w]*\]\]),",
+                    "\"");
+
+                var rgx = new Regex(pattern);
+                var rslt = rgx.Match(text);
+
+                if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "null");
+            }
+
             if (typeof(T) == typeof(OrderHistoryResponse))
             {
                 try

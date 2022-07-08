@@ -38,7 +38,7 @@ namespace Route4MeSDK.Examples
                 MaxWeightPerAxleUfValue = "900lb",
                 FuelConsumptionCityUfValue = "20.01 mi/l",
                 FuelConsumptionHighwayUfValue = "2,000.01 mpg",
-                VehicleProfileCode = "VPC853"
+                VehicleProfileCode = R4MeUtils.GenerateRandomString(5)
             };
 
             var vehicleProfile = route4Me.CreateVehicleProfile(vehicleProfileParams1, out ResultResponse resultResponse);
@@ -51,7 +51,7 @@ namespace Route4MeSDK.Examples
 
             PrintTestVehcileProfilesV5(vehicleProfile, resultResponse);
 
-            //RemoveTestVehicleProfilesV5();
+            RemoveTestVehicleProfilesV5();
 
 
         }

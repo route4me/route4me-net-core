@@ -1,4 +1,5 @@
 ﻿using Route4MeSDK.DataTypes.V5;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
@@ -9,11 +10,18 @@ namespace Route4MeSDK.Examples
         /// </summary>
         public void CreateDriverReview()
         {
+            // The example requires an API key with special features.
             var route4Me = new Route4MeManagerV5(ActualApiKey);
+
+            RunOptimizationSingleDriverRoute10Stops();
+
+            OptimizationsToRemove = new List<string>() { SD10Stops_optimization_problem_id };
+
+            var trackingNumber = SD10Stops_route.Addresses[1].TrackingNumber;
 
             var newDriverReview = new DriverReview()
             {
-                TrackingNumber = "NDRK0M1V", // TO DO: take this value from generated test route later.
+                TrackingNumber = trackingNumber,
                 Rating = 4,
                 Review = "Test Review"
             };
@@ -21,7 +29,9 @@ namespace Route4MeSDK.Examples
             var driverReview = route4Me.CreateDriverReview(newDriverReview,
                                                           out ResultResponse resultResponse);
 
-            PrintDriverReview(driverReview, resultResponse);
+            PrintDriverReview(driverReview.Data, resultResponse);
+
+            RemoveTestOptimizations();
         }
     }
 }

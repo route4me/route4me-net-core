@@ -240,8 +240,8 @@
         public const string ContactsExport = ContactHost + "/addresses/export";
         public const string ContactsExportByAreas = ContactHost + "/addresses/export-by-areas";
         public const string ContactsExportByAreaIds = ContactHost + "/addresses/export-by-area-ids";
-        public const string ContactsGetAsyncJobStatus = ContactHost + "/addresses/job-tracker/status/{job_id}";
-        public const string ContactsGetAsyncJobResult = ContactHost + "/addresses/job-tracker/result/{job_id}";
+        public const string ContactsGetAsyncJobStatus = ContactHost + "/job-tracker/status";
+        public const string ContactsGetAsyncJobResult = ContactHost + "/job-tracker/result";
         public const string AddressBookDepots = ContactHost + "/addresses/depots";
 
         #endregion

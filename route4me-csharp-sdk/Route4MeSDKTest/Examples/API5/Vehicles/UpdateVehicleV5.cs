@@ -13,9 +13,9 @@ namespace Route4MeSDK.Examples
 
             var vehicleParams = new Vehicle()
             {
-                VehicleId = "FFBBFE7960518F7B4A79C5767C9B10CF",
+                VehicleId = "68F3545D3DA82DBF007B20FA9A1875EB",
                 VehicleModelYear = 2015,
-                VehicleYearAcquired = 2018
+                VehicleYearAcquired = 2019
             };
 
             var vehicle = route4Me.UpdateVehicle(vehicleParams, out ResultResponse resultResponse);

@@ -6,12 +6,14 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        ///     Show Orders by tracking numbers.
+        ///     Filter and show the orders by tracking numbers.
         /// </summary>
-        public void GetOrdersByTrackingNumbers()
+        public void FilterOrdersByTrackingNumbers()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
+
+            #region Prepare filter parameters
 
             var trakingNumbers = new List<string>()
             {
@@ -28,8 +30,12 @@ namespace Route4MeSDK.Examples
                 }
             };
 
+            #endregion
+
+            // Send a request to the server
             var orders = route4Me.FilterOrders(filterParams, out var errorString);
 
+            // Print the result on the console
             PrintExampleOrder(orders, errorString);
         }
     }

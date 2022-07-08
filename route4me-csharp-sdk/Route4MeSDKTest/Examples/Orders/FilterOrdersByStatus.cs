@@ -7,12 +7,14 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// Get Orders by statuses.
+        /// Filter and retrieve the orders by status <see cref="OrderStatuses"/>.
         /// </summary>
-        public void GetOrderByStatus()
+        public void FilterOrdersByStatus()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
+
+            #region Prepare an array of the order statuses
 
             var orderStatuses = new List<int>();
 
@@ -20,6 +22,9 @@ namespace Route4MeSDK.Examples
             orderStatuses.Add((int)OrderStatuses.Cancelled);
             orderStatuses.Add((int)OrderStatuses.Damaged);
 
+            #endregion
+
+            // Preapre query parameter with filter
             var orderParams = new OrderFilterParameters()
             {
                 Filter = new FilterDetails()
@@ -28,8 +33,10 @@ namespace Route4MeSDK.Examples
                 }
             };
 
+            // Send a request to the server
             var orders = route4Me.FilterOrders(orderParams, out string errorString);
 
+            // Print the result on the console
             PrintExampleOrder(orders, errorString);
         }
     }
