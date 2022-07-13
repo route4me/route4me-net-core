@@ -727,8 +727,8 @@ namespace Route4MeSdkV5UnitTest.V5
         /// Restores and returns deleted vehicle
         /// </summary>
         /// <param name="queryText">Queery text to serach for</param>
-        /// <param name="ApiKey"></param>
-        /// <returns></returns>
+        /// <param name="ApiKey">API key</param>
+        /// <returns>The tuple type object containing restored vehicle</returns>
         public Tuple<Vehicle, string> RestoreTestVehicle(string queryText, string ApiKey = null)
         {
             ApiKey = ApiKey ?? c_ApiKey;
@@ -753,7 +753,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
                 var vehicleIDs = new string[] { vehicles.Data[0].VehicleId };
 
-                var restoredVehicles = route4Me.RestoreVehicles(vehicleIDs);
+                var restoredVehicles = route4Me.RestoreVehiclesAsync(vehicleIDs);
 
                 restoredVehicles.Wait();
 

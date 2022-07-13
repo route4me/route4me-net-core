@@ -7,18 +7,18 @@ namespace Route4MeSDK.Examples
     {
         /// <summary>
         /// The example refers to the process of getting a job result 
-        /// using the API 5 endpoint.
+        /// asynchronously using the API 5 endpoint.
         /// </summary>
-        public void GetJobResultV5()
+        public async void GetJobResultV5Async()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
             // Send a request to the server
-            var result = route4Me.GetVehicleJobResult("50CE911542B397C7EBCDDA13CDE5580A", out ResultResponse resultResponse);
+            var result = await route4Me.GetVehicleJobResultAsync("50CE911542B397C7EBCDDA13CDE5580A");
 
             Console.WriteLine("Job result: " +
-                (result?.IsSuccessStatusCode ?? false));
+                (result?.Item1?.IsSuccessStatusCode ?? false));
 
         }
     }

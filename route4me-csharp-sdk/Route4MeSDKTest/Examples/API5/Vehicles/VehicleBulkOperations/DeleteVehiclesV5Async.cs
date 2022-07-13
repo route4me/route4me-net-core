@@ -1,15 +1,14 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using System;
+﻿using System;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// The example refers to the process of restoring the vehicles 
-        /// using the API 5 endpoint.
+        /// The example shows how to use the API 5 endpoint 
+        /// to delete asynchronously several vehicles at once.
         /// </summary>
-        public void RestoreVehiclesV5()
+        public async void DeleteVehiclesV5Async()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
@@ -21,10 +20,10 @@ namespace Route4MeSDK.Examples
             };
 
             // Send a request to the server
-            var result = route4Me.RestoreVehicles(vehicleIDs, out ResultResponse resultResponse);
+            var result = await route4Me.DeleteVehiclesAsync(vehicleIDs);
 
-            Console.WriteLine("Restore result: "+
-                (result?.IsSuccessStatusCode ?? false));
+            Console.WriteLine("Delete result: "+
+                (result?.Item1?.IsSuccessStatusCode ?? false));
         }
     }
 }
