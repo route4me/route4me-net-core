@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Route4MeSDK.QueryTypes
 {
@@ -63,5 +64,17 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [DataMember(Name = "created_timestamp_end")]
         public long? CreatedTimestampEnd { get; set; }
+
+        /// <summary>
+        /// The field name, field value pairs for filtering.
+        /// </summary>
+        [DataMember(Name = "terms")]
+        public Dictionary<string, string> Terms { get; set; }
+
+        /// <summary>
+        ///     An array of the order status codes.
+        /// </summary>
+        [DataMember(Name = "statuses")]
+        public int[] Statuses { get; set; }
     }
 }

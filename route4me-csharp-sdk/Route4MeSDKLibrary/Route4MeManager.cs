@@ -1728,9 +1728,7 @@ namespace Route4MeSDK
 
             return result == null && errorString != ""
                 ? null
-                : result?.Data.Length == 0
-                    ? null
-                    : result;
+                : result;
         }
 
         /// <summary>
@@ -3530,7 +3528,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.AddressBook,
                 HttpMethodType.Get,
                 false,
-                true,
+                false,
                 out errorString);
 
             total = response?.Total ?? 0;

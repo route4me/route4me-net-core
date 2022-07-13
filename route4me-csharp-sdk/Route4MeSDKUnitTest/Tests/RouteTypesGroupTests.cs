@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
@@ -4438,6 +4439,7 @@ namespace Route4MeSDKUnitTest.Tests
             MergeRoutesTest();
         }
 
+        [Test]
         public void MoveDestinationToRouteTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
@@ -5221,7 +5223,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
-        public void GetScheduleCalendarTest()
+        public async Task GetScheduleCalendarTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -5239,13 +5241,14 @@ namespace Route4MeSDKUnitTest.Tests
                 RoutesCount = true
             };
 
-            var scheduleCalendar = route4Me.GetScheduleCalendar(calendarQuery, out var errorString);
+            var scheduleCalendar = await route4Me.GetScheduleCalendarAsync(calendarQuery);
+            //var scheduleCalendar = route4Me.GetScheduleCalendar(calendarQuery, out var errorString);
 
             Assert.IsNotNull(scheduleCalendar, "The test GetScheduleCalendarTest failed");
 
-            Assert.IsNotNull(scheduleCalendar.AddressBook, "The test GetScheduleCalendarTest failed");
-            Assert.IsNotNull(scheduleCalendar.Orders, "The test GetScheduleCalendarTest failed");
-            Assert.IsNotNull(scheduleCalendar.RoutesCount, "The test GetScheduleCalendarTest failed");
+            Assert.IsNotNull(scheduleCalendar.Item1.AddressBook, "The test GetScheduleCalendarTest failed");
+            Assert.IsNotNull(scheduleCalendar.Item1.Orders, "The test GetScheduleCalendarTest failed");
+            Assert.IsNotNull(scheduleCalendar.Item1.RoutesCount, "The test GetScheduleCalendarTest failed");
         }
 
         [Test]
