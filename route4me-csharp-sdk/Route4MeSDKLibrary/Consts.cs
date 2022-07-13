@@ -244,10 +244,6 @@
         public const string ContactsGetAsyncJobResult = ContactHost + "/job-tracker/result";
         public const string AddressBookDepots = ContactHost + "/addresses/depots";
 
-        public const string ContactExport = ContactHost + "/addresses/export";
-        public const string ContactExportByAreas = ContactHost + "/addresses/export-by-areas";
-        public const string ContactExportByAreaIds = ContactHost + "/addresses/export-by-area-ids";
-
         #endregion
 
         public const string AddressBarcodes = MainHost + "/address-barcodes";
