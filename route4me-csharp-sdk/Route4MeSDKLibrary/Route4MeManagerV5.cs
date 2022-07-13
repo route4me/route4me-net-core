@@ -352,12 +352,36 @@ namespace Route4MeSDK
                 HttpMethodType.Get);
         }
 
+        /// <summary>
+        ///     Asynchronously exports the addresses to the account's team file store.
+        /// </summary>
+        /// <param name="exportParams">Export parameters</param>
+        /// <returns>A tuple type object containing:
+        /// - a StatusResponse type object in case of success, null - if failure,
+        /// - a ResultResponse type object in case of failure, null - if success</returns>
         public Task<Tuple<StatusResponse, ResultResponse>> ExportAddressesAsync(AddressExportParameters exportParams)
         {
             return GetJsonObjectFromAPIAsync<StatusResponse>(exportParams,
-                R4MEInfrastructureSettingsV5.ContactExport,
+                R4MEInfrastructureSettingsV5.ContactsExport,
                 HttpMethodType.Post);
 
+        }
+
+        /// <summary>
+        ///     Exports the addresses to the account's team file store.
+        /// </summary>
+        /// <param name="exportParams">Export parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Status of an export operation</returns>
+        public StatusResponse ExportAddresses(AddressExportParameters exportParams, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<StatusResponse>(exportParams,
+                R4MEInfrastructureSettingsV5.ContactsExport,
+                HttpMethodType.Post,
+                null,
+                false,
+                false,
+                out resultResponse);
         }
 
         #endregion
