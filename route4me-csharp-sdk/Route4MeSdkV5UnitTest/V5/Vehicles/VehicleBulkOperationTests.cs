@@ -217,7 +217,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
             };
 
 
-            var result = await route4me.UpdateVehicles(vehicleArray);
+            var result = await route4me.UpdateVehiclesAsync(vehicleArray);
 
             JobId = result.Item3;
 
@@ -237,7 +237,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
                 lsCreatedVehicles[1].VehicleId
             };
 
-            var result = await route4me.DeleteVehicles(vehicleIDs);
+            var result = await route4me.DeleteVehiclesAsync(vehicleIDs);
 
             JobId = result.Item3;
 
@@ -257,7 +257,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
                 lsCreatedVehicles[1].VehicleId
             };
 
-            var result = await route4me.RestoreVehicles(vehicleIDs);
+            var result = await route4me.RestoreVehiclesAsync(vehicleIDs);
 
             JobId = result.Item3;
 

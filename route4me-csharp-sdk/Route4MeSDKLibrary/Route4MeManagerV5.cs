@@ -127,11 +127,14 @@ namespace Route4MeSDK
         ///     Offset, Limit
         /// </param>
         /// <returns>An AddressBookContactsResponse type object</returns>
-        public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsAsync(AddressBookParameters addressBookParameters)
+        public Task<Tuple<AddressBookContactsResponse, ResultResponse, string>> GetAddressBookContactsAsync(AddressBookParameters addressBookParameters)
         {
             return GetJsonObjectFromAPIAsync<AddressBookContactsResponse>(addressBookParameters,
                 R4MEInfrastructureSettingsV5.ContactsGetAll,
-                HttpMethodType.Get);
+                HttpMethodType.Get,
+                null,
+                true,
+                false);
         }
 
         /// <summary>
@@ -337,6 +340,25 @@ namespace Route4MeSDK
                 out resultResponse);
         }
 
+        /// <summary>
+        ///     Get the job status of an asynchronous address book contact process asynchronously.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <returns>A Tuple type object containing a job status or/and failure response</returns>
+        public Task<Tuple<StatusResponse, ResultResponse>> GetContactsJobStatusAsync(string jobId)
+        {
+            return GetJsonObjectFromAPIAsync<StatusResponse>(new GenericParameters(),
+                R4MEInfrastructureSettingsV5.ContactsGetAsyncJobStatus + "/" + jobId,
+                HttpMethodType.Get);
+        }
+
+        public Task<Tuple<StatusResponse, ResultResponse>> ExportAddressesAsync(AddressExportParameters exportParams)
+        {
+            return GetJsonObjectFromAPIAsync<StatusResponse>(exportParams,
+                R4MEInfrastructureSettingsV5.ContactExport,
+                HttpMethodType.Post);
+
+        }
 
         #endregion
 
@@ -1576,7 +1598,8 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Updates asynchronously a route by sending route query parameters containg Route Parameters and Addresses.
+        ///     Updates asynchronously a route by sending route query parameters  
+        /// containg Route Parameters and Addresses.
         /// </summary>
         /// <param name="routeQuery">Route query parameters</param>
         /// <returns>A Tuple type object containing updated route or/and failure response</returns>
@@ -1609,6 +1632,23 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Inserts the route breaks asyncronously.
+        /// </summary>
+        /// <param name="breaks">Route breaks <see cref="RouteBreaks"/></param>
+        /// <returns>A Tuple type object containing the status of the inserting process
+        /// or/and failure response</returns>
+        public Task<Tuple<StatusResponse, ResultResponse, string>> InsertRouteBreaksAsync(RouteBreaks breaks)
+        {
+            return GetJsonObjectFromAPIAsync<StatusResponse>(
+                breaks,
+                R4MEInfrastructureSettingsV5.RouteBreaks,
+                HttpMethodType.Post,
+                null,
+                false,
+                false);
+        }
+
+        /// <summary>
         /// Returns found routes for the specified scheduled date and location.
         /// </summary>
         /// <param name="dynamicInsertRequest">Request body parameters</param>
@@ -1623,6 +1663,24 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettingsV5.RouteAddressDynamicInsert,
                 HttpMethodType.Post,
                 out resultResponse);
+        }
+
+        /// <summary>
+        /// Returns found routes for the specified scheduled date and location asynchronously.
+        /// </summary>
+        /// <param name="dynamicInsertRequest">Request body parameters</param>
+        /// <returns>A Tuple type object containing the matched routes 
+        /// or/and failure response</returns>
+        public Task<Tuple<DynamicInsertMatchedRoute[], ResultResponse, string>> DynamicInsertRouteAddressesAsync(
+                                                DynamicInsertRequest dynamicInsertRequest)
+        {
+            return GetJsonObjectFromAPIAsync<DynamicInsertMatchedRoute[]>(
+                dynamicInsertRequest,
+                R4MEInfrastructureSettingsV5.RouteAddressDynamicInsert,
+                HttpMethodType.Post,
+                null,
+                false,
+                false);
         }
 
         #endregion
@@ -1973,7 +2031,7 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Get vehicle by license plate.
+        ///     Get vehicle by license plate asynchronously.
         /// </summary>
         /// <param name="vehicleParams">Vehicle parameter containing vehicle license plate</param>
         /// <returns>Vehicle</returns>
@@ -2004,43 +2062,6 @@ namespace Route4MeSDK
                 null,
                 true,
                 false);
-        }
-
-        /// <summary>
-        ///     Get vehicle by license plate.
-        /// </summary>
-        /// <param name="vehicleParams">Vehicle parameter containing vehicle license plate</param>
-        /// <param name="resultResponse">Failing response</param>
-        /// <returns>Vehicle</returns>
-        public VehicleResponse GetVehicleByLicensePlateAsync(string licensePlate,
-            out ResultResponse resultResponse)
-        {
-            if ((licensePlate?.Length ?? 0) < 2)
-            {
-                resultResponse = new ResultResponse
-                {
-                    Status = false,
-                    Messages = new Dictionary<string, string[]>
-                    {
-                        {"Error", new[] {"The vehicle license plate is not specified"}}
-                    }
-                };
-
-                return null;
-            }
-
-            var vehicleParams = new VehicleParameters()
-            {
-                VehicleLicensePlate = licensePlate
-            };
-
-            var result = GetJsonObjectFromAPI<VehicleResponse>(
-                vehicleParams,
-                R4MEInfrastructureSettingsV5.VehicleLicense,
-                HttpMethodType.Get,
-                out resultResponse);
-
-            return result;
         }
 
         /// <summary>
@@ -2166,7 +2187,7 @@ namespace Route4MeSDK
         /// <summary>
         /// Activates deactivated vehicles
         /// </summary>
-        /// <param name="vehicleParams">The vehicle parameters</param>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns>Activated vehicles</returns>
         public VehiclesResults ActivateVehicles(string[] vehicleIDs, out ResultResponse resultResponse)
@@ -2187,9 +2208,32 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Deactivates active vehicles
+        /// Activates deactivated vehicles asynchronously.
         /// </summary>
-        /// <param name="vehicleParams">The vehicle parameters</param>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <returns>A Tuple type object containing a vehicle list or/and failure response</returns>
+        public Task<Tuple<VehiclesResults, ResultResponse, string>> ActivateVehiclesAsync(string[] vehicleIDs)
+        {
+            var parameters = new GenericParameters();
+
+            foreach (var vehicleId in vehicleIDs)
+            {
+                parameters.ParametersCollection.Add("vehicle_ids[]", vehicleId);
+            }
+
+            return GetJsonObjectFromAPIAsync<VehiclesResults>(
+                parameters,
+                R4MEInfrastructureSettingsV5.VehicleBulkActivate,
+                HttpMethodType.Post,
+                null,
+                false,
+                false);
+        }
+
+        /// <summary>
+        ///     Deactivates active vehicles
+        /// </summary>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns>Deactivated vehicles</returns>
         public Vehicle[] DeactivateVehicles(string[] vehicleIDs, out ResultResponse resultResponse)
@@ -2210,14 +2254,57 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Updates multiple vehicles at once asynchronously.
+        ///     Deactivates active vehicles asynchronously.
+        /// </summary>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <returns>A Tuple type object containing a vehicle list or/and failure response</returns>
+        public Task<Tuple<Vehicle[], ResultResponse, string>> DeactivateVehiclesAsync(string[] vehicleIDs)
+        {
+            var parameters = new GenericParameters();
+            foreach (var vehicleId in vehicleIDs)
+            {
+                parameters.ParametersCollection.Add("vehicle_ids[]", vehicleId);
+            }
+
+            return GetJsonObjectFromAPIAsync<Vehicle[]>(
+                parameters,
+                R4MEInfrastructureSettingsV5.VehicleBulkDeactivate,
+                HttpMethodType.Post,
+                null,
+                false,
+                false);
+        }
+
+        /// <summary>
+        ///     Updates multiple vehicles at once
+        /// </summary>
+        /// <param name="vehicleArray">An array of the vehicles</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Status response</returns>
+        public StatusResponse UpdateVehicles(Vehicles vehicleArray, out ResultResponse resultResponse)
+        {
+
+            var result = GetJsonObjectFromAPI<StatusResponse>(
+                vehicleArray,
+                R4MEInfrastructureSettingsV5.VehicleBulkUpdate,
+                HttpMethodType.Post,
+                null,
+                false,
+                false,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Updates multiple vehicles at once asynchronously.
         /// </summary>
         /// <param name="vehicleArray">An object containing an array of the vehicles</param>
         /// <returns>Returns a result as a tuple object:
         /// - object: if success, this items is not null
         /// - ResultResponse: if failed, this items is not null
         /// - string: if success, this items is a job ID</returns>
-        public Task<Tuple<object, ResultResponse, string>> UpdateVehicles(Vehicles vehicleArray)
+        public Task<Tuple<object, ResultResponse, string>> UpdateVehiclesAsync(Vehicles vehicleArray)
         {
 
             var result = GetJsonObjectAndJobFromAPIAsync<object>(
@@ -2229,14 +2316,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Removes multiple vehicles at once asynchronously.
+        /// Removes multiple vehicles at once.
         /// </summary>
-        /// <param name="vehicleArray">An object containing an array of the vehicles</param>
-        /// <returns>Returns a result as a tuple object:
-        /// - object: if success, this items is not null
-        /// - ResultResponse: if failed, this items is not null
-        /// - string: if success, this items is a job ID</returns>
-        public Task<Tuple<object, ResultResponse, string>> DeleteVehicles(string[] vehicleIDs)
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <returns>Status of the update operation</returns>
+        public StatusResponse DeleteVehicles(string[] vehicleIDs, out ResultResponse resultResponse)
         {
             var parameters = new GenericParameters();
             foreach (var vehicleId in vehicleIDs)
@@ -2244,7 +2328,33 @@ namespace Route4MeSDK
                 parameters.ParametersCollection.Add("vehicle_ids[]", vehicleId);
             }
 
-            var result = GetJsonObjectAndJobFromAPIAsync<object>(
+            return GetJsonObjectFromAPI<StatusResponse>(
+                parameters,
+                R4MEInfrastructureSettingsV5.VehicleBulkDelete,
+                HttpMethodType.Post,
+                null,
+                false,
+                false,
+                out resultResponse);
+        }
+
+        /// <summary>
+        /// Removes multiple vehicles at once asynchronously.
+        /// </summary>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <returns>Returns a result as a tuple object:
+        /// - Status response: if success, this items is not null
+        /// - ResultResponse: if failed, this items is not null
+        /// - string: if success, this items is a job ID</returns>
+        public Task<Tuple<StatusResponse, ResultResponse, string>> DeleteVehiclesAsync(string[] vehicleIDs)
+        {
+            var parameters = new GenericParameters();
+            foreach (var vehicleId in vehicleIDs)
+            {
+                parameters.ParametersCollection.Add("vehicle_ids[]", vehicleId);
+            }
+
+            var result = GetJsonObjectAndJobFromAPIAsync<StatusResponse>(
                 parameters,
                 R4MEInfrastructureSettingsV5.VehicleBulkDelete,
                 HttpMethodType.Post);
@@ -2253,14 +2363,14 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Restoress multiple vehicles at once asynchronously.
+        /// Restore multiple vehicles at once.
         /// </summary>
-        /// <param name="vehicleArray">An object containing an array of the vehicles</param>
-        /// <returns>Returns a result as a tuple object:
-        /// - object: if success, this items is not null
-        /// - ResultResponse: if failed, this items is not null
-        /// - string: if success, this items is a job ID</returns>
-        public Task<Tuple<object, ResultResponse, string>> RestoreVehicles(string[] vehicleIDs)
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>StatusResponse: if success, this items is not null
+        /// ResultResponse: if failed, this items is not null
+        /// </returns>
+        public StatusResponse RestoreVehicles(string[] vehicleIDs, out ResultResponse resultResponse)
         {
             var parameters = new GenericParameters();
             foreach (var vehicleId in vehicleIDs)
@@ -2268,7 +2378,33 @@ namespace Route4MeSDK
                 parameters.ParametersCollection.Add("vehicle_ids[]", vehicleId);
             }
 
-            var result = GetJsonObjectAndJobFromAPIAsync<object>(
+            return GetJsonObjectFromAPI<StatusResponse>(
+                parameters,
+                R4MEInfrastructureSettingsV5.VehicleBulkRestore,
+                HttpMethodType.Post,
+                null,
+                false,
+                false,
+                out resultResponse);
+        }
+
+        /// <summary>
+        /// Restore multiple vehicles at once asynchronously.
+        /// </summary>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <returns>Returns a result as a tuple object:
+        /// - StatusResponse: if success, this items is not null
+        /// - ResultResponse: if failed, this items is not null
+        /// - string: if success, this items is a job ID</returns>
+        public Task<Tuple<StatusResponse, ResultResponse, string>> RestoreVehiclesAsync(string[] vehicleIDs)
+        {
+            var parameters = new GenericParameters();
+            foreach (var vehicleId in vehicleIDs)
+            {
+                parameters.ParametersCollection.Add("vehicle_ids[]", vehicleId);
+            }
+
+            var result = GetJsonObjectAndJobFromAPIAsync<StatusResponse>(
                 parameters,
                 R4MEInfrastructureSettingsV5.VehicleBulkRestore,
                 HttpMethodType.Post);
@@ -2295,6 +2431,29 @@ namespace Route4MeSDK
             return result;
         }
 
+        /// <summary>
+        /// Asynchronously retrieves a vehicle job result.
+        /// </summary>
+        /// <param name="JobId">Job ID</param>
+        /// <returns>Returns a result as a tuple object:
+        /// - StatusResponse: if success, this items is not null
+        /// - ResultResponse: if failed, this items is not null
+        /// - string: if success, this items is a job ID</returns>
+        public Task<Tuple<StatusResponse, ResultResponse, string>> GetVehicleJobResultAsync(string JobId)
+        {
+            var emptyParams = new GenericParameters();
+
+            var result = GetJsonObjectFromAPIAsync<StatusResponse>(
+                emptyParams,
+                R4MEInfrastructureSettingsV5.VehicleJobResult + "/" + JobId,
+                HttpMethodType.Get,
+                null,
+                false,
+                false);
+
+            return result;
+        }
+
         #endregion
 
         #region Vehicle Tracking
@@ -2317,6 +2476,12 @@ namespace Route4MeSDK
             return result;
         }
 
+        /// <summary>
+        ///  Get latest vehicle locations by specified vehicle IDs.
+        /// </summary>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>A VehicleLocationResponse type object <see cref="VehicleLocationResponse"/></returns>
         public VehicleLocationResponse GetVehicleLocations(string[] vehicleIDs,
             out ResultResponse resultResponse)
         {
@@ -2333,6 +2498,31 @@ namespace Route4MeSDK
                 out resultResponse);
 
             return result;
+        }
+
+        /// <summary>
+        /// Asynchronously get latest vehicle locations by specified vehicle IDs.
+        /// </summary>
+        /// <param name="vehicleIDs">An array of the vehicle IDs</param>
+        /// <returns>Returns a result as a tuple object:
+        /// - VehicleLocationResponse: if success, this items is not null
+        /// - ResultResponse: if failed, this items is not null
+        /// - string: if success, this items is a job ID</returns>
+        public Task<Tuple<VehicleLocationResponse, ResultResponse, string>> GetVehicleLocationsAsync(string[] vehicleIDs)
+        {
+            var parameters = new GenericParameters();
+            foreach (var vehicleId in vehicleIDs)
+            {
+                parameters.ParametersCollection.Add("ids[]", vehicleId);
+            }
+
+            return GetJsonObjectFromAPIAsync<VehicleLocationResponse>(
+                parameters,
+                R4MEInfrastructureSettingsV5.VehicleLocation,
+                HttpMethodType.Get,
+                null,
+                false,
+                false);
         }
 
         /// <summary>
@@ -2390,7 +2580,6 @@ namespace Route4MeSDK
         /// <param name="searchParams">Search parameters</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns>An array of the found vehicles</returns>
-        [ObsoleteAttribute("This method is deprecated until resolving the response issue.")]
         public Vehicle[] SearchVehicles(VehicleSearchParameters searchParams, out ResultResponse resultResponse)
         {
             var result = GetJsonObjectFromAPI<Vehicle[]>(
@@ -2400,6 +2589,25 @@ namespace Route4MeSDK
                 out resultResponse);
 
             return result;
+        }
+
+        /// <summary>
+        ///     asynchronously search vehicles by sending request body.
+        /// </summary>
+        /// <param name="searchParams">Search parameters</param>
+        /// <returns>Returns a result as a tuple object:
+        /// - Vehicle[]: if success, this item is not null
+        /// - ResultResponse: if failed, this item is not null
+        /// - string: if success, this item is a job ID</returns>
+        public Task<Tuple<Vehicle[], ResultResponse, string>> SearchVehiclesAsync(VehicleSearchParameters searchParams)
+        {
+            return GetJsonObjectFromAPIAsync<Vehicle[]>(
+                searchParams,
+                R4MEInfrastructureSettingsV5.VehicleSearch,
+                HttpMethodType.Post,
+                null,
+                false,
+                false);
         }
 
         /// <summary>
@@ -3227,7 +3435,10 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPI<OrderHistoryResponse>(parameters,
                 R4MEInfrastructureSettingsV5.OrdersHistory,
-                HttpMethodType.Get, false, true, out resultResponse);
+                HttpMethodType.Get, 
+                false, 
+                true, 
+                out resultResponse);
         }
 
         /// <summary>
@@ -3363,7 +3574,6 @@ namespace Route4MeSDK
             string[] mandatoryFields = null)
             where T : class
         {
-
             var result = default(T);
             var resultResponse = default(ResultResponse);
             string jobId = default(string);
@@ -3484,10 +3694,6 @@ namespace Route4MeSDK
 
                                         result.GetType().GetProperty("IsSuccessStatusCode")
                                             .SetValue(result, response.IsSuccessStatusCode);
-                                        //resultResponse = new ResultResponse()
-                                        //{
-                                        //    Code = (int)response.StatusCode
-                                        //};
                                     }
                                 }
                                 else
@@ -3729,6 +3935,16 @@ namespace Route4MeSDK
                                                 : content2.ReadAsStreamAsync().Result.ReadObject<T>();
                                         }
                                     }
+                                    
+                                    if (typeof(T) == typeof(StatusResponse))
+                                    {
+                                        result.GetType().GetProperty("StatusCode")
+                                            .SetValue(result, (int)response.Result.StatusCode);
+
+                                        result.GetType().GetProperty("IsSuccessStatusCode")
+                                            .SetValue(result, response.Result.IsSuccessStatusCode);
+                                    }
+                                    
                                 }
                                 else
                                 {
