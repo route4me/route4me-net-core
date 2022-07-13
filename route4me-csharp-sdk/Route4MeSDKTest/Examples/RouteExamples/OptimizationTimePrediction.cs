@@ -1,7 +1,6 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
-using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
