@@ -1,5 +1,4 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using System;
+﻿using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -7,9 +6,9 @@ namespace Route4MeSDK.Examples
     {
         /// <summary>
         /// The example refers to the process of restoring the vehicles 
-        /// using the API 5 endpoint.
+        /// asynchronously using the API 5 endpoint.
         /// </summary>
-        public void RestoreVehiclesV5()
+        public async void RestoreVehiclesV5Async()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
@@ -21,10 +20,10 @@ namespace Route4MeSDK.Examples
             };
 
             // Send a request to the server
-            var result = route4Me.RestoreVehicles(vehicleIDs, out ResultResponse resultResponse);
+            var result = await route4Me.RestoreVehiclesAsync(vehicleIDs);
 
             Console.WriteLine("Restore result: "+
-                (result?.IsSuccessStatusCode ?? false));
+                (result?.Item1?.IsSuccessStatusCode ?? false));
         }
     }
 }

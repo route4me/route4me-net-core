@@ -10,7 +10,10 @@ namespace Route4MeSDK.Examples
         /// </summary>
         public async void UpdateVehiclesV5()
         {
+            // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
+
+            #region Prepare query parameters
 
             Random rnd = new Random();
             var costNew1 = (double)rnd.Next(10000, 20000);
@@ -33,12 +36,18 @@ namespace Route4MeSDK.Examples
                 }
             };
 
+            #endregion
 
-            var result = await route4Me.UpdateVehicles(vehicleArray);
+            // Run the query
+            var result = await route4Me.UpdateVehiclesAsync(vehicleArray);
+
+            #region Get job result
 
             string jobId = result.Item3;
 
             var jobResult = route4Me.GetVehicleJobResult(jobId, out ResultResponse resultResponse);
+
+            #endregion
 
             Console.WriteLine($"Job result: {(jobResult?.status ?? false)}");
 

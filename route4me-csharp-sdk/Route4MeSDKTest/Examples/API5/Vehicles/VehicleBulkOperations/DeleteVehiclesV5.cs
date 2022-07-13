@@ -5,26 +5,24 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// The example refers to the process of deleting the vehicles using the API 5 endpoint.
+        /// The example shows how to use the API 5 endpoint to delete several vehicles at once.
         /// </summary>
-        public async void DeleteVehiclesV5()
+        public void DeleteVehiclesV5()
         {
+            // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
+            // Prepare the query parameters
             string[] vehicleIDs = new string[]
             {
                 "2001114BAE4E861642455771FEF9E0F1"
             };
 
-            var result = await route4Me.DeleteVehicles(vehicleIDs);
+            // Send a request to the server
+            var result = route4Me.DeleteVehicles(vehicleIDs, out ResultResponse resultResponse);
 
-            string jobId = result.Item3;
-
-            var jobResult = route4Me.GetVehicleJobResult(jobId, out ResultResponse resultResponse);
-
-            System.Console.WriteLine($"Job result: {(jobResult?.status ?? false)}");
-
-            System.Console.WriteLine("Restore result: "+(result.Item2==null ? true : false));
+            System.Console.WriteLine("Delete result: "+
+                (result?.IsSuccessStatusCode ?? false));
         }
     }
 }

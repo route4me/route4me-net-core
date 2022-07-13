@@ -1728,9 +1728,7 @@ namespace Route4MeSDK
 
             return result == null && errorString != ""
                 ? null
-                : result?.Data.Length == 0
-                    ? null
-                    : result;
+                : result;
         }
 
         /// <summary>

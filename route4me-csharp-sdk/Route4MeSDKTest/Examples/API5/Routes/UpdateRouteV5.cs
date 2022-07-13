@@ -8,10 +8,13 @@ namespace Route4MeSDK.Examples
         // The example refers to the process of updating a route (API 5).
         public void UpdateRouteV5()
         {
+            // Create the manager with the api key
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
+            // Prepare the test data
             RunOptimizationSingleDriverRoute10StopsV5();
 
+            // Prepare the route query parameters
             var routeParams = new RouteParametersQuery()
             {
                 RouteId = SD10Stops_route_V5.RouteID,
@@ -38,8 +41,10 @@ namespace Route4MeSDK.Examples
                 }
             };
 
+            // Run the query
             var updatedRoute = route4Me.UpdateRoute(routeParams, out ResultResponse resultResponse);
 
+            // Print the result on the consule
             PrintExampleRouteResult(updatedRoute, null, resultResponse);
         }
     }
