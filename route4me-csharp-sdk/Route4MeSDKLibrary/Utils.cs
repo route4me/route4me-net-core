@@ -70,12 +70,26 @@ namespace Route4MeSDK
                 if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "[" + rslt.Groups[1] + "]");
             }
 
+            if (typeof(T) == typeof(DataTypes.V5.AddressBookContact) || typeof(T) == typeof(DataTypes.V5.AddressBookContact[]))
+            {
+                var pattern = string.Concat(
+                    "\\\"schedule_blacklist\\\"",
+                    @":(\[\[[\s\S\n\d\w]*\]\]),",
+                    "\"");
+
+                var rgx = new Regex(pattern);
+                var rslt = rgx.Match(text);
+
+                if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "null");
+            }
+
             if (typeof(T) == typeof(OrderHistoryResponse))
             {
                 try
                 {
                     return JsonConvert.DeserializeObject<T>(text, jsonSettings);
                 }
+
                 catch (JsonSerializationException)
                 {
                     OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal)JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
@@ -231,7 +245,7 @@ namespace Route4MeSDK
             var jsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-                DefaultValueHandling = DefaultValueHandling.Include,
+                //DefaultValueHandling = DefaultValueHandling.Include,
                 ContractResolver = new DataContractResolver()
             };
 

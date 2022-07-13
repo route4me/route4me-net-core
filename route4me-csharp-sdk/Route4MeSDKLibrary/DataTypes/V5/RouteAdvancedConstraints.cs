@@ -50,5 +50,13 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "location_sequence_pattern", EmitDefaultValue = false)]
         public object[] LocationSequencePattern { get; set; }
+
+        /// <summary>
+        ///     Group name of the advanced constraints.
+        /// </summary>
+        [DataMember(Name = "group", EmitDefaultValue = false)]
+        public string Group { get; set; }
+
+
     }
 }

@@ -665,5 +665,58 @@ namespace Route4MeSDKUnitTest.Types
 
             return removed;
         }
+
+        public Route4MeSDK.DataTypes.V5.DynamicInsertMatchedRoute[] DynamicInsertStopOptimalAnywhere(
+                                                                        Address addressToInsert, string scheduledDate)
+        {
+            var route4Me = new Route4MeManagerV5(c_ApiKey);
+
+            var dynamicInsertParams = new Route4MeSDK.QueryTypes.V5.DynamicInsertRequest()
+            {
+                InsertMode = Route4MeSDK.DataTypes.V5.DynamicInsertMode.OptimalAnywhere.Description(),
+                ScheduledFor = scheduledDate,
+                Latitude = addressToInsert.Latitude,
+                Longitude = addressToInsert.Longitude,
+                LookupResultsLimit = 5,
+                RecommendBy = Route4MeSDK.DataTypes.V5.DynamicInsertRecomendBy.Distance.Description(),
+                MaxIncreasePercentAllowed = 500
+            };
+
+            // Run the query
+            var result = route4Me.DynamicInsertRouteAddresses(dynamicInsertParams, 
+                                        out Route4MeSDK.DataTypes.V5.ResultResponse resultResponse);
+
+            if (result == null)
+            {
+                Console.WriteLine("DynamicInsertStopOptimalAnywhere failed.");
+                return null;
+            }
+            else
+            {
+                Console.WriteLine($"The address can be inserted at the routes: ");
+
+                foreach (var route in result)
+                {
+                    Console.WriteLine($"     {route.RouteId}");
+                }
+
+                return result;
+            }
+        }
+
+        public DataObjectRoute AddAddressesToRoute(Address[] addresses, string routeId)
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+
+            var routeParameters = new RouteParametersQuery
+            {
+                RouteId = routeId,
+                Addresses = addresses
+            };
+
+            //return route4Me.UpdateRoute(routeParameters, out var errorString);
+            return route4Me.ReoptimizeRoute(routeParameters, out var errorString);
+        }
     }
 }

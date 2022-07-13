@@ -21,11 +21,17 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "route_destination_id", EmitDefaultValue = false)]
         public long? RouteDestinationId { get; set; }
 
+        string _alias;
+
         /// <summary>
         ///     Address alias
         /// </summary>
         [DataMember(Name = "alias", EmitDefaultValue = false)]
-        public string Alias { get; set; }
+        public string Alias 
+        { 
+            get { return _alias;  }
+            set { _alias = value=="" ? null : value;  } 
+        }
 
         /// <summary>
         ///     Member ID
@@ -49,13 +55,13 @@ namespace Route4MeSDK.DataTypes.V5
         /// <summary>
         ///     Route destination address
         /// </summary>
-        [DataMember(Name = "address")]
+        [DataMember(Name = "address", EmitDefaultValue = false)]
         public string AddressString { get; set; }
 
         /// <summary>
         ///     Route address stop type
         /// </summary>
-        [DataMember(Name = "address_stop_type")]
+        [DataMember(Name = "address_stop_type", EmitDefaultValue = false)]
         public string AddressStopType { get; set; }
 
         /// <summary>
@@ -472,14 +478,14 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Curbside latitude.
         ///     Generate optimal routes and driving directions to this curbside latitude.
         /// </summary>
-        [DataMember(Name = "curbside_lat")]
+        [DataMember(Name = "curbside_lat", EmitDefaultValue = false)]
         public double? CurbsideLatitude { get; set; }
 
         /// <summary>
         ///     Curbside longitude.
         ///     Generate optimal routes and driving directions to the curbside longitude.
         /// </summary>
-        [DataMember(Name = "curbside_lng")]
+        [DataMember(Name = "curbside_lng", EmitDefaultValue = false)]
         public double? CurbsideLongitude { get; set; }
 
         /// <summary>

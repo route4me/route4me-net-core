@@ -9,10 +9,12 @@ namespace Route4MeSDK.Examples
         /// </summary>
         public void UpdateOrderWithCustomField()
         {
+            // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
             CreateExampleOrder();
 
+            // Prepare a custom field
             lastCreatedOrder.CustomUserFields = new OrderCustomField[]
             {
                 new OrderCustomField()
@@ -22,12 +24,13 @@ namespace Route4MeSDK.Examples
                 }
             };
 
-            var result = route4Me.UpdateOrder(
-                lastCreatedOrder,
-                out string errorString);
+            // Send a request to the server
+            var result = route4Me.UpdateOrder(lastCreatedOrder, out string errorString);
 
+            // Print the result on the console
             PrintExampleOrder(result, errorString);
 
+            // Remove test data
             RemoveTestOrders();
         }
     }
