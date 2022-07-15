@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.0.0.0] - 2022-07-15
+
+New library features are introduced. Some existing API are slightly adjusted.
+
 ## [3.3.0.0] - 2022-06-30
 
 Switched from SocketIoClientDotNet.core_2.2 to SocketIoClientDotNet.Standard usage.
