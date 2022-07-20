@@ -1730,6 +1730,29 @@ namespace Route4MeSDK.Examples
             }
         }
 
+        private long? GetOwnerUserId()
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            var userParams = new GenericParameters();
+            var members = route4Me.GetUsers(userParams, out string errorResponse);
+
+            var memberParams = new QueryTypes.V5.TeamRequest();
+
+            var ownerMemberId = members.Results
+                .Where(x => memberParams.GetMemberType(x.MemberType) == DataTypes.V5.MemberTypes.AccountOwner)
+                .FirstOrDefault()
+                ?.MemberId ?? null;
+
+            if (ownerMemberId == null)
+            {
+                Console.WriteLine("Cannot retrieve the team owner - cannot create a member.");
+                return null;
+            }
+
+            return Convert.ToInt64(ownerMemberId);
+        }
+
         #endregion
 
         #region Vehicles
