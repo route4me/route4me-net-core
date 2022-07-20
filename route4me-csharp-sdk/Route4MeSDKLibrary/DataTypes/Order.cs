@@ -348,5 +348,12 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "done_day_id", EmitDefaultValue = false)]
         public int? DoneDayId { get; set; }
+
+        /// <summary>
+        ///     A day ID, when the order was possessed by an organization 
+        ///     (number of the days passed from 1/1/2010).
+        /// </summary>
+        [DataMember(Name = "possession_day_id", EmitDefaultValue = false)]
+        public int? PossessionDayId { get; set; }
     }
 }

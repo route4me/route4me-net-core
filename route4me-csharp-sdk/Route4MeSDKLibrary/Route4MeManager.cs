@@ -1728,7 +1728,9 @@ namespace Route4MeSDK
 
             return result == null && errorString != ""
                 ? null
-                : result;
+                : result?.Data.Length == 0
+                    ? null
+                    : result;
         }
 
         /// <summary>
@@ -4845,6 +4847,28 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put, null, false, false);
+        }
+
+        /// <summary>
+        ///     Transfer an order to other organization
+        /// </summary>
+        /// <param name="transferredOrder"> An order to transfer </param>
+        /// <param name="organizationApiKey">An API key of a destination organization</param>
+        /// <returns>Transferred order</returns>
+        public Order TransferOrderToOrganization(Order transferredOrder, string organizationApiKey, out string errorString)
+        {
+            var urlParams = new GenericParameters();
+            urlParams.ParametersCollection.Add("organization_api_key", organizationApiKey);
+
+            string bodyJson = R4MeUtils.SerializeObjectToJson(transferredOrder, true);
+            var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+
+            return GetJsonObjectFromAPI<Order>(urlParams, R4MEInfrastructureSettings.Order,
+                HttpMethodType.Put,
+                content,
+                false,
+                false,
+                out errorString);
         }
 
         #endregion

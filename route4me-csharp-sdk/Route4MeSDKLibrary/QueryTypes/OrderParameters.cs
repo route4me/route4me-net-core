@@ -78,5 +78,11 @@
         /// </summary>
         [HttpQueryMemberAttribute(Name = "scheduled_for_YYMMDD", EmitDefaultValue = false)]
         public string ScheduledForYYMMDD { get; set; }
+
+        /// <summary>
+        /// An organization API key (128-chars)
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "organization_api_key", EmitDefaultValue = false)]
+        public string OrganizationApiKey { get; set; }
     }
 }
