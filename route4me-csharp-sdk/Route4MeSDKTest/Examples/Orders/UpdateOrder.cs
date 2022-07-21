@@ -1,6 +1,7 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using System;
+using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
@@ -39,6 +40,11 @@ namespace Route4MeSDK.Examples
             order.ExtFieldLastName = "Updated " + (new Random()).Next().ToString();
 
             order.Address1 += " Updated";
+
+            order.ExtFieldCustomData = new Dictionary<string, string>
+            {
+                { "order_type", "scheduled order" }
+            };
 
             // Send a request to the server
             var updatedOrder = route4Me.UpdateOrder(order, out errorString);
