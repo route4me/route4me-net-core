@@ -4871,6 +4871,27 @@ namespace Route4MeSDK
                 out errorString);
         }
 
+        /// <summary>
+        ///     Transfer an order to other organization
+        /// </summary>
+        /// <param name="transferredOrder">n order to transfer</param>
+        /// <param name="organizationApiKey">An API key of a destination organization</param>
+        /// <returns>Transferred order or failure response</returns>
+        public Task<Tuple<Order, string>> TransferOrderToOrganizationAsync(Order transferredOrder, string organizationApiKey)
+        {
+            var urlParams = new GenericParameters();
+            urlParams.ParametersCollection.Add("organization_api_key", organizationApiKey);
+
+            string bodyJson = R4MeUtils.SerializeObjectToJson(transferredOrder, true);
+            var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+
+            return GetJsonObjectFromAPIAsync<Order>(urlParams, R4MEInfrastructureSettings.Order,
+                HttpMethodType.Put,
+                content,
+                false,
+                false);
+        }
+
         #endregion
 
         #region Order Custom User Field
