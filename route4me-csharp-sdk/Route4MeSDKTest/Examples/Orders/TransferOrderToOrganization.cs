@@ -1,6 +1,5 @@
 ﻿using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -31,12 +30,20 @@ namespace Route4MeSDK.Examples
 
             #endregion
 
-            // Demo 128-chars API key of a destination organization
-            // Replace it with a real organization API key
-            string organizationApiKey = new String('1', 128); 
+            // Replace the destination primary API key with a real primery API key
+            string anotherPrimeryApiKey = "22222222222222222222222222222222";
+
+            long destinationRootMemberId = (long)GetOwnerMemberId(anotherPrimeryApiKey);
+
+            var orderToTransfer = new Order()
+            {
+                RootMemberId = destinationRootMemberId, // Route member ID of the destination account
+                OrderId = order.OrderId,
+                Address1 = order.Address1
+            };
 
             // Send a request to the server
-            var transferedOrder = route4Me.TransferOrderToOrganization(order, organizationApiKey, out errorString);
+            var transferedOrder = route4Me.TransferOrderToOrganization(orderToTransfer, anotherPrimeryApiKey, out errorString);
 
             // Print the result on the console
             PrintExampleOrder(transferedOrder, errorString);
