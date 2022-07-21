@@ -4850,40 +4850,64 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Transfer an order to other organization
+        ///     Transfer an order to another account
         /// </summary>
         /// <param name="transferredOrder"> An order to transfer </param>
-        /// <param name="organizationApiKey">An API key of a destination organization</param>
+        /// <param name="anotherPrimeryApiKey">A primery API key of a destination account</param>
         /// <returns>Transferred order</returns>
-        public Order TransferOrderToOrganization(Order transferredOrder, string organizationApiKey, out string errorString)
+        public Order TransferOrderToOrganization(Order transferredOrder, string anotherPrimeryApiKey, out string errorString)
         {
             var urlParams = new GenericParameters();
-            urlParams.ParametersCollection.Add("organization_api_key", organizationApiKey);
+            urlParams.ParametersCollection.Add("api_key", anotherPrimeryApiKey);
 
-            string bodyJson = R4MeUtils.SerializeObjectToJson(transferredOrder, true);
-            var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            var updatableOrderProperties = new List<string>()
+            {
+                "Address1", "RootMemberId", "OrderId"
+            };
+
+            var dynamicOrderProperties = new Route4MeDynamicClass();
+
+            dynamicOrderProperties.CopyPropertiesFromClass(transferredOrder, updatableOrderProperties, out _);
+
+            string bodyJson = R4MeUtils.SerializeObjectToJson(dynamicOrderProperties.DynamicProperties, true);
+
+            HttpContent content = new StringContent(bodyJson);
+            content.Headers.Add("x-api-key", _mApiKey);
 
             return GetJsonObjectFromAPI<Order>(urlParams, R4MEInfrastructureSettings.Order,
                 HttpMethodType.Put,
                 content,
                 false,
-                false,
+                true,
                 out errorString);
         }
 
         /// <summary>
-        ///     Transfer an order to other organization
+        ///     Transfer an order to another account
         /// </summary>
-        /// <param name="transferredOrder">n order to transfer</param>
-        /// <param name="organizationApiKey">An API key of a destination organization</param>
+        /// <param name="transferredOrder">An order to transfer</param>
+        /// <param name="anotherPrimeryApiKey">A primery API key of a destination account</param>
         /// <returns>Transferred order or failure response</returns>
-        public Task<Tuple<Order, string>> TransferOrderToOrganizationAsync(Order transferredOrder, string organizationApiKey)
+        public Task<Tuple<Order, string>> TransferOrderToOrganizationAsync(Order transferredOrder, string anotherPrimeryApiKey)
         {
             var urlParams = new GenericParameters();
-            urlParams.ParametersCollection.Add("organization_api_key", organizationApiKey);
+            urlParams.ParametersCollection.Add("api_key", anotherPrimeryApiKey);
 
-            string bodyJson = R4MeUtils.SerializeObjectToJson(transferredOrder, true);
-            var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            var updatableOrderProperties = new List<string>()
+            {
+                "Address1", "RootMemberId", "OrderId"
+            };
+
+            var dynamicOrderProperties = new Route4MeDynamicClass();
+
+            dynamicOrderProperties.CopyPropertiesFromClass(transferredOrder, updatableOrderProperties, out _);
+
+            string bodyJson = R4MeUtils.SerializeObjectToJson(dynamicOrderProperties.DynamicProperties, true);
+
+            HttpContent content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            content.Headers.Add("x-api-key", _mApiKey);
+
+            //var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
 
             return GetJsonObjectFromAPIAsync<Order>(urlParams, R4MEInfrastructureSettings.Order,
                 HttpMethodType.Put,

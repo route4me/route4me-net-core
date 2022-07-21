@@ -113,9 +113,9 @@ namespace Route4MeSDK.Examples
             return members[i];
         }
 
-        private long? GetOwnerMemberId()
+        private long? GetOwnerMemberId(string anotherApiKey = null)
         {
-            var route4Me = new Route4MeManagerV5(ActualApiKey);
+            var route4Me = new Route4MeManagerV5(anotherApiKey==null ? ActualApiKey : anotherApiKey);
 
             var members = route4Me.GetTeamMembers(out ResultResponse errorResponse);
 
