@@ -6,9 +6,9 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// The example demonstrates how to transfer an order to other organization asynchronously.
+        /// The example demonstrates how to transfer an order to other primary account asynchronously.
         /// </summary>
-        public async void TransferOrderToOrganizationAsync()
+        public async void TransferOrderToOtherPrimaryAccountAsync()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -41,7 +41,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Send a request to the server
-            var result = await route4Me.TransferOrderToOrganizationAsync(orderToTransfer, anotherPrimeryApiKey);
+            var result = await route4Me.TransferOrderToOtherPrimaryAccountAsync(orderToTransfer, anotherPrimeryApiKey);
 
             // Print the result on the console
             PrintExampleOrder(result.Item1, result.Item2);
