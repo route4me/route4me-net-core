@@ -29,7 +29,7 @@ namespace Route4MeSDK.Examples
             #endregion
 
             // Replace the destination primary API key with a real primery API key
-            string anotherPrimeryApiKey = "11111111111111111111111111111111";
+            string anotherPrimeryApiKey = "22222222222222222222222222222222";
 
             long destinationRootMemberId = (long)GetOwnerMemberId(anotherPrimeryApiKey);
 
