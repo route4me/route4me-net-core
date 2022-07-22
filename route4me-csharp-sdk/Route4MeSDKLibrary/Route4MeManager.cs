@@ -4855,7 +4855,7 @@ namespace Route4MeSDK
         /// <param name="transferredOrder"> An order to transfer </param>
         /// <param name="anotherPrimeryApiKey">A primery API key of a destination account</param>
         /// <returns>Transferred order</returns>
-        public Order TransferOrderToOrganization(Order transferredOrder, string anotherPrimeryApiKey, out string errorString)
+        public Order TransferOrderToOtherPrimaryAccount(Order transferredOrder, string anotherPrimeryApiKey, out string errorString)
         {
             var urlParams = new GenericParameters();
             urlParams.ParametersCollection.Add("api_key", anotherPrimeryApiKey);
@@ -4888,7 +4888,7 @@ namespace Route4MeSDK
         /// <param name="transferredOrder">An order to transfer</param>
         /// <param name="anotherPrimeryApiKey">A primery API key of a destination account</param>
         /// <returns>Transferred order or failure response</returns>
-        public Task<Tuple<Order, string>> TransferOrderToOrganizationAsync(Order transferredOrder, string anotherPrimeryApiKey)
+        public Task<Tuple<Order, string>> TransferOrderToOtherPrimaryAccountAsync(Order transferredOrder, string anotherPrimeryApiKey)
         {
             var urlParams = new GenericParameters();
             urlParams.ParametersCollection.Add("api_key", anotherPrimeryApiKey);
