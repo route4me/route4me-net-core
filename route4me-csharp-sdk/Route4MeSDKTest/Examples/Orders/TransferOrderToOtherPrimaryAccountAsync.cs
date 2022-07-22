@@ -6,9 +6,9 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// The example demonstrates how to transfer an order to other organization.
+        /// The example demonstrates how to transfer an order to other primary account asynchronously.
         /// </summary>
-        public void TransferOrderToOrganization()
+        public async void TransferOrderToOtherPrimaryAccountAsync()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -24,29 +24,27 @@ namespace Route4MeSDK.Examples
                 order_id = orderId
             };
 
-            Order order = route4Me.GetOrderByID(
-                orderParameters,
-                out string errorString);
+            var orderResult = await route4Me.GetOrderByIDAsync(orderParameters);
 
             #endregion
 
             // Replace the destination primary API key with a real primery API key
-            string anotherPrimeryApiKey = "22222222222222222222222222222222";
+            string anotherPrimeryApiKey = "11111111111111111111111111111111";
 
             long destinationRootMemberId = (long)GetOwnerMemberId(anotherPrimeryApiKey);
 
             var orderToTransfer = new Order()
             {
-                RootMemberId = destinationRootMemberId, // Route member ID of the destination account
-                OrderId = order.OrderId,
-                Address1 = order.Address1
+                RootMemberId = destinationRootMemberId, // Route member ID of the destination account,
+                OrderId = orderResult.Item1.OrderId,
+                Address1 = orderResult.Item1.Address1
             };
 
             // Send a request to the server
-            var transferedOrder = route4Me.TransferOrderToOrganization(orderToTransfer, anotherPrimeryApiKey, out errorString);
+            var result = await route4Me.TransferOrderToOtherPrimaryAccountAsync(orderToTransfer, anotherPrimeryApiKey);
 
             // Print the result on the console
-            PrintExampleOrder(transferedOrder, errorString);
+            PrintExampleOrder(result.Item1, result.Item2);
 
         }
     }
