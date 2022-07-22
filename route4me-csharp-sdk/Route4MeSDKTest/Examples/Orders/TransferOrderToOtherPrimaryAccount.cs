@@ -6,9 +6,9 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// The example demonstrates how to transfer an order to other organization.
+        /// The example demonstrates how to transfer an order to other primary account.
         /// </summary>
-        public void TransferOrderToOrganization()
+        public void TransferOrderToOtherPrimaryAccount()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -31,7 +31,7 @@ namespace Route4MeSDK.Examples
             #endregion
 
             // Replace the destination primary API key with a real primery API key
-            string anotherPrimeryApiKey = "22222222222222222222222222222222";
+            string anotherPrimeryApiKey = "E60AA4276C4A321FE4AF62D0705D346E";
 
             long destinationRootMemberId = (long)GetOwnerMemberId(anotherPrimeryApiKey);
 
@@ -43,7 +43,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Send a request to the server
-            var transferedOrder = route4Me.TransferOrderToOrganization(orderToTransfer, anotherPrimeryApiKey, out errorString);
+            var transferedOrder = route4Me.TransferOrderToOtherPrimaryAccount(orderToTransfer, anotherPrimeryApiKey, out errorString);
 
             // Print the result on the console
             PrintExampleOrder(transferedOrder, errorString);
