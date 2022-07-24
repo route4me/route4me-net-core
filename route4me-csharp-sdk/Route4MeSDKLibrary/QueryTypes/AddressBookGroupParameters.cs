@@ -10,15 +10,6 @@ namespace Route4MeSDK.QueryTypes
     public sealed class AddressBookGroupParameters : GenericParameters
     {
         /// <summary>
-        ///     Unique ID of a address book group.
-        ///     <remarks>
-        ///         <para>Data member parameter.</para>
-        ///     </remarks>
-        /// </summary>
-        [DataMember(Name = "group_id")]
-        public string groupID { get; set; }
-
-        /// <summary>
         ///     An array of the fields.
         ///     <para>
         ///         <remarks>If specified, the response will contain only the values of the specified fields.</remarks>
@@ -31,24 +22,6 @@ namespace Route4MeSDK.QueryTypes
         public string[] Fields { get; set; }
 
         /// <summary>
-        ///     Only records from that offset will be considered.
-        ///     <remarks>
-        ///         <para>Data member parameter.</para>
-        ///     </remarks>
-        /// </summary>
-        [DataMember(Name = "offset")]
-        public int offset { get; set; }
-
-        /// <summary>
-        ///     Limit the number of records in response.
-        ///     <remarks>
-        ///         <para>Data member parameter.</para>
-        ///     </remarks>
-        /// </summary>
-        [DataMember(Name = "limit")]
-        public int limit { get; set; }
-
-        /// <summary>
         ///     The AddressBookGroupFilterParameter type object as a group filter.
         ///     See <see cref="AddressBookGroupFilterParameter" />
         ///     <remarks>
@@ -56,7 +29,7 @@ namespace Route4MeSDK.QueryTypes
         ///     </remarks>
         /// </summary>
         [DataMember(Name = "filter")]
-        public AddressBookGroupFilterParameter filter { get; set; }
+        public AddressBookGroupFilterParameter Filter { get; set; }
 
         /// <summary>
         ///     Unique ID of a address book group.
