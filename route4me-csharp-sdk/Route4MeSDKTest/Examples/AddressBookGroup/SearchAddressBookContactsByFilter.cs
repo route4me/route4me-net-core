@@ -21,9 +21,9 @@ namespace Route4MeSDK.Examples
             var addressBookGroupParameters = new AddressBookGroupParameters()
             {
                 Fields = new string[] { "address_id", "address_1", "address_group" },
-                offset = 0,
-                limit = 10,
-                filter = filterParam
+                Offset = 0,
+                Limit = 10,
+                Filter = filterParam
             };
 
             // Run the query

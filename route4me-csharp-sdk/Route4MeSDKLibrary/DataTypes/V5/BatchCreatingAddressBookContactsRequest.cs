@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.DataTypes.V5
@@ -12,6 +11,6 @@ namespace Route4MeSDKLibrary.DataTypes.V5
     {
         /// The array of the address IDs
         [DataMember(Name = "data", EmitDefaultValue = false)]
-        public AddressBookContact[] Data { get; set; }
+        public Route4MeSDK.DataTypes.V5.AddressBookContact[] Data { get; set; }
     }
 }

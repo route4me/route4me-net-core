@@ -1063,7 +1063,7 @@ namespace Route4MeSDK.Examples
             foreach (string groupId in addressBookGroupsToRemove)
             {
                 var addressGroupParams =
-                    new AddressBookGroupParameters() { groupID = groupId };
+                    new AddressBookGroupParameters() { GroupId = groupId };
 
                 var response = route4Me.RemoveAddressBookGroup(
                     addressGroupParams,
