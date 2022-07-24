@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.1.0.0] - 2022-07-24
+
+Address Book API is supported. Transfer order to another primary account is supported.
+
 ## [4.0.0.0] - 2022-07-15
 
 New library features are introduced. Some existing API are slightly adjusted.
