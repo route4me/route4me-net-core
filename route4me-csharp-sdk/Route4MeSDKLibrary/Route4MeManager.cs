@@ -4148,7 +4148,7 @@ namespace Route4MeSDK
 
             var addressBookGroupParams = new AddressBookGroupParameters
             {
-                groupID = addressBookGroup.GroupId,
+                GroupId = addressBookGroup.GroupId,
                 Fields = new[] {"address_id"}
             };
 
@@ -4164,7 +4164,7 @@ namespace Route4MeSDK
                 if (long.TryParse(oContId[0].ToString(), out var __))
                     contactIDs.Add(Convert.ToInt64(oContId[0]));
 
-            var removeGroupParams = new AddressBookGroupParameters {groupID = addressBookGroup.GroupId};
+            var removeGroupParams = new AddressBookGroupParameters {GroupId = addressBookGroup.GroupId};
             RemoveAddressBookGroup(removeGroupParams, out errorString);
 
             return contactIDs.Count > 0 ? contactIDs.ToArray() : null;
@@ -4217,7 +4217,7 @@ namespace Route4MeSDK
 
             var addressBookGroupParams = new AddressBookGroupParameters
             {
-                groupID = addressBookGroup.Item1.GroupId,
+                GroupId = addressBookGroup.Item1.GroupId,
                 Fields = new[] { "address_id" }
             };
 
@@ -4232,7 +4232,7 @@ namespace Route4MeSDK
                 if (long.TryParse(oContId[0].ToString(), out var __))
                     contactIDs.Add(Convert.ToInt64(oContId[0]));
 
-            var removeGroupParams = new AddressBookGroupParameters { groupID = addressBookGroup.Item1.GroupId };
+            var removeGroupParams = new AddressBookGroupParameters { GroupId = addressBookGroup.Item1.GroupId };
             var res = await RemoveAddressBookGroupAsync(removeGroupParams).ConfigureAwait(false);
 
             return new Tuple<long[], string>(contactIDs.Count > 0 ? contactIDs.ToArray() : null, res.Item2);

@@ -18,7 +18,7 @@ namespace Route4MeSDK.Examples
 
             var addressBookGroupParameters = new AddressBookGroupParameters()
             {
-                groupID = groupId,
+                GroupId = groupId,
                 Fields = new string[] { "address_id" }
             };
 

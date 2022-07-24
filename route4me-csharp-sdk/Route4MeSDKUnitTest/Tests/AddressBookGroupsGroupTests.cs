@@ -74,7 +74,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var addressBookGroupParameters = new AddressBookGroupParameters
             {
-                groupID = _group2.GroupId
+                GroupId = _group2.GroupId
             };
 
             // Run the query
@@ -98,9 +98,9 @@ namespace Route4MeSDKUnitTest.Tests
             var addressBookGroupParameters = new AddressBookGroupParameters
             {
                 Fields = new[] {"address_id", "address_1", "address_group"},
-                offset = 0,
-                limit = 10,
-                filter = filterParam
+                Offset = 0,
+                Limit = 10,
+                Filter = filterParam
             };
 
             // Run the query
@@ -196,7 +196,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var addressGroupParams = new AddressBookGroupParameters
             {
-                groupID = remeoveGroupId
+                GroupId = remeoveGroupId
             };
 
             var status = route4Me.RemoveAddressBookGroup(

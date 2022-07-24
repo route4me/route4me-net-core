@@ -223,7 +223,7 @@
 
         public const string ContactHost = MainHost + "/address-book";
 
-        public const string ContactsGetAll = ContactHost + "/addresses/index/all";
+        public const string ContactsGetAll = ContactHost + "/addresses/index/all"; 
         public const string ContactsGetAllPaginated = ContactHost + "/addresses/index/pagination";
         public const string ContactsGetClusters = ContactHost + "/addresses/index/clustering";
         public const string ContactsFind = ContactHost + "/addresses/show";
@@ -235,7 +235,6 @@
         public const string ContactsDeleteMultiple = ContactHost + "/addresses/delete";
         public const string ContactsDeleteByAreas = ContactHost + "/addresses/delete-by-areas";
         public const string ContactsGetCustomFields = ContactHost + "/addresses/custom-fields";
-        public const string ContactsGetDepots = ContactHost + "/addresses/depots";
         public const string ContactsReindexCallback = ContactHost + "/reindex-callback";
         public const string ContactsExport = ContactHost + "/addresses/export";
         public const string ContactsExportByAreas = ContactHost + "/addresses/export-by-areas";
