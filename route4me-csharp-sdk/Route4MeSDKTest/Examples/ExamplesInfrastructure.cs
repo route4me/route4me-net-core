@@ -927,7 +927,7 @@ namespace Route4MeSDK.Examples
         {
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            var territoryZoneParameters = new AvoidanceZoneParameters()
+            var territoryZoneParameters = new TerritoryZoneParameters()
             {
                 TerritoryName = "Test Territory",
                 TerritoryColor = "ff0000",
@@ -1884,6 +1884,88 @@ namespace Route4MeSDK.Examples
                     : String.Format("Cannot remove the vehicle {0}.", vehicleId)
                 );
             }
+        }
+
+        #endregion
+
+        #region Get N territories covering maximum number of the orders
+
+        /// <summary>
+        /// Get the first N number of the territories covering the maximum number of the orders.
+        /// </summary>
+        /// <param name="requestedTerritoriesNumber">Requested number of the territories</param>
+        /// <returns>An array of the territory zones</returns>
+        private TerritoryZone[] GetTerritoriesWithMaxOrders(int requestedTerritoriesNumber)
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            // Specify parameters to retrieve the territories with the list of the covered orders.
+            var terParams = new TerritoryQuery()
+            {
+                Orders = 1
+            };
+
+            // Send request to retrieve the territories.
+            var territories = route4Me.GetTerritories(terParams, out string errorString);
+
+            // Select the territories containing a list of the order IDs.
+            territories = territories.Where(x => x.Orders.Length > 0).ToArray();
+
+            if ((territories?.Length ?? 0)<1)
+            {
+                return null;
+            }
+
+            // Sort the territories by the number of covered orders.
+            var orderedResult = from territory in territories
+                      orderby territory.Orders.Length
+                      descending 
+                      select territory;
+
+            // Return a list of the territory IDs.
+            return orderedResult.Count() < requestedTerritoriesNumber
+                ? orderedResult.ToArray()
+                : orderedResult.Take(requestedTerritoriesNumber).ToArray();
+
+        }
+
+        /// <summary>
+        /// Get the first N number of the territories covering the maximum number of the contacts.
+        /// </summary>
+        /// <param name="requestedTerritoriesNumber">Requested number of the territories</param>
+        /// <returns>An array of the territory zones</returns>
+        private TerritoryZone[] GetTerritoriesWithMaxContacts(int requestedTerritoriesNumber)
+        {
+            var route4Me = new Route4MeManager(ActualApiKey);
+
+            // Specify parameters to retrieve the territories with the list of the covered contacts.
+            var terParams = new TerritoryQuery()
+            {
+                Addresses = 1
+            };
+
+            // Send request to retrieve the territories.
+            var territories = route4Me.GetTerritories(terParams, out string errorString);
+
+            // Select the territories containing a list of the contact IDs.
+            territories = territories.Where(x => x.Addresses.Length > 0).ToArray();
+
+            if ((territories?.Length ?? 0) < 1)
+            {
+                return null;
+            }
+
+            // Sort the territories by the number of covered contacts.
+            var orderedResult = from territory in territories
+                                orderby territory.Addresses.Length
+                                descending
+                                select territory;
+
+            // Return a list of the territory IDs.
+            return orderedResult.Count() < requestedTerritoriesNumber
+                ? orderedResult.ToArray()
+                : orderedResult.Take(requestedTerritoriesNumber).ToArray();
+
         }
 
         #endregion

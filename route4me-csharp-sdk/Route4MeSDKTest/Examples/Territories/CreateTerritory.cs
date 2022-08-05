@@ -13,7 +13,7 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            var territoryParameters = new AvoidanceZoneParameters
+            var territoryParameters = new TerritoryZoneParameters
             {
                 TerritoryName = "Test Territory",
                 TerritoryColor = "ff0000",

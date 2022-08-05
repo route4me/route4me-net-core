@@ -13,10 +13,10 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
-            var territoryQuery = new AvoidanceZoneQuery();
+            var territoryQuery = new TerritoryQuery();
 
             // Run the query
-            AvoidanceZone[] territories = route4Me.GetTerritories(territoryQuery,
+            TerritoryZone[] territories = route4Me.GetTerritories(territoryQuery,
                                                                   out string errorString);
 
             PrintExampleTerritory(territories, errorString);
