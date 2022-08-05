@@ -23,7 +23,7 @@ namespace Route4MeSDK.Examples
                 Bundling = new AddressBundling()
                 {
                     Mode = AddressBundlingMode.Address,
-                    MergeMode = AddressBundlingMergeMode.MergeIntoSingleDestination,
+                    MergeMode = AddressBundlingMergeMode.KeepAsSeparateDestinations,
                     ServiceTimeRules = new ServiceTimeRulesClass()
                     {
                         FirstItemMode = AddressBundlingFirstItemMode.CustomTime,
