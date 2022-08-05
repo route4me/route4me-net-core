@@ -17,7 +17,7 @@ namespace Route4MeSDK.Examples
 
             string territoryId = TerritoryZonesToRemove[TerritoryZonesToRemove.Count - 1];
 
-            var territoryQuery = new AvoidanceZoneQuery
+            var territoryQuery = new TerritoryQuery
             {
                 TerritoryId = territoryId
             };
