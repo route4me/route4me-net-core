@@ -17,7 +17,7 @@ namespace Route4MeSDK.Examples
 
             string territoryId = TerritoryZonesToRemove[TerritoryZonesToRemove.Count - 1];
 
-            var territoryParameters = new AvoidanceZoneParameters
+            var territoryParameters = new TerritoryZoneParameters
             {
                 TerritoryId = territoryId,
                 TerritoryName = "Test Territory Updated",
@@ -33,7 +33,7 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            AvoidanceZone territory = route4Me.UpdateTerritory(territoryParameters,
+            TerritoryZone territory = route4Me.UpdateTerritory(territoryParameters,
                                                                out string errorString);
 
             PrintExampleTerritory(territory, errorString);
