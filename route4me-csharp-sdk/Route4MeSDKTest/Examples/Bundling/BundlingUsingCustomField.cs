@@ -24,7 +24,7 @@ namespace Route4MeSDK.Examples
                 {
                     Mode = AddressBundlingMode.AddressCustomField,
                     ModeParams = new string[] { "BUNDLING_KEY" },
-                    MergeMode = AddressBundlingMergeMode.MergeIntoSingleDestination,
+                    MergeMode = AddressBundlingMergeMode.KeepAsSeparateDestinations,
                     ServiceTimeRules = new ServiceTimeRulesClass()
                     {
                         FirstItemMode = AddressBundlingFirstItemMode.CustomTime,

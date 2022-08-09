@@ -8,9 +8,9 @@ namespace Route4MeSDK.Examples
     public sealed partial class Route4MeExamples
     {
         /// <summary>
-        /// Bundling Using Address Static Field
+        /// Bundling Using Address and priority constraint
         /// </summary>
-        public void BundlingUsingAddressStaticField()
+        public void BundlingByAddressAndPriorityConstraint()
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -18,12 +18,16 @@ namespace Route4MeSDK.Examples
             var routeParameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.CVRP_TW_SD,
-                RouteName = $"Single Depot, Multiple Driver, Bundling Any Custom Field {DateTime.Now}",
+                RouteName = $"Single Depot, Multiple Driver, Bundling by Address and having Priority Constraint {DateTime.Now}",
                 TravelMode = TravelMode.Driving.Description(),
                 Bundling = new AddressBundling()
                 {
-                    Mode = AddressBundlingMode.AddressId,
-                    ModeParams = new string[] {"Alias"},
+                    Mode = AddressBundlingMode.Address,
+                    ModeParams = new string[] 
+                    {
+                        "custom_fields.BUNDLING_KEY",
+                        "custom_fields.LOCATION_ID"
+                    },
                     MergeMode = AddressBundlingMergeMode.KeepAsSeparateDestinations,
                     ServiceTimeRules = new ServiceTimeRulesClass()
                     {
@@ -34,6 +38,7 @@ namespace Route4MeSDK.Examples
                     }
                 }
             };
+
 
             var addresses = new List<Address>()
             {
@@ -75,24 +80,99 @@ namespace Route4MeSDK.Examples
                 },
                 new Address()
                 {
-                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
-                    Latitude = 38.179806,
-                    Longitude = -85.775558,
-                    Time = 300
+                    AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
+                    Latitude = 38.259335,
+                    Longitude = -85.815094,
+                    Time = 300,
+                    Priority = 1
                 },
                 new Address()
                 {
                     AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
                     Latitude = 38.259335,
                     Longitude = -85.815094,
-                    Time = 300
+                    Time = 300,
+                    Priority = 2
+                },
+                new Address()
+                {
+                    AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
+                    Latitude = 38.176067,
+                    Longitude = -85.824638,
+                    Time = 300,
+                    Priority = 3
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300,
+                    Priority = 3
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300,
+                    Priority = 4
+                },
+                new Address()
+                {
+                    AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
+                    Latitude = 38.179806,
+                    Longitude = -85.775558,
+                    Time = 300,
+                    Priority = 5
                 },
                 new Address()
                 {
                     AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
                     Latitude = 38.179253,
                     Longitude = -85.785118,
-                    Time = 300
+                    Time = 300,
+                    Priority = 4
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300,
+                    Priority = 5
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300,
+                    Priority = 6
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300,
+                    Priority = 7
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300,
+                    Priority = 8
+                },
+                new Address()
+                {
+                    AddressString = "1324 BLUEGRASS AVE, Louisville, KY, 40215",
+                    Latitude = 38.179253,
+                    Longitude = -85.785118,
+                    Time = 300,
+                    Priority = 9
                 },
                 new Address()
                 {
@@ -100,7 +180,8 @@ namespace Route4MeSDK.Examples
                     Alias = "Bundled Zone",
                     Latitude = 38.178844,
                     Longitude = -85.774864,
-                    Time = 300
+                    Time = 300,
+                    Priority = 5
                 },
                 new Address()
                 {
@@ -108,7 +189,8 @@ namespace Route4MeSDK.Examples
                     Alias = "Bundled Zone",
                     Latitude = 38.178844,
                     Longitude = -85.774864,
-                    Time = 300
+                    Time = 300,
+                    Priority = 6
                 },
                 new Address()
                 {
@@ -116,7 +198,17 @@ namespace Route4MeSDK.Examples
                     Alias = "Bundled Zone",
                     Latitude = 38.178844,
                     Longitude = -85.774864,
-                    Time = 300
+                    Time = 300,
+                    Priority = 7
+                },
+                new Address()
+                {
+                    AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
+                    Alias = "Bundled Zone",
+                    Latitude = 38.178844,
+                    Longitude = -85.774864,
+                    Time = 300,
+                    Priority = 8
                 }
             };
 

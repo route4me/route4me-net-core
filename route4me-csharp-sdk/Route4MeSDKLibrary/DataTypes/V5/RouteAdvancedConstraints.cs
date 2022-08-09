@@ -57,6 +57,11 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "group", EmitDefaultValue = false)]
         public string Group { get; set; }
 
+        /// <summary>
+        /// A depot address
+        /// </summary>
+        [DataMember(Name = "depot_address", EmitDefaultValue = false)]
+        public Address DepotAddress { get; set; }
 
     }
 }
