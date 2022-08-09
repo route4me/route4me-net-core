@@ -5792,14 +5792,55 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        ///     Creates a territory
+        /// </summary>
+        /// <param name="territoryZoneParameters"> The TerritoryZoneParameters type object as the request payload </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> The Territory type object </returns>
+        public TerritoryZone CreateTerritory(TerritoryZoneParameters territoryZoneParameters, out string errorString)
+        {
+            return GetJsonObjectFromAPI<TerritoryZone>(territoryZoneParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Post,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Creates a territory
+        /// </summary>
+        /// <param name="territoryZoneParameters"> The TerritoryZoneParameters type object as the request payload </param>
+        /// <returns> The Territory type object </returns>
+        public Task<Tuple<TerritoryZone, string>> CreateTerritoryAsync(TerritoryZoneParameters territoryZoneParameters)
+        {
+            return GetJsonObjectFromAPIAsync<TerritoryZone>(territoryZoneParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
         ///     Gets the territories by parameters
         /// </summary>
         /// <param name="avoidanceZoneQuery"> >The AvoidanceZoneQuery type object as the query parameters </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> The teritories </returns>
-        public AvoidanceZone[] GetTerritories(AvoidanceZoneQuery avoidanceZoneQuery, out string errorString)
+        public TerritoryZone[] GetTerritories(AvoidanceZoneQuery avoidanceZoneQuery, out string errorString)
         {
-            return GetJsonObjectFromAPI<AvoidanceZone[]>(avoidanceZoneQuery,
+            return GetJsonObjectFromAPI<TerritoryZone[]>(avoidanceZoneQuery,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Get,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Gets the territories by parameters
+        /// </summary>
+        /// <param name="territoryQuery"> >The TerritoryQuery type object as the query parameters </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> The teritories </returns>
+        public TerritoryZone[] GetTerritories(TerritoryQuery territoryQuery, out string errorString)
+        {
+
+            return GetJsonObjectFromAPI<TerritoryZone[]>(territoryQuery,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Get,
                 out errorString);
@@ -5813,6 +5854,18 @@ namespace Route4MeSDK
         public Task<Tuple<AvoidanceZone[], string>> GetTerritoriesAsync(AvoidanceZoneQuery avoidanceZoneQuery)
         {
             return GetJsonObjectFromAPIAsync<AvoidanceZone[]>(avoidanceZoneQuery,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Get);
+        }
+
+        /// <summary>
+        ///     Gets the territories by parameters
+        /// </summary>
+        /// <param name="territoryQuery"> >The TerritoryQuery type object as the query parameters </param>
+        /// <returns> The teritories </returns>
+        public Task<Tuple<TerritoryZone[], string>> GetTerritoriesAsync(TerritoryQuery territoryQuery)
+        {
+            return GetJsonObjectFromAPIAsync<TerritoryZone[]>(territoryQuery,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Get);
         }
@@ -5860,6 +5913,20 @@ namespace Route4MeSDK
         /// <summary>
         ///     Removes a trritory (by TerritoryId)
         /// </summary>
+        /// <param name="territoryQuery"> The TerritoryQuery type object as query parmaeters (TerritoryId) </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> Result status: true/false </returns>
+        public bool RemoveTerritory(TerritoryQuery territoryQuery, out string errorString)
+        {
+            var result = GetJsonObjectFromAPI<StatusResponse>(territoryQuery, R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Delete, out errorString);
+
+            return result.Status;
+        }
+
+        /// <summary>
+        ///     Removes a trritory (by TerritoryId)
+        /// </summary>
         /// <param name="territoryQuery"> The AvoidanceZoneQuery type object as query parmaeters (TerritoryId) </param>
         /// <returns> Result status: true/false </returns>
         public async Task<Tuple<bool, string>> RemoveTerritoryAsync(AvoidanceZoneQuery territoryQuery)
@@ -5871,14 +5938,27 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        ///     Removes a trritory (by TerritoryId)
+        /// </summary>
+        /// <param name="territoryQuery"> The TerritoryQuery type object as query parmaeters (TerritoryId) </param>
+        /// <returns> Result status: true/false </returns>
+        public async Task<Tuple<bool, string>> RemoveTerritoryAsync(TerritoryQuery territoryQuery)
+        {
+            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(territoryQuery, R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Delete).ConfigureAwait(false);
+
+            return new Tuple<bool, string>(result.Item1.Status, result.Item2);
+        }
+
+        /// <summary>
         ///     Updates a territory
         /// </summary>
-        /// <param name="tereritoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
+        /// <param name="territoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> Territory Object </returns>
-        public AvoidanceZone UpdateTerritory(AvoidanceZoneParameters tereritoryParameters, out string errorString)
+        public AvoidanceZone UpdateTerritory(AvoidanceZoneParameters territoryParameters, out string errorString)
         {
-            return GetJsonObjectFromAPI<AvoidanceZone>(tereritoryParameters,
+            return GetJsonObjectFromAPI<AvoidanceZone>(territoryParameters,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Put,
                 out errorString);
@@ -5887,11 +5967,37 @@ namespace Route4MeSDK
         /// <summary>
         ///     Updates a territory
         /// </summary>
-        /// <param name="tereritoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
+        /// <param name="territoryParameters"> The TerritoryZoneParameters type object as the request payload </param>
+        /// <param name="errorString"> out: Error as string </param>
         /// <returns> Territory Object </returns>
-        public Task<Tuple<AvoidanceZone, string>> UpdateTerritoryAsync(AvoidanceZoneParameters tereritoryParameters)
+        public TerritoryZone UpdateTerritory(TerritoryZoneParameters territoryParameters, out string errorString)
         {
-            return GetJsonObjectFromAPIAsync<AvoidanceZone>(tereritoryParameters,
+            return GetJsonObjectFromAPI<TerritoryZone>(territoryParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Put,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Updates a territory
+        /// </summary>
+        /// <param name="territoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
+        /// <returns> Territory Object </returns>
+        public Task<Tuple<AvoidanceZone, string>> UpdateTerritoryAsync(AvoidanceZoneParameters territoryParameters)
+        {
+            return GetJsonObjectFromAPIAsync<AvoidanceZone>(territoryParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Put);
+        }
+
+        /// <summary>
+        ///     Updates a territory
+        /// </summary>
+        /// <param name="territoryParameters"> The TerritoryQuery type object as the request payload </param>
+        /// <returns> Territory Object </returns>
+        public Task<Tuple<TerritoryZone, string>> UpdateTerritoryAsync(TerritoryZoneParameters territoryParameters)
+        {
+            return GetJsonObjectFromAPIAsync<TerritoryZone>(territoryParameters,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Put);
         }
@@ -6722,7 +6828,7 @@ namespace Route4MeSDK
                                             Errors = new List<string> {response.Result.ReasonPhrase}
                                         };
 
-                                        var reqMessage = response.Result?.RequestMessage?.Content.ReadAsStringAsync()
+                                        var reqMessage = response.Result?.RequestMessage?.Content?.ReadAsStringAsync()
                                             .Result ?? "";
 
                                         if (reqMessage != "")
