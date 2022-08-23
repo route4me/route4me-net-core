@@ -255,6 +255,17 @@
 
         #endregion
 
+        #region Route Status
+
+        public const string RouteStatusMainHost = MainHost + "/route-status";
+        public const string RouteStatus = RouteStatusMainHost + "/{routeId}";
+        public const string RouteStatusHistory = RouteStatus + "/history";
+        public const string RollbackRouteStatus = RouteStatus + "/rollback";
+        public const string PlannedRouteStatus = RouteStatusMainHost + "/planned";
+        public const string RouteStopStatus = MainHost + "/route-stop-status";
+
+        #endregion
+
         #endregion
     }
 }

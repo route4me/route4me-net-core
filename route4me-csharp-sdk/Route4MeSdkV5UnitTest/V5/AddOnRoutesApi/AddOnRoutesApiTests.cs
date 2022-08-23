@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 
 namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 {
@@ -293,6 +296,186 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 
             Assert.NotNull(updatedRoute);
             Assert.That(updatedRoute.GetType(), Is.EqualTo(typeof(DataObjectRoute)));
+        }
+
+        [Test]
+        [Ignore("Run explicitly")]
+        public void GetRouteStatusTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Limit = 1,
+                Offset = 15
+            };
+            
+            var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
+
+            var routeStatusResponse = route4Me.GetRouteStatus(dataObjects.First().RouteID, out var _);
+
+            Assert.That(routeStatusResponse, Is.Not.Null);
+            Assert.That(routeStatusResponse.GetType(), Is.EqualTo(typeof(RouteStatusResponse)));
+            Assert.That(routeStatusResponse.Status, Is.EqualTo(RouteStatus.Planned.Description()));
+        }
+
+        [Test]
+        [Ignore("Run explicitly")]
+        public void UpdateRouteStatusTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Limit = 1,
+                Offset = 15
+            };
+
+            var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
+            var routeId = dataObjects.First().RouteID;
+
+            RouteStatusResponse updatedRouteStatusResponse = route4Me.UpdateRouteStatus(routeId, new RouteStatusRequest()
+            {
+                Latitude = 50,
+                Longitude = 60,
+                Status = RouteStatus.Started.Description(),
+                EventTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds()
+            }, out var err2);
+
+            Assert.That(updatedRouteStatusResponse.Latitude, Is.EqualTo(50));
+            Assert.That(updatedRouteStatusResponse.Longitude, Is.EqualTo(60));
+            Assert.That(updatedRouteStatusResponse.Status, Is.EqualTo(RouteStatus.Started.Description()));
+        }
+
+        [Test]
+        [Ignore("Run explicitly")]
+        public void GetRouteStatusHistoryTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Limit = 1,
+                Offset = 15
+            };
+
+            var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse err1);
+            var routeId = dataObjects.First().RouteID;
+
+            RouteStatusResponse updatedRouteStatusResponse = route4Me.UpdateRouteStatus(routeId, new RouteStatusRequest()
+            {
+                Latitude = 50,
+                Longitude = 60,
+                Status = RouteStatus.Started.Description(),
+                EventTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds()
+            }, out var err2);
+
+            var routeStatusHistoryResponse = route4Me.GetRouteStatusHistory(new RouteStatusHistoryParameters()
+            {
+                RouteId = routeId,
+                OrderBy = "asc",
+                Start = 0,
+                End = long.MaxValue
+            }, out var err);
+
+            Assert.That(routeStatusHistoryResponse, Is.Not.Null);
+            Assert.That(routeStatusHistoryResponse.GetType(), Is.EqualTo(typeof(RouteStatusHistoryResponse)));
+            Assert.That(routeStatusHistoryResponse.Data.Length, Is.EqualTo(2));
+        }
+
+        [Test]
+        [Ignore("Run explicitly")]
+        public void RollbackRouteStatusTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Limit = 1,
+                Offset = 15
+            };
+
+            var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
+            var routeId = dataObjects.First().RouteID;
+
+            var initialRouteStatusResponse = route4Me.GetRouteStatus(routeId, out var err1);
+
+            RouteStatusResponse updatedRouteStatusResponse = route4Me.UpdateRouteStatus(routeId, new RouteStatusRequest()
+            {
+                Latitude = 50,
+                Longitude = 60,
+                Status = RouteStatus.Started.Description(),
+                EventTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds()
+            }, out var err2);
+
+            RouteStatusResponse updatedRouteStatusResponse2 = route4Me.UpdateRouteStatus(routeId, new RouteStatusRequest()
+            {
+                Latitude = 50,
+                Longitude = 60,
+                Status = RouteStatus.Paused.Description(),
+                EventTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds()
+            }, out var err3);
+
+            var routeStatusResponseWithRollback = route4Me.RollbackRouteStatus(routeId, out var err4);
+
+            Assert.That(updatedRouteStatusResponse.Status, Is.EqualTo(routeStatusResponseWithRollback.Status));
+        }
+
+        [Test]
+        [Ignore("Does not work yet")]
+        public void UpdateRouteStatusAsPlannedTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Limit = 1,
+                Offset = 15
+            };
+
+            var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
+            var routeId = dataObjects.First().RouteID;
+
+            var initialRouteStatusResponse = route4Me.GetRouteStatus(routeId, out var err1);
+
+            RouteStatusResponse updatedRouteStatusResponse = route4Me.UpdateRouteStatus(routeId, new RouteStatusRequest()
+            {
+                Latitude = 50,
+                Longitude = 60,
+                Status = RouteStatus.Started.Description(),
+                EventTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds()
+            }, out var err2);
+
+            var updatedRouteStatusResponse2 = route4Me.UpdateRouteStatusAsPlanned(new UpdateRouteStatusAsPlannedParameters()
+            {
+                RouteIds = new string[] { routeId }
+            }, out var err3);
+
+            var routeStatusResponse = route4Me.GetRouteStatus(routeId, out var err4);
+
+            Assert.That(updatedRouteStatusResponse2.GetType(), Is.EqualTo(typeof(UpdateRouteStatusAsPlannedResponse)));
+        }
+
+        [Test]
+        public void SetRouteStopStatusTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Limit = 1,
+                Offset = 15
+            };
+
+            var routeDestinationId = _tdr.SD10Stops_route.Addresses.First().RouteDestinationId;
+            var result = route4Me.SetRouteStopStatus(new SetRouteStopStatusParameters()
+            {
+                DestinationIds = new long[] { routeDestinationId.Value },
+                Status = RouteStopStatus.Failed.Description()
+            }, out var err3);
+            
+
+            Assert.That(result.GetType(), Is.EqualTo(typeof(StatusResponse)));
         }
     }
 }
