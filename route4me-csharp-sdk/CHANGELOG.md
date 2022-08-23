@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.0.0.0] - 2022-08-23
+
+Route Status API is supported. V4 API with respect to territories/avoidance zones slightly changed.
+
 ## [4.1.0.0] - 2022-07-24
 
 Address Book API is supported. Transfer order to another primary account is supported.
