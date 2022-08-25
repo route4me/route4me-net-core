@@ -44,6 +44,7 @@ namespace Route4MeSDKTest
 
                 examples.HybridOptimizationFrom1000Orders();
                 examples.HybridOptimizationFrom1000Addresses();
+                examples.SingleDriverRouteServiceTimeByAddressType();
 
                 var dataobject = examples.AsyncMultipleDepotMultipleDriver().GetAwaiter().GetResult();
 
