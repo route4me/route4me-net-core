@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.1.0.0] - 2022-08-26
+
+Get Service Time By Address Type function is added.
+
 ## [5.0.0.0] - 2022-08-23
 
 Route Status API is supported. V4 API with respect to territories/avoidance zones slightly changed.
