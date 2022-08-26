@@ -23,7 +23,7 @@ namespace Route4MeSDK.Examples
             parameters.DeviceType = DeviceType.Web.Description();
             optParameters.Parameters = parameters;
 
-            var serviceTimeByAddressTypeMap = new Dictionary<string, int?>()
+            var serviceTimeByAddressTypeMap = new Dictionary<string, int>()
             {
                 {"STOP_TYPE_1", 60},
                 {"STOP_TYPE_2", 120},
