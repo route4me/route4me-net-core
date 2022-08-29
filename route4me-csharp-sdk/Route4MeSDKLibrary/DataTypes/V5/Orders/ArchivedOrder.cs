@@ -124,22 +124,23 @@ namespace Route4MeSDK.DataTypes.V5
         public double? CurbsideLng { get; set; }
 
         /// <summary>
-        ///     Geo latitude. Required
+        ///     Geo latitude
         /// </summary>
         [DataMember(Name = "cached_lat")]
-        public double CachedLat { get; set; }
+        public double? CachedLat { get; set; }
 
         /// <summary>
-        ///     Geo longitude. Required
+        ///     Geo longitude
         /// </summary>
         [DataMember(Name = "cached_lng")]
-        public double CachedLng { get; set; }
+        public double? CachedLng { get; set; }
 
-        /// <summary>
-        ///     Custom data
-        /// </summary>
-        [DataMember(Name = "EXT_FIELD_custom_data", EmitDefaultValue = false)]
-        public Dictionary<string, string> ExtFieldCustomData { get; set; }
+        ///// <summary>
+        /////     Custom data
+        ///// </summary>
+        // temporary not supported
+        //[DataMember(Name = "EXT_FIELD_custom_data", EmitDefaultValue = false)]
+        //public Dictionary<string, string> ExtFieldCustomData { get; set; }
 
         /// <summary>
         ///     How many times the order visited.
