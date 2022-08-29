@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.1.1.0] - 2022-08-29
+
+Support update for Order which has been created with no lat/lng.
+
 ## [5.1.0.0] - 2022-08-26
 
 Get Service Time By Address Type function is added.
