@@ -341,6 +341,7 @@ namespace Route4MeSDKTest
                 examples.AddOrder();
                 examples.AddOrdersToOptimization();
                 examples.AddOrdersToRoute();
+                examples.AddOrderWithNoLatAndLngAndUpdateAfterwards();
                 examples.AddScheduledOrder();
                 examples.CreateOrderWithCustomField();
                 examples.GetOrderByID();

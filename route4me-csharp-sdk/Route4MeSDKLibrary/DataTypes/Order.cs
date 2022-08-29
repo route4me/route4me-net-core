@@ -71,15 +71,15 @@ namespace Route4MeSDK.DataTypes
         public long MemberId { get; set; }
 
         /// <summary>
-        ///     Geo latitude. Required
+        ///     Geo latitude
         /// </summary>
-        [DataMember(Name = "cached_lat")]
+        [DataMember(Name = "cached_lat", EmitDefaultValue = false)]
         public double CachedLat { get; set; }
 
         /// <summary>
-        ///     Geo longitude. Required
+        ///     Geo longitude
         /// </summary>
-        [DataMember(Name = "cached_lng")]
+        [DataMember(Name = "cached_lng", EmitDefaultValue = false)]
         public double CachedLng { get; set; }
 
         /// <summary>
