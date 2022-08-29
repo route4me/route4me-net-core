@@ -122,51 +122,51 @@ namespace Route4MeSDK
                 }
             }
 
-            if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
-            {
-                var pattern = string.Concat(
-                    "\\\"EXT_FIELD_custom_data\\\"",
-                    @":(\[\]),",
-                    "\"");
+            //if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
+            //{
+            //    var pattern = string.Concat(
+            //        "\\\"EXT_FIELD_custom_data\\\"",
+            //        @":(\[\]),",
+            //        "\"");
 
-                var rgx = new Regex(pattern);
-                var rslt = rgx.Match(text);
+            //    var rgx = new Regex(pattern);
+            //    var rslt = rgx.Match(text);
 
-                if (rslt?.Success ?? false) text = text.Replace("\"EXT_FIELD_custom_data\":[]", "\"EXT_FIELD_custom_data\":null");
+            //    if (rslt?.Success ?? false) text = text.Replace("\"EXT_FIELD_custom_data\":[]", "\"EXT_FIELD_custom_data\":null");
 
-                pattern = string.Concat(
-                    "(\"EXT_FIELD_custom_data\"",
-                    @":(\[{)[^\]]*(}\])),");
+            //    pattern = string.Concat(
+            //        "(\"EXT_FIELD_custom_data\"",
+            //        @":(\[{)[^\]]*(}\])),");
 
-                string pattern2 = string.Concat(
-                    "(\"EXT_FIELD_custom_data\"",
-                    @":{[^\]]*}),");
+            //    string pattern2 = string.Concat(
+            //        "(\"EXT_FIELD_custom_data\"",
+            //        @":{[^\]]*}),");
 
-                var map = new Dictionary<string, string>()
-                {
-                   {pattern,pattern2}
+            //    var map = new Dictionary<string, string>()
+            //    {
+            //       {pattern,pattern2}
                    
-                };
+            //    };
 
-                rgx = new Regex(pattern);
+            //    rgx = new Regex(pattern);
 
-                var mathes = rgx.Matches(text);
+            //    var mathes = rgx.Matches(text);
 
-                if (mathes.Count>0)
-                {
-                    for (int i = 0; i< mathes.Count; i++)
-                    {
-                        if (mathes[i].Success && mathes[i].Captures.Count>0)
-                        {
-                            string sub2 = mathes[i].Captures[0].Value
-                                            .Replace("[{", "{")
-                                            .Replace("}]", "}");
+            //    if (mathes.Count>0)
+            //    {
+            //        for (int i = 0; i< mathes.Count; i++)
+            //        {
+            //            if (mathes[i].Success && mathes[i].Captures.Count>0)
+            //            {
+            //                string sub2 = mathes[i].Captures[0].Value
+            //                                .Replace("[{", "{")
+            //                                .Replace("}]", "}");
 
-                            text = text.Replace(mathes[i].Captures[0].Value, sub2);
-                        }
-                    }
-                }
-            }
+            //                text = text.Replace(mathes[i].Captures[0].Value, sub2);
+            //            }
+            //        }
+            //    }
+            //}
 
             return JsonConvert.DeserializeObject<T>(text, jsonSettings);
         }
