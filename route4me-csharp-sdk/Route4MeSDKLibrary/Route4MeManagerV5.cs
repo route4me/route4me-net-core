@@ -1088,9 +1088,10 @@ namespace Route4MeSDK
         ///     TO DO: there is no response from the function.
         /// </summary>
         /// <param name="membersParams"></param>
+        /// <param name="conflicts">Conflict resolving rule</param>
         /// <param name="resultResponse">Failing response</param>
         /// <returns></returns>
-        public ResultResponse BulkCreateTeamMembers(TeamRequest[] membersParams, out ResultResponse resultResponse)
+        public ResultResponse BulkCreateTeamMembers(TeamRequest[] membersParams, Conflicts conflicts, out ResultResponse resultResponse)
         {
             resultResponse = default;
 
@@ -1125,7 +1126,8 @@ namespace Route4MeSDK
 
             var newMemberParams = new BulkMembersRequest
             {
-                Users = membersParams
+                Users = membersParams,
+                Conflicts = conflicts.Description()
             };
 
             var result = GetJsonObjectFromAPI<ResultResponse>(
@@ -1142,8 +1144,9 @@ namespace Route4MeSDK
         ///     TO DO: there is no response from the function.
         /// </summary>
         /// <param name="membersParams"></param>
+        /// <param name="conflicts">Conflict resolving rule</param>
         /// <returns></returns>
-        public Task<Tuple<ResultResponse, ResultResponse>> BulkCreateTeamMembersAsync(TeamRequest[] membersParams)
+        public Task<Tuple<ResultResponse, ResultResponse>> BulkCreateTeamMembersAsync(TeamRequest[] membersParams, Conflicts conflicts)
         {
             if (membersParams == null || membersParams.Length == 0)
             {
@@ -1174,7 +1177,8 @@ namespace Route4MeSDK
 
             var newMemberParams = new BulkMembersRequest
             {
-                Users = membersParams
+                Users = membersParams,
+                Conflicts = conflicts.Description()
             };
 
             return GetJsonObjectFromAPIAsync<ResultResponse>(
