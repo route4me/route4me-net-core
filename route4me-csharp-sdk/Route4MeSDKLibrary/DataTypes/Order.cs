@@ -355,5 +355,11 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "possession_day_id", EmitDefaultValue = false)]
         public int? PossessionDayId { get; set; }
+
+        /// <summary>
+        ///     Group.
+        /// </summary>
+        [DataMember(Name = "group", EmitDefaultValue = false)]
+        public string Group { get; set; }
     }
 }
