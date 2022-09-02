@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.0.0.0] - 2022-09-02
+
+Fixed Orders Archive functionality.
+Tempoarary disabled EXT_FIELD_custom_data for Orders Archive.
+Team API is adjusted.
+Vehicle API is adjusted.
+Added group to Order.
+Internal bug fixes.
+
 ## [5.1.1.0] - 2022-08-29
 
 Support update for Order which has been created with no lat/lng.
