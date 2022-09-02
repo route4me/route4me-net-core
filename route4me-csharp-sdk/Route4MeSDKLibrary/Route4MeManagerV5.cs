@@ -2237,6 +2237,38 @@ namespace Route4MeSDK
         #region Vehicles
 
         /// <summary>
+        ///     Get the paginated list of Vehicles.
+        /// </summary>
+        /// <param name="vehicleParams">Query params</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>An array of the vehicles</returns>
+        public Vehicle[] GetVehicles(GetVehicleParameters vehicleParams, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<Vehicle[]>(
+                vehicleParams,
+                R4MEInfrastructureSettingsV5.Vehicles,
+                HttpMethodType.Get,
+                false,
+                true,
+                out resultResponse);
+        }
+
+        /// <summary>
+        ///     Get the paginated list of Vehicles.
+        /// </summary>
+        /// <param name="vehicleParams">Query params</param>
+        /// <returns>An array of the vehicles</returns>
+        public async Task<Tuple<Vehicle[], ResultResponse>> GetVehiclesAsync(GetVehicleParameters vehicleParams)
+        {
+            var result = await GetJsonObjectFromAPIAsync<Vehicle[]>(
+                vehicleParams,
+                R4MEInfrastructureSettingsV5.Vehicles,
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<Vehicle[], ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
         ///     Creates a vehicle
         /// </summary>
         /// <param name="vehicle">The VehicleV4Parameters type object as the request payload </param>
@@ -2290,7 +2322,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<Vehicle[]>(
                 vehicleParams,
-                R4MEInfrastructureSettingsV5.Vehicles,
+                R4MEInfrastructureSettingsV5.VehiclePaginated,
                 HttpMethodType.Get);
         }
 
@@ -2317,7 +2349,7 @@ namespace Route4MeSDK
             }
 
             return GetJsonObjectFromAPI<Vehicle>(new GenericParameters(),
-                R4MEInfrastructureSettings.Vehicle_V4 + "/" + vehicleId,
+                R4MEInfrastructureSettingsV5.Vehicles + "/" + vehicleId,
                 HttpMethodType.Delete,
                 out resultResponse);
         }
@@ -2903,6 +2935,45 @@ namespace Route4MeSDK
             return result;
         }
 
+        /// <summary>
+        /// Returns vehicle job status.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The object containing status of the JOB</returns>
+        public StatusResponse GetVehicleJobStatus(string jobId, out ResultResponse resultResponse)
+        {
+            var emptyParams = new GenericParameters();
+
+            var result = GetJsonObjectFromAPI<StatusResponse>(
+                emptyParams,
+                R4MEInfrastructureSettingsV5.VehicleJobStatus + "/" + jobId,
+                HttpMethodType.Get,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a vehicle job status.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <returns>Returns a job status </returns>
+        public async Task<Tuple<StatusResponse, ResultResponse>> GetVehicleJobStatusAsync(string jobId)
+        {
+            var emptyParams = new GenericParameters();
+
+            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(
+                emptyParams,
+                R4MEInfrastructureSettingsV5.VehicleJobStatus + "/" + jobId,
+                HttpMethodType.Get,
+                null,
+                false,
+                false);
+
+            return new Tuple<StatusResponse, ResultResponse>(result.Item1, result.Item2);
+        }
+
         #endregion
 
         #region Vehicle Tracking
@@ -3015,11 +3086,17 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="vehicleId">Vehicle ID</param>
         /// <returns>Vehicle track object</returns>
-        public Task<Tuple<VehicleTrackResponse, ResultResponse>> GetVehicleTrackAsync(string vehicleId)
+        public Task<Tuple<VehicleTrackResponse, ResultResponse>> GetVehicleTrackAsync(VehicleParameters vehicleParameters)
         {
+            var newParams = new VehicleParameters()
+            {
+                Start = vehicleParameters.Start,
+                End = vehicleParameters.End
+            };
+
             return GetJsonObjectFromAPIAsync<VehicleTrackResponse>(
-                new VehicleParameters(),
-                R4MEInfrastructureSettingsV5.Vehicles + "/" + vehicleId + "/" + "track",
+                newParams,
+                R4MEInfrastructureSettingsV5.Vehicles + "/" + vehicleParameters.VehicleId + "/" + "track",
                 HttpMethodType.Get);
         }
 

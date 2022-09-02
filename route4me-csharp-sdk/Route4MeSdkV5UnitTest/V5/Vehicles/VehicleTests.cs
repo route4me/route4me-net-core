@@ -305,5 +305,22 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
             Assert.That(vehicleData.GetType(), Is.EqualTo(typeof(VehiclesResponse)));
         }
 
+        [Test, Order(8)]
+        public void GetVehicles()
+        {
+            var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+
+            var vehicleParams = new GetVehicleParameters()
+            {
+                Page = 1,
+                PerPage = 10
+            };
+
+            var vehicleData = route4me.GetVehicles(vehicleParams, out ResultResponse resultResponse);
+
+            Assert.NotNull(vehicleData);
+            Assert.That(vehicleData.GetType(), Is.EqualTo(typeof(VehiclesResponse)));
+        }
+
     }
 }
