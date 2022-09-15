@@ -30,9 +30,9 @@ namespace Route4MeSDK.Examples
 
             DataObjectRoute[] dataObjects = route4Me
                 .GetJsonObjectFromAPI<DataObjectRoute[]>(genericParameters,
-                                                    uri,
-                                                    HttpMethodType.Get,
-                                                    out string errorMessage);
+                    uri,
+                    HttpMethodType.Get,
+                    out string errorMessage);
 
             Console.WriteLine("");
 
@@ -69,7 +69,8 @@ namespace Route4MeSDK.Examples
 
             if (dataObjects != null)
             {
-                Console.WriteLine("GenericExampleShortcut executed successfully, {0} routes returned", dataObjects.Length);
+                Console.WriteLine("GenericExampleShortcut executed successfully, {0} routes returned",
+                    dataObjects.Length);
                 Console.WriteLine("");
 
                 dataObjects.ForEach(dataObject =>

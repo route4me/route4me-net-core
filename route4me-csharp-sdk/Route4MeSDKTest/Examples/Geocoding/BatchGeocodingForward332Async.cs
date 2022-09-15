@@ -19,7 +19,7 @@ namespace Route4MeSDK.Examples
 
             var geoParams = new GeocodingParameters
             {
-                Addresses =@"1771 15th Street, Mobile, AL 35243
+                Addresses = @"1771 15th Street, Mobile, AL 35243
 5100 N 9Th Avenue, Pensacola, FL 35243
 3436 Bel Air Mall, Mobile, AL 35243
 2600 BEACH BOULEVARD, BILOXI, MS 35243
@@ -358,17 +358,15 @@ SP C-101 4300 LEGENDARY DR., DESTIN, FL 35243
             var result = route4Me.BatchGeocodingAsync(geoParams).GetAwaiter().GetResult();
 
 
-            if (result.Item2.Length<1 && result.Item1.Length > 120)
+            if (result.Item2.Length < 1 && result.Item1.Length > 120)
             {
                 var geocodedFilteredAddresses = FilterGeocodedAddresses(result.Item1);
                 Console.WriteLine($"Filtered Geocoded Addresses: {geocodedFilteredAddresses.Count}");
-
             }
             else
             {
                 Console.WriteLine("Cannot geocode the addresses");
             }
-            
         }
 
         List<GeocodingResponse> FilterGeocodedAddresses(string jsonResult)
@@ -387,11 +385,11 @@ SP C-101 4300 LEGENDARY DR., DESTIN, FL 35243
             bool previousSkipped = false;
 
             // Filter the geocoded addresses by similarity to the original address
-            for (int i=1; i< geocodedAddresses.Length; i++)
+            for (int i = 1; i < geocodedAddresses.Length; i++)
             {
                 if (geocodedAddresses[i].Original == geocodedAddresses[i - 1].Original &&
-                    geocodedAddresses[i].Address!= geocodedAddresses[i - 1].Address &&
-                        !previousSkipped)
+                    geocodedAddresses[i].Address != geocodedAddresses[i - 1].Address &&
+                    !previousSkipped)
                 {
                     int similarPevious = ComputeLevenshteinDistance(
                         geocodedAddresses[i - 1].Original,
@@ -406,7 +404,9 @@ SP C-101 4300 LEGENDARY DR., DESTIN, FL 35243
 
                     previousSkipped = true;
                     continue;
-                };
+                }
+
+                ;
 
                 geocodedAddressesFiltered.Add(geocodedAddresses[i]);
                 previousSkipped = false;
@@ -447,7 +447,8 @@ SP C-101 4300 LEGENDARY DR., DESTIN, FL 35243
                 {
                     int cost = (target[j - 1] == source[i - 1]) ? 0 : 1;
 
-                    distance[i, j] = Math.Min(Math.Min(distance[i - 1, j] + 1, distance[i, j - 1] + 1), distance[i - 1, j - 1] + cost);
+                    distance[i, j] = Math.Min(Math.Min(distance[i - 1, j] + 1, distance[i, j - 1] + 1),
+                        distance[i - 1, j - 1] + cost);
                 }
             }
 

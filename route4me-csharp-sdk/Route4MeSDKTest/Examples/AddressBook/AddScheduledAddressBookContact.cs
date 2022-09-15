@@ -16,6 +16,7 @@ namespace Route4MeSDK.Examples
             ContactsToRemove = new List<string>();
 
             #region // Add a location, scheduled daily.
+
             var sched1 = new Schedule("daily", false)
             {
                 Enabled = true,
@@ -36,7 +37,8 @@ namespace Route4MeSDK.Examples
                 CachedLat = 38.141598,
                 CachedLng = -85.793846,
                 AddressCity = "Louisville",
-                AddressCustomData = new Dictionary<string, string>() {
+                AddressCustomData = new Dictionary<string, string>()
+                {
                     { "scheduled", "yes" },
                     { "service type", "publishing" }
                 },
@@ -46,9 +48,11 @@ namespace Route4MeSDK.Examples
             scheduledContact1Response = route4Me.AddAddressBookContact(scheduledContact1, out string errorString);
 
             PrintExampleScheduledContact(scheduledContact1Response, "daily", errorString);
+
             #endregion
 
             #region // Add a location, scheduled weekly.
+
             var sched2 = new Schedule("weekly", false)
             {
                 Enabled = true,
@@ -78,9 +82,11 @@ namespace Route4MeSDK.Examples
                 scheduledContact2Response,
                 "weekly",
                 errorString);
+
             #endregion
 
             #region // Add a location, scheduled monthly (dates mode).
+
             var sched3 = new Schedule("monthly", false)
             {
                 Enabled = true,
@@ -115,9 +121,11 @@ namespace Route4MeSDK.Examples
                 scheduledContact3Response,
                 "monthly (dates mode)",
                 errorString);
+
             #endregion
 
             #region // Add a location, scheduled monthly (nth mode).
+
             var sched4 = new Schedule("monthly", false)
             {
                 Enabled = true,
@@ -138,7 +146,8 @@ namespace Route4MeSDK.Examples
                 CachedLng = -85.821121,
                 AddressCity = "Louisville",
                 ServiceTime = 450,
-                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "library" } },
+                AddressCustomData = new Dictionary<string, string>()
+                    { { "scheduled", "yes" }, { "service type", "library" } },
                 Schedule = new List<Schedule>() { sched4 },
                 AddressIcon = "emoji/emoji-bus"
             };
@@ -149,9 +158,11 @@ namespace Route4MeSDK.Examples
                 scheduledContact4Response,
                 "monthly (nth mode)",
                 errorString);
+
             #endregion
 
             #region // Add a location with the daily scheduling and blacklist.
+
             var sched5 = new Schedule("daily", false)
             {
                 Enabled = true,
@@ -172,7 +183,8 @@ namespace Route4MeSDK.Examples
                 CachedLat = 38.176067,
                 CachedLng = -85.824638,
                 AddressCity = "Louisville",
-                AddressCustomData = new Dictionary<string, string>() { { "scheduled", "yes" }, { "service type", "appliance" } },
+                AddressCustomData = new Dictionary<string, string>()
+                    { { "scheduled", "yes" }, { "service type", "appliance" } },
                 Schedule = new List<Schedule>() { sched5 },
                 ScheduleBlacklist = new string[] { "2017-12-22", "2017-12-23" },
                 ServiceTime = 300
@@ -181,9 +193,10 @@ namespace Route4MeSDK.Examples
             scheduledContact5Response = route4Me.AddAddressBookContact(scheduledContact5, out errorString);
 
             PrintExampleScheduledContact(
-               scheduledContact5Response,
-               "daily (with blacklist)",
-               errorString);
+                scheduledContact5Response,
+                "daily (with blacklist)",
+                errorString);
+
             #endregion
 
             RemoveTestContacts();

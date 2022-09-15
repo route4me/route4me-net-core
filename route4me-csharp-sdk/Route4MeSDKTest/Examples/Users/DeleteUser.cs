@@ -25,10 +25,10 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine("");
             Console.WriteLine(
-                    result
+                result
                     ? String.Format("DeleteUser executed successfully")
                     : String.Format("DeleteUser error: {0}", errorString)
-                );
+            );
         }
     }
 }

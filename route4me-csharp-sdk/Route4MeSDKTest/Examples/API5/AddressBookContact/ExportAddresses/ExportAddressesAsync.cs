@@ -23,7 +23,7 @@ namespace Route4MeSDK.Examples
 
             var addresses = route4Me.GetAddressBookContacts(addressBookParameters, out ResultResponse resultResponse);
 
-            if ((addresses?.Results?.Length ?? 0)<1)
+            if ((addresses?.Results?.Length ?? 0) < 1)
             {
                 Console.WriteLine("Cannot retrieve the contacts from the account. The example failed.");
             }
@@ -33,18 +33,18 @@ namespace Route4MeSDK.Examples
             // Prepare the parameters to export the addresses. 
             var exportParams = new AddressExportParameters()
             {
-                AddressIds = addresses.Results.Select(x=>(long)x.AddressId).ToArray(),
-                Filename = "AB contacts export "+DateTime.Now.ToString("yyMMddHHmmss")
+                AddressIds = addresses.Results.Select(x => (long)x.AddressId).ToArray(),
+                Filename = "AB contacts export " + DateTime.Now.ToString("yyMMddHHmmss")
             };
 
             // Send a request to the server
             var exportResult = await route4Me.ExportAddressesAsync(exportParams);
 
             Console.WriteLine(
-                exportResult?.Item1?.IsSuccessStatusCode ?? false 
+                exportResult?.Item1?.IsSuccessStatusCode ?? false
                     ? "The ExportAddresses task finsished successfully"
                     : "The ExportAddresses task failed"
-                );
+            );
         }
     }
 }

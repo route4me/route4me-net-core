@@ -19,15 +19,21 @@ namespace Route4MeSDK.Examples
             string route_id = SD10Stops_route_id;
 
             // Prepare the addresses
+
             #region Addresses
+
             Address[] addresses = new Address[]
             {
-                new Address() { AddressString =  "146 Bill Johnson Rd NE Milledgeville GA 31061",
-                                Latitude =  33.143526,
-                                Longitude = -83.240354,
-                                SequenceNo = 3,
-                                Time = 0 }
+                new Address()
+                {
+                    AddressString = "146 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.143526,
+                    Longitude = -83.240354,
+                    SequenceNo = 3,
+                    Time = 0
+                }
             };
+
             #endregion
 
             // Run the query

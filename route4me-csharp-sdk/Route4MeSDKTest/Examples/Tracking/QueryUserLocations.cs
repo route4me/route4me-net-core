@@ -41,8 +41,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 queriedUserLocations != null
-                ? "QueryUserLocations executed successfully"
-                : "QueryUserLocations failed"
+                    ? "QueryUserLocations executed successfully"
+                    : "QueryUserLocations failed"
             );
         }
     }

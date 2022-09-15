@@ -49,9 +49,9 @@ namespace Route4MeSDK.Examples
             {
                 Console.WriteLine(
                     addressBookGroup.GroupColor == "cd74e6"
-                    ? "Updated the color of the address book group " + groupId
-                    : "Cannot update the color of the address book group " + groupId
-                    );
+                        ? "Updated the color of the address book group " + groupId
+                        : "Cannot update the color of the address book group " + groupId
+                );
             }
 
             RemoveAddressBookGroups();

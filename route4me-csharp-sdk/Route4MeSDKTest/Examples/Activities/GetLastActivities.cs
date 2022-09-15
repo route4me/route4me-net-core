@@ -15,7 +15,8 @@ namespace Route4MeSDK.Examples
 
             var activitiesAfterTime = DateTime.Now - (new TimeSpan(7, 0, 0, 0));
 
-            activitiesAfterTime = new DateTime(activitiesAfterTime.Year, activitiesAfterTime.Month, activitiesAfterTime.Day, 0, 0, 0);
+            activitiesAfterTime = new DateTime(activitiesAfterTime.Year, activitiesAfterTime.Month,
+                activitiesAfterTime.Day, 0, 0, 0);
 
             uint uiActivitiesAfterTime = (uint)Route4MeSDK.R4MeUtils.ConvertToUnixTimestamp(activitiesAfterTime);
 

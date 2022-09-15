@@ -14,16 +14,16 @@ namespace Route4MeSDK.Examples
 
             CreateTestContactsV5();
 
-            long[] addressIDs = new long[] 
+            long[] addressIDs = new long[]
             {
-                (long)contact51.AddressId, 
-                (long)contact52.AddressId 
+                (long)contact51.AddressId,
+                (long)contact52.AddressId
             };
 
             // Run the query
             var removingResult = await route4Me.RemoveAddressBookContactsAsync(addressIDs);
 
-            if (removingResult.Item3!=null)
+            if (removingResult.Item3 != null)
             {
                 string jobId = removingResult.Item3;
 
@@ -33,10 +33,10 @@ namespace Route4MeSDK.Examples
             Console.WriteLine((removingResult?.Item1?.IsSuccessStatusCode ?? false)
                 ? addressIDs.Length + " contacts removed from database"
                 : "Cannot remove " + addressIDs.Length + " contacts." + Environment.NewLine +
-                "Exit code: " + (removingResult?.Item2?.ExitCode.ToString() ?? "") + Environment.NewLine +
-                "Code: " + (removingResult?.Item2?.Code.ToString() ?? "") + Environment.NewLine +
-                "Status: " + (removingResult?.Item2?.Status.ToString() ?? "") + Environment.NewLine
-                );
+                  "Exit code: " + (removingResult?.Item2?.ExitCode.ToString() ?? "") + Environment.NewLine +
+                  "Code: " + (removingResult?.Item2?.Code.ToString() ?? "") + Environment.NewLine +
+                  "Status: " + (removingResult?.Item2?.Status.ToString() ?? "") + Environment.NewLine
+            );
 
             if (removingResult.Item2 != null)
             {

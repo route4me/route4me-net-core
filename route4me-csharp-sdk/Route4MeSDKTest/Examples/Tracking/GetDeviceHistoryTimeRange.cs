@@ -70,10 +70,10 @@ namespace Route4MeSDK.Examples
             var result = route4Me.GetDeviceLocationHistory(trParameters, out errorString);
 
             Console.WriteLine(
-                    result != null && result.GetType() == typeof(DeviceLocationHistoryResponse )
+                result != null && result.GetType() == typeof(DeviceLocationHistoryResponse)
                     ? "GetDeviceHistoryTimeRangeTest executed successfully"
                     : "GetDeviceHistoryTimeRangeTest failed. " + errorString
-                );
+            );
 
             if (result != null && result.GetType() == typeof(DeviceLocationHistoryResponse))
             {

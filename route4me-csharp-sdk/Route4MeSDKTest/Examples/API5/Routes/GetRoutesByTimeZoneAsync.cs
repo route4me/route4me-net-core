@@ -19,7 +19,7 @@ namespace Route4MeSDK.Examples
             var result = await route4Me.GetRoutesByFilterAsync(
                 routeParameters);
 
-            
+
             PrintExampleRouteResult(result.Item1, null, result.Item2);
         }
     }

@@ -15,7 +15,7 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManager(ActualApiKey);
 
             var avoidanceZoneQuery = new AvoidanceZoneQuery()
-            { };
+                { };
 
             // Run the query
             AvoidanceZone[] avoidanceZones = route4Me.GetAvoidanceZones(
@@ -26,9 +26,10 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 avoidanceZones != null
-                ? String.Format("GetAvoidanceZones executed successfully, {0} zones returned", avoidanceZones.Length)
-                : String.Format("GetAvoidanceZones error: {0}", errorString)
-                );
+                    ? String.Format("GetAvoidanceZones executed successfully, {0} zones returned",
+                        avoidanceZones.Length)
+                    : String.Format("GetAvoidanceZones error: {0}", errorString)
+            );
         }
     }
 }

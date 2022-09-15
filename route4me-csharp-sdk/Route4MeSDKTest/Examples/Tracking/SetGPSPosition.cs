@@ -25,7 +25,7 @@ namespace Route4MeSDK.Examples
             double lng = SD10Stops_route.Addresses.Length > 1
                 ? SD10Stops_route.Addresses[1].Longitude
                 : -83.22466;
-            
+
             // Create the gps parameters
             var gpsParameters = new GPSParameters()
             {
@@ -48,8 +48,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 string.IsNullOrEmpty(errorString)
-                ? String.Format("SetGps response: {0}", response.ToString())
-                : String.Format("SetGps error: {0}", errorString)
+                    ? String.Format("SetGps response: {0}", response.ToString())
+                    : String.Format("SetGps error: {0}", errorString)
             );
 
             RemoveTestOptimizations();

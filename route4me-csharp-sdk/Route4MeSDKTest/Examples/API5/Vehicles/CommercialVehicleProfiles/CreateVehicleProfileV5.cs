@@ -41,7 +41,8 @@ namespace Route4MeSDK.Examples
                 VehicleProfileCode = R4MeUtils.GenerateRandomString(5)
             };
 
-            var vehicleProfile = route4Me.CreateVehicleProfile(vehicleProfileParams1, out ResultResponse resultResponse);
+            var vehicleProfile =
+                route4Me.CreateVehicleProfile(vehicleProfileParams1, out ResultResponse resultResponse);
 
             if (vehicleProfile != null && vehicleProfile.GetType() == typeof(VehicleProfile))
             {
@@ -52,8 +53,6 @@ namespace Route4MeSDK.Examples
             PrintTestVehcileProfilesV5(vehicleProfile, resultResponse);
 
             RemoveTestVehicleProfilesV5();
-
-
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var vendors = route4Me.SearchTelematicsVendors(vendorParameters,
-                                                           out string errorString);
+                out string errorString);
 
             PrintExampleTelematicsVendor(vendors, errorString);
         }

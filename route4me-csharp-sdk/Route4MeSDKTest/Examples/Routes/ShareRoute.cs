@@ -39,8 +39,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 result
-                ? String.Format("The route {0} shared successfully", routeId)
-                : String.Format("Cannot share the route." + Environment.NewLine + errorString)
+                    ? String.Format("The route {0} shared successfully", routeId)
+                    : String.Format("Cannot share the route." + Environment.NewLine + errorString)
             );
 
             RemoveTestOptimizations();

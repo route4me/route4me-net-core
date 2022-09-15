@@ -24,7 +24,6 @@ namespace Route4MeSDK.Examples
             var result = route4Me.ExecuteVehicleOrder(vehicleParams, out ResultResponse resultResonse);
 
             PrintTestVehcilesV5(result, resultResonse);
-
         }
     }
 }

@@ -142,14 +142,14 @@ namespace Route4MeSDK.Examples
                     Longitude = -85.785118,
                     Time = 300
                 },
-                 new Address()
+                new Address()
                 {
                     AddressString = "7305 ROYAL WOODS DR, Louisville, KY, 40214",
                     Latitude = 38.162472,
                     Longitude = -85.792854,
                     Time = 300
                 }
-             };
+            };
 
             var optimizationParameters = new OptimizationParameters()
             {

@@ -45,7 +45,6 @@ namespace Route4MeSDK.Examples
 
             // Print the result on the console
             PrintExampleOrder(result.Item1, result.Item2);
-
         }
     }
 }

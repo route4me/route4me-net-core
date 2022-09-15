@@ -57,10 +57,10 @@ namespace Route4MeSDK.Examples
                 await route4Me.BatchCreateAdressBookContactsAsync(contactParams, mandatoryFields);
 
             Console.WriteLine(
-                response?.Item1?.status ?? false 
-                    ? "The batch creating process of the contacts finished successfully" 
+                response?.Item1?.status ?? false
+                    ? "The batch creating process of the contacts finished successfully"
                     : "The batch creating process of the contacts failed"
-                );
+            );
 
             #region Remove Testing Contacts
 
@@ -70,13 +70,15 @@ namespace Route4MeSDK.Examples
 
             var result1 = route4Me.GetAddressBookContacts(searchParamss, out ResultResponse resultResponse);
 
-            if ((result1?.Results[0]?.AddressId ?? 0) >0) ContactsToRemove.Add(result1.Results[0].AddressId.ToString());
+            if ((result1?.Results[0]?.AddressId ?? 0) > 0)
+                ContactsToRemove.Add(result1.Results[0].AddressId.ToString());
 
             searchParamss = new AddressBookParameters() { Query = lsContacts[1].Address1 };
 
             var result2 = route4Me.GetAddressBookContacts(searchParamss, out resultResponse);
 
-            if ((result2?.Results[0]?.AddressId ?? 0) > 0) ContactsToRemove.Add(result2.Results[0].AddressId.ToString());
+            if ((result2?.Results[0]?.AddressId ?? 0) > 0)
+                ContactsToRemove.Add(result2.Results[0].AddressId.ToString());
 
             RemoveTestContacts();
 

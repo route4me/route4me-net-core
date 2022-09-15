@@ -41,15 +41,15 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 result
-                ? String.Format(
-                    "MergeRoutes executed successfully, {0} routes merged",
-                    mergeRoutesParameters.RouteIds
-                  )
-                : String.Format(
-                    "MergeRoutes error {0}",
-                    errorString
-                  )
-             );
+                    ? String.Format(
+                        "MergeRoutes executed successfully, {0} routes merged",
+                        mergeRoutesParameters.RouteIds
+                    )
+                    : String.Format(
+                        "MergeRoutes error {0}",
+                        errorString
+                    )
+            );
 
             RemoveTestOptimizations();
         }

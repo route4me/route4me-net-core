@@ -32,7 +32,7 @@ namespace Route4MeSDK.Examples
             // Run the query
             var duplicatedResult = route4Me.DuplicateRoute(routeDuplicateParameters, out string errorString);
 
-            if (!(duplicatedResult?.Status ?? false) || (duplicatedResult?.RouteIDs?.Length ?? 0)<1)
+            if (!(duplicatedResult?.Status ?? false) || (duplicatedResult?.RouteIDs?.Length ?? 0) < 1)
             {
                 Console.WriteLine($"Cannot duplicate the route. {errorString}");
                 return;

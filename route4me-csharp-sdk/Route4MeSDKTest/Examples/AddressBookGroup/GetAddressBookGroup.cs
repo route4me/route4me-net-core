@@ -28,10 +28,10 @@ namespace Route4MeSDK.Examples
                 out string errorString);
 
             Console.WriteLine(
-                    addressBookGroup == null && addressBookGroup.GetType() != typeof(AddressBookGroup)
+                addressBookGroup == null && addressBookGroup.GetType() != typeof(AddressBookGroup)
                     ? "Cannot retrieve the addres group " + groupId + Environment.NewLine + errorString
                     : "Retrieved the address book group " + groupId
-                );
+            );
 
             RemoveAddressBookGroups();
         }

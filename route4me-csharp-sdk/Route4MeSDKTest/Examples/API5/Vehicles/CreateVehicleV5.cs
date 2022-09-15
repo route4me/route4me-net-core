@@ -32,13 +32,11 @@ namespace Route4MeSDK.Examples
                 vehiclesToRemove = new System.Collections.Generic.List<string>();
                 vehiclesToRemove.Add(vehicle.VehicleId);
             }
-                
+
 
             PrintTestVehcilesV5(vehicle, resultResponse);
 
             RemoveTestVehiclesV5();
-
-
         }
     }
 }

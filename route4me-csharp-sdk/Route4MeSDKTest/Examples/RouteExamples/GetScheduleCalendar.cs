@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
                     ActualApiKey,
                     DemoApiKey,
                     out string errorString0)
-                ) return;
+               ) return;
 
             TimeSpan days5 = new TimeSpan(5, 0, 0, 0);
 
@@ -31,8 +31,8 @@ namespace Route4MeSDK.Examples
             };
 
             var scheduleCalendar = route4Me.GetScheduleCalendar(
-                                    calendarQuery,
-                                    out string errorString);
+                calendarQuery,
+                out string errorString);
 
             Console.WriteLine(
                 (scheduleCalendar?.AddressBook ?? null) == null ||
@@ -40,7 +40,7 @@ namespace Route4MeSDK.Examples
                 (scheduleCalendar?.RoutesCount ?? null) == null
                     ? "GetScheduleCalendarTest failed"
                     : "GetScheduleCalendar executed successfully"
-                );
+            );
         }
     }
 }

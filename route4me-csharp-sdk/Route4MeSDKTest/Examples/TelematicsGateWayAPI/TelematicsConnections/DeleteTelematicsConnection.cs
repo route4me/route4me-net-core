@@ -25,7 +25,7 @@ namespace Route4MeSDK.Examples
                 lsCreatedConnections[lsCreatedConnections.Count - 1].ConnectionToken,
                 out var errorString);
 
-            if (result != null && result.GetType()==typeof(TelematicsConnection))
+            if (result != null && result.GetType() == typeof(TelematicsConnection))
             {
                 System.Console.WriteLine($"Telematics connection <{result.Name}> removed");
             }
@@ -33,7 +33,6 @@ namespace Route4MeSDK.Examples
             {
                 System.Console.WriteLine($"Cannot delete telematics connection <{result.Name}>");
             }
-            
         }
     }
 }

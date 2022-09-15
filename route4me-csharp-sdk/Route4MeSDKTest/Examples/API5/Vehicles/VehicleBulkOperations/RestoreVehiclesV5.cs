@@ -23,8 +23,8 @@ namespace Route4MeSDK.Examples
             // Send a request to the server
             var result = route4Me.RestoreVehicles(vehicleIDs, out ResultResponse resultResponse);
 
-            Console.WriteLine("Restore result: "+
-                (result?.IsSuccessStatusCode ?? false));
+            Console.WriteLine("Restore result: " +
+                              (result?.IsSuccessStatusCode ?? false));
         }
     }
 }

@@ -43,11 +43,11 @@ namespace Route4MeSDK.Examples
             };
 
             // Send a request to the server
-            var transferedOrder = route4Me.TransferOrderToOtherPrimaryAccount(orderToTransfer, anotherPrimeryApiKey, out errorString);
+            var transferedOrder =
+                route4Me.TransferOrderToOtherPrimaryAccount(orderToTransfer, anotherPrimeryApiKey, out errorString);
 
             // Print the result on the console
             PrintExampleOrder(transferedOrder, errorString);
-
         }
     }
 }

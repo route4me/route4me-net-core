@@ -26,8 +26,11 @@ namespace Route4MeSDK.Examples
             };
 
             #region Addresses
-            Address[] addresses = new Address[] {
-                new Address {
+
+            Address[] addresses = new Address[]
+            {
+                new Address
+                {
                     AddressString = "273 Canal St, New York, NY 10013, USA",
                     Latitude = 40.7191558,
                     Longitude = -74.0011966,
@@ -35,7 +38,8 @@ namespace Route4MeSDK.Examples
                     CurbsideLatitude = 40.7191558,
                     CurbsideLongitude = -74.0011966
                 },
-                new Address {
+                new Address
+                {
                     AddressString = "106 Liberty St, New York, NY 10006, USA",
                     Alias = "BK Restaurant #: 2446",
                     Latitude = 40.709637,
@@ -46,14 +50,18 @@ namespace Route4MeSDK.Examples
                     Phone = "(917) 338-1887",
                     FirstName = "",
                     LastName = "",
-                    CustomFields = new Dictionary<string, string> { {
-                        "icon",
-                        null
-                    } },
+                    CustomFields = new Dictionary<string, string>
+                    {
+                        {
+                            "icon",
+                            null
+                        }
+                    },
                     Time = 0,
                     OrderId = 7205705
                 },
-                new Address {
+                new Address
+                {
                     AddressString = "106 Fulton St, Farmingdale, NY 11735, USA",
                     Alias = "BK Restaurant #: 17871",
                     Latitude = 40.73073,
@@ -64,14 +72,18 @@ namespace Route4MeSDK.Examples
                     Phone = "(212) 566-5132",
                     FirstName = "",
                     LastName = "",
-                    CustomFields = new Dictionary<string, string> { {
-                        "icon",
-                        null
-                    } },
+                    CustomFields = new Dictionary<string, string>
+                    {
+                        {
+                            "icon",
+                            null
+                        }
+                    },
                     Time = 0,
                     OrderId = 7205703
                 }
             };
+
             #endregion
 
             var rParams = new RouteParameters()

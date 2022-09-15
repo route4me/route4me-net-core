@@ -18,7 +18,8 @@ namespace Route4MeSDK.Examples
             var routeParameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.CVRP_TW_SD,
-                RouteName = $"Single Depot, Multiple Driver, Bundling Use Custom Service Time for First and Additional Item {DateTime.Now}",
+                RouteName =
+                    $"Single Depot, Multiple Driver, Bundling Use Custom Service Time for First and Additional Item {DateTime.Now}",
                 TravelMode = TravelMode.Driving.Description(),
                 Bundling = new AddressBundling()
                 {

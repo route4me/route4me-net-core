@@ -23,6 +23,7 @@ namespace Route4MeSDK.Examples
                 OptimizationsToRemove = new List<string>() { SD10Stops_optimization_problem_id };
 
                 #region Before marking an address as departed, mark it as visited.
+
                 var visitedParams = new AddressParameters
                 {
                     RouteId = SD10Stops_route_id,

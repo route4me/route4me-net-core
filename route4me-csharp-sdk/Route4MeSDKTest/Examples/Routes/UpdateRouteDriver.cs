@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
 
             var users = route4Me.GetUsers(new GenericParameters(), out _);
 
-            if (users.Results.Length<1)
+            if (users.Results.Length < 1)
             {
                 System.Console.WriteLine("Cannot retrieve the users");
                 return;

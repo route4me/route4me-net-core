@@ -18,8 +18,7 @@ namespace Route4MeSDK.Examples
             var result = await route4Me.GetVehicleJobResultAsync("50CE911542B397C7EBCDDA13CDE5580A");
 
             Console.WriteLine("Job result: " +
-                (result?.Item1?.IsSuccessStatusCode ?? false));
-
+                              (result?.Item1?.IsSuccessStatusCode ?? false));
         }
     }
 }

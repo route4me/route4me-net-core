@@ -37,7 +37,7 @@ namespace Route4MeSDK.Examples
                 foundOptimizations > 0
                     ? "Found the optimizations searched by text: " + foundOptimizations
                     : "Cannot found the optimizations searched by text"
-                );
+            );
 
             RemoveTestOptimizations();
         }

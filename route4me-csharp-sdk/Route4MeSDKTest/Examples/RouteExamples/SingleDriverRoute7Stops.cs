@@ -15,67 +15,82 @@ namespace Route4MeSDK.Examples
             // Prepare the addresses
             Address[] addresses = new Address[]
             {
-        #region Addresses
+                #region Addresses
 
-        new Address() { AddressString = "128 Woodland Dr, Stafford, VA 22556",
-                        IsDepot = true,
-                        Alias = "HQ",
-                        Latitude = 38.5022586,
-                        Longitude = -77.5402276
-        },
+                new Address()
+                {
+                    AddressString = "128 Woodland Dr, Stafford, VA 22556",
+                    IsDepot = true,
+                    Alias = "HQ",
+                    Latitude = 38.5022586,
+                    Longitude = -77.5402276
+                },
 
-        new Address() { AddressString = "2232 Aquia Dr, Stafford, VA 22554",
-                        Latitude = 38.4613311,
-                        Longitude = -77.3733942,
-                        IsDepot = false,
-                        Alias = "1",
-                        TimeWindowStart = 32400,
-                        TimeWindowEnd = 82800
-        },
+                new Address()
+                {
+                    AddressString = "2232 Aquia Dr, Stafford, VA 22554",
+                    Latitude = 38.4613311,
+                    Longitude = -77.3733942,
+                    IsDepot = false,
+                    Alias = "1",
+                    TimeWindowStart = 32400,
+                    TimeWindowEnd = 82800
+                },
 
-       new Address() { AddressString = "94 The Vance Way, Fredericksburg, VA 22405",
-                        Latitude = 38.343827,
-                        Longitude = -77.358127,
-                        IsDepot = false,
-                        Alias = "2",
-                        TimeWindowStart = 32400,
-                        TimeWindowEnd = 82800
-                        },
+                new Address()
+                {
+                    AddressString = "94 The Vance Way, Fredericksburg, VA 22405",
+                    Latitude = 38.343827,
+                    Longitude = -77.358127,
+                    IsDepot = false,
+                    Alias = "2",
+                    TimeWindowStart = 32400,
+                    TimeWindowEnd = 82800
+                },
 
-        new Address() { AddressString = "3 Edgewood Circle, Fredericksburg, VA 22405",
-                        Latitude = 38.3560299,
-                        Longitude = -77.44275,
-                        IsDepot = false,
-                        Alias = "3",
-                        TimeWindowStart = 32400,
-                        TimeWindowEnd = 82800
-                         },
+                new Address()
+                {
+                    AddressString = "3 Edgewood Circle, Fredericksburg, VA 22405",
+                    Latitude = 38.3560299,
+                    Longitude = -77.44275,
+                    IsDepot = false,
+                    Alias = "3",
+                    TimeWindowStart = 32400,
+                    TimeWindowEnd = 82800
+                },
 
-        new Address() { AddressString =  "609 Jett St, Fredericksburg, VA 22405",
-                        Latitude = 38.321677,
-                        Longitude = -77.434507,
-                        IsDepot = false,
-                        Alias = "4",
-                        TimeWindowStart = 39600,
-                        TimeWindowEnd = 82800
-                        },
+                new Address()
+                {
+                    AddressString = "609 Jett St, Fredericksburg, VA 22405",
+                    Latitude = 38.321677,
+                    Longitude = -77.434507,
+                    IsDepot = false,
+                    Alias = "4",
+                    TimeWindowStart = 39600,
+                    TimeWindowEnd = 82800
+                },
 
-        new Address() { AddressString =  "1120 Potomac Ave, Fredericksburg, VA 22405",
-                        Latitude = 38.3115498,
-                        Longitude = -77.4349647,
-                        Alias = "5",
-                        TimeWindowStart = 39600,
-                        TimeWindowEnd = 82800
-                         },
+                new Address()
+                {
+                    AddressString = "1120 Potomac Ave, Fredericksburg, VA 22405",
+                    Latitude = 38.3115498,
+                    Longitude = -77.4349647,
+                    Alias = "5",
+                    TimeWindowStart = 39600,
+                    TimeWindowEnd = 82800
+                },
 
-        new Address() { AddressString =  "10809 Stacy Run, Fredericksburg, VA 22408",
-                        Latitude = 38.258764,
-                        Longitude = -77.425318,
-                         Alias = "6",
-                        TimeWindowStart = 39600,
-                        TimeWindowEnd = 82800
-                        }
-        #endregion
+                new Address()
+                {
+                    AddressString = "10809 Stacy Run, Fredericksburg, VA 22408",
+                    Latitude = 38.258764,
+                    Longitude = -77.425318,
+                    Alias = "6",
+                    TimeWindowStart = 39600,
+                    TimeWindowEnd = 82800
+                }
+
+                #endregion
             };
 
             // Set parameters
@@ -105,8 +120,8 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             DataObject dataObject = route4Me.RunOptimization(
-                                                optimizationParameters,
-                                                out string errorString);
+                optimizationParameters,
+                out string errorString);
 
             OptimizationsToRemove = new List<string>()
             {
