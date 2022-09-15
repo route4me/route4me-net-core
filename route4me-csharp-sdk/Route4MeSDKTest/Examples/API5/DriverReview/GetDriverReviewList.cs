@@ -22,7 +22,7 @@ namespace Route4MeSDK.Examples
             };
 
             var reviewList = route4Me.GetDriverReviewList(queryParameters,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintDriverReview(reviewList, resultResponse);
         }

@@ -143,7 +143,7 @@ namespace Route4MeSDK.Examples
                     Longitude = -85.792854,
                     Time = 300
                 }
-             };
+            };
 
             var optimizationParameters = new OptimizationParameters()
             {

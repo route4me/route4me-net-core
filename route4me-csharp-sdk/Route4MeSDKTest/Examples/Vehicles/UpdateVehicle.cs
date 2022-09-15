@@ -28,9 +28,9 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var updatedVehicle = route4Me.UpdateVehicle(
-                                        vehicleParams,
-                                        vehiclesToRemove[vehiclesToRemove.Count - 1],
-                                        out string errorString);
+                vehicleParams,
+                vehiclesToRemove[vehiclesToRemove.Count - 1],
+                out string errorString);
 
             PrintTestVehciles(updatedVehicle, errorString);
 

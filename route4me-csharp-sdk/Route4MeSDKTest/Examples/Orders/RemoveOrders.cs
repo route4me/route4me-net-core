@@ -34,8 +34,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 removed
-                ? String.Format("RemoveOrders executed successfully, {0} orders removed", orderIds.Length)
-                : String.Format("RemoveOrders error: {0}", errorString)
+                    ? String.Format("RemoveOrders executed successfully, {0} orders removed", orderIds.Length)
+                    : String.Format("RemoveOrders error: {0}", errorString)
             );
 
             #endregion

@@ -25,7 +25,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             TerritoryZone territory = route4Me.GetTerritory(territoryQuery,
-                                                            out string errorString);
+                out string errorString);
 
             PrintExampleTerritory(territory, errorString);
 

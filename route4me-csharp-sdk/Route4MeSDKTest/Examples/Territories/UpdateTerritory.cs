@@ -25,7 +25,8 @@ namespace Route4MeSDK.Examples
                 Territory = new Territory
                 {
                     Type = TerritoryType.Circle.Description(),
-                    Data = new string[] {
+                    Data = new string[]
+                    {
                         "37.569752822786455,-77.47833251953125",
                         "6000"
                     }
@@ -34,7 +35,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             TerritoryZone territory = route4Me.UpdateTerritory(territoryParameters,
-                                                               out string errorString);
+                out string errorString);
 
             PrintExampleTerritory(territory, errorString);
 

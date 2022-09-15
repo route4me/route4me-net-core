@@ -25,10 +25,10 @@ namespace Route4MeSDK.Examples
 
             var serviceTimeByAddressTypeMap = new Dictionary<string, int>()
             {
-                {"STOP_TYPE_1", 60},
-                {"STOP_TYPE_2", 120},
-                {"STOP_TYPE_3", 180},
-                {"STOP_TYPE_4", 300}
+                { "STOP_TYPE_1", 60 },
+                { "STOP_TYPE_2", 120 },
+                { "STOP_TYPE_3", 180 },
+                { "STOP_TYPE_4", 300 }
             };
 
             optParameters.Addresses = new[]
@@ -113,7 +113,6 @@ namespace Route4MeSDK.Examples
                     Longitude = -85.783966,
                     Time = ServiceTimeUtils.GetServiceTimeByAddressType("STOP_TYPE_5", serviceTimeByAddressTypeMap)
                 }
-
             };
 
             try
@@ -125,7 +124,8 @@ namespace Route4MeSDK.Examples
                 {
                     foreach (var sequencedAddress in responseObject.Addresses)
                     {
-                        Console.WriteLine(sequencedAddress.SequenceNo + " - " + sequencedAddress.AddressString + "  Service Time: " + sequencedAddress.Time);
+                        Console.WriteLine(sequencedAddress.SequenceNo + " - " + sequencedAddress.AddressString +
+                                          "  Service Time: " + sequencedAddress.Time);
                     }
                 }
             }

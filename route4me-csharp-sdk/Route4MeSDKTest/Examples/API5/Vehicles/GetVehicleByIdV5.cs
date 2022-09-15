@@ -12,9 +12,9 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
             var vehicleData = route4Me.GetVehicleById(
-                "FFBBFE7960518F7B4A79C5767C9B10CF", 
+                "FFBBFE7960518F7B4A79C5767C9B10CF",
                 out ResultResponse resultResponse
-                );
+            );
 
             PrintTestVehcilesV5(vehicleData, resultResponse);
         }

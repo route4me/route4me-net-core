@@ -54,8 +54,8 @@ namespace Route4MeSDK.Examples
             var skills2 = new List<string>() { "Class B CDL" };
 
             var route4meMembersID = driverIDs.Count > 0
-                                ? driverIDs.ToArray()
-                                : new int[] { (int)rootMemberId };
+                ? driverIDs.ToArray()
+                : new int[] { (int)rootMemberId };
 
             #region Advanced Constraints
 

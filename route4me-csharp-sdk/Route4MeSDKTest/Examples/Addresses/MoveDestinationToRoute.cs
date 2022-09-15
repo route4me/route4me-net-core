@@ -60,7 +60,8 @@ namespace Route4MeSDK.Examples
             {
                 Console.WriteLine("MoveDestinationToRoute executed successfully");
 
-                Console.WriteLine("Destination {0} moved to Route {1} after Destination {2}", routeDestinationId, toRouteId, afterDestinationId);
+                Console.WriteLine("Destination {0} moved to Route {1} after Destination {2}", routeDestinationId,
+                    toRouteId, afterDestinationId);
             }
             else
             {

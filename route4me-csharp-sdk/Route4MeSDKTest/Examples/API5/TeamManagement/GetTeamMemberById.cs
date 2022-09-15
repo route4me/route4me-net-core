@@ -34,7 +34,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var member = route4Me.GetTeamMemberById(memberParams,
-                                                    out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintTeamMembers(member, resultResponse);
         }

@@ -33,7 +33,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
                     Latitude = 38.141598,
-                    Longitude =-85.793846
+                    Longitude = -85.793846
                 }
             };
 
@@ -113,18 +113,19 @@ namespace Route4MeSDK.Examples
 
             var advancedConstraints = new List<DataTypes.V5.RouteAdvancedConstraints>();
 
-            if ((territory1.Orders?.Length ?? 0)>0)
+            if ((territory1.Orders?.Length ?? 0) > 0)
             {
                 advancedConstraints.Add(
                     new DataTypes.V5.RouteAdvancedConstraints()
                     {
                         MembersCount = 3,
-                        AvailableTimeWindows = new List<int[]> {
+                        AvailableTimeWindows = new List<int[]>
+                        {
                             new int[] { 46800, 57600 }
                         },
                         Tags = new string[] { terrId1 }
                     }
-                 );
+                );
             }
 
             if ((territory2.Orders?.Length ?? 0) > 0)
@@ -133,12 +134,13 @@ namespace Route4MeSDK.Examples
                     new DataTypes.V5.RouteAdvancedConstraints()
                     {
                         MembersCount = 4,
-                        AvailableTimeWindows = new List<int[]> {
+                        AvailableTimeWindows = new List<int[]>
+                        {
                             new int[] { 46800, 61200 }
                         },
                         Tags = new string[] { terrId2 }
                     }
-                 );
+                );
             }
 
             if ((territory3.Orders?.Length ?? 0) > 0)
@@ -147,12 +149,13 @@ namespace Route4MeSDK.Examples
                     new DataTypes.V5.RouteAdvancedConstraints()
                     {
                         MembersCount = 3,
-                        AvailableTimeWindows = new List<int[]> {
+                        AvailableTimeWindows = new List<int[]>
+                        {
                             new int[] { 46800, 64800 }
                         },
                         Tags = new string[] { terrId3 }
                     }
-                 );
+                );
             }
 
             #endregion

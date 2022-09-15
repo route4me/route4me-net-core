@@ -24,7 +24,6 @@ namespace Route4MeSDK.Examples
                 DistanceUnit = DistanceUnit.MI.Description(),
                 DeviceType = DeviceType.Web.Description(),
                 TravelMode = TravelMode.Driving.Description(),
-
             };
 
             var depots = new Address[]
@@ -33,7 +32,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "1604 PARKRIDGE PKWY, Louisville, KY, 40214",
                     Latitude = 38.141598,
-                    Longitude =-85.793846
+                    Longitude = -85.793846
                 }
             };
 
@@ -113,7 +112,7 @@ namespace Route4MeSDK.Examples
 
             var advancedConstraints = new List<DataTypes.V5.RouteAdvancedConstraints>();
 
-            if ((territory1?.Addresses?.Length ?? 0)>0)
+            if ((territory1?.Addresses?.Length ?? 0) > 0)
             {
                 advancedConstraints.Add(
                     new DataTypes.V5.RouteAdvancedConstraints()

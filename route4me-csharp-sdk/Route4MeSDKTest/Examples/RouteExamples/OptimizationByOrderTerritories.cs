@@ -63,15 +63,17 @@ namespace Route4MeSDK.Examples
             };
 
             // Run the query
-            var dataObjects = route4Me.RunOptimizationByOrderTerritories(optimizationParameters, out string errorString);
+            var dataObjects =
+                route4Me.RunOptimizationByOrderTerritories(optimizationParameters, out string errorString);
 
-            if ((dataObjects?.Length ?? 0)>0)
+            if ((dataObjects?.Length ?? 0) > 0)
             {
                 OptimizationsToRemove = new List<string>();
 
                 foreach (var dataObject in dataObjects)
                 {
-                    if (dataObject.OptimizationProblemId != null) OptimizationsToRemove.Add(dataObject.OptimizationProblemId);
+                    if (dataObject.OptimizationProblemId != null)
+                        OptimizationsToRemove.Add(dataObject.OptimizationProblemId);
                     Console.WriteLine($"Optimization Problem ID: {dataObject.OptimizationProblemId}");
                 }
             }
@@ -83,5 +85,4 @@ namespace Route4MeSDK.Examples
             RemoveTestOptimizations();
         }
     }
-
 }

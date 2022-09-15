@@ -44,14 +44,14 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 deletedRouteIds != null
-                ? String.Format(
-                    "DeleteRoutes executed successfully, {0} routes deleted",
-                    deletedRouteIds.Length
-                  )
-                : String.Format(
-                    "DeleteRoutes error {0}",
-                    errorString
-                  )
+                    ? String.Format(
+                        "DeleteRoutes executed successfully, {0} routes deleted",
+                        deletedRouteIds.Length
+                    )
+                    : String.Format(
+                        "DeleteRoutes error {0}",
+                        errorString
+                    )
             );
 
             RemoveTestOptimizations();

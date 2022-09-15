@@ -22,7 +22,7 @@ namespace Route4MeSDK.Examples
             contact1.ScheduleBlacklist = new string[] { "2020-03-14", "2020-03-15" };
             contact1.AddressCustomData = new Dictionary<string, string>
             {
-                {"key1", "value1" }, {"key2", "value2" }
+                { "key1", "value1" }, { "key2", "value2" }
             };
             contact1.LocalTimeWindowStart = R4MeUtils.DDHHMM2Seconds("7:03", out _);
             contact1.LocalTimeWindowEnd = R4MeUtils.DDHHMM2Seconds("7:37", out _);
@@ -31,12 +31,13 @@ namespace Route4MeSDK.Examples
             contact1.AddressRevenue = 700;
             contact1.AddressWeight = 80;
             contact1.AddressPriority = 9;
-            
+
             var updatableProperties = new List<string>()
             {
                 "AddressId", "AddressGroup", "ScheduleBlacklist",
                 "AddressCustomData", "LocalTimeWindowStart", "LocalTimeWindowEnd",
-                "AddressCube","AddressPieces","AddressRevenue","AddressWeight","AddressPriority","ConvertBooleansToInteger"
+                "AddressCube", "AddressPieces", "AddressRevenue", "AddressWeight", "AddressPriority",
+                "ConvertBooleansToInteger"
             };
 
             // Run the query

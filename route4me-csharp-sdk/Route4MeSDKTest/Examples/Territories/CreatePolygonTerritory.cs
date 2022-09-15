@@ -20,7 +20,8 @@ namespace Route4MeSDK.Examples
                 Territory = new Territory
                 {
                     Type = TerritoryType.Poly.Description(),
-                    Data = new string[] {
+                    Data = new string[]
+                    {
                         "37.569752822786455,-77.47833251953125",
                         "37.75886716305343,-77.68974800109863",
                         "37.74763966054455,-77.6917221069336",
@@ -36,7 +37,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             TerritoryZone territory = route4Me.CreateTerritory(territoryParameters,
-                                                               out string errorString);
+                out string errorString);
 
             if ((territory?.TerritoryId ?? null) != null) TerritoryZonesToRemove.Add(territory.TerritoryId);
 

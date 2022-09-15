@@ -36,7 +36,8 @@ namespace Route4MeSDK.Examples
 
             var addresses = new List<Address>()
             {
-             #region Pikup Addresses
+                #region Pikup Addresses
+
                 new Address()
                 {
                     AddressString = "455 S 4th St, Louisville, KY 40202",
@@ -56,7 +57,7 @@ namespace Route4MeSDK.Examples
                     Pieces = 1,
                     Latitude = 38.141598,
                     Longitude = -85.793846,
-                    Time = 840*7,
+                    Time = 840 * 7,
                     CustomFields = new Dictionary<string, string>()
                     {
                         { "GOOD_TYPE", "TYPE0001" }
@@ -167,7 +168,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "1407 MCCOY, Louisville, KY, 40215",
                     Alias = "Customer 001",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0001",
                     Latitude = 38.202496,
@@ -182,7 +183,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "4805 BELLEVUE AVE, Louisville, KY, 40215",
                     Alias = "Customer 002",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0002",
                     Joint = true,
@@ -198,7 +199,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "730 CECIL AVENUE, Louisville, KY, 40211",
                     Alias = "Customer 003",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0003",
                     Latitude = 38.248684,
@@ -213,7 +214,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "650 SOUTH 29TH ST UNIT 315, Louisville, KY, 40211",
                     Alias = "Customer 004",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0004",
                     Latitude = 38.251923,
@@ -228,7 +229,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "4629 HILLSIDE DRIVE, Louisville, KY, 40216",
                     Alias = "Customer 005",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0005",
                     Latitude = 38.176067,
@@ -243,7 +244,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "4738 BELLEVUE AVE, Louisville, KY, 40215",
                     Alias = "Customer 006",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0006",
                     Latitude = 38.179806,
@@ -258,7 +259,7 @@ namespace Route4MeSDK.Examples
                 {
                     AddressString = "318 SO. 39TH STREET, Louisville, KY, 40212",
                     Alias = "Customer 007",
-                    AddressStopType= AddressStopType.Delivery.Description(),
+                    AddressStopType = AddressStopType.Delivery.Description(),
                     Pieces = 1,
                     Dropoff = "PD0007",
                     Latitude = 38.259335,

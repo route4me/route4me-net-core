@@ -40,9 +40,8 @@ namespace Route4MeSDK.Examples
             };
 
 
-
             // Run the query
-           var result = route4Me.DynamicInsertRouteAddresses(dynamicInsertParams, out ResultResponse resultResponse);
+            var result = route4Me.DynamicInsertRouteAddresses(dynamicInsertParams, out ResultResponse resultResponse);
 
             if (result == null)
             {

@@ -22,8 +22,8 @@ namespace Route4MeSDK.Examples
             // Send a request to the server
             var result = await route4Me.RestoreVehiclesAsync(vehicleIDs);
 
-            Console.WriteLine("Restore result: "+
-                (result?.Item1?.IsSuccessStatusCode ?? false));
+            Console.WriteLine("Restore result: " +
+                              (result?.Item1?.IsSuccessStatusCode ?? false));
         }
     }
 }

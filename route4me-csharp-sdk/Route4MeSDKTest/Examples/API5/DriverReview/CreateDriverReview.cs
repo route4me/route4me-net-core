@@ -27,7 +27,7 @@ namespace Route4MeSDK.Examples
             };
 
             var driverReview = route4Me.CreateDriverReview(newDriverReview,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintDriverReview(driverReview.Data, resultResponse);
 

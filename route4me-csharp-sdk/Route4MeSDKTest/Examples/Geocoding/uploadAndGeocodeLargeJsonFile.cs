@@ -42,13 +42,13 @@ namespace Route4MeSDK.Examples
                     foreach (var addr1 in e.lsAddressesChunkGeocoded)
                     {
                         var geocoding = addr1.GeocodedAddress.Geocodings.Length > 0
-                        ? addr1.GeocodedAddress.Geocodings[0]
-                        : null;
+                            ? addr1.GeocodedAddress.Geocodings[0]
+                            : null;
 
                         lsAddresses.Add(addr1.GeocodedAddress.AddressString + ":" +
-                            (geocoding != null
-                            ? geocoding.Latitude + ", " + geocoding.Longtude
-                            : ""));
+                                        (geocoding != null
+                                            ? geocoding.Latitude + ", " + geocoding.Longtude
+                                            : ""));
                     }
                 }
 
@@ -61,7 +61,8 @@ namespace Route4MeSDK.Examples
             };
 
             var stPath = AppDomain.CurrentDomain.BaseDirectory;
-            fastProcessing.UploadAndGeocodeLargeJsonFile(stPath + @"\Data\JSON\batch_socket_upload_error_addresses_data_5.json");
+            fastProcessing.UploadAndGeocodeLargeJsonFile(stPath +
+                                                         @"\Data\JSON\batch_socket_upload_error_addresses_data_5.json");
         }
     }
 }

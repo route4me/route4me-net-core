@@ -36,14 +36,14 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var removedMember = route4Me.RemoveTeamMember(memberParams,
-                                                            out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintTeamMembers(removedMember, resultResponse);
 
             Console.WriteLine(
                 (removedMember?.MemberEmail?.Contains(".deleted") ?? false)
-                ? String.Format("A member {0} removed succsessfully", removedMember.MemberId)
-                : String.Format("Cannot remove a member {0}", removedMember.MemberId)
+                    ? String.Format("A member {0} removed succsessfully", removedMember.MemberId)
+                    : String.Format("Cannot remove a member {0}", removedMember.MemberId)
             );
         }
     }

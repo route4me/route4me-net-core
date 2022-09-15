@@ -115,7 +115,7 @@ namespace Route4MeSDK.Examples
 
         private long? GetOwnerMemberId(string anotherApiKey = null)
         {
-            var route4Me = new Route4MeManagerV5(anotherApiKey==null ? ActualApiKey : anotherApiKey);
+            var route4Me = new Route4MeManagerV5(anotherApiKey == null ? ActualApiKey : anotherApiKey);
 
             var members = route4Me.GetTeamMembers(out ResultResponse errorResponse);
 
@@ -155,7 +155,7 @@ namespace Route4MeSDK.Examples
             newMemberParameters.SetMemberType(MemberTypes.Driver);
 
             TeamResponse member = route4Me.CreateTeamMember(newMemberParameters,
-                                                            out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             if (member != null && member.GetType() == typeof(TeamResponse)) membersToRemove.Add(member);
         }
@@ -174,12 +174,12 @@ namespace Route4MeSDK.Examples
                 };
 
                 var removedMember = route4Me.RemoveTeamMember(memberParams,
-                                                out ResultResponse resultResponse);
+                    out ResultResponse resultResponse);
 
                 Console.WriteLine(
                     (removedMember?.MemberEmail?.Contains(".deleted") ?? false)
-                    ? String.Format("A test member {0} removed succsessfully", removedMember.MemberId)
-                    : String.Format("Cannot remove a test member {0}", removedMember.MemberId)
+                        ? String.Format("A test member {0} removed succsessfully", removedMember.MemberId)
+                        : String.Format("Cannot remove a test member {0}", removedMember.MemberId)
                 );
             }
         }
@@ -204,9 +204,9 @@ namespace Route4MeSDK.Examples
                     var review = (DriverReview)result;
 
                     Console.WriteLine(
-                            "Tracking number: {0}, Rating: {1}, Review: {2}",
-                            review.TrackingNumber, review.Rating, review.Review
-                        );
+                        "Tracking number: {0}, Rating: {1}, Review: {2}",
+                        review.TrackingNumber, review.Rating, review.Review
+                    );
                 }
                 else if (result.GetType() == typeof(DriverReviewsResponse))
                 {
@@ -243,7 +243,7 @@ namespace Route4MeSDK.Examples
             };
 
             var driverReview = route4Me.CreateDriverReview(newDriverReview,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintDriverReview(driverReview, resultResponse);
 
@@ -261,7 +261,7 @@ namespace Route4MeSDK.Examples
             };
 
             var reviewList = route4Me.GetDriverReviewList(queryParameters,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             return (reviewList?.Data?.Length ?? 0) > 1
                 ? reviewList.Data[1]
@@ -278,7 +278,7 @@ namespace Route4MeSDK.Examples
             };
 
             var review = route4Me.GetDriverReviewById(queryParameters,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             return review?.Data ?? null;
         }
@@ -335,9 +335,9 @@ namespace Route4MeSDK.Examples
                     foreach (var vehicle in vehicles)
                     {
                         Console.WriteLine(
-                        "Vehicle ID: {0}, Alias: {1}",
-                        vehicle.VehicleId,
-                        vehicle.VehicleAlias
+                            "Vehicle ID: {0}, Alias: {1}",
+                            vehicle.VehicleId,
+                            vehicle.VehicleAlias
                         );
                     }
                 }
@@ -345,14 +345,14 @@ namespace Route4MeSDK.Examples
                 {
                     var vehicles = ((VehiclesResults)result).Results;
 
-                    if ((vehicles?.Length ?? 0)>0)
+                    if ((vehicles?.Length ?? 0) > 0)
                     {
                         foreach (var vehicle in vehicles)
                         {
                             Console.WriteLine(
-                            "Vehicle ID: {0}, Alias: {1}",
-                            vehicle.VehicleId,
-                            vehicle.VehicleAlias
+                                "Vehicle ID: {0}, Alias: {1}",
+                                vehicle.VehicleId,
+                                vehicle.VehicleAlias
                             );
                         }
                     }
@@ -364,9 +364,9 @@ namespace Route4MeSDK.Examples
                     foreach (var vehicle in vehicles)
                     {
                         Console.WriteLine(
-                        "Vehicle ID: {0}, Alias: {1}",
-                        vehicle.VehicleId,
-                        vehicle.VehicleAlias
+                            "Vehicle ID: {0}, Alias: {1}",
+                            vehicle.VehicleId,
+                            vehicle.VehicleAlias
                         );
                     }
                 }
@@ -414,7 +414,6 @@ namespace Route4MeSDK.Examples
                     PrintFailResponse(resultResponse, testName);
                 }
             }
-            
         }
 
         private void PrintTestVehcileCapacityProfilesV5(object result, ResultResponse resultResponse)
@@ -466,8 +465,8 @@ namespace Route4MeSDK.Examples
 
                 Console.WriteLine(
                     (result != null && result.GetType() == typeof(Vehicle))
-                    ? String.Format("The vehicle {0} removed successfully.", vehicleId)
-                    : String.Format("Cannot remove the vehicle {0}.", vehicleId)
+                        ? String.Format("The vehicle {0} removed successfully.", vehicleId)
+                        : String.Format("Cannot remove the vehicle {0}.", vehicleId)
                 );
             }
         }
@@ -489,9 +488,9 @@ namespace Route4MeSDK.Examples
                 var result = route4Me.DeleteVehicleProfile(profileParams, out ResultResponse resultResponse);
 
                 Console.WriteLine(
-                    (result != null && resultResponse==null)
-                    ? String.Format("The vehicle profile {0} removed successfully.", vehicleProfileId)
-                    : String.Format("Cannot remove the vehicle profile {0}.", vehicleProfileId)
+                    (result != null && resultResponse == null)
+                        ? String.Format("The vehicle profile {0} removed successfully.", vehicleProfileId)
+                        : String.Format("Cannot remove the vehicle profile {0}.", vehicleProfileId)
                 );
             }
         }
@@ -510,12 +509,13 @@ namespace Route4MeSDK.Examples
                     VehicleCapacityProfileId = (long)vehicleCapacityProfileId
                 };
 
-                var result = route4Me.DeleteVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
+                var result =
+                    route4Me.DeleteVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
 
                 Console.WriteLine(
                     (result != null && resultResponse == null)
-                    ? String.Format("The vehicle profile {0} removed successfully.", vehicleCapacityProfileId)
-                    : String.Format("Cannot remove the vehicle profile {0}.", vehicleCapacityProfileId)
+                        ? String.Format("The vehicle profile {0} removed successfully.", vehicleCapacityProfileId)
+                        : String.Format("Cannot remove the vehicle profile {0}.", vehicleCapacityProfileId)
                 );
             }
         }
@@ -552,8 +552,8 @@ namespace Route4MeSDK.Examples
 
             var dCustom = new Dictionary<string, string>()
             {
-                {"FirstFieldName1", "FirstFieldValue1"},
-                {"FirstFieldName2", "FirstFieldValue2"}
+                { "FirstFieldName1", "FirstFieldValue1" },
+                { "FirstFieldName2", "FirstFieldValue2" }
             };
 
             contact = new AddressBookContact()
@@ -598,72 +598,101 @@ namespace Route4MeSDK.Examples
             // Prepare the addresses
             Address[] addresses = new Address[]
             {
-            #region Addresses
+                #region Addresses
 
-            new Address() { AddressString = "151 Arbor Way Milledgeville GA 31061",
-                            //indicate that this is a departure stop
-                            //single depot routes can only have one departure depot 
-                            IsDepot = true, 
-                        
-                            //required coordinates for every departure and stop on the route
-                            Latitude = 33.132675170898,
-                            Longitude = -83.244743347168,
-                        
-                            //the expected time on site, in seconds. this value is incorporated into the optimization engine
-                            //it also adjusts the estimated and dynamic eta's for a route
-                            Time = 0, 
-                        
-                        
-                            //input as many custom fields as needed, custom data is passed through to mobile devices and to the manifest
-                            CustomFields = new Dictionary<string, string>() {{"color", "red"}, {"size", "huge"}}
-            },
+                new Address()
+                {
+                    AddressString = "151 Arbor Way Milledgeville GA 31061",
+                    //indicate that this is a departure stop
+                    //single depot routes can only have one departure depot 
+                    IsDepot = true,
 
-            new Address() { AddressString = "230 Arbor Way Milledgeville GA 31061",
-                            Latitude = 33.129695892334,
-                            Longitude = -83.24577331543,
-                            Time = 0 },
+                    //required coordinates for every departure and stop on the route
+                    Latitude = 33.132675170898,
+                    Longitude = -83.244743347168,
 
-            new Address() { AddressString = "148 Bass Rd NE Milledgeville GA 31061",
-                            Latitude = 33.143497,
-                            Longitude = -83.224487,
-                            Time = 0 },
+                    //the expected time on site, in seconds. this value is incorporated into the optimization engine
+                    //it also adjusts the estimated and dynamic eta's for a route
+                    Time = 0,
 
-            new Address() { AddressString = "117 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude = 33.141784667969,
-                            Longitude = -83.237518310547,
-                            Time = 0 },
 
-            new Address() { AddressString = "119 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude = 33.141086578369,
-                            Longitude = -83.238258361816,
-                            Time = 0 },
+                    //input as many custom fields as needed, custom data is passed through to mobile devices and to the manifest
+                    CustomFields = new Dictionary<string, string>() { { "color", "red" }, { "size", "huge" } }
+                },
 
-            new Address() { AddressString =  "131 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude = 33.142036437988,
-                            Longitude = -83.238845825195,
-                            Time = 0 },
+                new Address()
+                {
+                    AddressString = "230 Arbor Way Milledgeville GA 31061",
+                    Latitude = 33.129695892334,
+                    Longitude = -83.24577331543,
+                    Time = 0
+                },
 
-            new Address() { AddressString =  "138 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude = 33.14307,
-                            Longitude = -83.239334,
-                            Time = 0 },
+                new Address()
+                {
+                    AddressString = "148 Bass Rd NE Milledgeville GA 31061",
+                    Latitude = 33.143497,
+                    Longitude = -83.224487,
+                    Time = 0
+                },
 
-            new Address() { AddressString =  "139 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude = 33.142734527588,
-                            Longitude = -83.237442016602,
-                            Time = 0 },
+                new Address()
+                {
+                    AddressString = "117 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.141784667969,
+                    Longitude = -83.237518310547,
+                    Time = 0
+                },
 
-            new Address() { AddressString =  "145 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude = 33.143871307373,
-                            Longitude = -83.237342834473,
-                            Time = 0 },
+                new Address()
+                {
+                    AddressString = "119 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.141086578369,
+                    Longitude = -83.238258361816,
+                    Time = 0
+                },
 
-            new Address() { AddressString =  "221 Blake Cir Milledgeville GA 31061",
-                            Latitude = 33.081462860107,
-                            Longitude = -83.208511352539,
-                            Time = 0 }
+                new Address()
+                {
+                    AddressString = "131 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.142036437988,
+                    Longitude = -83.238845825195,
+                    Time = 0
+                },
 
-            #endregion
+                new Address()
+                {
+                    AddressString = "138 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.14307,
+                    Longitude = -83.239334,
+                    Time = 0
+                },
+
+                new Address()
+                {
+                    AddressString = "139 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.142734527588,
+                    Longitude = -83.237442016602,
+                    Time = 0
+                },
+
+                new Address()
+                {
+                    AddressString = "145 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.143871307373,
+                    Longitude = -83.237342834473,
+                    Time = 0
+                },
+
+                new Address()
+                {
+                    AddressString = "221 Blake Cir Milledgeville GA 31061",
+                    Latitude = 33.081462860107,
+                    Longitude = -83.208511352539,
+                    Time = 0
+                }
+
+                #endregion
             };
 
             // Set parameters
@@ -672,8 +701,8 @@ namespace Route4MeSDK.Examples
                 AlgorithmType = AlgorithmType.TSP,
                 RouteName =
                     routeName == null
-                    ? "SD Route 10 Stops Test " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                    : routeName,
+                        ? "SD Route 10 Stops Test " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                        : routeName,
                 RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
                 RouteTime = 60 * 60 * 7,
                 Optimize = Optimize.Distance.Description(),
@@ -691,13 +720,19 @@ namespace Route4MeSDK.Examples
 
             try
             {
-                dataObjectSD10Stops_V5 = r4mm.RunOptimization(optimizationParameters, out ResultResponse resultResponse);
+                dataObjectSD10Stops_V5 =
+                    r4mm.RunOptimization(optimizationParameters, out ResultResponse resultResponse);
 
                 SD10Stops_optimization_problem_id_V5 = dataObjectSD10Stops_V5.OptimizationProblemId;
-                SD10Stops_route_V5 = (dataObjectSD10Stops_V5 != null && dataObjectSD10Stops_V5.Routes != null && dataObjectSD10Stops_V5.Routes.Length > 0) ? dataObjectSD10Stops_V5.Routes[0] : null;
+                SD10Stops_route_V5 =
+                    (dataObjectSD10Stops_V5 != null && dataObjectSD10Stops_V5.Routes != null &&
+                     dataObjectSD10Stops_V5.Routes.Length > 0)
+                        ? dataObjectSD10Stops_V5.Routes[0]
+                        : null;
                 SD10Stops_route_id_V5 = (SD10Stops_route_V5 != null) ? SD10Stops_route_V5.RouteID : null;
 
-                if (dataObjectSD10Stops_V5 != null && dataObjectSD10Stops_V5.Routes != null && dataObjectSD10Stops_V5.Routes.Length > 0)
+                if (dataObjectSD10Stops_V5 != null && dataObjectSD10Stops_V5.Routes != null &&
+                    dataObjectSD10Stops_V5.Routes.Length > 0)
                 {
                     SD10Stops_route_V5 = dataObjectSD10Stops_V5.Routes[0];
                 }
@@ -726,11 +761,11 @@ namespace Route4MeSDK.Examples
 
             if (result != null)
             {
-                if (result.GetType()==typeof(OrderHistoryResponse))
+                if (result.GetType() == typeof(OrderHistoryResponse))
                 {
                     var historyResponse = (OrderHistoryResponse)result;
 
-                    if ((historyResponse.Results?.Length ?? 0)>0)
+                    if ((historyResponse.Results?.Length ?? 0) > 0)
                     {
                         foreach (var h1 in historyResponse.Results)
                         {
@@ -763,7 +798,6 @@ namespace Route4MeSDK.Examples
                 {
                     Console.WriteLine("Unknown data type");
                 }
-
             }
             else
             {

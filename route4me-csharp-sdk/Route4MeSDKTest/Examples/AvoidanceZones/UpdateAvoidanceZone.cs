@@ -30,8 +30,11 @@ namespace Route4MeSDK.Examples
                 Territory = new Territory()
                 {
                     Type = TerritoryType.Circle.Description(),
-                    Data = new string[] { "38.41322259056806,-78.501953234",
-                                "3000"}
+                    Data = new string[]
+                    {
+                        "38.41322259056806,-78.501953234",
+                        "3000"
+                    }
                 }
             };
 

@@ -27,14 +27,14 @@ namespace Route4MeSDK.Examples
                 Limit = 10
             };
 
-            var readResult1 = route4Me.GetAddressBarcodes(getAddressBarcodesParameters, out ResultResponse resultResponse);
+            var readResult1 =
+                route4Me.GetAddressBarcodes(getAddressBarcodesParameters, out ResultResponse resultResponse);
 
             Console.WriteLine(
-                (readResult1?.Status ?? "false")=="true" ? "The barcode retrieved" : "Cannot retrieve the barcode"
-                );
+                (readResult1?.Status ?? "false") == "true" ? "The barcode retrieved" : "Cannot retrieve the barcode"
+            );
 
             RemoveTestOptimizations();
-
         }
     }
 }

@@ -106,7 +106,7 @@ namespace Route4MeSDK.Examples
                 CustomFields = new Dictionary<string, string>()
                 {
                     { "BUNDLING_KEY", "ZONE001" },
-                    { "CUSTOM_MESSAGE", "Bundled Zones"  }
+                    { "CUSTOM_MESSAGE", "Bundled Zones" }
                 }
             };
 
@@ -120,7 +120,7 @@ namespace Route4MeSDK.Examples
                 CustomFields = new Dictionary<string, string>()
                 {
                     { "BUNDLING_KEY", "ZONE001" },
-                    { "CUSTOM_MESSAGE", "Bundled Zones"  }
+                    { "CUSTOM_MESSAGE", "Bundled Zones" }
                 }
             };
 

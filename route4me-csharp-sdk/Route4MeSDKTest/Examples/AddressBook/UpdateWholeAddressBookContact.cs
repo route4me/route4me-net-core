@@ -23,7 +23,7 @@ namespace Route4MeSDK.Examples
 
             contactClone.AddressCustomData = new Dictionary<string, string>
             {
-                {"key1", "value1" }, {"key2", "value2" }
+                { "key1", "value1" }, { "key2", "value2" }
             };
 
             contactClone.LocalTimeWindowStart = R4MeUtils.DDHHMM2Seconds("7:05", out _);

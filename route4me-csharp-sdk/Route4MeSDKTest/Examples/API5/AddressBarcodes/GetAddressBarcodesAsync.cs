@@ -28,13 +28,12 @@ namespace Route4MeSDK.Examples
             var readResult1 = await route4Me.GetAddressBarcodesAsync(getAddressBarcodesParameters);
 
             Console.WriteLine(
-                (readResult1.Item1?.Status ?? "false")=="true" 
-                ? "The barcode retrieved asynchronously" 
-                : "Cannot retrieve the barcode asynchronously"
+                (readResult1.Item1?.Status ?? "false") == "true"
+                    ? "The barcode retrieved asynchronously"
+                    : "Cannot retrieve the barcode asynchronously"
             );
 
             RemoveTestOptimizations();
-
         }
     }
 }
