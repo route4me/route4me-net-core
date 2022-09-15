@@ -20,7 +20,7 @@ namespace Route4MeSDK.Examples
             };
 
             var reviews = route4Me.GetDriverReviewList(allQueryParameters,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             if ((reviews?.Data?.Length ?? 0) < 1)
             {

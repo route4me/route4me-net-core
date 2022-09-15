@@ -46,28 +46,28 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var updatedMember = route4Me.UpdateTeamMember(
-                                                queryParams,
-                                                requestParams,
-                                                out ResultResponse resultResponse);
+                queryParams,
+                requestParams,
+                out ResultResponse resultResponse);
 
             PrintTeamMembers(updatedMember, resultResponse);
 
             Console.WriteLine(
                 (updatedMember?.MemberPhone ?? null) == requestParams.MemberPhone
-                ? "The member phone updated"
-                : "Cannot update the member phone"
+                    ? "The member phone updated"
+                    : "Cannot update the member phone"
             );
 
             Console.WriteLine(
                 (updatedMember?.ReadOnlyUser ?? null) == requestParams.ReadOnlyUser
-                ? "The member parameter ReadOnlyUser updated"
-                : "Cannot update the member parameter ReadOnlyUser"
+                    ? "The member parameter ReadOnlyUser updated"
+                    : "Cannot update the member parameter ReadOnlyUser"
             );
 
             Console.WriteLine(
                 (updatedMember?.DrivingRate ?? null) == requestParams.DrivingRate
-                ? "The member parameter DrivingRate updated"
-                : "Cannot update the member parameter DrivingRate"
+                    ? "The member parameter DrivingRate updated"
+                    : "Cannot update the member parameter DrivingRate"
             );
 
             RemoveTestTeamMembers();

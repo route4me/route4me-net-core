@@ -19,13 +19,13 @@ namespace Route4MeSDK.Examples
             };
 
             var response = route4Me.GetAddressBookContacts(
-                                            addressBookParameters,
-                                            out ResultResponse resultResponse);
+                addressBookParameters,
+                out ResultResponse resultResponse);
 
             long[] addressIDs = response.Results
-                                        .Where(x => x.AddressId != null)
-                                        .Select(x => (long)x.AddressId)
-                                        .ToArray();
+                .Where(x => x.AddressId != null)
+                .Select(x => (long)x.AddressId)
+                .ToArray();
 
             var fastBulkRemoveContacts = new FastProcessing.FastBulkRemoveContacts(ActualApiKey)
             {

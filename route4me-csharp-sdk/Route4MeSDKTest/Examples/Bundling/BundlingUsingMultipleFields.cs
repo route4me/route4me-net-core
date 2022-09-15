@@ -85,8 +85,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR001" },
-                        {"BUNDLING_KEY", "ZONE001" }
+                        { "LOCATION_ID", "FLOOR001" },
+                        { "BUNDLING_KEY", "ZONE001" }
                     }
                 },
                 new Address()
@@ -97,8 +97,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR001" },
-                        {"BUNDLING_KEY", "ZONE001" }
+                        { "LOCATION_ID", "FLOOR001" },
+                        { "BUNDLING_KEY", "ZONE001" }
                     }
                 },
                 new Address()
@@ -109,8 +109,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR003" },
-                        {"BUNDLING_KEY", "ZONE001" }
+                        { "LOCATION_ID", "FLOOR003" },
+                        { "BUNDLING_KEY", "ZONE001" }
                     }
                 },
                 new Address()
@@ -121,8 +121,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR003" },
-                        {"BUNDLING_KEY", "ZONE001" }
+                        { "LOCATION_ID", "FLOOR003" },
+                        { "BUNDLING_KEY", "ZONE001" }
                     }
                 },
                 new Address()
@@ -133,8 +133,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR003" },
-                        {"BUNDLING_KEY", "ZONE001" }
+                        { "LOCATION_ID", "FLOOR003" },
+                        { "BUNDLING_KEY", "ZONE001" }
                     }
                 },
                 new Address()
@@ -145,8 +145,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR003" },
-                        {"BUNDLING_KEY", "ZONE001" }
+                        { "LOCATION_ID", "FLOOR003" },
+                        { "BUNDLING_KEY", "ZONE001" }
                     }
                 },
                 new Address()
@@ -157,8 +157,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR001" },
-                        {"BUNDLING_KEY", "ZONE002" }
+                        { "LOCATION_ID", "FLOOR001" },
+                        { "BUNDLING_KEY", "ZONE002" }
                     }
                 },
                 new Address()
@@ -169,8 +169,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR001" },
-                        {"BUNDLING_KEY", "ZONE002" }
+                        { "LOCATION_ID", "FLOOR001" },
+                        { "BUNDLING_KEY", "ZONE002" }
                     }
                 },
                 new Address()
@@ -181,8 +181,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR004" },
-                        {"BUNDLING_KEY", "ZONE002" }
+                        { "LOCATION_ID", "FLOOR004" },
+                        { "BUNDLING_KEY", "ZONE002" }
                     }
                 },
                 new Address()
@@ -193,8 +193,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR004" },
-                        {"BUNDLING_KEY", "ZONE002" }
+                        { "LOCATION_ID", "FLOOR004" },
+                        { "BUNDLING_KEY", "ZONE002" }
                     }
                 },
                 new Address()
@@ -205,8 +205,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR001" },
-                        {"BUNDLING_KEY", "ZONE003" }
+                        { "LOCATION_ID", "FLOOR001" },
+                        { "BUNDLING_KEY", "ZONE003" }
                     }
                 },
                 new Address()
@@ -217,8 +217,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR001" },
-                        {"BUNDLING_KEY", "ZONE003" }
+                        { "LOCATION_ID", "FLOOR001" },
+                        { "BUNDLING_KEY", "ZONE003" }
                     }
                 },
                 new Address()
@@ -229,8 +229,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR002" },
-                        {"BUNDLING_KEY", "ZONE003" }
+                        { "LOCATION_ID", "FLOOR002" },
+                        { "BUNDLING_KEY", "ZONE003" }
                     }
                 },
                 new Address()
@@ -241,8 +241,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR002" },
-                        {"BUNDLING_KEY", "ZONE003" }
+                        { "LOCATION_ID", "FLOOR002" },
+                        { "BUNDLING_KEY", "ZONE003" }
                     }
                 },
                 new Address()
@@ -253,8 +253,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR003" },
-                        {"BUNDLING_KEY", "ZONE003" }
+                        { "LOCATION_ID", "FLOOR003" },
+                        { "BUNDLING_KEY", "ZONE003" }
                     }
                 },
                 new Address()
@@ -265,8 +265,8 @@ namespace Route4MeSDK.Examples
                     Time = 300,
                     CustomFields = new Dictionary<string, string>()
                     {
-                        {"LOCATION_ID", "FLOOR003" },
-                        {"BUNDLING_KEY", "ZONE003" }
+                        { "LOCATION_ID", "FLOOR003" },
+                        { "BUNDLING_KEY", "ZONE003" }
                     }
                 },
                 new Address()
@@ -278,7 +278,7 @@ namespace Route4MeSDK.Examples
                     CustomFields = new Dictionary<string, string>()
                     {
                         { "LOCATION_ID", "FLOOR001" },
-                        { "BUNDLING_KEY", "ZONE004"  }
+                        { "BUNDLING_KEY", "ZONE004" }
                     }
                 },
                 new Address()
@@ -290,7 +290,7 @@ namespace Route4MeSDK.Examples
                     CustomFields = new Dictionary<string, string>()
                     {
                         { "LOCATION_ID", "FLOOR001" },
-                        { "BUNDLING_KEY", "ZONE004"  }
+                        { "BUNDLING_KEY", "ZONE004" }
                     }
                 },
                 new Address()
@@ -302,7 +302,7 @@ namespace Route4MeSDK.Examples
                     CustomFields = new Dictionary<string, string>()
                     {
                         { "LOCATION_ID", "FLOOR002" },
-                        { "BUNDLING_KEY", "ZONE004"  }
+                        { "BUNDLING_KEY", "ZONE004" }
                     }
                 },
                 new Address()
@@ -315,7 +315,7 @@ namespace Route4MeSDK.Examples
                     CustomFields = new Dictionary<string, string>()
                     {
                         { "LOCATION_ID", "FLOOR002" },
-                        { "BUNDLING_KEY", "ZONE004"  }
+                        { "BUNDLING_KEY", "ZONE004" }
                     }
                 }
             };

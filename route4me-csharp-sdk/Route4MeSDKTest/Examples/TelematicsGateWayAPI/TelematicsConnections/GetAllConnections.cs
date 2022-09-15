@@ -16,11 +16,10 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var vendors = route4Me.GetTelematicsConnections(
-                                            vendorParameters,
-                                            out string errorString);
+                vendorParameters,
+                out string errorString);
 
             PrintExampleTelematicsVendor(vendors, errorString);
         }
-
     }
 }

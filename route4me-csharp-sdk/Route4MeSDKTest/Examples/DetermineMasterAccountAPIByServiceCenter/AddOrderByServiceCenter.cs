@@ -18,7 +18,7 @@ namespace Route4MeSDK.Examples
         public Order AddOrderByServiceCenter(string serviceCenter)
         {
             var serviceMapping = (ReadSetting("account_to_api_key_map") as Dictionary<string, object>)
-                                            .ToDictionary(k => k.Key, k => k.Value.ToString());
+                .ToDictionary(k => k.Key, k => k.Value.ToString());
 
             if (!serviceMapping.Keys.Contains(serviceCenter))
             {

@@ -27,7 +27,7 @@ namespace Route4MeSDK.Examples
             var vehicles = route4Me.GetVehicles(
                 vehicleParameters,
                 out string errorString
-             );
+            );
 
             int randomNumber = (new Random()).Next(0, vehicles.Length - 1);
             var vehicleId = vehicles[randomNumber].VehicleId;

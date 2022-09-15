@@ -27,8 +27,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 removed
-                ? String.Format("The territory {0} removed successfully", territoryId)
-                : String.Format("Cannot remove the territory {0}", territoryId) + Environment.NewLine + errorString
+                    ? String.Format("The territory {0} removed successfully", territoryId)
+                    : String.Format("Cannot remove the territory {0}", territoryId) + Environment.NewLine + errorString
             );
         }
     }

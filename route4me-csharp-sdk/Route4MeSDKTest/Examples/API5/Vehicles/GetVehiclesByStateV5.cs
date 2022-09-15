@@ -16,8 +16,6 @@ namespace Route4MeSDK.Examples
             PrintTestVehcilesV5(vehicles, resultResponse);
 
             RemoveTestVehiclesV5();
-
-
         }
     }
 }

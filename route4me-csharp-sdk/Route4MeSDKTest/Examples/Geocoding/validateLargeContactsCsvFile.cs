@@ -21,17 +21,17 @@ namespace Route4MeSDK.Examples
 
             var csvAddressMapping = new Dictionary<string, string>()
             {
-                {"Alias", R4MeUtils.GetPropertyName(() => ab.AddressAlias)},
-                {"Address", R4MeUtils.GetPropertyName(() => ab.Address1)},
-                {"City", R4MeUtils.GetPropertyName(() => ab.AddressCity)},
-                {"State", R4MeUtils.GetPropertyName(() => ab.AddressStateId)},
-                {"Zip", R4MeUtils.GetPropertyName(() => ab.AddressZip)},
-                {"Lat", R4MeUtils.GetPropertyName(() => ab.CachedLat)},
-                {"Lng", R4MeUtils.GetPropertyName(() => ab.CachedLng)},
-                {"Time", R4MeUtils.GetPropertyName(() => ab.ServiceTime)},
-                {"Time_window_start", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowStart)},
-                {"Time_window_end", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowEnd)},
-                {"Custom_Data", R4MeUtils.GetPropertyName(() => ab.AddressCustomData)}
+                { "Alias", R4MeUtils.GetPropertyName(() => ab.AddressAlias) },
+                { "Address", R4MeUtils.GetPropertyName(() => ab.Address1) },
+                { "City", R4MeUtils.GetPropertyName(() => ab.AddressCity) },
+                { "State", R4MeUtils.GetPropertyName(() => ab.AddressStateId) },
+                { "Zip", R4MeUtils.GetPropertyName(() => ab.AddressZip) },
+                { "Lat", R4MeUtils.GetPropertyName(() => ab.CachedLat) },
+                { "Lng", R4MeUtils.GetPropertyName(() => ab.CachedLng) },
+                { "Time", R4MeUtils.GetPropertyName(() => ab.ServiceTime) },
+                { "Time_window_start", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowStart) },
+                { "Time_window_end", R4MeUtils.GetPropertyName(() => ab.LocalTimeWindowEnd) },
+                { "Custom_Data", R4MeUtils.GetPropertyName(() => ab.AddressCustomData) }
             };
 
             FastFileReading.csvAddressMapping = csvAddressMapping;

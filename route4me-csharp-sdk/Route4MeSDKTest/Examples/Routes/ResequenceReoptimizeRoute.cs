@@ -29,9 +29,9 @@ namespace Route4MeSDK.Examples
 
             var roParameters = new Dictionary<string, string>()
             {
-                {"route_id",routeId},
-                {"disable_optimization","0"},
-                {"optimize","Distance"},
+                { "route_id", routeId },
+                { "disable_optimization", "0" },
+                { "optimize", "Distance" },
             };
 
             // Run the query
@@ -42,8 +42,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 result
-                ? "ResequenceReoptimizeRoute executed successfully"
-                : String.Format("ResequenceReoptimizeRoute error: {0}", errorString)
+                    ? "ResequenceReoptimizeRoute executed successfully"
+                    : String.Format("ResequenceReoptimizeRoute error: {0}", errorString)
             );
 
             if (isInnerExample) RemoveTestOptimizations();

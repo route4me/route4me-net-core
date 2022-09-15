@@ -26,10 +26,10 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var vendors = route4Me.UpdateTelematicsConnection(
-                                            "apiToken", 
-                                            "connectionToken", 
-                                            conParams,
-                                            out string errorString);
+                "apiToken",
+                "connectionToken",
+                conParams,
+                out string errorString);
 
             PrintExampleTelematicsVendor(vendors, errorString);
         }

@@ -31,7 +31,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var member = route4Me.CreateTeamMember(newMemberParameters,
-                                                    out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             if (member != null && member.GetType() == typeof(TeamResponse)) membersToRemove.Add(member);
 

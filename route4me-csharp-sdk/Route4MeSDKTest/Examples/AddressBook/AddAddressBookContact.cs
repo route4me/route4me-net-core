@@ -22,9 +22,9 @@ namespace Route4MeSDK.Examples
                 CachedLng = -77.338814,
                 AddressCustomData = new Dictionary<string, string>()
                 {
-                    {"Service type", "publishing"},
-                    {"Facilities", "storage" },
-                    {"Parking", "temporarry" }
+                    { "Service type", "publishing" },
+                    { "Facilities", "storage" },
+                    { "Parking", "temporarry" }
                 }
             };
 

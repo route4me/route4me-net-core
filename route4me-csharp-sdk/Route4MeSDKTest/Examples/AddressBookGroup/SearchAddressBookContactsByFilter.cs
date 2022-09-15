@@ -29,14 +29,14 @@ namespace Route4MeSDK.Examples
             // Run the query
             var response = route4Me
                 .SearchAddressBookContactsByFilter(
-                addressBookGroupParameters,
-                out string errorString);
+                    addressBookGroupParameters,
+                    out string errorString);
 
             Console.WriteLine(
                 (response?.Results?.Length ?? 0) < 1
-                ? "Cannot retrieve the contacts by filter" + Environment.NewLine + errorString
-                : "Retrieved the contacts by filter: " + response.Results.Length
-                );
+                    ? "Cannot retrieve the contacts by filter" + Environment.NewLine + errorString
+                    : "Retrieved the contacts by filter: " + response.Results.Length
+            );
         }
     }
 }

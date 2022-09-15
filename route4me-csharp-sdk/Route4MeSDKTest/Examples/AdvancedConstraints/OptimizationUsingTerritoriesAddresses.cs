@@ -33,9 +33,9 @@ namespace Route4MeSDK.Examples
             var territoryZones = GetTerritoriesWithMaxContacts(3);
 
             var depotContact = route4Me.GetAddressBookLocation(
-                new AddressBookParameters() 
-                { 
-                    AddressId = territoryZones[0].Addresses[0].ToString() 
+                new AddressBookParameters()
+                {
+                    AddressId = territoryZones[0].Addresses[0].ToString()
                 }, out _, out _)[0];
 
             if ((territoryZones?.Length ?? 0) < 3)
@@ -46,9 +46,9 @@ namespace Route4MeSDK.Examples
             var advancedConstraints1 = new DataTypes.V5.RouteAdvancedConstraints()
             {
                 MembersCount = 3,
-                AvailableTimeWindows = new List<int[]>() 
-                { 
-                    new int[] { 46800, 57600 } 
+                AvailableTimeWindows = new List<int[]>()
+                {
+                    new int[] { 46800, 57600 }
                 },
                 Tags = new string[] { territoryZones[0].TerritoryId }
             };
@@ -93,7 +93,7 @@ namespace Route4MeSDK.Examples
                     addresses.Add(new Address()
                     {
                         ContactId = contactId,
-                        Tags = new string[] {territoryZone.TerritoryId}
+                        Tags = new string[] { territoryZone.TerritoryId }
                     });
                 }
             }
@@ -102,7 +102,7 @@ namespace Route4MeSDK.Examples
             var optimizationParameters = new OptimizationParameters()
             {
                 Parameters = routeParameters,
-                
+
                 Depots = new Address[]
                 {
                     new Address()

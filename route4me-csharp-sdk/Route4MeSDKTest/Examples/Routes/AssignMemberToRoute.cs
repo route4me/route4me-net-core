@@ -17,7 +17,7 @@ namespace Route4MeSDK.Examples
             var members = route4Me.GetUsers(
                 new GenericParameters(),
                 out string errorString
-             );
+            );
 
             int randomNumber = (new Random()).Next(0, members.Results.Length - 1);
 

@@ -23,8 +23,8 @@ namespace Route4MeSDK.Examples
             string routeIdToMoveTo = SDRT_route_id;
 
             long addressId = (SDRT_route != null &&
-                            SDRT_route.Addresses.Length > 1 &&
-                            SDRT_route.Addresses[1].RouteDestinationId != null)
+                              SDRT_route.Addresses.Length > 1 &&
+                              SDRT_route.Addresses[1].RouteDestinationId != null)
                 ? SDRT_route.Addresses[1].RouteDestinationId.Value
                 : 0;
 
@@ -44,7 +44,7 @@ namespace Route4MeSDK.Examples
                     customNotes = new Dictionary<string, string>()
                     {
                         {
-                            "custom_note_type["+allCustomNotes[0].NoteCustomTypeID+"]",
+                            "custom_note_type[" + allCustomNotes[0].NoteCustomTypeID + "]",
                             allCustomNotes[0].NoteCustomTypeValues[0]
                         }
                     };
@@ -65,7 +65,8 @@ namespace Route4MeSDK.Examples
             if (customNotes != null) noteParameters.CustomNoteTypes = customNotes;
 
             string tempFilePath = null;
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Route4MeSDKTest.Resources.test.png"))
+            using (Stream stream = Assembly.GetExecutingAssembly()
+                       .GetManifestResourceStream("Route4MeSDKTest.Resources.test.png"))
             {
                 var tempFiles = new TempFileCollection();
                 {

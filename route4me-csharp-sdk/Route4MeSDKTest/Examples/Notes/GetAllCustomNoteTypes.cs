@@ -18,7 +18,7 @@ namespace Route4MeSDK.Examples
                 (response != null && response.GetType() == typeof(CustomNoteType[]))
                     ? "Retrieved the custom note types: " + ((CustomNoteType[])response).Length
                     : "Cannot retrieve custom note types"
-                );
+            );
         }
     }
 }

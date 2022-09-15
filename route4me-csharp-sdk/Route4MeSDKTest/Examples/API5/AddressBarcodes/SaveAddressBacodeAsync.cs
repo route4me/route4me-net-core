@@ -49,7 +49,7 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 result.Item1.status ? "The barcode saved" : "Cannot save the barcode"
-                );
+            );
 
             RemoveTestOptimizations();
         }

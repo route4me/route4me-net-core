@@ -47,14 +47,13 @@ namespace Route4MeSDK.Examples
 
             PrintExampleTelematicsVendor(result, errorString);
 
-            if (result!=null && result.GetType()==typeof(TelematicsConnection)) lsCreatedConnections.Add(result);
+            if (result != null && result.GetType() == typeof(TelematicsConnection)) lsCreatedConnections.Add(result);
 
             if (removeAfterComplete)
             {
                 DeleteTelematicsConnection();
                 lsCreatedConnections.Clear();
             }
-
         }
     }
 }

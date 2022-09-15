@@ -17,8 +17,8 @@ namespace Route4MeSDK.Examples
             var result = await route4Me.GetAddressBookContactByIdAsync((long)contact51.AddressId);
 
             PrintExampleContact(
-                result.Item1, 
-                1, 
+                result.Item1,
+                1,
                 result.Item2?.Status.ToString() ?? null);
 
             RemoveTestContacts();

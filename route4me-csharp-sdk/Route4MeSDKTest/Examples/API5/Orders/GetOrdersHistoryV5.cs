@@ -17,7 +17,7 @@ namespace Route4MeSDK.Examples
 
             var orders = route4me.GetOrders(new QueryTypes.OrderParameters() { Limit = 1 }, out _, out _);
 
-            if ((orders?.Length ?? 0)<1)
+            if ((orders?.Length ?? 0) < 1)
             {
                 Console.WriteLine("Cannot retrieve the orders from the account.");
                 return;

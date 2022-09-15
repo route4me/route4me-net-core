@@ -32,18 +32,17 @@ namespace Route4MeSDK.Examples
                 {
                     new RouteBreak()
                     {
-                        Type =  RouteBreakTypes.CERTAIN_NUMBER_OF_LOCATIONS.Description(),
+                        Type = RouteBreakTypes.CERTAIN_NUMBER_OF_LOCATIONS.Description(),
                         Duration = 900,
                         Params = new int[] { 7, 7 }
                     }
                 },
                 ReplaceExistingBreaks = true
-
             };
 
 
             // Run the query
-           var result = route4Me.InsertRouteBreaks(routeBreaks, out ResultResponse resultResponse);
+            var result = route4Me.InsertRouteBreaks(routeBreaks, out ResultResponse resultResponse);
 
             if (result == null)
             {

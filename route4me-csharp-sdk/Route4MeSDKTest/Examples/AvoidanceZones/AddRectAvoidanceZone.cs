@@ -21,7 +21,8 @@ namespace Route4MeSDK.Examples
                 Territory = new Territory
                 {
                     Type = TerritoryType.Rect.Description(),
-                    Data = new string[] {
+                    Data = new string[]
+                    {
                         "43.51668853502909,-109.3798828125",
                         "46.98025235521883,-101.865234375"
                     }

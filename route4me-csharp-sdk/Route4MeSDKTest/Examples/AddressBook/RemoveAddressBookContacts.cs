@@ -30,9 +30,10 @@ namespace Route4MeSDK.Examples
             Console.WriteLine("");
 
             Console.WriteLine(removed
-                ? String.Format("RemoveAddressBookContacts executed successfully, {0} contacts deleted", addressIds.Length)
+                ? String.Format("RemoveAddressBookContacts executed successfully, {0} contacts deleted",
+                    addressIds.Length)
                 : String.Format("RemoveAddressBookContacts error: {0}", errorString)
-                );
+            );
 
             ContactsToRemove.Remove(contact1.AddressId.ToString());
             ContactsToRemove.Remove(contact2.AddressId.ToString());

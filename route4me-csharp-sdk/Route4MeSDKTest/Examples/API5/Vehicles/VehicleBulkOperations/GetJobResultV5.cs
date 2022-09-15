@@ -15,11 +15,11 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
             // Send a request to the server
-            var result = route4Me.GetVehicleJobResult("50CE911542B397C7EBCDDA13CDE5580A", out ResultResponse resultResponse);
+            var result =
+                route4Me.GetVehicleJobResult("50CE911542B397C7EBCDDA13CDE5580A", out ResultResponse resultResponse);
 
             Console.WriteLine("Job result: " +
-                (result?.IsSuccessStatusCode ?? false));
-
+                              (result?.IsSuccessStatusCode ?? false));
         }
     }
 }

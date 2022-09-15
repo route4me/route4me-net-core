@@ -77,7 +77,7 @@ namespace Route4MeSDK.Examples
 
             var addresses = new List<Address>();
 
-            int count=0;
+            int count = 0;
 
             using (TextReader reader = File.OpenText(sAddressFile))
             {
@@ -87,7 +87,7 @@ namespace Route4MeSDK.Examples
                     {
                         string[] tags = new string[0];
 
-                        if (count>0)
+                        if (count > 0)
                         {
                             int remainder = -1;
 

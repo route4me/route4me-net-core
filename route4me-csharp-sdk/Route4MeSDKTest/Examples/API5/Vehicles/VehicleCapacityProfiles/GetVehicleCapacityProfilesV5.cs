@@ -19,7 +19,8 @@ namespace Route4MeSDK.Examples
                 MergePage = false
             };
 
-            var profiles = route4Me.GetVehicleCapacityProfiles(capacityProfileParams, out ResultResponse resultResponse);
+            var profiles =
+                route4Me.GetVehicleCapacityProfiles(capacityProfileParams, out ResultResponse resultResponse);
 
             PrintTestVehcileCapacityProfilesV5(profiles, resultResponse);
         }

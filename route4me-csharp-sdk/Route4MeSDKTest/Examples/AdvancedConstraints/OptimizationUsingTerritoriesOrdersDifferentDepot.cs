@@ -32,10 +32,10 @@ namespace Route4MeSDK.Examples
 
             var territoryZones = GetTerritoriesWithMaxOrders(3);
 
-            
-            var order1 = route4Me.GetOrderByID(new OrderParameters() 
-            { 
-                order_id = territoryZones[0].Orders[0].ToString() 
+
+            var order1 = route4Me.GetOrderByID(new OrderParameters()
+            {
+                order_id = territoryZones[0].Orders[0].ToString()
             }, out _);
 
             var order2 = route4Me.GetOrderByID(new OrderParameters()

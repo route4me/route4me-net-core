@@ -18,12 +18,13 @@ namespace Route4MeSDK.Examples
             var routeParameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.CVRP_TW_SD,
-                RouteName = $"Single Depot, Multiple Driver, Bundling by Address and having Priority Constraint {DateTime.Now}",
+                RouteName =
+                    $"Single Depot, Multiple Driver, Bundling by Address and having Priority Constraint {DateTime.Now}",
                 TravelMode = TravelMode.Driving.Description(),
                 Bundling = new AddressBundling()
                 {
                     Mode = AddressBundlingMode.Address,
-                    ModeParams = new string[] 
+                    ModeParams = new string[]
                     {
                         "custom_fields.BUNDLING_KEY",
                         "custom_fields.LOCATION_ID"
@@ -32,9 +33,9 @@ namespace Route4MeSDK.Examples
                     ServiceTimeRules = new ServiceTimeRulesClass()
                     {
                         FirstItemMode = AddressBundlingFirstItemMode.CustomTime,
-                        FirstItemModeParams = new int[] {900},
+                        FirstItemModeParams = new int[] { 900 },
                         AdditionalItemsMode = AddressBundlingAdditionalItemsMode.CustomTime,
-                        AdditionalItemsModeParams = new int[] {200}
+                        AdditionalItemsModeParams = new int[] { 200 }
                     }
                 }
             };

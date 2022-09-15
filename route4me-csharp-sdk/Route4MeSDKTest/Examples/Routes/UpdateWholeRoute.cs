@@ -32,13 +32,15 @@ namespace Route4MeSDK.Examples
 
             var customNotesResponse = route4Me.GetAllCustomNoteTypes(out string errorString5);
 
-            var allCustomNotes = customNotesResponse != null && customNotesResponse.GetType() == typeof(CustomNoteType[])
-                ? (CustomNoteType[])customNotesResponse : null;
+            var allCustomNotes =
+                customNotesResponse != null && customNotesResponse.GetType() == typeof(CustomNoteType[])
+                    ? (CustomNoteType[])customNotesResponse
+                    : null;
 
             string tempFilePath = null;
             using (Stream stream = Assembly
-                .GetExecutingAssembly()
-                .GetManifestResourceStream("Route4MeSDKTest.Resources.test.png"))
+                       .GetExecutingAssembly()
+                       .GetManifestResourceStream("Route4MeSDKTest.Resources.test.png"))
             {
                 var tempFiles = new TempFileCollection();
                 {
@@ -53,7 +55,8 @@ namespace Route4MeSDK.Examples
                 }
             }
 
-            SD10Stops_route.Addresses[1].Notes = new AddressNote[] {
+            SD10Stops_route.Addresses[1].Notes = new AddressNote[]
+            {
                 new AddressNote()
                 {
                     NoteId = -1,
@@ -62,19 +65,19 @@ namespace Route4MeSDK.Examples
                     Longitude = SD10Stops_route.Addresses[1].Longitude,
                     ActivityType = "dropoff",
                     Contents = "C# SDK Test Content",
-                    CustomTypes = allCustomNotes.Length>0
-                    ? new AddressCustomNote[]
-                    {
-                        new AddressCustomNote()
+                    CustomTypes = allCustomNotes.Length > 0
+                        ? new AddressCustomNote[]
                         {
-                            NoteCustomTypeID = allCustomNotes[0].NoteCustomTypeID.ToString(),
-                            NoteCustomValue = allCustomNotes[0].NoteCustomTypeValues[0]
+                            new AddressCustomNote()
+                            {
+                                NoteCustomTypeID = allCustomNotes[0].NoteCustomTypeID.ToString(),
+                                NoteCustomValue = allCustomNotes[0].NoteCustomTypeValues[0]
+                            }
                         }
-                    }
-                    : null,
+                        : null,
                     UploadUrl = tempFilePath
                 }
-             };
+            };
 
             var updatedRoute0 = route4Me.UpdateRoute(
                 SD10Stops_route,
@@ -88,9 +91,11 @@ namespace Route4MeSDK.Examples
             }
 
             if (allCustomNotes.Length > 0)
-                Assert.IsTrue(updatedRoute0.Addresses[1].Notes[0].CustomTypes.Length == 1, "UpdateRouteTest failed: cannot create a custom type note");
+                Assert.IsTrue(updatedRoute0.Addresses[1].Notes[0].CustomTypes.Length == 1,
+                    "UpdateRouteTest failed: cannot create a custom type note");
 
-            Assert.IsTrue(updatedRoute0.Addresses[1].Notes[0].UploadId.Length == 32, "UpdateRouteTest failed: cannot create a custom type note");
+            Assert.IsTrue(updatedRoute0.Addresses[1].Notes[0].UploadId.Length == 32,
+                "UpdateRouteTest failed: cannot create a custom type note");
 
             #endregion
 
@@ -104,7 +109,8 @@ namespace Route4MeSDK.Examples
             SD10Stops_route.Addresses[1].InvoiceNo = "INO 789654";
             SD10Stops_route.Addresses[1].ReferenceNo = "RNO 313264";
             SD10Stops_route.Addresses[1].OrderNo = "ONO 654878";
-            SD10Stops_route.Addresses[1].Notes = new AddressNote[] {
+            SD10Stops_route.Addresses[1].Notes = new AddressNote[]
+            {
                 new AddressNote()
                 {
                     RouteDestinationId = -1,
@@ -114,7 +120,7 @@ namespace Route4MeSDK.Examples
                     ActivityType = "dropoff",
                     Contents = "C# SDK Test Content"
                 }
-             };
+            };
 
             SD10Stops_route.Addresses[2].SequenceNo = 5;
             var addressID = SD10Stops_route.Addresses[2].RouteDestinationId;
@@ -129,10 +135,13 @@ namespace Route4MeSDK.Examples
                 .FirstOrDefault()
                 .SequenceNo == 5, "UpdateWholeRouteTest failed.");
 
-            Assert.IsTrue(SD10Stops_route.ApprovedForExecution, "UpdateRouteTest failed, ApprovedForExecution cannot set to true");
+            Assert.IsTrue(SD10Stops_route.ApprovedForExecution,
+                "UpdateRouteTest failed, ApprovedForExecution cannot set to true");
             Assert.IsNotNull(dataObject, "UpdateRouteTest failed. " + errorString);
-            Assert.IsTrue(dataObject.Parameters.RouteName.Contains("Edited"), "UpdateRouteTest failed, the route name not changed.");
-            Assert.IsTrue(dataObject.Addresses[1].AddressString.Contains("Edited"), "UpdateRouteTest failed, second address name not changed.");
+            Assert.IsTrue(dataObject.Parameters.RouteName.Contains("Edited"),
+                "UpdateRouteTest failed, the route name not changed.");
+            Assert.IsTrue(dataObject.Addresses[1].AddressString.Contains("Edited"),
+                "UpdateRouteTest failed, second address name not changed.");
 
             Assert.IsTrue(dataObject.Addresses[1].Group == "Example Group", "UpdateWholeRouteTest failed.");
             Assert.IsTrue(dataObject.Addresses[1].CustomerPo == "CPO 456789", "UpdateWholeRouteTest failed.");

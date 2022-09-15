@@ -25,9 +25,9 @@ namespace Route4MeSDK.Examples
             };
 
             var updatedDriverReview = route4Me.UpdateDriverReview(
-                                                    driverReview,
-                                                    HttpMethodType.Patch, // other availbale option is the Put method
-                                                    out ResultResponse resultResponse);
+                driverReview,
+                HttpMethodType.Patch, // other availbale option is the Put method
+                out ResultResponse resultResponse);
 
             PrintDriverReview(updatedDriverReview, resultResponse);
         }

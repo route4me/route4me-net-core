@@ -24,10 +24,11 @@ namespace Route4MeSDK.Examples
             };
 
             var vehicleCapacityProfile = route4Me.CreateVehicleCapacityProfile(
-                vehicleCapacityProfileParams, 
+                vehicleCapacityProfileParams,
                 out ResultResponse resultResponse);
 
-            if (vehicleCapacityProfile != null && vehicleCapacityProfile.GetType() == typeof(VehicleCapacityProfileResponse))
+            if (vehicleCapacityProfile != null &&
+                vehicleCapacityProfile.GetType() == typeof(VehicleCapacityProfileResponse))
             {
                 vehicleProfilesToRemove = new List<int>();
                 vehicleProfilesToRemove.Add((int)vehicleCapacityProfile.Data.VehicleCapacityProfileId);

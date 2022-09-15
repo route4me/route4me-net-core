@@ -17,7 +17,8 @@ namespace Route4MeSDK.Examples
                 VehicleCapacityProfileId = 566
             };
 
-            var capacityProfile = route4Me.DeleteVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
+            var capacityProfile =
+                route4Me.DeleteVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
 
             PrintTestVehcileCapacityProfilesV5(capacityProfile, resultResponse);
         }

@@ -53,8 +53,6 @@ namespace Route4MeSDK.Examples
             PrintTestVehcileProfilesV5(result.Item1, result.Item2);
 
             RemoveTestVehicleProfilesV5();
-
-
         }
     }
 }

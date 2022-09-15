@@ -21,8 +21,8 @@ namespace Route4MeSDK.Examples
             // Send a request to the server
             var result = route4Me.DeleteVehicles(vehicleIDs, out ResultResponse resultResponse);
 
-            System.Console.WriteLine("Delete result: "+
-                (result?.IsSuccessStatusCode ?? false));
+            System.Console.WriteLine("Delete result: " +
+                                     (result?.IsSuccessStatusCode ?? false));
         }
     }
 }

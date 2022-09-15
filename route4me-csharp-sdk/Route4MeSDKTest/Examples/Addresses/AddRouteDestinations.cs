@@ -26,19 +26,25 @@ namespace Route4MeSDK.Examples
             // Prepare the addresses
             Address[] addresses = new Address[]
             {
-            #region Addresses
+                #region Addresses
 
-            new Address() { AddressString =  "146 Bill Johnson Rd NE Milledgeville GA 31061",
-                            Latitude =  33.143526,
-                            Longitude = -83.240354,
-                            Time = 0 },
+                new Address()
+                {
+                    AddressString = "146 Bill Johnson Rd NE Milledgeville GA 31061",
+                    Latitude = 33.143526,
+                    Longitude = -83.240354,
+                    Time = 0
+                },
 
-            new Address() { AddressString =  "222 Blake Cir Milledgeville GA 31061",
-                            Latitude =  33.177852,
-                            Longitude = -83.263535,
-                            Time = 0 }
+                new Address()
+                {
+                    AddressString = "222 Blake Cir Milledgeville GA 31061",
+                    Latitude = 33.177852,
+                    Longitude = -83.263535,
+                    Time = 0
+                }
 
-            #endregion
+                #endregion
             };
 
             // Run the query

@@ -26,9 +26,9 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 (response?.Status ?? false)
-                ? "Removed the address book group " + groupId
-                : "Cannot remove the address book group " + groupId
-                );
+                    ? "Removed the address book group " + groupId
+                    : "Cannot remove the address book group " + groupId
+            );
         }
     }
 }

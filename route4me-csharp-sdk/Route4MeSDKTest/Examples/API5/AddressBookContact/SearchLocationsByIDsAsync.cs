@@ -26,8 +26,8 @@ namespace Route4MeSDK.Examples
                 contactIDs);
 
             PrintExampleContact(
-                result.Item1.Results, 
-                (uint)result.Item1.Total, 
+                result.Item1.Results,
+                (uint)result.Item1.Total,
                 result.Item2?.Status.ToString() ?? null);
 
             RemoveTestContacts();

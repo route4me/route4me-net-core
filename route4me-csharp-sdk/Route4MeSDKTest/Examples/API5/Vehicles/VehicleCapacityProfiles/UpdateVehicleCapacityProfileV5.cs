@@ -19,7 +19,8 @@ namespace Route4MeSDK.Examples
                 MaxItemsNumber = 145
             };
 
-            var capacityProfile = route4Me.UpdateVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
+            var capacityProfile =
+                route4Me.UpdateVehicleCapacityProfile(capacityProfileParams, out ResultResponse resultResponse);
 
             PrintTestVehcileCapacityProfilesV5(capacityProfile, resultResponse);
         }
