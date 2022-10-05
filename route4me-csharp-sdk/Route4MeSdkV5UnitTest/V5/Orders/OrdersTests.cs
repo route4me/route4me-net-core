@@ -49,7 +49,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
 
             var parameters = new OrderHistoryParameters()
             {
-                OrderId = orders.Single().OrderId.Value,
+                OrderId = orders.Single().OrderId,
                 TrackingNumber = orders.Single().TrackingNumber
             };
 
@@ -69,7 +69,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
 
             var parameters = new OrderHistoryParameters()
             {
-                OrderId = orders.Item1.Single().OrderId.Value,
+                OrderId = orders.Item1.Single().OrderId,
                 TrackingNumber = orders.Item1.Single().TrackingNumber
             };
 
