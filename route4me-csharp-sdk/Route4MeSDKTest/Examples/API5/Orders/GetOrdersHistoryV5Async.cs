@@ -26,7 +26,7 @@ namespace Route4MeSDK.Examples
 
             var parameters = new OrderHistoryParameters()
             {
-                OrderId = orders.Single().OrderId.Value,
+                OrderId = orders.Single().OrderId,
                 TrackingNumber = orders.Single().TrackingNumber
             };
 
