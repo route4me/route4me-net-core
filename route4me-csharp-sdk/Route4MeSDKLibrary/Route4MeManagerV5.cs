@@ -19,6 +19,7 @@ using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
+using Route4MeSDKLibrary.DataTypes.V5.Routes;
 using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
@@ -1715,9 +1716,9 @@ namespace Route4MeSDK
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of the routes</returns>
-        public DataObjectRoute[] GetAllRoutesWithPagination(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
+        public RoutesResponse GetAllRoutesWithPagination(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
+            var result = GetJsonObjectFromAPI<RoutesResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesPaginate,
                 HttpMethodType.Get, null, false, true,
                 out resultResponse);
@@ -1730,13 +1731,13 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<RoutesResponse, ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
         {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesPaginate,
                 HttpMethodType.Get, null, true, false).ConfigureAwait(false);
 
-            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<RoutesResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1745,10 +1746,10 @@ namespace Route4MeSDK
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of the routes</returns>
-        public DataObjectRoute[] GetPaginatedRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
+        public RoutesResponse GetPaginatedRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
             out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
+            var result = GetJsonObjectFromAPI<RoutesResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackPaginate,
                 HttpMethodType.Get, null, false, true,
                 out resultResponse);
@@ -1761,13 +1762,13 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<RoutesResponse, ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
         {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackPaginate,
                 HttpMethodType.Get, null, true, false).ConfigureAwait(false);
 
-            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<RoutesResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1804,11 +1805,11 @@ namespace Route4MeSDK
         }
 
 
-        public DataObjectRoute[] GetRouteDataTableWithElasticSearch(
+        public RoutesResponse GetRouteDataTableWithElasticSearch(
             RouteFilterParameters routeFilterParameters,
             out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(
+            var result = GetJsonObjectFromAPI<RoutesResponse>(
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackDatatable,
                 HttpMethodType.Post, null, false, true,
@@ -1817,14 +1818,14 @@ namespace Route4MeSDK
             return result;
         }
 
-        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
+        public async Task<Tuple<RoutesResponse, ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
         {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackDatatable,
                 HttpMethodType.Post).ConfigureAwait(false);
 
-            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<RoutesResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         public DataObjectRoute[] GetRouteDatatableWithElasticSearch(
