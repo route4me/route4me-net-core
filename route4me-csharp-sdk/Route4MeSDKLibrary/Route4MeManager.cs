@@ -78,7 +78,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -96,7 +96,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Post);
+                HttpMethodType.Post, null, false, true);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -133,7 +133,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject[]>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Post);
+                HttpMethodType.Post, null, false, true);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return result;
@@ -161,7 +161,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, false, true);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Route4MeSDK
         {
             var dataObjectOptimizations = GetJsonObjectFromAPI<DataObjectOptimizations>(queryParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return dataObjectOptimizations?.Optimizations;
@@ -197,7 +197,7 @@ namespace Route4MeSDK
         {
             var dataObjectOptimizations = await GetJsonObjectFromAPIAsync<DataObjectOptimizations>(queryParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             return new Tuple<DataObject[], string>(dataObjectOptimizations.Item1?.Optimizations,
                 dataObjectOptimizations.Item2);
@@ -233,7 +233,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -248,7 +248,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put);
+                HttpMethodType.Put, null, false, true);
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObject>(hybridOptimizationParameters,
                 R4MEInfrastructureSettings.HybridOptimization,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return result;
@@ -377,7 +377,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(hybridOptimizationParameters,
                 R4MEInfrastructureSettings.HybridOptimization,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, false, true);
         }
 
         /// <summary>
@@ -439,6 +439,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
+                null, false, true,
                 out errorString);
 
             #region Shift the route date and route time to make them as shown in the web app.
@@ -460,7 +461,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             #region Shift the route date and route time to make them as shown in the web app.
 
@@ -501,6 +502,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
+                null, false, true,
                 out errorString);
 
             if (result != null && result.GetType() == typeof(DataObjectRoute[]) && routeParameters.ShiftByTimeZone)
@@ -526,7 +528,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             if (result.Item1 != null && result.Item1.GetType() == typeof(DataObjectRoute[]) && routeParameters.ShiftByTimeZone)
             {
@@ -557,7 +559,7 @@ namespace Route4MeSDK
 
             var response = GetJsonObjectFromAPI<DataObject>(genericParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return response != null && response.Routes != null && response.Routes.Length > 0
@@ -578,7 +580,7 @@ namespace Route4MeSDK
 
             var response = await GetJsonObjectFromAPIAsync<DataObject>(genericParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             return new Tuple<string, string>(response.Item1?.Routes?.FirstOrDefault()?.RouteId, response.Item2);
         }
@@ -594,6 +596,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put,
+                null, false, true,
                 out errorString);
 
             if (result != null && result.GetType() == typeof(DataObjectRoute) && routeParameters.ShiftByTimeZone)
@@ -611,7 +614,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             if (result.Item1 != null && result.Item1.GetType() == typeof(DataObjectRoute) && routeParameters.ShiftByTimeZone)
                 result = new Tuple<DataObjectRoute, string>(ShiftRouteDateTimeByTz(result.Item1), result.Item2);
@@ -719,7 +722,7 @@ namespace Route4MeSDK
 
                 initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
                 (genParams, R4MEInfrastructureSettings.RouteHost,
-                    HttpMethodType.Put, content, out errorString);
+                    HttpMethodType.Put, content, false, true, out errorString);
 
                 if (initialRoute == null) return null;
             }
@@ -754,7 +757,7 @@ namespace Route4MeSDK
 
                     initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
                     (genParams, R4MEInfrastructureSettings.RouteHost,
-                        HttpMethodType.Put, content, out errorString);
+                        HttpMethodType.Put, content, false, true, out errorString);
                 }
             }
 
@@ -958,7 +961,7 @@ namespace Route4MeSDK
 
                 var res = await GetJsonObjectFromAPIAsync<DataObjectRoute>
                 (genParams, R4MEInfrastructureSettings.RouteHost,
-                    HttpMethodType.Put, content, false, false).ConfigureAwait(false);
+                    HttpMethodType.Put, content, false, true).ConfigureAwait(false);
                 initialRoute = res.Item1;
 
                 if (initialRoute == null) return res;
@@ -994,7 +997,7 @@ namespace Route4MeSDK
 
                     var res = await GetJsonObjectFromAPIAsync<DataObjectRoute>
                     (genParams, R4MEInfrastructureSettings.RouteHost,
-                        HttpMethodType.Put, content, false, false).ConfigureAwait(false);
+                        HttpMethodType.Put, content, false, true).ConfigureAwait(false);
 
                     initialRoute = res.Item1;
                 }
@@ -1318,6 +1321,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute>(queryParams,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put,
+                null, false, true,
                 out errorString);
 
             if (result != null && result.GetType() == typeof(DataObjectRoute) && queryParams.ShiftByTimeZone)
@@ -1340,7 +1344,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(queryParams,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             if (result.Item1 != null && result.Item1.GetType() == typeof(DataObjectRoute) && queryParams.ShiftByTimeZone)
                 result = new Tuple<DataObjectRoute, string>(ShiftRouteDateTimeByTz(result.Item1), result.Item2);
@@ -1385,6 +1389,7 @@ namespace Route4MeSDK
             var route1 = GetJsonObjectFromAPI<DataObjectRoute>(request,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put,
+                null, false, true,
                 out errorString);
 
 
@@ -1428,7 +1433,7 @@ namespace Route4MeSDK
 
             var route1 = await GetJsonObjectFromAPIAsync<DataObjectRoute>(request,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
 
             if (route1.Item1 != null && route1.Item1.GetType() == typeof(DataObjectRoute) && rParams.ShiftByTimeZone)
@@ -1604,7 +1609,7 @@ namespace Route4MeSDK
                 propInfo.SetValue(request, propInfo.GetValue(addressParameters));
 
             var dataObject = GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put, out errorString);
+                HttpMethodType.Put, null, false, true, out errorString);
 
             return dataObject?.Addresses?.Where(x => x.RouteDestinationId == addressParameters.RouteDestinationId)
                 .FirstOrDefault();
@@ -1626,7 +1631,7 @@ namespace Route4MeSDK
                 propInfo.SetValue(request, propInfo.GetValue(addressParameters));
 
             var dataObject = await GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             return new Tuple<Address, string>(dataObject.Item1?.Addresses?.Where(x => x.RouteDestinationId == addressParameters.RouteDestinationId)
                 .FirstOrDefault(), dataObject.Item2);
@@ -1681,7 +1686,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -1703,7 +1708,7 @@ namespace Route4MeSDK
                 HttpMethodType.Get,
                 null,
                 false,
-                false);
+                true);
         }
 
         /// <summary>
@@ -3048,7 +3053,7 @@ namespace Route4MeSDK
 
             var response = GetJsonObjectFromAPI<DataObject>(request,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put,
+                HttpMethodType.Put, null, false, true,
                 out errorString);
 
             var arrDestinationIds = new List<int>();
@@ -3088,7 +3093,7 @@ namespace Route4MeSDK
 
             var response = await GetJsonObjectFromAPIAsync<DataObject>(request,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             var arrDestinationIds = new List<int>();
 
@@ -3150,7 +3155,7 @@ namespace Route4MeSDK
             var addressesList = addresses.Select(x => x.AddressString).ToList();
 
             var dataObject = GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put, out errorString);
+                HttpMethodType.Put, null, false, true, out errorString);
 
             return dataObject?.Addresses?.Where(x => addressesList.Contains(x.AddressString))
                 .Select(y => y.RouteDestinationId).ToArray();
@@ -3173,7 +3178,7 @@ namespace Route4MeSDK
             var addressesList = addresses.Select(x => x.AddressString).ToList();
 
             var dataObject = await GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             return new Tuple<long?[], string>(dataObject.Item1?.Addresses?.Where(x => addressesList.Contains(x.AddressString))
                 .Select(y => y.RouteDestinationId).ToArray(), dataObject.Item2);
@@ -4761,7 +4766,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, false, false, out errorString);
+                HttpMethodType.Put, false, true, out errorString);
         }
 
         /// <summary>
@@ -4781,7 +4786,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, false, false, out errorString);
+                HttpMethodType.Put, false, true, out errorString);
         }
 
         /// <summary>
@@ -4803,7 +4808,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPIAsync<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, null, false, false);
+                HttpMethodType.Put, null, false, true);
         }
 
         /// <summary>
@@ -4826,7 +4831,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put,
-                false, false, out errorString);
+                false, true, out errorString);
         }
 
         /// <summary>
@@ -4846,7 +4851,7 @@ namespace Route4MeSDK
                 Parameters = rParams
             };
 
-            return GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put, null, false, false);
+            return GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put, null, false, true);
         }
 
         /// <summary>
