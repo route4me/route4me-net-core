@@ -94,7 +94,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 
             var dataObjects = route4Me.GetAllRoutesWithPagination(routeParameters, out _);
 
-            Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
             var dataObjects =
                 route4Me.GetPaginatedRouteListWithoutElasticSearch(routeParameters, out _);
 
-            Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
                 routeParameters,
                 out _);
 
-            Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
                 routeParameters,
                 out _);
 
-            Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
         }
 
         [Test]
