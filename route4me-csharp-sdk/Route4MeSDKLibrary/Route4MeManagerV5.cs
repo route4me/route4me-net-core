@@ -476,20 +476,18 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contactParams">The contact parameters</param>
         /// <returns>Created address book contact</returns>
-        public Task<Tuple<AddressBookContact, ResultResponse>> AddAddressBookContactAsync(AddressBookContact contactParams)
+        public async Task<Tuple<AddressBookContact, ResultResponse>> AddAddressBookContactAsync(AddressBookContact contactParams)
         {
             contactParams.PrepareForSerialization();
 
-            var result = GetJsonObjectFromAPIAsync<AddressBookContact>(contactParams,
+            var result = await GetJsonObjectFromAPIAsync<AddressBookContact>(contactParams,
                 R4MEInfrastructureSettingsV5.ContactsAddNew,
                 HttpMethodType.Post,
                 null,
                 true,
-                false);
+                false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<AddressBookContact, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<AddressBookContact, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -632,22 +630,20 @@ namespace Route4MeSDK
         /// <param name="contactParams">The data with multiple contacts parameters</param>
         /// <param name="mandatoryNullableFields">mandatory nullable fields</param>
         /// <returns>Status response (TO DO: expected result with created multiple contacts)</returns>
-        public Task<Tuple<StatusResponse, ResultResponse>> BatchCreateAdressBookContactsAsync(BatchCreatingAddressBookContactsRequest contactParams,
+        public async Task<Tuple<StatusResponse, ResultResponse>> BatchCreateAdressBookContactsAsync(BatchCreatingAddressBookContactsRequest contactParams,
             string[] mandatoryNullableFields)
         {
             contactParams.PrepareForSerialization();
 
-            var result = GetJsonObjectFromAPIAsync<StatusResponse>(contactParams,
+            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(contactParams,
                 R4MEInfrastructureSettingsV5.ContactsAddMultiple,
                 HttpMethodType.Post,
                 null,
                 false,
                 false,
-                mandatoryNullableFields);
+                mandatoryNullableFields).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<StatusResponse, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<StatusResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1468,18 +1464,16 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="parameters">Query parmeters</param>
         /// <returns>List of the driver reviews</returns>
-        public Task<Tuple<DriverReviewsResponse, ResultResponse>> GetDriverReviewListAsync(DriverReviewParameters parameters)
+        public async Task<Tuple<DriverReviewsResponse, ResultResponse>> GetDriverReviewListAsync(DriverReviewParameters parameters)
         {
-            var result = GetJsonObjectFromAPIAsync<DriverReviewsResponse>(parameters,
+            var result = await GetJsonObjectFromAPIAsync<DriverReviewsResponse>(parameters,
                 R4MEInfrastructureSettingsV5.DriverReview,
                 HttpMethodType.Get,
                 null,
                 true,
-                false);
+                false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<DriverReviewsResponse, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<DriverReviewsResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1520,30 +1514,28 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="parameters">Query parameters</param>
         /// <returns>Driver review</returns>
-        public Task<Tuple<DriverReviewResponse, ResultResponse>> GetDriverReviewByIdAsync(DriverReviewParameters parameters)
+        public async Task<Tuple<DriverReviewResponse, ResultResponse>> GetDriverReviewByIdAsync(DriverReviewParameters parameters)
         {
             if (parameters?.RatingId == null)
             {
-                return Task.FromResult(new Tuple<DriverReviewResponse, ResultResponse>(null, new ResultResponse
+                return new Tuple<DriverReviewResponse, ResultResponse>(null, new ResultResponse
                 {
                     Status = false,
                     Messages = new Dictionary<string, string[]>
                     {
-                        {"Error", new[] {"The RatingId parameter is not specified"}}
+                        { "Error", new[] { "The RatingId parameter is not specified" } }
                     }
-                }));
+                });
             }
 
-            var result = GetJsonObjectFromAPIAsync<DriverReviewResponse>(parameters,
+            var result = await GetJsonObjectFromAPIAsync<DriverReviewResponse>(parameters,
                 R4MEInfrastructureSettingsV5.DriverReview + "/" + parameters.RatingId,
                 HttpMethodType.Get,
                 null,
                 true,
-                false);
+                false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<DriverReviewResponse, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<DriverReviewResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1626,40 +1618,38 @@ namespace Route4MeSDK
         /// <param name="driverReview">Request payload</param>
         /// <param name="method">Http method</param>
         /// <returns>Driver review</returns>
-        public Task<Tuple<DriverReviewResponse, ResultResponse>> UpdateDriverReviewAsync(DriverReview driverReview, HttpMethodType method)
+        public async Task<Tuple<DriverReviewResponse, ResultResponse>> UpdateDriverReviewAsync(DriverReview driverReview, HttpMethodType method)
         {
             if (method != HttpMethodType.Patch && method != HttpMethodType.Put)
             {
-                return Task.FromResult(new Tuple<DriverReviewResponse, ResultResponse>(null, new ResultResponse
+                return new Tuple<DriverReviewResponse, ResultResponse>(null, new ResultResponse
                 {
                     Status = false,
                     Messages = new Dictionary<string, string[]>
                     {
                         {"Error", new[] {"The parameter method has an incorect value."}}
                     }
-                }));
+                });
             }
 
             if (driverReview.RatingId == null)
             {
-                return Task.FromResult(new Tuple<DriverReviewResponse, ResultResponse>(null, new ResultResponse
+                return new Tuple<DriverReviewResponse, ResultResponse>(null, new ResultResponse
                 {
                     Status = false,
                     Messages = new Dictionary<string, string[]>
                     {
-                        {"Error", new[] {"The parameters doesn't contain parameter RatingId."}}
+                        { "Error", new[] { "The parameters doesn't contain parameter RatingId." } }
                     }
-                }));
+                });
             }
 
-            var result = GetJsonObjectFromAPIAsync<DriverReviewResponse>(
+            var result = await GetJsonObjectFromAPIAsync<DriverReviewResponse>(
                 driverReview,
                 R4MEInfrastructureSettingsV5.DriverReview + "/" + driverReview.RatingId,
-                method, null, false, false);
+                method, null, false, false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<DriverReviewResponse, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<DriverReviewResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         #endregion
@@ -1689,11 +1679,14 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesAsync(RouteParametersQuery routeParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
-                HttpMethodType.Get);
+                HttpMethodType.Get,
+                null, true, false).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
 
@@ -1708,11 +1701,12 @@ namespace Route4MeSDK
         }
 
 
-        public Task<Tuple<DataObjectRoute, ResultResponse>> GetRouteByIdAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<DataObjectRoute, ResultResponse>> GetRouteByIdAsync(RouteParametersQuery routeParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
+            return new Tuple<DataObjectRoute, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1725,7 +1719,7 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesPaginate,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out resultResponse);
 
             return result;
@@ -1736,11 +1730,13 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesPaginate,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1754,7 +1750,7 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackPaginate,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out resultResponse);
 
             return result;
@@ -1765,11 +1761,13 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackPaginate,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1813,18 +1811,20 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackDatatable,
-                HttpMethodType.Post,
+                HttpMethodType.Post, null, false, true,
                 out resultResponse);
 
             return result;
         }
 
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute[]>(
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallbackDatatable,
-                HttpMethodType.Post);
+                HttpMethodType.Post).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
         public DataObjectRoute[] GetRouteDatatableWithElasticSearch(
@@ -1835,18 +1835,21 @@ namespace Route4MeSDK
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesDatatable,
                 HttpMethodType.Post,
+                null, false, true,
                 out resultResponse);
 
             return result;
         }
 
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteDatatableWithElasticSearchAsync(
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteDatatableWithElasticSearchAsync(
             RouteFilterParameters routeFilterParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute[]>(
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesDatatable,
-                HttpMethodType.Post);
+                HttpMethodType.Post, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
         public DataObjectRoute[] GetRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
@@ -1854,17 +1857,19 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallback,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out resultResponse);
 
             return result;
         }
 
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
         {
-            return GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesFallback,
-                HttpMethodType.Get);
+                HttpMethodType.Get).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -1904,7 +1909,7 @@ namespace Route4MeSDK
         /// <param name="routeIDs">An array of route IDs.</param>
         /// <returns>A Tuple type object containing an array of the duplicated route IDs
         /// or/and failure response</returns>
-        public Task<Tuple<RouteDuplicateResponse, ResultResponse>> DuplicateRouteAsync(string[] routeIDs)
+        public async Task<Tuple<RouteDuplicateResponse, ResultResponse>> DuplicateRouteAsync(string[] routeIDs)
         {
             var duplicateParameter = new Dictionary<string, string[]>
             {
@@ -1919,17 +1924,15 @@ namespace Route4MeSDK
 
             var genParams = new RouteParametersQuery();
 
-            var result = GetJsonObjectFromAPIAsync<RouteDuplicateResponse>(
+            var result = await GetJsonObjectFromAPIAsync<RouteDuplicateResponse>(
                 genParams,
                 R4MEInfrastructureSettingsV5.RoutesDuplicate,
                 HttpMethodType.Post,
                 content,
                 false,
-                false);
+                false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<RouteDuplicateResponse, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<RouteDuplicateResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -2152,7 +2155,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 false,
-                false,
+                true,
                 out resultResponse);
 
             return result;
@@ -2166,18 +2169,16 @@ namespace Route4MeSDK
         ///     the route parameters and the addresses.
         /// </param>
         /// <returns>Generated optimization problem object</returns>
-        public Task<Tuple<DataObject, ResultResponse>> RunOptimizationAsync(OptimizationParameters optimizationParameters)
+        public async Task<Tuple<DataObject, ResultResponse>> RunOptimizationAsync(OptimizationParameters optimizationParameters)
         {
-            var result = GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
+            var result = await GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 null,
-                false,
-                false);
+                true,
+                false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<DataObject, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<DataObject, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -3972,15 +3973,13 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="parameters">Parameters</param>
         /// <returns>Order history</returns>
-        public Task<Tuple<OrderHistoryResponse, ResultResponse>> GetOrderHistoryAsync(OrderHistoryParameters parameters)
+        public async Task<Tuple<OrderHistoryResponse, ResultResponse>> GetOrderHistoryAsync(OrderHistoryParameters parameters)
         {
-            var result = GetJsonObjectFromAPIAsync<OrderHistoryResponse>(parameters,
+            var result = await GetJsonObjectFromAPIAsync<OrderHistoryResponse>(parameters,
                 R4MEInfrastructureSettingsV5.OrdersHistory,
-                HttpMethodType.Get, null, true, false);
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
 
-            return Task.FromResult(
-                new Tuple<OrderHistoryResponse, ResultResponse>(result.Result.Item1, result.Result.Item2)
-                );
+            return new Tuple<OrderHistoryResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         #endregion
@@ -4253,19 +4252,19 @@ namespace Route4MeSDK
             return result;
         }
 
-        private Task<Tuple<T, ResultResponse>> GetJsonObjectFromAPIAsync<T>(GenericParameters optimizationParameters,
+        private async Task<Tuple<T, ResultResponse>> GetJsonObjectFromAPIAsync<T>(GenericParameters optimizationParameters,
             string url,
             HttpMethodType httpMethod)
             where T : class
         {
-            var result = GetJsonObjectFromAPIAsync<T>(optimizationParameters,
+            var result = await GetJsonObjectFromAPIAsync<T>(optimizationParameters,
                 url,
                 httpMethod,
                 null,
                 false,
-                false);
+                false).ConfigureAwait(false);
 
-            return Task.FromResult(new Tuple<T, ResultResponse>(result.Result.Item1, result.Result.Item2));
+            return new Tuple<T, ResultResponse>(result.Item1, result.Item2);
         }
 
         private async Task<Tuple<T, ResultResponse, string>> GetJsonObjectFromAPIAsync<T>(
