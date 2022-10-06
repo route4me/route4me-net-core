@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.0.0.0] - 2022-10-06
+
+Fixed master_config_storage deserialization for Route (switched from DataContractJsonSerializer to Newtonsoft.JSON)
+Fixed threading in route4me manager.
+Restored route query API.
+Partial update is supported for Order (order_id is required).
+
 ## [6.0.0.0] - 2022-09-02
 
 Fixed Orders Archive functionality.
