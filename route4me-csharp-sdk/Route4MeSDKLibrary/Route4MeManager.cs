@@ -222,6 +222,18 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Time prediction by action type ('matrix', 'optimization', 'direction')
+        /// </summary>
+        /// <param name="queryParameters">Optimization parameters</param>
+        /// <returns>Optimization time-consuming prediction</returns>
+        public Task<Tuple<OptimizationTimePrediction, string>> GetOptimizationPredictionAsync(OptimizationParameters queryParameters)
+        {
+            return GetJsonObjectFromAPIAsync<OptimizationTimePrediction>(queryParameters,
+                R4MEInfrastructureSettings.TimePrediction,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
         ///     Updates an existing optimization problem
         /// </summary>
         /// <param name="optimizationParameters">Parameters for updating an optimization</param>
