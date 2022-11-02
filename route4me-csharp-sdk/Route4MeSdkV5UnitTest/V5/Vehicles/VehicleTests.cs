@@ -319,7 +319,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
             var vehicleData = route4me.GetVehicles(vehicleParams, out ResultResponse resultResponse);
 
             Assert.NotNull(vehicleData);
-            Assert.That(vehicleData.GetType(), Is.EqualTo(typeof(VehiclesResponse)));
+            Assert.That(vehicleData.GetType(), Is.EqualTo(typeof(Vehicle[])));
         }
 
     }

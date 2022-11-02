@@ -185,7 +185,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
             var vehicles = route4me.ActivateVehicles(vehicleIDs, out ResultResponse resultResponse);
 
             Assert.NotNull(vehicles);
-            Assert.That(vehicles.GetType(), Is.EqualTo(typeof(Vehicle[])));
+            Assert.That(vehicles.GetType(), Is.EqualTo(typeof(VehiclesResults)));
         }
 
         [Test, Order(3)]
