@@ -282,7 +282,7 @@ namespace Route4MeSDK.FastProcessing
                 Data = contactsChunk.ToArray()
             };
 
-            var response = route4Me.BatchCreateAdressBookContacts(
+            var response = route4Me.BatchCreateAddressBookContacts(
                 contactParams,
                 MandatoryFields,
                 out var resultResponse);

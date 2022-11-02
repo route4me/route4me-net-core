@@ -379,7 +379,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
             };
 
             var response =
-                route4Me.BatchCreateAdressBookContacts(contactParams, mandatoryFields, out var resultResponse);
+                route4Me.BatchCreateAddressBookContacts(contactParams, mandatoryFields, out var resultResponse);
 
             Assert.That(response.GetType(), Is.EqualTo(typeof(StatusResponse)));
             Assert.True(response.status);

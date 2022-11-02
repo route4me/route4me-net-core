@@ -54,7 +54,7 @@ namespace Route4MeSDK.Examples
 
             // Run the the batch creation request
             var response =
-                await route4Me.BatchCreateAdressBookContactsAsync(contactParams, mandatoryFields);
+                await route4Me.BatchCreateAddressBookContactsAsync(contactParams, mandatoryFields);
 
             Console.WriteLine(
                 response?.Item1?.status ?? false
