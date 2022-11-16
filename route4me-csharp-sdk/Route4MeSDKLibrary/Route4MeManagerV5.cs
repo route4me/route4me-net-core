@@ -35,8 +35,6 @@ namespace Route4MeSDK
 
         public Route4MeManagerV5(string apiKey)
         {
-            _mApiKey = apiKey;
-
             _addressBookContractsManager = new AddressBookContractsManagerV5(apiKey);
             _accountProfileManager = new AccountProfileManagerV5(apiKey);
             _addressBarcodeManager = new AddressBarcodeManagerV5(apiKey);
@@ -54,7 +52,6 @@ namespace Route4MeSDK
 
         #region Fields
 
-        private readonly string _mApiKey;
         private readonly AddressBookContractsManagerV5 _addressBookContractsManager;
         private readonly AccountProfileManagerV5 _accountProfileManager;
         private readonly AddressBarcodeManagerV5 _addressBarcodeManager;
