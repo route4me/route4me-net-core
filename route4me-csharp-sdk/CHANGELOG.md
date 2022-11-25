@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.1.0.0] - 2022-11-25
+GetOptimizationPredictionAsync API is added.
+Route4MeManagerV5 is splitted by submanager's with backward compatibility means Route4MeManagerV5 now is just a thin proxy.
+
 ## [7.0.0.0] - 2022-10-06
 
 Fixed master_config_storage deserialization for Route (switched from DataContractJsonSerializer to Newtonsoft.JSON)
