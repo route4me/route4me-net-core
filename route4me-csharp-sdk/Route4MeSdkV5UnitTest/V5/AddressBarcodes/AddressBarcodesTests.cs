@@ -68,7 +68,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBarcodes
             var result = route4me.SaveAddressBarcodes(barCodeParams, out ResultResponse resultResponse);
 
 
-            Assert.True(result?.status ?? false);
+            Assert.True(result?.Status ?? false);
         }
 
         [Test]

@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
             // Run the query
             var response = route4Me.GetContactsJobStatus(job_id, out ResultResponse resultResponse);
 
-            Console.WriteLine($"Job status: {response?.status ?? false}");
+            Console.WriteLine($"Job status: {response?.Status ?? false}");
         }
     }
 }

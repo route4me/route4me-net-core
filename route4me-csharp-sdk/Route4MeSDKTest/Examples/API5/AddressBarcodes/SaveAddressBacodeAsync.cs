@@ -48,7 +48,7 @@ namespace Route4MeSDK.Examples
             var result = await route4Me.SaveAddressBarcodesAsync(barCodeParams);
 
             Console.WriteLine(
-                result.Item1.status ? "The barcode saved" : "Cannot save the barcode"
+                result.Item1.Status ? "The barcode saved" : "Cannot save the barcode"
             );
 
             RemoveTestOptimizations();
