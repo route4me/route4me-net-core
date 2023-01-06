@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.2.0.0] - 2023-01-06
+Schedules are supproted.
+NOTE: IsRouteScheduleCopied/IsRouteScheduleCopiedAsync, GetRouteScheduleCopies/GetRouteScheduleCopiesAsync are not ready to be used.
+NOTE: Schedules API might be changed on server side which will require adaptation on .NET client side.
+
 ## [7.1.0.0] - 2022-11-25
 GetOptimizationPredictionAsync API is added.
 Route4MeManagerV5 is splitted by submanager's with backward compatibility means Route4MeManagerV5 now is just a thin proxy.
