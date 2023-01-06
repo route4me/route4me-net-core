@@ -49,7 +49,7 @@ namespace Route4MeSDK.Examples
 
             #endregion
 
-            Console.WriteLine($"Job result: {(jobResult?.status ?? false)}");
+            Console.WriteLine($"Job result: {(jobResult?.Status ?? false)}");
 
             PrintTestVehcilesV5(result, result.Item2);
         }

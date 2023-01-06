@@ -57,7 +57,7 @@ namespace Route4MeSDK.Examples
                 await route4Me.BatchCreateAddressBookContactsAsync(contactParams, mandatoryFields);
 
             Console.WriteLine(
-                response?.Item1?.status ?? false
+                response?.Item1?.Status ?? false
                     ? "The batch creating process of the contacts finished successfully"
                     : "The batch creating process of the contacts failed"
             );
