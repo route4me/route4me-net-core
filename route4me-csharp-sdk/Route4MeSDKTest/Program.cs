@@ -408,6 +408,12 @@ namespace Route4MeSDKTest
 
                 #endregion
 
+                #region Schedules
+
+                examples.CreateAndDeleteScheduleForRoute();
+
+                #endregion
+
                 #endregion
             }
             else // for a specifed example method

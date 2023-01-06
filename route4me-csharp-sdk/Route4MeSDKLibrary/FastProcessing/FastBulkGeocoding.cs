@@ -287,14 +287,14 @@ namespace Route4MeSDK.FastProcessing
                 MandatoryFields,
                 out var resultResponse);
 
-            if (response?.status ?? false) _totalCsvChunks += contactsChunk.Count;
+            if (response?.Status ?? false) _totalCsvChunks += contactsChunk.Count;
 
             Console.WriteLine(
-                response?.status ?? false
+                response?.Status ?? false
                     ? _totalCsvChunks + " address book contacts added to database"
                     : "Faild to add " + contactsChunk.Count + " address book contacts");
 
-            if (!(response?.status ?? false))
+            if (!(response?.Status ?? false))
             {
                 Console.WriteLine("Exit code: " + resultResponse.ExitCode + Environment.NewLine +
                                   "Code: " + resultResponse.Code + Environment.NewLine +

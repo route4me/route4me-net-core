@@ -51,7 +51,7 @@ namespace Route4MeSDK.Examples
             }
 
 
-            Console.WriteLine($"The route breaks " + (result.status ? "" : "not") + " inserted");
+            Console.WriteLine($"The route breaks " + (result.Status ? "" : "not") + " inserted");
 
             RemoveTestOptimizations();
         }

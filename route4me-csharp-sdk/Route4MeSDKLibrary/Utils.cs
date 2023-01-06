@@ -12,6 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using ReadOnlyAttribute = Route4MeSDK.DataTypes.ReadOnlyAttribute;
@@ -168,6 +170,11 @@ namespace Route4MeSDK
             //    }
             //}
 
+            if (text == "true")
+            {
+                text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse(){ Status = true });
+            }
+
             return JsonConvert.DeserializeObject<T>(text, jsonSettings);
         }
 
@@ -259,7 +266,7 @@ namespace Route4MeSDK
         {
             var jsonSettings = new JsonSerializerSettings
             {
-                //NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
+                NullValueHandling = NullValueHandling.Ignore,
                 //DefaultValueHandling = DefaultValueHandling.Include,
                 ContractResolver = new DataContractResolver()
             };

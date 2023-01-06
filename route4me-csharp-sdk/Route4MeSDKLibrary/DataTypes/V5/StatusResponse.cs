@@ -17,7 +17,7 @@ namespace Route4MeSDK.DataTypes.V5
         ///     <c>true</c> if request finished successfully; otherwise, <c>false</c>.
         /// </value>
         [DataMember(Name = "status", EmitDefaultValue = false)]
-        public bool status { get; set; }
+        public bool Status { get; set; }
 
         /// <summary>
         ///     Status code of the request process.
