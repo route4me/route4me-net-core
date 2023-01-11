@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.2.1.0] - 2023-01-11
+Fixed schedules API deserialization issues
+
 ## [7.2.0.0] - 2023-01-06
 Schedules are supproted.
 NOTE: IsRouteScheduleCopied/IsRouteScheduleCopiedAsync, GetRouteScheduleCopies/GetRouteScheduleCopiesAsync are not ready to be used.
