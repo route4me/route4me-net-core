@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.2.2.0] - 2023-01-11
+Route deserialization from object to array in case of route list query with routeID is supported. As a result, list with 1 element is returned as result. Fix is relevant both for V4 and V5.
+
 ## [7.2.1.0] - 2023-01-11
 Fixed schedules API deserialization issues
 
