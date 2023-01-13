@@ -124,6 +124,38 @@ namespace Route4MeSDK
                 }
             }
 
+            if (typeof(T) == typeof(DataTypes.V5.DataObjectRoute[]))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(text, jsonSettings);
+                }
+
+                catch (JsonSerializationException)
+                {
+                    DataTypes.V5.DataObjectRoute internalResponse = (DataTypes.V5.DataObjectRoute)JsonConvert.DeserializeObject(text, typeof(DataTypes.V5.DataObjectRoute));
+                    var externalResponse = new[] { internalResponse };
+
+                    text = JsonConvert.SerializeObject(externalResponse);
+                }
+            }
+
+            if (typeof(T) == typeof(Route4MeSDK.DataTypes.DataObjectRoute[]))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(text, jsonSettings);
+                }
+
+                catch (JsonSerializationException)
+                {
+                    DataTypes.DataObjectRoute internalResponse = (DataTypes.DataObjectRoute)JsonConvert.DeserializeObject(text, typeof(DataTypes.DataObjectRoute));
+                    var externalResponse = new[] { internalResponse };
+
+                    text = JsonConvert.SerializeObject(externalResponse);
+                }
+            }
+
             //if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
             //{
             //    var pattern = string.Concat(
@@ -147,7 +179,7 @@ namespace Route4MeSDK
             //    var map = new Dictionary<string, string>()
             //    {
             //       {pattern,pattern2}
-                   
+
             //    };
 
             //    rgx = new Regex(pattern);
