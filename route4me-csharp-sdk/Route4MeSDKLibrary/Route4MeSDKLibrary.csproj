@@ -16,10 +16,10 @@ The service is typically used by organizations who must route many drivers to ma
     <RepositoryUrl>https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Route4Me, Route Optimization, SDK, GIS</PackageTags>
-    <Version>7.2.2.0</Version>
+    <Version>7.2.3.0</Version>
     <PackageReleaseNotes>See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/CHANGELOG.md for release note details.</PackageReleaseNotes>
-    <AssemblyVersion>7.2.2.0</AssemblyVersion>
-    <FileVersion>7.2.2.0</FileVersion>
+    <AssemblyVersion>7.2.3.0</AssemblyVersion>
+    <FileVersion>7.2.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
