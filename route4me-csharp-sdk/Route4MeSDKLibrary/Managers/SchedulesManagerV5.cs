@@ -324,9 +324,9 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="request">Body payload</param>
         /// <param name="resultResponse">Failed response</param>
         /// <returns>Status response</returns>
-        public StatusResponse CreateMasterRoute(CreateMasterRouteRequest request, out ResultResponse resultResponse)
+        public CreateMasterRouteResponse CreateMasterRoute(CreateMasterRouteRequest request, out ResultResponse resultResponse)
         {
-            var response = GetJsonObjectFromAPI<StatusResponse>(request,
+            var response = GetJsonObjectFromAPI<CreateMasterRouteResponse>(request,
                 R4MEInfrastructureSettingsV5.MasterRoutes,
                 HttpMethodType.Post, null, false, true,
                 out resultResponse, serializeBodyWithNewtonJson: true);
@@ -339,16 +339,16 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="request">Body payload</param>
         /// <returns>Status response</returns>
-        public async Task<Tuple<StatusResponse, ResultResponse>> CreateMasterRouteAsync(CreateMasterRouteRequest request)
+        public async Task<Tuple<CreateMasterRouteResponse, ResultResponse>> CreateMasterRouteAsync(CreateMasterRouteRequest request)
         {
-            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(request,
+            var result = await GetJsonObjectFromAPIAsync<CreateMasterRouteResponse>(request,
                 R4MEInfrastructureSettingsV5.MasterRoutes,
                 HttpMethodType.Post,
                 null,
                 true,
                 false, serializeBodyWithNewtonJson: true).ConfigureAwait(false);
 
-            return new Tuple<StatusResponse, ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<CreateMasterRouteResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
