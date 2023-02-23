@@ -402,5 +402,34 @@ namespace Route4MeSdkV5UnitTest.V5
             var response = route4Me.GetRouteScheduleCopies(new GetRouteScheduleCopiesRequest(){ RouteId = tdr.SD10Stops_route_id, ScheduleId = createdSchedule.ScheduleUid }, out resultResponse);
             Assert.That(response.ScheduledRoutes.Length, Is.EqualTo(0));
         }
+
+        [Test]
+        public void CreateMasterRouteAsyncTest()
+        {
+            var route4Me = new SchedulesManagerV5(CApiKey);
+
+            var request = new CreateMasterRouteRequest();
+            request.RouteName = "my route name";
+            request.RouteId = tdr.SD10Stops_route_id;
+            var response = route4Me.CreateMasterRoute(request, out ResultResponse resultResponse);
+
+            Assert.That(response.Status);
+            Assert.That(response.Data, Is.Null);
+        }
+
+        [Test]
+        public void CreateMasterRouteSyncTest()
+        {
+            var route4Me = new SchedulesManagerV5(CApiKey);
+
+            var request = new CreateMasterRouteRequest();
+            request.RouteName = "my route name 2";
+            request.RouteId = tdr.SD10Stops_route_id;
+            request.Sync = true;
+            var response = route4Me.CreateMasterRoute(request, out ResultResponse resultResponse);
+
+            Assert.That(response.Status);
+            Assert.That(response.Data, Is.Not.Null);
+        }
     }
 }

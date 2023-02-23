@@ -34,7 +34,7 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Schedules
         public string VehicleId { get; set; }
 
         /// <summary>
-        ///     Schedule name
+        ///     Name
         /// </summary>
         [DataMember(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
@@ -68,5 +68,11 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Schedules
         /// </summary>
         [DataMember(Name = "schedule", EmitDefaultValue = false)]
         public JToken ScheduleData { get; set; }
+
+        /// <summary>
+        ///     Sync
+        /// </summary>
+        [DataMember(Name = "sync", EmitDefaultValue = false)]
+        public bool Sync { get; set; }
     }
 }
