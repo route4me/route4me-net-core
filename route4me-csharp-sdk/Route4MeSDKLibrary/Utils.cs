@@ -206,6 +206,10 @@ namespace Route4MeSDK
             {
                 text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse(){ Status = true });
             }
+            else if (text == "false")
+            {
+                text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse() { Status = false });
+            }
 
             return JsonConvert.DeserializeObject<T>(text, jsonSettings);
         }
