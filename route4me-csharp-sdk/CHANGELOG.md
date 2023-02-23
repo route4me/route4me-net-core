@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.3.0.0] - 2023-02-23
+Support 'sync' field in case of master route creation for schedules.
+
 ## [7.2.3.0] - 2023-02-08
 3rd party dependencies are updated. Tests are switched to .NET6.
 
