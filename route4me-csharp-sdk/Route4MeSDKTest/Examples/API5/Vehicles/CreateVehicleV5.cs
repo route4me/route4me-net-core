@@ -34,7 +34,7 @@ namespace Route4MeSDK.Examples
             }
 
 
-            PrintTestVehcilesV5(vehicle, resultResponse);
+            PrintTestVehiclesV5(vehicle, resultResponse);
 
             RemoveTestVehiclesV5();
         }

@@ -19,7 +19,7 @@ namespace Route4MeSDK.Examples
 
             var result = route4Me.DeactivateVehicles(vehicleIDs, out ResultResponse resultResponse);
 
-            PrintTestVehcilesV5(result, resultResponse);
+            PrintTestVehiclesV5(result, resultResponse);
         }
     }
 }

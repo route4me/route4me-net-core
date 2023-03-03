@@ -14,7 +14,7 @@ namespace Route4MeSDK.Examples
 
             var result = await route4Me.GetVehiclesByStateAsync(VehicleStates.ACTIVE);
 
-            PrintTestVehcilesV5(result.Item1, result.Item2);
+            PrintTestVehiclesV5(result.Item1, result.Item2);
 
             RemoveTestVehiclesV5();
         }

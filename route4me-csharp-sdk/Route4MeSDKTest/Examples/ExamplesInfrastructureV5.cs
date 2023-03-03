@@ -287,7 +287,7 @@ namespace Route4MeSDK.Examples
 
         #region Vehicles V5
 
-        private void PrintTestVehcilesV5(object result, ResultResponse resultResponse)
+        private void PrintTestVehiclesV5(object result, ResultResponse resultResponse)
         {
             Console.WriteLine("");
 

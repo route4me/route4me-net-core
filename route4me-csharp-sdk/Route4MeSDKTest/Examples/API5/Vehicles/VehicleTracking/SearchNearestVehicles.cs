@@ -24,7 +24,7 @@ namespace Route4MeSDK.Examples
             // Run the query
             var vehicle = route4Me.SearchVehicles(searchParams, out ResultResponse resultResponse);
 
-            PrintTestVehcilesV5(vehicle, resultResponse);
+            PrintTestVehiclesV5(vehicle, resultResponse);
         }
     }
 }

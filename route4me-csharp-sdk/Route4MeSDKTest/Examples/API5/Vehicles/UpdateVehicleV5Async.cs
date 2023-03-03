@@ -21,7 +21,7 @@ namespace Route4MeSDK.Examples
 
             var result = await route4Me.UpdateVehicleAsync(vehicleParams);
 
-            PrintTestVehcilesV5(result.Item1, result.Item2);
+            PrintTestVehiclesV5(result.Item1, result.Item2);
         }
     }
 }

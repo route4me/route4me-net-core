@@ -23,7 +23,7 @@ namespace Route4MeSDK.Examples
             // Run the query
             var result = await route4Me.SearchVehiclesAsync(searchParams);
 
-            PrintTestVehcilesV5(result.Item1, result.Item2);
+            PrintTestVehiclesV5(result.Item1, result.Item2);
         }
     }
 }

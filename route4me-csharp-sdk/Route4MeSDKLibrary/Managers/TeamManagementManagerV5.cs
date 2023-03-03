@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
@@ -204,12 +205,15 @@ namespace Route4MeSDKLibrary.Managers
             };
 
             var result = GetJsonObjectFromAPI<ResultResponse>(
-                newMemberParams,
+                newMemberParams, 
                 R4MEInfrastructureSettingsV5.TeamUsersBulkCreate,
                 HttpMethodType.Post,
                 out resultResponse);
 
-            return result;
+            return new ResultResponse()
+            {
+                Code = resultResponse == null ? 202 : 0
+            };
         }
 
         /// <summary>
@@ -453,13 +457,34 @@ namespace Route4MeSDKLibrary.Managers
 
             #endregion
 
-            var response = GetJsonObjectFromAPI<TeamResponse>(
+            try
+            {
+                var response = GetJsonObjectFromAPI<TeamResponse>(
                 requestPayload,
                 R4MEInfrastructureSettingsV5.TeamUsers + "/" + queryParameters.UserId,
                 HttpMethodType.Patch,
                 out resultResponse);
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                resultResponse = new ResultResponse()
+                {
+                    Code = -1,
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"Error", new[] { ex.Message }}
+                    }
+
+                };
+
+                return null;
+            }
+
+            
         }
 
         /// <summary>
@@ -509,6 +534,40 @@ namespace Route4MeSDKLibrary.Managers
                 requestPayload,
                 R4MEInfrastructureSettingsV5.TeamUsers + "/" + queryParameters.UserId,
                 HttpMethodType.Patch);
+        }
+
+        /// <summary>
+        /// Returns an ID of the team owner.
+        /// </summary>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Team owner ID</returns>
+        public long? GetTeamOwner(out ResultResponse resultResponse)
+        {
+            var members = GetTeamMembers(out resultResponse);
+
+            if ((members?.Length ?? 0)>0)
+            {
+                var ownerMember = members.ToList().Where(x => x.MemberType=="PRIMARY_ACCOUNT").FirstOrDefault();
+                
+                if (ownerMember != null) return ownerMember.MemberId;
+            }
+
+            return null;
+        }
+
+        public List<long?> GetUserIdsByEmails(List<string> emails, out ResultResponse resultResponse)
+        {
+            var userIds = new List<string>();
+
+            var members = GetTeamMembers(out resultResponse);
+
+            if ((members?.Length ?? 0) < 1) return null;
+
+            var foundMembers = members.ToList().Where(x => emails.Contains(x.MemberEmail));
+
+            if ((foundMembers?.Count() ?? 0) > 0) return foundMembers.Select(x => x.MemberId).ToList();
+
+            return null;
         }
     }
 }
