@@ -11,6 +11,7 @@ using Route4MeSDKUnitTest.Types;
 namespace Route4MeSDKUnitTest.Tests
 {
     [TestFixture]
+    [Ignore("User API 4 is deprecated")]
     public class UsersGroupTests
     {
         private static string _skip;

@@ -1876,11 +1876,12 @@ namespace Route4MeSDK
         #region Users
 
         /// <summary>
-        ///     Returns the object containing array of the user objects
+        ///     Returns the object containing array of the user objects (deprecated)
         /// </summary>
         /// <param name="parameters">Empty GenericParameters object</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>The object of the type GetUsersResponse</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.GetTeamMembers instead.")]
         public GetUsersResponse GetUsers(GenericParameters parameters, out string errorString)
         {
             var result = GetJsonObjectFromAPI<GetUsersResponse>(parameters,
@@ -1892,10 +1893,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns the object containing array of the user objects
+        ///     Returns the object containing array of the user objects (deprecated)
         /// </summary>
         /// <param name="parameters">Empty GenericParameters object</param>
         /// <returns>The object of the type GetUsersResponse</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.GetTeamMembersAsync instead.")]
         public Task<Tuple<GetUsersResponse, string>> GetUsersAsync(GenericParameters parameters)
         {
             return GetJsonObjectFromAPIAsync<GetUsersResponse>(parameters,
@@ -1904,11 +1906,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Creates new sub-user(member) in the user's account
+        ///     Creates new sub-user(member) in the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.CreateTeamMember instead.")]
         public MemberResponseV4 CreateUser(MemberParametersV4 memParams, out string errorString)
         {
             return GetJsonObjectFromAPI<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost,
@@ -1916,10 +1919,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Creates new sub-user(member) in the user's account
+        ///     Creates new sub-user(member) in the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.CreateTeamMemberAsync instead.")]
         public Task<Tuple<MemberResponseV4, string>> CreateUserAsync(MemberParametersV4 memParams)
         {
             return GetJsonObjectFromAPIAsync<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost,
@@ -1927,11 +1931,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Removes a sub-user(member) from the user's account
+        ///     Removes a sub-user(member) from the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>True if a member was successfuly removed from the user's account</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.RemoveTeamMember instead.")]
         public bool UserDelete(MemberParametersV4 memParams, out string errorString)
         {
             var response = GetJsonObjectFromAPI<StatusResponse>(
@@ -1944,10 +1949,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Removes a sub-user(member) from the user's account
+        ///     Removes a sub-user(member) from the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <returns>True if a member was successfuly removed from the user's account</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.RemoveTeamMemberAsync instead.")]
         public async Task<Tuple<bool, string>> UserDeleteAsync(MemberParametersV4 memParams)
         {
             var response = await GetJsonObjectFromAPIAsync<StatusResponse>(
@@ -1959,11 +1965,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Return a user by the parameter member_id
+        ///     Return a user by the parameter member_id (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.GetTeamMemberById instead.")]
         public MemberResponseV4 GetUserById(MemberParametersV4 memParams, out string errorString)
         {
             return GetJsonObjectFromAPI<MemberResponseV4>(
@@ -1974,10 +1981,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Return a user by the parameter member_id
+        ///     Return a user by the parameter member_id (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.GetTeamMemberByIdAsync instead.")]
         public Task<Tuple<MemberResponseV4, string>> GetUserByIdAsync(MemberParametersV4 memParams)
         {
             return GetJsonObjectFromAPIAsync<MemberResponseV4>(
@@ -1988,11 +1996,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a user
+        ///     Updates a user (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.UpdateTeamMember instead.")]
         public MemberResponseV4 UserUpdate(MemberParametersV4 memParams, out string errorString)
         {
             return GetJsonObjectFromAPI<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost,
@@ -2000,10 +2009,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a user
+        ///     Updates a user (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method Route4MeManagerV5.UpdateTeamMemberAsync instead.")]
         public Task<Tuple<MemberResponseV4, string>> UserUpdateAsync(MemberParametersV4 memParams)
         {
             return GetJsonObjectFromAPIAsync<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost, HttpMethodType.Put);
