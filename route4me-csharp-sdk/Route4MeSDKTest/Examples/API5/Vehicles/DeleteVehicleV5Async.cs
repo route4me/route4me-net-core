@@ -12,7 +12,7 @@
 
             var result = await route4Me.DeleteVehicleAsync("68F3545D3DA82DBF007B20FA9A1875EB");
 
-            PrintTestVehcilesV5(result.Item1, result.Item2);
+            PrintTestVehiclesV5(result.Item1, result.Item2);
         }
     }
 }

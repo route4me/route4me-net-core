@@ -927,5 +927,16 @@ namespace Route4MeSDK
             return new string(Enumerable.Repeat(sourceString, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        /// <summary>
+        /// Generates a test email on the basis of a template email.
+        /// </summary>
+        /// <param name="emailTemplate">Template email</param>
+        /// <returns>Generated email</returns>
+        public static string GenerateTestEmail(string emailTemplate)
+        {
+            string[] emailParts = emailTemplate.Split('@');
+            return emailParts[0] + "+" + ConvertToUnixTimestamp(DateTime.Now)+GenerateRandomString(4) + "@" + emailParts[1];
+        }
     }
 }
