@@ -205,7 +205,7 @@ namespace Route4MeSDKLibrary.Managers
             };
 
             var result = GetJsonObjectFromAPI<ResultResponse>(
-                newMemberParams, 
+                newMemberParams,
                 R4MEInfrastructureSettingsV5.TeamUsersBulkCreate,
                 HttpMethodType.Post,
                 out resultResponse);
@@ -555,6 +555,38 @@ namespace Route4MeSDKLibrary.Managers
             return null;
         }
 
+        public Task<Tuple<long?, ResultResponse>> GetTeamOwnerAsync()
+        {
+            var resultResponse = new ResultResponse();
+
+            return Task.Run<Tuple<long?, ResultResponse>>(async () =>
+            {
+                var membersResult = await GetTeamMembersAsync();
+
+                if ((membersResult?.Item1.Length ?? 0) > 0)
+                {
+                    var ownerMember = membersResult?.Item1.ToList().Where(x => x.MemberType == "PRIMARY_ACCOUNT").FirstOrDefault();
+
+                    if (ownerMember != null) 
+                        return new Tuple<long?, ResultResponse>(ownerMember.MemberId, resultResponse);
+                }
+
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    ExitCode = 404,
+                    Messages = new Dictionary<string, string[]>
+                {
+                    {"Error", new[] {"Can not retrieve the team members."}}
+                }
+                };
+
+                return new Tuple<long?, ResultResponse>(null, resultResponse);
+
+            });
+
+        }
+
         public List<long?> GetUserIdsByEmails(List<string> emails, out ResultResponse resultResponse)
         {
             var userIds = new List<string>();
@@ -568,6 +600,40 @@ namespace Route4MeSDKLibrary.Managers
             if ((foundMembers?.Count() ?? 0) > 0) return foundMembers.Select(x => x.MemberId).ToList();
 
             return null;
+        }
+
+        public Task<Tuple<List<long?>, ResultResponse>> GetUserIdsByEmailsAsync(List<string> emails)
+        {
+            var resultResponse = new ResultResponse();
+
+            return Task.Run<Tuple<List<long?>, ResultResponse>>(async () =>
+            {
+                var userIds = new List<string>();
+
+                var membersResult = await GetTeamMembersAsync();
+
+                if ((membersResult?.Item1.Length ?? 0) > 0)
+                {
+                    var foundMembers = membersResult.Item1.ToList().Where(x => emails.Contains(x.MemberEmail));
+
+                    if ((foundMembers?.Count() ?? 0) > 0)
+                    {
+                        return new Tuple<List<long?>, ResultResponse>(foundMembers.Select(x => x.MemberId).ToList(), resultResponse); 
+                    }
+                }
+
+                resultResponse = new ResultResponse()
+                {
+                    Status = false,
+                    ExitCode = 404,
+                    Messages = new Dictionary<string, string[]>
+                        {
+                            {"Error", new[] {"Can not retrieve the team members."}}
+                        }
+                };
+
+                return new Tuple<List<long?>, ResultResponse>(null, resultResponse);
+            });
         }
     }
 }
