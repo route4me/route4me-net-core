@@ -31,7 +31,7 @@ namespace Route4MeSDK.Examples
 
             var vehicle = route4Me.SyncPendingTelematicsData(vehicleSyncParams, out ResultResponse resultResponse);
 
-            PrintTestVehcilesV5(vehicle, resultResponse);
+            PrintTestVehiclesV5(vehicle, resultResponse);
         }
     }
 }

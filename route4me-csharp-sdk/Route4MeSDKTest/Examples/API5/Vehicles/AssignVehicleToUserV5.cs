@@ -25,7 +25,7 @@ namespace Route4MeSDK.Examples
 
             var result = route4Me.CreateTemporaryVehicle(vehicleParams, out ResultResponse resultResonse);
 
-            PrintTestVehcilesV5(result, resultResonse);
+            PrintTestVehiclesV5(result, resultResonse);
         }
     }
 }

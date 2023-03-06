@@ -51,7 +51,7 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine($"Job result: {(jobResult?.Status ?? false)}");
 
-            PrintTestVehcilesV5(result, result.Item2);
+            PrintTestVehiclesV5(result, result.Item2);
         }
     }
 }
