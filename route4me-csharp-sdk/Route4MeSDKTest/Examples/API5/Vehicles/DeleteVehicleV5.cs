@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
                 out ResultResponse resultResponse
             );
 
-            PrintTestVehcilesV5(vehicleData, resultResponse);
+            PrintTestVehiclesV5(vehicleData, resultResponse);
         }
     }
 }
