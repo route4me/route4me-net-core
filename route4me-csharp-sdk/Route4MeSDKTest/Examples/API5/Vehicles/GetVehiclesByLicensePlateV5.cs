@@ -13,7 +13,7 @@ namespace Route4MeSDK.Examples
 
             var vehicles = route4Me.GetVehicleByLicensePlate("CVH4561", out ResultResponse resultResponse);
 
-            PrintTestVehcilesV5(vehicles.Data.Vehicle, resultResponse);
+            PrintTestVehiclesV5(vehicles.Data.Vehicle, resultResponse);
         }
     }
 }

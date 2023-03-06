@@ -13,7 +13,7 @@ namespace Route4MeSDK.Examples
 
             var vehicles = route4Me.GetVehiclesByState(VehicleStates.ACTIVE, out ResultResponse resultResponse);
 
-            PrintTestVehcilesV5(vehicles, resultResponse);
+            PrintTestVehiclesV5(vehicles, resultResponse);
 
             RemoveTestVehiclesV5();
         }

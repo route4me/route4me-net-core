@@ -25,7 +25,7 @@ namespace Route4MeSDK.Examples
             var vehicleData = route4Me.GetPaginatedVehiclesList(vehicleParams, out ResultResponse resultResponse);
 
 
-            PrintTestVehcilesV5(vehicleData, resultResponse);
+            PrintTestVehiclesV5(vehicleData, resultResponse);
         }
     }
 }

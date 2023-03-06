@@ -12,7 +12,7 @@
 
             var result = await route4Me.GetVehicleByLicensePlateAsync("CVH4561");
 
-            PrintTestVehcilesV5(result.Item1?.Data?.Vehicle ?? null, result.Item2);
+            PrintTestVehiclesV5(result.Item1?.Data?.Vehicle ?? null, result.Item2);
         }
     }
 }
