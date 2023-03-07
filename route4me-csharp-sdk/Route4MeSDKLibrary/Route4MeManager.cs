@@ -5589,11 +5589,12 @@ namespace Route4MeSDK
         #region Vehicles
 
         /// <summary>
-        ///     Creates a vehicle
+        ///     Creates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehicle">The VehicleV4Parameters type object as the request payload </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>A created vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.CreateVehicle instead.")]
         public VehicleV4CreateResponse CreateVehicle(VehicleV4Parameters vehicle, out string errorString)
         {
             return GetJsonObjectFromAPI<VehicleV4CreateResponse>(vehicle,
@@ -5603,10 +5604,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Creates a vehicle
+        ///     Creates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehicle">The VehicleV4Parameters type object as the request payload </param>
         /// <returns>A created vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.CreateVehicleAsync instead.")]
         public Task<Tuple<VehicleV4CreateResponse, string>> CreateVehicleAsync(VehicleV4Parameters vehicle)
         {
             return GetJsonObjectFromAPIAsync<VehicleV4CreateResponse>(vehicle,
@@ -5615,11 +5617,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns the VehiclesPaginated type object containing an array of the vehicles
+        ///     Returns the array of the vehicles (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> The VehiclesPaginated type object containing an array of the vehicles</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehicles instead.")]
         public Vehicle[] GetVehicles(VehicleParameters vehParams, out string errorString)
         {
             return GetJsonObjectFromAPI<Vehicle[]>(vehParams, R4MEInfrastructureSettings.Vehicle_V4,
@@ -5628,10 +5631,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns the VehiclesPaginated type object containing an array of the vehicles
+        ///     Returns the array of the vehicles (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <returns> The VehiclesPaginated type object containing an array of the vehicles</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehiclesAsync instead.")]
         public Task<Tuple<Vehicle[], string>> GetVehiclesAsync(VehicleParameters vehParams)
         {
             return GetJsonObjectFromAPIAsync<Vehicle[]>(vehParams, R4MEInfrastructureSettings.Vehicle_V4,
@@ -5639,11 +5643,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns a vehicle
+        ///     Returns a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> A vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehicle instead.")]
         public VehicleV4Response GetVehicle(VehicleParameters vehParams, out string errorString)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5659,10 +5664,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns a vehicle
+        ///     Returns a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <returns> A vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> GetVehicleAsync(VehicleParameters vehParams)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5676,12 +5682,13 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a vehicle
+        ///     Updates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams">The VehicleV4Parameters type object as the request payload</param>
         /// <param name="vehicleId">Vehicle ID</param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The updated vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.UpdateVehicle instead.")]
         public VehicleV4Response UpdateVehicle(VehicleV4Parameters vehParams, string vehicleId, out string errorString)
         {
             if ((vehicleId?.Length ?? 0) != 32)
@@ -5697,11 +5704,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a vehicle
+        ///     Updates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams">The VehicleV4Parameters type object as the request payload</param>
         /// <param name="vehicleId">Vehicle ID</param>
         /// <returns>The updated vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.UpdateVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> UpdateVehicleAsync(VehicleV4Parameters vehParams, string vehicleId)
         {
             if ((vehicleId?.Length ?? 0) != 32)
@@ -5715,11 +5723,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Removes a vehicle from a user's account
+        ///     Removes a vehicle from a user's account (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters containing parameter VehicleId </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicle instead.")]
         public VehicleV4Response DeleteVehicle(VehicleV4Parameters vehParams, out string errorString)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5739,6 +5748,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters containing parameter VehicleId </param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> DeleteVehicleAsync(VehicleV4Parameters vehParams)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5757,6 +5767,7 @@ namespace Route4MeSDK
         /// <param name="vehParams">The VehicleParameters type object as the query parameters containing parameter VehicleId</param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicle instead.")]
         public VehicleV4Response DeleteVehicle(VehicleParameters vehParams, out string errorString)
         {
             if ((vehParams?.VehicleId?.Length ?? 0) != 32)
@@ -5776,6 +5787,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="vehParams">The VehicleParameters type object as the query parameters containing parameter VehicleId</param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> DeleteVehicleAsync(VehicleParameters vehParams)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
