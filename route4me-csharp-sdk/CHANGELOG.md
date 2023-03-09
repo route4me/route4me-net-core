@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.4.1.0] - 2023-03-09
+Vehicle API V4 is depricated.
+
 ## [7.4.0.0] - 2023-03-06
 Team API V4 is depricated. GetTeamOwner and GetUserIdsByEmails are introduced.
 
