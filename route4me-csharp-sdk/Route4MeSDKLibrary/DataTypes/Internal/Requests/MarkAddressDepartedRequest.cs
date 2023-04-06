@@ -20,12 +20,12 @@ namespace Route4MeSDKLibrary.DataTypes.Internal.Requests
         /// <value>If true an addres will be marked as departed</value>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "is_departed", EmitDefaultValue = false)]
-        public bool IsDeparted { get; set; }
+        public bool? IsDeparted { get; set; }
 
         /// <value>If true an addres will be marked as visited</value>
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
-        public bool IsVisited { get; set; }
+        public bool? IsVisited { get; set; }
 
         /// <value>The member ID</value>
         [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]

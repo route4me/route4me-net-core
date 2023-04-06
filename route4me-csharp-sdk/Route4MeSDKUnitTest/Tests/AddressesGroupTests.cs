@@ -308,6 +308,47 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Ignore("issue with resetting the is_visited and is_departed flags")]
+        public void MarkAddressAsMarkedAsVisitedAndThenAsMarkedAsDepartedTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var aParams = new AddressParameters
+            {
+                RouteId = _tdr.SDRT_route_id,
+                RouteDestinationId = _tdr.SDRT_route.Addresses[0].RouteDestinationId != null
+                    ? Convert.ToInt32(_tdr.SDRT_route.Addresses[0].RouteDestinationId)
+                    : -1,
+                IsVisited = true
+            };
+
+            // Run the query
+            var resultAddress = route4Me.MarkAddressAsMarkedAsVisited(
+                aParams,
+                out var errorString);
+
+            Assert.That(resultAddress.IsVisited, Is.True);
+            Assert.That(resultAddress.IsDeparted, Is.False);
+
+            aParams = new AddressParameters
+            {
+                RouteId = _tdr.SDRT_route_id,
+                RouteDestinationId = _tdr.SDRT_route.Addresses[0].RouteDestinationId != null
+                    ? Convert.ToInt32(_tdr.SDRT_route.Addresses[0].RouteDestinationId)
+                    : -1,
+                IsDeparted = true
+            };
+
+            // Run the query
+            resultAddress = route4Me.MarkAddressAsMarkedAsDeparted(
+                aParams,
+                out errorString);
+
+            Assert.That(resultAddress.IsVisited, Is.True);
+            Assert.That(resultAddress.IsDeparted, Is.True);
+        }
+
+        [Test]
         public void MarkAddressDepartedTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
