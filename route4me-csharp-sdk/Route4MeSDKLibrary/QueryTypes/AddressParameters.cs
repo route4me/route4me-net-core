@@ -48,8 +48,8 @@
         ///         <para>Query parameter.</para>
         ///     </remarks>
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "is_departed")]
-        public bool IsDeparted { get; set; }
+        [HttpQueryMemberAttribute(Name = "is_departed", EmitDefaultValue = false)]
+        public bool? IsDeparted { get; set; }
 
         /// <summary>
         ///     If true, the route destination will be marked as visited.
@@ -57,7 +57,7 @@
         ///         <para>Query parameter.</para>
         ///     </remarks>
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "is_visited")]
-        public bool IsVisited { get; set; }
+        [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
+        public bool? IsVisited { get; set; }
     }
 }

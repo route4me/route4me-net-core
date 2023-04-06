@@ -35,7 +35,7 @@ namespace Route4MeSDK
 
         public Route4MeManagerV5(string apiKey)
         {
-            _addressBookContractsManager = new AddressBookContractsManagerV5(apiKey);
+            _addressBookContactsManager = new AddressBookContactsManagerV5(apiKey);
             _accountProfileManager = new AccountProfileManagerV5(apiKey);
             _addressBarcodeManager = new AddressBarcodeManagerV5(apiKey);
             _teamManagementManager = new TeamManagementManagerV5(apiKey);
@@ -52,7 +52,7 @@ namespace Route4MeSDK
 
         #region Fields
 
-        private readonly AddressBookContractsManagerV5 _addressBookContractsManager;
+        private readonly AddressBookContactsManagerV5 _addressBookContactsManager;
         private readonly AccountProfileManagerV5 _accountProfileManager;
         private readonly AddressBarcodeManagerV5 _addressBarcodeManager;
         private readonly TeamManagementManagerV5 _teamManagementManager;
@@ -76,7 +76,7 @@ namespace Route4MeSDK
         /// <returns>If true the contacts were removed successfully</returns>
         public bool RemoveAddressBookContacts(long[] contactIDs, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.RemoveAddressBookContacts(contactIDs, out resultResponse);
+            return _addressBookContactsManager.RemoveAddressBookContacts(contactIDs, out resultResponse);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Route4MeSDK
         /// <returns>If true the contacts were removed successfully</returns>
         public Task<Tuple<StatusResponse, ResultResponse, string>> RemoveAddressBookContactsAsync(long[] contactIDs)
         {
-            return _addressBookContractsManager.RemoveAddressBookContactsAsync(contactIDs);
+            return _addressBookContactsManager.RemoveAddressBookContactsAsync(contactIDs);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Route4MeSDK
         /// <returns>If true the contacts were removed successfully</returns>
         public bool RemoveAddressBookContactsByAreas(AddressBookContactsFilter filter, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.RemoveAddressBookContactsByAreas(filter, out resultResponse);
+            return _addressBookContactsManager.RemoveAddressBookContactsByAreas(filter, out resultResponse);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Route4MeSDK
         /// <returns>If true the contacts were removed successfully</returns>
         public Task<Tuple<bool, ResultResponse>> RemoveAddressBookContactsByAreasAsync(AddressBookContactsFilter filter)
         {
-            return _addressBookContractsManager.RemoveAddressBookContactsByAreasAsync(filter);
+            return _addressBookContactsManager.RemoveAddressBookContactsByAreasAsync(filter);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Route4MeSDK
         /// <returns>All Address custom fields</returns>
         public CustomFieldsResponse GetCustomFields(out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetCustomFields(out resultResponse);
+            return _addressBookContactsManager.GetCustomFields(out resultResponse);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Route4MeSDK
         /// <returns>If true the contacts were removed successfully</returns>
         public Task<Tuple<CustomFieldsResponse, ResultResponse>> GetCustomFieldsAsync()
         {
-            return _addressBookContractsManager.GetCustomFieldsAsync();
+            return _addressBookContactsManager.GetCustomFieldsAsync();
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Route4MeSDK
         public AddressBookContactsResponse GetAddressBookContacts(AddressBookParameters addressBookParameters,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContacts(addressBookParameters, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContacts(addressBookParameters, out resultResponse);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContactsResponse type object</returns>
         public Task<Tuple<AddressBookContactsResponse, ResultResponse, string>> GetAddressBookContactsAsync(AddressBookParameters addressBookParameters)
         {
-            return _addressBookContractsManager.GetAddressBookContactsAsync(addressBookParameters);
+            return _addressBookContactsManager.GetAddressBookContactsAsync(addressBookParameters);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Route4MeSDK
         public AddressBookContactsResponse GetAddressBookContacts(AddressBookContactsBodyRequest addressBookContactsBodyRequest,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContacts(addressBookContactsBodyRequest, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContacts(addressBookContactsBodyRequest, out resultResponse);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContactsResponse type object</returns>
         public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContacts(AddressBookContactsBodyRequest addressBookContactsBodyRequest)
         {
-            return _addressBookContractsManager.GetAddressBookContacts(addressBookContactsBodyRequest);
+            return _addressBookContactsManager.GetAddressBookContacts(addressBookContactsBodyRequest);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Route4MeSDK
         public AddressBookContactsResponse GetAddressBookContactsPaginated(AddressBookParametersPaginated addressBookParametersPaginated,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContactsPaginated(addressBookParametersPaginated, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContactsPaginated(addressBookParametersPaginated, out resultResponse);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContactsResponse type object</returns>
         public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsPaginatedAsync(AddressBookParametersPaginated addressBookParametersPaginated)
         {
-            return _addressBookContractsManager.GetAddressBookContactsPaginatedAsync(addressBookParametersPaginated);
+            return _addressBookContactsManager.GetAddressBookContactsPaginatedAsync(addressBookParametersPaginated);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Route4MeSDK
         public AddressBookContactsResponse GetAddressBookContactsPaginated(AddressBookContactsBodyPaginatedRequest addressBookContactsBodyPaginatedRequest,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContactsPaginated(addressBookContactsBodyPaginatedRequest, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContactsPaginated(addressBookContactsBodyPaginatedRequest, out resultResponse);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContactsResponse type object</returns>
         public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsPaginatedAsync(AddressBookContactsBodyPaginatedRequest addressBookContactsBodyPaginatedRequest)
         {
-            return _addressBookContractsManager.GetAddressBookContactsPaginatedAsync(addressBookContactsBodyPaginatedRequest);
+            return _addressBookContactsManager.GetAddressBookContactsPaginatedAsync(addressBookContactsBodyPaginatedRequest);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Route4MeSDK
         public AddressBookContactsClusteringResponse GetAddressBookContactsClustering(AddressBookParametersClustering addressBookParametersClustering,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContactsClustering(addressBookParametersClustering, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContactsClustering(addressBookParametersClustering, out resultResponse);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContactsResponse type object</returns>
         public Task<Tuple<AddressBookContactsClusteringResponse, ResultResponse>> GetAddressBookContactsClusteringAsync(AddressBookParametersClustering addressBookParametersClustering)
         {
-            return _addressBookContractsManager.GetAddressBookContactsClusteringAsync(addressBookParametersClustering);
+            return _addressBookContactsManager.GetAddressBookContactsClusteringAsync(addressBookParametersClustering);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Route4MeSDK
         public AddressBookContactsClusteringResponse GetAddressBookContactsClustering(AddressBookParametersClusteringBodyRequest addressBookParametersClusteringBodyRequest,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContactsClustering(addressBookParametersClusteringBodyRequest, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContactsClustering(addressBookParametersClusteringBodyRequest, out resultResponse);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContactsResponse type object</returns>
         public Task<Tuple<AddressBookContactsClusteringResponse, ResultResponse>> GetAddressBookContactsClusteringAsync(AddressBookParametersClusteringBodyRequest addressBookParametersClusteringBodyRequest)
         {
-            return _addressBookContractsManager.GetAddressBookContactsClusteringAsync(addressBookParametersClusteringBodyRequest);
+            return _addressBookContactsManager.GetAddressBookContactsClusteringAsync(addressBookParametersClusteringBodyRequest);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContact type object</returns>
         public AddressBookContact GetAddressBookContactById(long contactId, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContactById(contactId, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContactById(contactId, out resultResponse);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Route4MeSDK
         /// <returns>An AddressBookContact type object</returns>
         public Task<Tuple<AddressBookContact, ResultResponse>> GetAddressBookContactByIdAsync(long contactId)
         {
-            return _addressBookContractsManager.GetAddressBookContactByIdAsync(contactId);
+            return _addressBookContactsManager.GetAddressBookContactByIdAsync(contactId);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace Route4MeSDK
         public AddressBookContactsResponse GetAddressBookContactsByIds(long[] contactIDs,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetAddressBookContactsByIds(contactIDs, out resultResponse);
+            return _addressBookContactsManager.GetAddressBookContactsByIds(contactIDs, out resultResponse);
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace Route4MeSDK
         /// <returns>An object containing an array of the address book contacts and result resposne</returns>
         public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactByIdsAsync(long[] contactIDs)
         {
-            return _addressBookContractsManager.GetAddressBookContactByIdsAsync(contactIDs);
+            return _addressBookContactsManager.GetAddressBookContactByIdsAsync(contactIDs);
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Route4MeSDK
         /// <returns>An array of depot-eligible contacts</returns>
         public AddressBookContact[] GetDepotsFromAddressBook(out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetDepotsFromAddressBook(out resultResponse);
+            return _addressBookContactsManager.GetDepotsFromAddressBook(out resultResponse);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace Route4MeSDK
         /// <returns>An object containing an array of the depot-eligible contacts and result response</returns>
         public Task<Tuple<AddressBookContact[], ResultResponse, string>> GetDepotsFromAddressBookAsync()
         {
-            return _addressBookContractsManager.GetDepotsFromAddressBookAsync();
+            return _addressBookContactsManager.GetDepotsFromAddressBookAsync();
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace Route4MeSDK
         public AddressBookContact AddAddressBookContact(AddressBookContact contactParams,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.AddAddressBookContact(contactParams, out resultResponse);
+            return _addressBookContactsManager.AddAddressBookContact(contactParams, out resultResponse);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace Route4MeSDK
         /// <returns>Created address book contact</returns>
         public Task<Tuple<AddressBookContact, ResultResponse>> AddAddressBookContactAsync(AddressBookContact contactParams)
         {
-            return _addressBookContractsManager.AddAddressBookContactAsync(contactParams);
+            return _addressBookContactsManager.AddAddressBookContactAsync(contactParams);
         }
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace Route4MeSDK
         public AddressBookContact UpdateAddressBookContact(long id, AddressBookContact contactParams,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.UpdateAddressBookContact(id, contactParams, out resultResponse);
+            return _addressBookContactsManager.UpdateAddressBookContact(id, contactParams, out resultResponse);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace Route4MeSDK
         /// <returns>Created address book contact</returns>
         public Task<Tuple<AddressBookContact, ResultResponse>> UpdateAddressBookContactAsync(long id, AddressBookContact contactParams)
         {
-            return _addressBookContractsManager.UpdateAddressBookContactAsync(id, contactParams);
+            return _addressBookContactsManager.UpdateAddressBookContactAsync(id, contactParams);
         }
 
         /// <summary>
@@ -383,7 +383,7 @@ namespace Route4MeSDK
         /// <returns>Created address book contact</returns>
         public AddressBookContact[] BatchUpdateAddressBookContact(AddressBookContactMultiple contactsParams, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.BatchUpdateAddressBookContact(contactsParams, out resultResponse);
+            return _addressBookContactsManager.BatchUpdateAddressBookContact(contactsParams, out resultResponse);
         }
 
         /// <summary>
@@ -393,7 +393,7 @@ namespace Route4MeSDK
         /// <returns>Created address book contact</returns>
         public Task<Tuple<AddressBookContact[], ResultResponse>> BatchUpdateAddressBookContactAsync(AddressBookContactMultiple contactsParams)
         {
-            return _addressBookContractsManager.BatchUpdateAddressBookContactAsync(contactsParams);
+            return _addressBookContactsManager.BatchUpdateAddressBookContactAsync(contactsParams);
         }
 
         /// <summary>
@@ -404,7 +404,7 @@ namespace Route4MeSDK
         /// <returns>Created address book contact</returns>
         public bool UpdateAddressBookContactByAreas(UpdateAddressBookContactByAreasRequest request, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.UpdateAddressBookContactByAreas(request, out resultResponse);
+            return _addressBookContactsManager.UpdateAddressBookContactByAreas(request, out resultResponse);
         }
 
         /// <summary>
@@ -414,7 +414,7 @@ namespace Route4MeSDK
         /// <returns>Created address book contact</returns>
         public Task<Tuple<bool, ResultResponse>> UpdateAddressBookContactByAreas(UpdateAddressBookContactByAreasRequest request)
         {
-            return _addressBookContractsManager.UpdateAddressBookContactByAreas(request);
+            return _addressBookContactsManager.UpdateAddressBookContactByAreas(request);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace Route4MeSDK
             string[] mandatoryNullableFields,
             out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.BatchCreateAddressBookContacts(contactParams, mandatoryNullableFields, out resultResponse);
+            return _addressBookContactsManager.BatchCreateAddressBookContacts(contactParams, mandatoryNullableFields, out resultResponse);
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace Route4MeSDK
         public Task<Tuple<StatusResponse, ResultResponse>> BatchCreateAddressBookContactsAsync(BatchCreatingAddressBookContactsRequest contactParams,
             string[] mandatoryNullableFields)
         {
-            return _addressBookContractsManager.BatchCreateAddressBookContactsAsync(contactParams, mandatoryNullableFields);
+            return _addressBookContactsManager.BatchCreateAddressBookContactsAsync(contactParams, mandatoryNullableFields);
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace Route4MeSDK
         /// <returns>Status response (TO DO: expected result with created multiple contacts)</returns>
         public StatusResponse GetContactsJobStatus(string jobId, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetContactsJobStatus(jobId, out resultResponse);
+            return _addressBookContactsManager.GetContactsJobStatus(jobId, out resultResponse);
         }
 
         /// <summary>
@@ -461,7 +461,7 @@ namespace Route4MeSDK
         /// <returns>A Tuple type object containing a job status or/and failure response</returns>
         public Task<Tuple<StatusResponse, ResultResponse>> GetContactsJobStatusAsync(string jobId)
         {
-            return _addressBookContractsManager.GetContactsJobStatusAsync(jobId);
+            return _addressBookContactsManager.GetContactsJobStatusAsync(jobId);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace Route4MeSDK
         /// <param name="resultResponse">Failing response</param>
         public StatusResponse GetContactsJobResult(string jobId, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.GetContactsJobResult(jobId, out resultResponse);
+            return _addressBookContactsManager.GetContactsJobResult(jobId, out resultResponse);
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace Route4MeSDK
         /// <returns>A Tuple type object containing a job status or/and failure response</returns>
         public Task<Tuple<StatusResponse, ResultResponse>> GetContactsJobResultAsync(string jobId)
         {
-            return _addressBookContractsManager.GetContactsJobResultAsync(jobId);
+            return _addressBookContactsManager.GetContactsJobResultAsync(jobId);
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace Route4MeSDK
         /// - a ResultResponse type object in case of failure, null - if success</returns>
         public Task<Tuple<StatusResponse, ResultResponse>> ExportAddressesAsync(AddressExportParameters exportParams)
         {
-            return _addressBookContractsManager.ExportAddressesAsync(exportParams);
+            return _addressBookContactsManager.ExportAddressesAsync(exportParams);
         }
 
         /// <summary>
@@ -504,7 +504,7 @@ namespace Route4MeSDK
         /// <returns>Status of an export operation</returns>
         public StatusResponse ExportAddresses(AddressExportParameters exportParams, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.ExportAddresses(exportParams, out resultResponse);
+            return _addressBookContactsManager.ExportAddresses(exportParams, out resultResponse);
         }
 
         /// <summary>
@@ -515,7 +515,7 @@ namespace Route4MeSDK
         /// <returns>Status of an export operation</returns>
         public StatusResponse ExportAddressesByAreas(AddressExportByAreasParameters exportParams, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.ExportAddressesByAreas(exportParams, out resultResponse);
+            return _addressBookContactsManager.ExportAddressesByAreas(exportParams, out resultResponse);
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace Route4MeSDK
         /// - a ResultResponse type object in case of failure, null - if success</returns>
         public Task<Tuple<StatusResponse, ResultResponse>> ExportAddressesByAreasAsync(AddressExportByAreasParameters exportParams)
         {
-            return _addressBookContractsManager.ExportAddressesByAreasAsync(exportParams);
+            return _addressBookContactsManager.ExportAddressesByAreasAsync(exportParams);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace Route4MeSDK
         /// <returns>Status of an export operation</returns>
         public StatusResponse ExportAddressesByAreaIds(AddressExportByAreaIdsParameters exportParams, out ResultResponse resultResponse)
         {
-            return _addressBookContractsManager.ExportAddressesByAreaIds(exportParams, out resultResponse);
+            return _addressBookContactsManager.ExportAddressesByAreaIds(exportParams, out resultResponse);
         }
 
         /// <summary>
@@ -550,7 +550,7 @@ namespace Route4MeSDK
         /// - a ResultResponse type object in case of failure, null - if success</returns>
         public Task<Tuple<StatusResponse, ResultResponse>> ExportAddressesByAreaIdsAsync(AddressExportByAreaIdsParameters exportParams)
         {
-            return _addressBookContractsManager.ExportAddressesByAreaIdsAsync(exportParams);
+            return _addressBookContactsManager.ExportAddressesByAreaIdsAsync(exportParams);
         }
 
         #endregion

@@ -10,9 +10,9 @@ using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
 
 namespace Route4MeSDKLibrary.Managers
 {
-    public sealed class AddressBookContractsManagerV5 : Route4MeManagerBase
+    public sealed class AddressBookContactsManagerV5 : Route4MeManagerBase
     {
-        public AddressBookContractsManagerV5(string apiKey) : base(apiKey)
+        public AddressBookContactsManagerV5(string apiKey) : base(apiKey)
         {
         }
 
