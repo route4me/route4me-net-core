@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.4.2.0] - 2023-04-06
+MarkAddressAsMarkedAsVisited/MarkAddressAsMarkedAsDeparted fixed on .NET Client SDK Library side with respect to resetting the is_visited flag.
+Obsolete messages are adjusted.
+
 ## [7.4.1.0] - 2023-03-09
 Vehicle API V4 is depricated.
 
