@@ -4,7 +4,7 @@ using Route4MeSDK.QueryTypes;
 namespace Route4MeSDKLibrary.DataTypes.Internal.Requests
 {
     /// <summary>
-    ///     The request parameters for an adress marking process as marked as departed.
+    ///     The request parameters for an address marking process as marked as departed.
     /// </summary>
     [DataContract]
     internal sealed class MarkAddressAsMarkedAsDepartedRequest : GenericParameters
@@ -19,12 +19,12 @@ namespace Route4MeSDKLibrary.DataTypes.Internal.Requests
 
         /// <value>If true an address will be marked as marked as departed</value>
         [IgnoreDataMember]
-        [System.Runtime.Serialization.DataMember(Name = "is_departed")]
-        public bool IsDeparted { get; set; }
+        [System.Runtime.Serialization.DataMember(Name = "is_departed", EmitDefaultValue = false)] 
+        public bool? IsDeparted { get; set; }
 
         /// <value>If true an address will be marked as marked as visited</value>
         [IgnoreDataMember]
-        [System.Runtime.Serialization.DataMember(Name = "is_visited")]
-        public bool IsVisited { get; set; }
+        [System.Runtime.Serialization.DataMember(Name = "is_visited", EmitDefaultValue = false)]
+        public bool? IsVisited { get; set; }
     }
 }
