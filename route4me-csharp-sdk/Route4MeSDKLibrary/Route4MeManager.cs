@@ -3504,6 +3504,7 @@ namespace Route4MeSDK
         /// <param name="total">out: Number of the returned contacts</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The array of the address book contacts</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.GetAddressBookContacts instead.")]
         public AddressBookContact[] GetAddressBookContacts(AddressBookParameters addressBookParameters, out uint total,
             out string errorString)
         {
@@ -3525,6 +3526,7 @@ namespace Route4MeSDK
         ///     Offset, Limit
         /// </param>
         /// <returns>The array of the address book contacts</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.GetAddressBookContactsAsync instead.")]
         public async Task<Tuple<AddressBookContact[], uint, string>> GetAddressBookContactsAsync(AddressBookParameters addressBookParameters)
         {
             var response = await GetJsonObjectFromAPIAsync<GetAddressBookContactsResponse>(addressBookParameters,
@@ -3781,6 +3783,7 @@ namespace Route4MeSDK
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.AddAddressBookContact instead.")]
         public AddressBookContact AddAddressBookContact(AddressBookContact contact, out string errorString)
         {
             contact.PrepareForSerialization();
@@ -3798,6 +3801,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.AddAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> AddAddressBookContactAsync(AddressBookContact contact)
         {
             contact.PrepareForSerialization();
@@ -3816,6 +3820,7 @@ namespace Route4MeSDK
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContact instead.")]
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact, out string errorString)
         {
             contact.PrepareForSerialization();
@@ -3830,6 +3835,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> UpdateAddressBookContactAsync(AddressBookContact contact)
         {
             contact.PrepareForSerialization();
@@ -3849,6 +3855,7 @@ namespace Route4MeSDK
         /// </param>
         /// <param name="errorString">Error strings</param>
         /// <returns>Address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContact instead.")]
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact, List<string> updatableProperties,
             out string errorString)
         {
@@ -3878,6 +3885,7 @@ namespace Route4MeSDK
         ///     despite are they null or not
         /// </param>
         /// <returns>Address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> UpdateAddressBookContactAsync(AddressBookContact contact, List<string> updatableProperties)
         {
             var myDynamicClass = new Route4MeDynamicClass();
@@ -3902,6 +3910,7 @@ namespace Route4MeSDK
         /// <param name="initialContact">An initial address book contact</param>
         /// <param name="errorString">Error string</param>
         /// <returns>Updated address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContact instead.")]
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact,
             AddressBookContact initialContact, out string errorString)
         {
@@ -3949,6 +3958,7 @@ namespace Route4MeSDK
         /// <param name="contact">A address book contact object as input (modified or created virtual contact)</param>
         /// <param name="initialContact">An initial address book contact</param>
         /// <returns>Updated address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> UpdateAddressBookContactAsync(AddressBookContact contact, AddressBookContact initialContact)
         {
             string errorString;
@@ -3992,6 +4002,7 @@ namespace Route4MeSDK
         /// <param name="addressIds">The array of the address IDs</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>If true the contacts were removed successfully</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.RemoveAddressBookContacts instead.")]
         public bool RemoveAddressBookContacts(string[] addressIds, out string errorString)
         {
             var request = new RemoveAddressBookContactsRequest
@@ -4012,6 +4023,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="addressIds">The array of the address IDs</param>
         /// <returns>If true the contacts were removed successfully</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.RemoveAddressBookContactsAsync instead.")]
         public async Task<Tuple<bool, string>> RemoveAddressBookContactsAsync(string[] addressIds)
         {
             var request = new RemoveAddressBookContactsRequest
