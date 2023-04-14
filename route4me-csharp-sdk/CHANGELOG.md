@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.5.0.0] - 2023-04-14
+Address Book Contact API V4 is depricated (switched to V5).
+utc_time, lat/lng are supported for api/route/mark_address_departed.php and api/route/mark_address_visited.php
+
 ## [7.4.2.0] - 2023-04-06
 MarkAddressAsMarkedAsVisited/MarkAddressAsMarkedAsDeparted fixed on .NET Client SDK Library side with respect to resetting the is_visited flag.
 Obsolete messages are adjusted.
