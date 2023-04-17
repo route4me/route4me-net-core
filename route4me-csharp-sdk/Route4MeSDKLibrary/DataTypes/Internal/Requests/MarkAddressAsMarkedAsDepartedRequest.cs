@@ -26,5 +26,41 @@ namespace Route4MeSDKLibrary.DataTypes.Internal.Requests
         [IgnoreDataMember]
         [System.Runtime.Serialization.DataMember(Name = "is_visited", EmitDefaultValue = false)]
         public bool? IsVisited { get; set; }
+
+        /// <summary>
+        ///    Last visited timestamp
+        /// </summary>
+        [DataMember(Name = "timestamp_last_visited", EmitDefaultValue = false)]
+        public long? TimestampLastVisited { get; set; }
+
+        /// <summary>
+        ///     The position latitude (visited)
+        /// </summary>
+        [DataMember(Name = "visited_lat", EmitDefaultValue = false)]
+        public double? VisitedLatitude { get; set; }
+
+        /// <summary>
+        ///     The position longitude (visited)
+        /// </summary>
+        [DataMember(Name = "visited_lng", EmitDefaultValue = false)]
+        public double? VisitedLongitude { get; set; }
+
+        /// <summary>
+        ///    Last departed timestamp
+        /// </summary>
+        [DataMember(Name = "timestamp_last_departed", EmitDefaultValue = false)]
+        public long? TimestampLastDeparted { get; set; }
+
+        /// <summary>
+        ///     The position latitude (departed)
+        /// </summary>
+        [DataMember(Name = "departed_lat", EmitDefaultValue = false)]
+        public double? DepartedLatitude { get; set; }
+
+        /// <summary>
+        ///     The position longitude (departed)
+        /// </summary>
+        [DataMember(Name = "departed_lng", EmitDefaultValue = false)]
+        public double? DepartedLongitude { get; set; }
     }
 }

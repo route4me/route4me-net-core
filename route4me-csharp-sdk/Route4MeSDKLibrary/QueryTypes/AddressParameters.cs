@@ -60,22 +60,40 @@
         [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
         public bool? IsVisited { get; set; }
 
-        /// <summary>
-        ///    UTC Time (timestamp, unix time)
+        //// <summary>
+        ///    Last departed timestamp
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "utc_time", EmitDefaultValue = false)]
-        public long? UtcTime { get; set; }
+        [HttpQueryMember(Name = "timestamp_last_departed", EmitDefaultValue = false)]
+        public long? TimestampLastDeparted { get; set; }
 
         /// <summary>
-        ///     The position latitude
+        ///     The position latitude (departed)
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "lat", EmitDefaultValue = false)]
-        public double? Latitude { get; set; }
+        [HttpQueryMember(Name = "departed_lat", EmitDefaultValue = false)]
+        public double? DepartedLatitude { get; set; }
 
         /// <summary>
-        ///     The position longitude
+        ///     The position longitude (departed)
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "lng", EmitDefaultValue = false)]
-        public double? Longitude { get; set; }
+        [HttpQueryMember(Name = "departed_lng", EmitDefaultValue = false)]
+        public double? DepartedLongitude { get; set; }
+
+        /// <summary>
+        ///    Last visited timestamp
+        /// </summary>
+        [HttpQueryMember(Name = "timestamp_last_visited", EmitDefaultValue = false)]
+        public long? TimestampLastVisited { get; set; }
+
+        /// <summary>
+        ///     The position latitude (visited)
+        /// </summary>
+        [HttpQueryMember(Name = "visited_lat", EmitDefaultValue = false)]
+        public double? VisitedLatitude { get; set; }
+
+        /// <summary>
+        ///     The position longitude (visited)
+        /// </summary>
+        [HttpQueryMember(Name = "visited_lng", EmitDefaultValue = false)]
+        public double? VisitedLongitude { get; set; }
     }
 }
