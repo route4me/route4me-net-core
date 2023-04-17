@@ -81,6 +81,8 @@ namespace Route4MeSDKTest
                 examples.MarkAddressAsMarkedAsVisited();
                 examples.MarkAddressDeparted();
                 examples.MarkAddressVisited();
+                examples.MarkAddressAsMarkedAsDepartedWithTimestampAndGeoCoordinates();
+                examples.MarkAddressAsMarkedAsVisitedWithTimestampAndGeoCoordinates();
 
                 examples.RemoveDestinationFromOptimization();
                 examples.RemoveRouteDestination();

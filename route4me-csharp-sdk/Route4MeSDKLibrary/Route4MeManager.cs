@@ -3418,7 +3418,10 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited
+                IsVisited = aParams.IsVisited,
+                TimestampLastVisited = aParams.TimestampLastVisited,
+                VisitedLatitude = aParams.VisitedLatitude,
+                VisitedLongitude = aParams.VisitedLongitude
             };
 
             return GetJsonObjectFromAPI<Address>(
@@ -3439,7 +3442,10 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited
+                IsVisited = aParams.IsVisited,
+                TimestampLastVisited = aParams.TimestampLastVisited,
+                VisitedLatitude = aParams.VisitedLatitude,
+                VisitedLongitude = aParams.VisitedLongitude
             };
 
             return GetJsonObjectFromAPIAsync<Address>(
@@ -3460,7 +3466,10 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted
+                IsDeparted = aParams.IsDeparted,
+                TimestampLastDeparted = aParams.TimestampLastDeparted,
+                DepartedLatitude = aParams.DepartedLatitude,
+                DepartedLongitude = aParams.DepartedLongitude
             };
 
             return GetJsonObjectFromAPI<Address>(
@@ -3481,7 +3490,10 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted
+                IsDeparted = aParams.IsDeparted,
+                TimestampLastDeparted = aParams.TimestampLastDeparted,
+                DepartedLatitude = aParams.DepartedLatitude,
+                DepartedLongitude = aParams.DepartedLongitude
             };
 
             return GetJsonObjectFromAPIAsync<Address>(
