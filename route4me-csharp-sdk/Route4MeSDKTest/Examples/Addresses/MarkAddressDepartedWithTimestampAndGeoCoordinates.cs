@@ -29,7 +29,8 @@ namespace Route4MeSDK.Examples
                 aParams = new AddressParameters
                 {
                     RouteId = SD10Stops_route_id,
-                    RouteDestinationId = (int)SD10Stops_route.Addresses[2].RouteDestinationId,
+                    AddressId = (int)SD10Stops_route.Addresses[2].RouteDestinationId,
+                    IsDeparted = true,
                     UtcTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
                     Latitude = SD10Stops_route.Addresses[2].DepartedLatitude,
                     Longitude = SD10Stops_route.Addresses[2].DepartedLongitude,
