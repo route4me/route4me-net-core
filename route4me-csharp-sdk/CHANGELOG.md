@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.5.1.0] - 2023-04-19
+utc_time, lat/lng are supported for /api/route/mark_address_departed.php and /actions/address/update_address_visited.php
+
 ## [7.5.0.0] - 2023-04-14
 Address Book Contact API V4 is depricated (switched to V5).
 utc_time, lat/lng are supported for api/route/mark_address_departed.php and api/route/mark_address_visited.php
