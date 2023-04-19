@@ -59,23 +59,5 @@
         /// </summary>
         [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
         public bool? IsVisited { get; set; }
-
-        /// <summary>
-        ///    UTC Time (timestamp, unix time)
-        /// </summary>
-        [HttpQueryMemberAttribute(Name = "utc_time", EmitDefaultValue = false)]
-        public long? UtcTime { get; set; }
-
-        /// <summary>
-        ///     The position latitude
-        /// </summary>
-        [HttpQueryMemberAttribute(Name = "lat", EmitDefaultValue = false)]
-        public double? Latitude { get; set; }
-
-        /// <summary>
-        ///     The position longitude
-        /// </summary>
-        [HttpQueryMemberAttribute(Name = "lng", EmitDefaultValue = false)]
-        public double? Longitude { get; set; }
     }
 }
