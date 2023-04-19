@@ -3418,10 +3418,7 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited,
-                TimestampLastVisited = aParams.TimestampLastVisited,
-                VisitedLatitude = aParams.VisitedLatitude,
-                VisitedLongitude = aParams.VisitedLongitude
+                IsVisited = aParams.IsVisited
             };
 
             return GetJsonObjectFromAPI<Address>(
@@ -3442,10 +3439,7 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited,
-                TimestampLastVisited = aParams.TimestampLastVisited,
-                VisitedLatitude = aParams.VisitedLatitude,
-                VisitedLongitude = aParams.VisitedLongitude
+                IsVisited = aParams.IsVisited
             };
 
             return GetJsonObjectFromAPIAsync<Address>(
@@ -3466,10 +3460,7 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted,
-                TimestampLastDeparted = aParams.TimestampLastDeparted,
-                DepartedLatitude = aParams.DepartedLatitude,
-                DepartedLongitude = aParams.DepartedLongitude
+                IsDeparted = aParams.IsDeparted
             };
 
             return GetJsonObjectFromAPI<Address>(
@@ -3490,10 +3481,7 @@ namespace Route4MeSDK
             {
                 RouteId = aParams.RouteId,
                 RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted,
-                TimestampLastDeparted = aParams.TimestampLastDeparted,
-                DepartedLatitude = aParams.DepartedLatitude,
-                DepartedLongitude = aParams.DepartedLongitude
+                IsDeparted = aParams.IsDeparted
             };
 
             return GetJsonObjectFromAPIAsync<Address>(
