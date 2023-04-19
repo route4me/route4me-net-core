@@ -59,5 +59,9 @@
         /// </summary>
         [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
         public bool? IsVisited { get; set; }
+
+        /// <value>The member ID</value>
+        [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
+        public long? MemberId { get; set; }
     }
 }

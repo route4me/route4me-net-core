@@ -3323,15 +3323,7 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public int MarkAddressVisited(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsVisited = aParams.IsVisited,
-                MemberId = 1
-            };
-
-            var response = GetJsonObjectFromAPI<string>(request, R4MEInfrastructureSettings.MarkAddressVisited,
+            var response = GetJsonObjectFromAPI<string>(aParams, R4MEInfrastructureSettings.MarkAddressVisited,
                 HttpMethodType.Get, out errorString);
 
             return int.TryParse(response, out _) ? Convert.ToInt32(response) : 0;
@@ -3347,15 +3339,7 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public async Task<Tuple<int, string>> MarkAddressVisitedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsVisited = aParams.IsVisited,
-                MemberId = 1
-            };
-
-            var response = await GetJsonObjectFromAPIAsync<string>(request, R4MEInfrastructureSettings.MarkAddressVisited,
+            var response = await GetJsonObjectFromAPIAsync<string>(aParams, R4MEInfrastructureSettings.MarkAddressVisited,
                 HttpMethodType.Get).ConfigureAwait(false);
 
             return new Tuple<int, string>(int.TryParse(response.Item1, out _) ? Convert.ToInt32(response.Item1) : 0, response.Item2);
@@ -3369,15 +3353,8 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public int MarkAddressDeparted(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             var response = GetJsonObjectFromAPI<MarkAddressDepartedResponse>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.MarkAddressDeparted,
                 HttpMethodType.Get, out errorString);
 
@@ -3391,15 +3368,8 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public async Task<Tuple<int, string>> MarkAddressDepartedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             var response = await GetJsonObjectFromAPIAsync<MarkAddressDepartedResponse>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.MarkAddressDeparted,
                 HttpMethodType.Get).ConfigureAwait(false);
 
@@ -3414,15 +3384,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Address MarkAddressAsMarkedAsVisited(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited
-            };
-
             return GetJsonObjectFromAPI<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put,
                 out errorString);
@@ -3435,15 +3398,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Task<Tuple<Address, string>> MarkAddressAsMarkedAsVisitedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited
-            };
-
             return GetJsonObjectFromAPIAsync<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put);
         }
@@ -3456,15 +3412,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Address MarkAddressAsMarkedAsDeparted(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             return GetJsonObjectFromAPI<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put,
                 out errorString);
@@ -3477,15 +3426,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Task<Tuple<Address, string>> MarkAddressAsMarkedAsDepartedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             return GetJsonObjectFromAPIAsync<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put);
         }
