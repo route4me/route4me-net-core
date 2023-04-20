@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [7.5.2.0] - 2023-04-20
-Switched from long to string (with timestamp inside) for RouteFilterResponse
+Switched from long to string (with timestamp inside) for actual_travel_time in RouteFilterResponse
 
 ## [7.5.1.0] - 2023-04-19
 utc_time, lat/lng are supported for /api/route/mark_address_departed.php and /actions/address/update_address_visited.php
