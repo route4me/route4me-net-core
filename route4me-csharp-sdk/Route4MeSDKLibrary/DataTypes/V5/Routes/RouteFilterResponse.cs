@@ -135,11 +135,11 @@ namespace Route4MeSDK.DataTypes.V5
         public double? ActualTravelDistance { get; set; }
 
         /// <summary>
-        ///     Actual travel time (seconds).
+        ///     Actual travel time (time span).
         /// </summary>
         [DataMember(Name = "actual_travel_time", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public long? ActualTravelTime { get; set; }
+        public string ActualTravelTime { get; set; }
 
         /// <summary>
         ///     Total route duration in human readable format (e.g. 'HH:mm:ss').
