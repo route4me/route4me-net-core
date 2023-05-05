@@ -199,6 +199,88 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        public void AddRouteDestinationsWithNoAddressStringTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var route_id = _tdr.SDRT_route_id;
+
+            Assert.IsNotNull(route_id, "rote_id is null.");
+
+            // Prepare the addresses
+
+            #region Addresses
+
+            Address[] addresses =
+            {
+                new Address
+                {
+                    Latitude = 30.143526,
+                    Longitude = -87.240354,
+                    Time = 0
+                },
+
+                new Address
+                {
+                    Latitude = 30.177852,
+                    Longitude = -87.263535,
+                    Time = 0
+                }
+            };
+
+            #endregion
+
+            // Run the query
+            var optimalPosition = true;
+
+            var destinationIds = route4Me.AddRouteDestinations(
+                route_id,
+                addresses,
+                optimalPosition,
+                out var errorString);
+
+            Assert.That(destinationIds.Length, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void AddInvalidRouteDestinationsWithNoAddressStringTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var route_id = _tdr.SDRT_route_id;
+
+            Assert.IsNotNull(route_id, "rote_id is null.");
+
+            // Prepare the addresses
+
+            #region Addresses
+
+            Address[] addresses =
+            {
+                new Address
+                {
+                },
+
+                new Address
+                {
+                }
+            };
+
+            #endregion
+
+            // Run the query
+            var optimalPosition = true;
+
+            var destinationIds = route4Me.AddRouteDestinations(
+                route_id,
+                addresses,
+                optimalPosition,
+                out var errorString);
+
+            Assert.That(errorString, Is.Not.Empty);
+        }
+
+        [Test]
         public void AddRouteDestinationInSpecificPositionTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);

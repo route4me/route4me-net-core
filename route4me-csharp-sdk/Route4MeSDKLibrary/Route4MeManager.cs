@@ -3080,18 +3080,18 @@ namespace Route4MeSDK
             var arrDestinationIds = new List<int>();
 
             if (response != null && response.Addresses != null)
+            {
                 addresses.ForEach(addressNew =>
                 {
-                    response.Addresses.Where(addressResp => addressResp.AddressString == addressNew.AddressString &&
-                                                            Math.Abs(addressResp.Latitude - addressNew.Latitude) <
-                                                            0.0001 &&
-                                                            Math.Abs(addressResp.Longitude - addressNew.Longitude) <
-                                                            0.0001 &&
-                                                            addressResp.RouteDestinationId != null).ForEach(addrResp =>
-                    {
-                        arrDestinationIds.Add((int) addrResp.RouteDestinationId);
-                    });
+                    response.Addresses.Where(addressResp =>
+                            (addressResp.AddressString == addressNew.AddressString ||
+                             addressNew.AddressString == null) &&
+                            Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
+                            Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
+                            addressResp.RouteDestinationId != null)
+                        .ForEach(addrResp => { arrDestinationIds.Add((int)addrResp.RouteDestinationId); });
                 });
+            }
 
             return arrDestinationIds.ToArray();
         }
@@ -3119,18 +3119,18 @@ namespace Route4MeSDK
             var arrDestinationIds = new List<int>();
 
             if (response.Item1 != null && response.Item1.Addresses != null)
+            {
                 addresses.ForEach(addressNew =>
                 {
-                    response.Item1.Addresses.Where(addressResp => addressResp.AddressString == addressNew.AddressString &&
-                                                            Math.Abs(addressResp.Latitude - addressNew.Latitude) <
-                                                            0.0001 &&
-                                                            Math.Abs(addressResp.Longitude - addressNew.Longitude) <
-                                                            0.0001 &&
-                                                            addressResp.RouteDestinationId != null).ForEach(addrResp =>
-                                                            {
-                                                                arrDestinationIds.Add((int)addrResp.RouteDestinationId);
-                                                            });
+                    response.Item1.Addresses.Where(addressResp =>
+                            (addressResp.AddressString == addressNew.AddressString ||
+                             addressNew.AddressString == null) &&
+                            Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
+                            Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
+                            addressResp.RouteDestinationId != null)
+                        .ForEach(addrResp => { arrDestinationIds.Add((int)addrResp.RouteDestinationId); });
                 });
+            }
 
             return new Tuple<int[], string>(arrDestinationIds.ToArray(), response.Item2);
         }
