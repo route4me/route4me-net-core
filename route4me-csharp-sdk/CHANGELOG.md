@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.5.3.0] - 2023-05-05
+AddRouteDestinations fixed: supported addresses with no AddressString
+
 ## [7.5.2.0] - 2023-04-20
 Switched from long to string (with timestamp inside) for actual_travel_time in RouteFilterResponse
 
