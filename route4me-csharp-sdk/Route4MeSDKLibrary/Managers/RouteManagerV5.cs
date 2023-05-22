@@ -51,26 +51,6 @@ namespace Route4MeSDKLibrary.Managers
             return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }
 
-
-        public DataObjectRoute GetRouteById(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
-        {
-            return GetJsonObjectFromAPI<DataObjectRoute>(routeParameters,
-                R4MEInfrastructureSettingsV5.Routes,
-                HttpMethodType.Get,
-                false,
-                true,
-                out resultResponse);
-        }
-
-
-        public async Task<Tuple<DataObjectRoute, ResultResponse>> GetRouteByIdAsync(RouteParametersQuery routeParameters)
-        {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
-                R4MEInfrastructureSettingsV5.Routes,
-                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
-            return new Tuple<DataObjectRoute, ResultResponse>(result.Item1, result.Item2);
-        }
-
         /// <summary>
         /// Retrieves a paginated list of the routes.
         /// </summary>
