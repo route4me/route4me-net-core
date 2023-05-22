@@ -917,18 +917,6 @@ namespace Route4MeSDK
             return _routeManager.GetRoutesAsync(routeParameters);
         }
 
-
-        public DataObjectRoute GetRouteById(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
-        {
-            return _routeManager.GetRouteById(routeParameters, out resultResponse);
-        }
-
-
-        public Task<Tuple<DataObjectRoute, ResultResponse>> GetRouteByIdAsync(RouteParametersQuery routeParameters)
-        {
-            return _routeManager.GetRouteByIdAsync(routeParameters);
-        }
-
         /// <summary>
         /// Retrieves a paginated list of the routes.
         /// </summary>
