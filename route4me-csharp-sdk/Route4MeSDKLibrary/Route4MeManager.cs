@@ -3084,8 +3084,7 @@ namespace Route4MeSDK
                 addresses.ForEach(addressNew =>
                 {
                     response.Addresses.Where(addressResp =>
-                            (addressResp.AddressString == addressNew.AddressString ||
-                             addressNew.AddressString == null) &&
+                            (string.IsNullOrEmpty(addressNew.AddressString) || addressNew.AddressString.Equals(addressResp.AddressString, StringComparison.InvariantCultureIgnoreCase)) &&
                             Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
                             Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
                             addressResp.RouteDestinationId != null)
@@ -3123,8 +3122,7 @@ namespace Route4MeSDK
                 addresses.ForEach(addressNew =>
                 {
                     response.Item1.Addresses.Where(addressResp =>
-                            (addressResp.AddressString == addressNew.AddressString ||
-                             addressNew.AddressString == null) &&
+                            (string.IsNullOrEmpty(addressNew.AddressString) || addressNew.AddressString.Equals(addressResp.AddressString, StringComparison.InvariantCultureIgnoreCase)) &&
                             Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
                             Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
                             addressResp.RouteDestinationId != null)
