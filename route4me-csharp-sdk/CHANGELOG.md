@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.6.0.0] - 2023-05-23
+Get rid of Get rid of GetRouteById V5.
+AddRouteDestinations improvements
+
 ## [7.5.3.0] - 2023-05-05
 AddRouteDestinations fixed: supported addresses with no AddressString
 
