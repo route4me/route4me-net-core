@@ -78,6 +78,8 @@
 
         public const string TimePrediction = MainHost + "/api.v4/predict-optimization-time.php";
 
+        public const string GetOrdersUpdate = MainHost + "/api.v4/orders/changes.php";
+
         #endregion
     }
 

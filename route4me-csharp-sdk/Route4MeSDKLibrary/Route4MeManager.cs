@@ -18,6 +18,7 @@ using Route4MeSDKLibrary.DataTypes.Internal;
 using Route4MeSDKLibrary.DataTypes.Internal.QueryTypes;
 using Route4MeSDKLibrary.DataTypes.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.Internal.Response;
+using Route4MeSDKLibrary.QueryTypes;
 using Address = Route4MeSDK.DataTypes.Address;
 using AddressBookContact = Route4MeSDK.DataTypes.AddressBookContact;
 using AddressBookContactsResponse = Route4MeSDK.DataTypes.AddressBookContactsResponse;
@@ -4893,6 +4894,34 @@ namespace Route4MeSDK
                 false,
                 false);
         }
+
+        /// <summary>
+        ///     Gets the Orders Updates
+        /// </summary>
+        /// <returns> List of the Orders updates </returns>
+        public OrdersUpdatesResponse GetOrdersUpdates(OrderUpdatesParameters parameters, out string errorString)
+        {
+            var response = GetJsonObjectFromAPI<OrdersUpdatesResponse>(parameters,
+                R4MEInfrastructureSettings.GetOrdersUpdate,
+                HttpMethodType.Get,
+                out errorString);
+
+            return response;
+        }
+
+        /// <summary>
+        ///     Gets the Orders Updates
+        /// </summary>
+        /// <returns> List of the Orders updates </returns>
+        public Task<Tuple<OrdersUpdatesResponse, string>> GetOrdersUpdatesAsync(OrderUpdatesParameters parameters)
+        {
+            var response = GetJsonObjectFromAPIAsync<OrdersUpdatesResponse>(parameters,
+                R4MEInfrastructureSettings.GetOrdersUpdate,
+                HttpMethodType.Get);
+
+            return response;
+        }
+
 
         #endregion
 
