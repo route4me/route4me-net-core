@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.7.0.0] - 2023-07-04
+/api.v4/orders/changes.php is supported
+
 ## [7.6.0.0] - 2023-05-23
 Get rid of Get rid of GetRouteById V5.
 AddRouteDestinations improvements
