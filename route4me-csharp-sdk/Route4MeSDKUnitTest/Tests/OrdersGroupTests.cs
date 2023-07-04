@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDKLibrary.DataTypes;
+using Route4MeSDKLibrary.QueryTypes;
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -640,6 +642,32 @@ namespace Route4MeSDKUnitTest.Tests
             Assert.IsNotNull(
                 result,
                 "AddOrdersToRouteTest failed. " + errorString);
+        }
+
+        [Test]
+        public void GetOrdersUpdatesTest()
+        {
+            if (_skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var orderParams = new Order
+            {
+                Address1 = "201 LAVACA ST APT 746, AUSTIN, TX, 78701, US",
+                ExtFieldCustomData = new Dictionary<string, string>(){ { "Assigned_Inspector", "12345" } }
+            };
+            var order = route4Me.AddOrder(orderParams, out var errorString1);
+
+            var newAssignedInspector = "123456";
+            order.ExtFieldCustomData["Assigned_Inspector"] = newAssignedInspector;
+            var updatedOrder = route4Me.UpdateOrder(order, out var errorString3);
+            updatedOrder = route4Me.GetOrderByID(new OrderParameters() { order_id = updatedOrder.OrderId.ToString() }, out var errIgnored);
+
+            var secondsIn10mins = 10 * 60;
+            var lastKnownTs = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - secondsIn10mins;
+            var orders = route4Me.GetOrdersUpdates(new OrderUpdatesParameters(){ LastKnownTs = lastKnownTs }, out var errorString4);
+
+            Assert.That(orders.Data.Where(x => x.OrderId == order.OrderId && x.Data != null && x.Data.TryGetValue("Assigned_Inspector", out var assignedInspector) && assignedInspector == newAssignedInspector).Any);
         }
 
         [OneTimeTearDown]
