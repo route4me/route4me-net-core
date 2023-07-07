@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6637,16 +6638,45 @@ namespace Route4MeSDK
                             }
                             else
                             {
-                                ErrorResponse errorResponse;
+                                ErrorResponse errorResponse = default;
 
                                 try
                                 {
-                                    var streamTask = ((StreamContent) response.Result.Content).ReadAsStreamAsync();
-                                    streamTask.Wait();
+                                    if (response.Result.Content is StreamContent)
+                                    {
+                                        var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                        streamTask.Wait();
 
-                                    errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+                                        errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+                                    }
+                                    else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
+                                    {
+                                        var content2 = response.Result.Content;
+
+                                        //jobId = ExtractJobId(response.Result);
+
+                                        if (isString)
+                                        {
+                                            result = content2.ReadAsStreamAsync().Result.ReadString() as T;
+                                        }
+                                        else
+                                        {
+                                            result = parseWithNewtonJson
+                                                ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
+                                                : content2.ReadAsStreamAsync().Result.ReadObject<T>();
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                            errorResponse = new ErrorResponse();
+                                            errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
+                                            if ((response?.Exception?.Message ?? null)!=null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
+                                            
+                                    }
+                                        
                                 }
-                                catch (Exception) // If cannot read ErrorResponse from the stream, try another way
+                                catch (Exception ex) // If cannot read ErrorResponse from the stream, try another way
                                 {
                                     if ((response.Result?.ReasonPhrase) != null)
                                     {
