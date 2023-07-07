@@ -28,10 +28,10 @@ namespace Route4MeSDK.Examples
 
             var customNotes = new Dictionary<string, string>()
             {
-                {"custom_note_type[11]", "slippery"},
-                {"custom_note_type[10]", "Backdoor"},
-                {"strUpdateType", "dropoff"},
-                {"strNoteContents", "test1111"}
+                { "custom_note_type[11]", "slippery" },
+                { "custom_note_type[10]", "Backdoor" },
+                { "strUpdateType", "dropoff" },
+                { "strNoteContents", "test1111" }
             };
 
             var response = route4Me.AddCustomNoteToRoute(noteParameters, customNotes, out string errorString);

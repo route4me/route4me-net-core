@@ -18,7 +18,7 @@ namespace Route4MeSDK.DataTypes
         /// Time-consuming prediction for an action model.
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
-        public long Value { get; set; }
+        public long? Value { get; set; }
 
         /// <summary>
         /// Time unit (e.g. 'seconds', 'minutes')

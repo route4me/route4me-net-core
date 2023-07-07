@@ -19,7 +19,7 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var circleTerritoryParameters = new AvoidanceZoneParameters
+            var circleTerritoryParameters = new TerritoryZoneParameters
             {
                 TerritoryName = "Test Circle Territory",
                 TerritoryColor = "ff0000",
@@ -42,7 +42,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             Assert.IsNotNull(circleTerritory, "Add Circle Territory test failed. " + errorString);
 
-            var polyTerritoryParameters = new AvoidanceZoneParameters
+            var polyTerritoryParameters = new TerritoryZoneParameters
             {
                 TerritoryName = "Test Poly Territory",
                 TerritoryColor = "ff0000",
@@ -70,7 +70,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             if (polyTerritory != null) _lsTerritories.Add(polyTerritory.TerritoryId);
 
-            var rectTerritoryParameters = new AvoidanceZoneParameters
+            var rectTerritoryParameters = new TerritoryZoneParameters
             {
                 TerritoryName = "Test Rect Territory",
                 TerritoryColor = "ff0000",
@@ -91,7 +91,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             Assert.IsNotNull(
                 rectTerritory,
-                "Add Rectangular Avoidance Zone test failed. " + errorString);
+                "Add Rectangular Territory Zone test failed. " + errorString);
 
             if (_lsTerritories != null) _lsTerritories.Add(rectTerritory.TerritoryId);
         }
@@ -101,7 +101,7 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var circleTerritoryParameters = new AvoidanceZoneParameters
+            var circleTerritoryParameters = new TerritoryZoneParameters
             {
                 TerritoryName = "Test Circle Territory",
                 TerritoryColor = "ff0000",
@@ -130,14 +130,14 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var territoryQuery = new AvoidanceZoneQuery();
+            var territoryQuery = new TerritoryQuery();
 
             // Run the query
             var territories = route4Me.GetTerritories(
                 territoryQuery,
                 out var errorString);
 
-            Assert.That(territories, Is.InstanceOf<AvoidanceZone[]>(), "GetTerritoriesTest failed. " + errorString);
+            Assert.That(territories, Is.InstanceOf<TerritoryZone[]>(), "GetTerritoriesTest failed. " + errorString);
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var territoryId = _lsTerritories.Count > 1 ? _lsTerritories[1] : "";
 
-            var territoryParameters = new AvoidanceZoneParameters
+            var territoryParameters = new TerritoryZoneParameters
             {
                 TerritoryId = territoryId,
                 TerritoryName = "Test Territory Updated",
@@ -196,7 +196,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var territoryId = _lsTerritories.Count > 0 ? _lsTerritories[0] : "";
 
-            var territoryQuery = new AvoidanceZoneQuery
+            var territoryQuery = new TerritoryQuery
             {
                 TerritoryId = territoryId
             };
@@ -216,7 +216,7 @@ namespace Route4MeSDKUnitTest.Tests
             {
                 var route4Me = new Route4MeManager(c_ApiKey);
 
-                var territoryQuery = new AvoidanceZoneQuery
+                var territoryQuery = new TerritoryQuery
                 {
                     TerritoryId = territoryId
                 };

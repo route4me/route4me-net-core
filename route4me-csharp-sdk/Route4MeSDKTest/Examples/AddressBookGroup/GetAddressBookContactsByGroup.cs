@@ -18,20 +18,20 @@ namespace Route4MeSDK.Examples
 
             var addressBookGroupParameters = new AddressBookGroupParameters()
             {
-                groupID = groupId,
+                GroupId = groupId,
                 Fields = new string[] { "address_id" }
             };
 
             // Run the query
             var response = route4Me
                 .GetAddressBookContactsByGroup(
-                addressBookGroupParameters,
-                out string errorString);
+                    addressBookGroupParameters,
+                    out string errorString);
 
             Console.WriteLine((response?.Results?.Length ?? 0) < 1
                 ? "Cannot retrieve contacts by group " + groupId + Environment.NewLine + errorString
                 : "Retrieved the contacts by group " + groupId + ": " + response.Results.Length
-                );
+            );
 
             RemoveAddressBookGroups();
         }

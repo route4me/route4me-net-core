@@ -16,6 +16,7 @@ namespace Route4MeSDK.Examples
             Route4MeManager route4Me = new Route4MeManager("11111111111111111111111111111111");
 
             #region ======= Add scheduled address book locations to an user account ================================
+
             string sAddressFile = @"Data/orders_1000.csv";
 
             using (TextReader reader = File.OpenText(sAddressFile))
@@ -69,13 +70,16 @@ namespace Route4MeSDK.Examples
                     //iCount++;
                     //if (iCount == 60) break;
                 }
-            };
+            }
+
+            ;
 
             #endregion
 
             Thread.Sleep(2000);
 
             #region ======= Get Hybrid Optimization ================================
+
             TimeSpan tsp1day = new TimeSpan(1, 0, 0, 0);
             List<string> lsScheduledDays = new List<string>();
             DateTime curDate = DateTime.Now;
@@ -85,47 +89,53 @@ namespace Route4MeSDK.Examples
                 lsScheduledDays.Add(curDate.ToString("yyyy-MM-dd"));
             }
 
-            Address[] Depots = new Address[] {
-                new Address {
-                        AddressString = "2017 Ambler Ave, Abilene, TX, 79603-2239",
-                        IsDepot = true,
-                        Latitude = 32.474395,
-                        Longitude = -99.7447021,
-                        CurbsideLatitude = 32.474395,
-                        CurbsideLongitude = -99.7447021
-                    },
-                new Address {
-                        AddressString = "807 Ridge Rd, Alamo, TX, 78516-9596",
-                        IsDepot = true,
-                        Latitude = 26.170834,
-                        Longitude = -98.116201,
-                        CurbsideLatitude = 26.170834,
-                        CurbsideLongitude = -98.116201
-                    },
-                new Address {
-                        AddressString = "1430 W Amarillo Blvd, Amarillo, TX, 79107-5505",
-                        IsDepot = true,
-                        Latitude = 35.221969,
-                        Longitude = -101.835288,
-                        CurbsideLatitude = 35.221969,
-                        CurbsideLongitude = -101.835288
-                    },
-                new Address {
-                        AddressString = "3611 Ne 24Th Ave, Amarillo, TX, 79107-7242",
-                        IsDepot = true,
-                        Latitude = 35.236626,
-                        Longitude = -101.795117,
-                        CurbsideLatitude = 35.236626,
-                        CurbsideLongitude = -101.795117
-                    },
-                new Address {
-                        AddressString = "1525 New York Ave, Arlington, TX, 76010-4723",
-                        IsDepot = true,
-                        Latitude = 32.720524,
-                        Longitude = -97.080195,
-                        CurbsideLatitude = 32.720524,
-                        CurbsideLongitude = -97.080195
-                    }
+            Address[] Depots = new Address[]
+            {
+                new Address
+                {
+                    AddressString = "2017 Ambler Ave, Abilene, TX, 79603-2239",
+                    IsDepot = true,
+                    Latitude = 32.474395,
+                    Longitude = -99.7447021,
+                    CurbsideLatitude = 32.474395,
+                    CurbsideLongitude = -99.7447021
+                },
+                new Address
+                {
+                    AddressString = "807 Ridge Rd, Alamo, TX, 78516-9596",
+                    IsDepot = true,
+                    Latitude = 26.170834,
+                    Longitude = -98.116201,
+                    CurbsideLatitude = 26.170834,
+                    CurbsideLongitude = -98.116201
+                },
+                new Address
+                {
+                    AddressString = "1430 W Amarillo Blvd, Amarillo, TX, 79107-5505",
+                    IsDepot = true,
+                    Latitude = 35.221969,
+                    Longitude = -101.835288,
+                    CurbsideLatitude = 35.221969,
+                    CurbsideLongitude = -101.835288
+                },
+                new Address
+                {
+                    AddressString = "3611 Ne 24Th Ave, Amarillo, TX, 79107-7242",
+                    IsDepot = true,
+                    Latitude = 35.236626,
+                    Longitude = -101.795117,
+                    CurbsideLatitude = 35.236626,
+                    CurbsideLongitude = -101.795117
+                },
+                new Address
+                {
+                    AddressString = "1525 New York Ave, Arlington, TX, 76010-4723",
+                    IsDepot = true,
+                    Latitude = 32.720524,
+                    Longitude = -97.080195,
+                    CurbsideLatitude = 32.720524,
+                    CurbsideLongitude = -97.080195
+                }
             };
 
             string errorString1;
@@ -203,7 +213,8 @@ namespace Route4MeSDK.Examples
         {
             if (result == null)
             {
-                Console.WriteLine("AddAddressBookContact error: {0}", errorString); return;
+                Console.WriteLine("AddAddressBookContact error: {0}", errorString);
+                return;
             }
 
             string addressId = "";
@@ -218,6 +229,7 @@ namespace Route4MeSDK.Examples
                 Order order = (Order)result;
                 addressId = order.OrderId.ToString();
             }
+
             Console.WriteLine("");
 
             if (result != null)

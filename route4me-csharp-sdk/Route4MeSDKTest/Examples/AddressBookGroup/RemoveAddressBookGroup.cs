@@ -18,7 +18,7 @@ namespace Route4MeSDK.Examples
 
             var addressGroupParams = new AddressBookGroupParameters()
             {
-                groupID = groupId
+                GroupId = groupId
             };
 
             var response = route4Me
@@ -26,9 +26,9 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 (response?.Status ?? false)
-                ? "Removed the address book group " + groupId
-                : "Cannot remove the address book group " + groupId
-                );
+                    ? "Removed the address book group " + groupId
+                    : "Cannot remove the address book group " + groupId
+            );
         }
     }
 }

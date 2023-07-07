@@ -14,13 +14,13 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
         [Test]
         public void OrdersArchiveTest()
         {
-            var route4Me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+            var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
 
             var parameters = new ArchiveOrdersParameters()
             {
                 PerPage = 100
             };
-            var result = route4Me.ArchiveOrders(parameters, out _);
+            var result = route4me.ArchiveOrders(parameters, out var resultResponse);
             Assert.That(result.Items, Is.Not.Empty);
         }
 
@@ -41,19 +41,19 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
         [Test]
         public void OrdersHistoryTest()
         {
-            var route4MeV5 = new Route4MeManagerV5(ApiKeys.ActualApiKey);
-            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+            var route4meV5 = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+            var route4me = new Route4MeManager(ApiKeys.ActualApiKey);
 
-            var orders = route4Me.GetOrders(new OrderParameters() { Limit = 1 }, out _, out _);
+            var orders = route4me.GetOrders(new OrderParameters() { Limit = 1 }, out _, out _);
             Assert.True(orders.Length > 0);
 
             var parameters = new OrderHistoryParameters()
             {
-                OrderId = orders.Single().OrderId.Value, 
+                OrderId = orders.Single().OrderId,
                 TrackingNumber = orders.Single().TrackingNumber
             };
 
-            var result = route4MeV5.GetOrderHistory(parameters, out _);
+            var result = route4meV5.GetOrderHistory(parameters, out var resultResponse);
 
             Assert.That(result.Results, Is.Not.Empty);
         }
@@ -61,19 +61,19 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
         [Test]
         public async Task OrderHistoryAsyncTest()
         {
-            var route4MeV5 = new Route4MeManagerV5(ApiKeys.ActualApiKey);
-            var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
+            var route4meV5 = new Route4MeManagerV5(ApiKeys.ActualApiKey);
+            var route4me = new Route4MeManager(ApiKeys.ActualApiKey);
 
-            var orders = await route4Me.GetOrdersAsync(new OrderParameters() { Limit = 1 });
+            var orders = await route4me.GetOrdersAsync(new OrderParameters() { Limit = 1 });
             Assert.True(orders.Item1.Length == 1);
 
             var parameters = new OrderHistoryParameters()
             {
-                OrderId = orders.Item1.Single().OrderId.Value,
+                OrderId = orders.Item1.Single().OrderId,
                 TrackingNumber = orders.Item1.Single().TrackingNumber
             };
 
-            var result = await route4MeV5.GetOrderHistoryAsync(parameters);
+            var result = await route4meV5.GetOrderHistoryAsync(parameters);
 
             Assert.That(result.Item1.Results, Is.Not.Empty);
         }

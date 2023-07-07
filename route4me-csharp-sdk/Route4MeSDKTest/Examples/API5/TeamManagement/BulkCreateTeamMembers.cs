@@ -2,6 +2,7 @@
 using System.Linq;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 
 namespace Route4MeSDK.Examples
 {
@@ -45,7 +46,7 @@ namespace Route4MeSDK.Examples
 
             var members = new TeamRequest[] { memberParameters1, memberParameters2 };
 
-            var result = route4Me.BulkCreateTeamMembers(members, out ResultResponse errorResponse);
+            var result = route4Me.BulkCreateTeamMembers(members, Conflicts.Fail, out ResultResponse errorResponse);
 
             Console.WriteLine(result.Code);
 

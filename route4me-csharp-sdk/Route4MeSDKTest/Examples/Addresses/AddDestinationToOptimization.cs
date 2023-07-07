@@ -21,11 +21,13 @@ namespace Route4MeSDK.Examples
             // Prepare the address that we are going to add to an existing route optimization
             Address[] addresses = new Address[]
             {
-                new Address() { AddressString = "717 5th Ave New York, NY 10021",
-                                Alias         = "Giorgio Armani",
-                                Latitude      = 40.7669692,
-                                Longitude     = -73.9693864,
-                                Time          = 0
+                new Address()
+                {
+                    AddressString = "717 5th Ave New York, NY 10021",
+                    Alias = "Giorgio Armani",
+                    Latitude = 40.7669692,
+                    Longitude = -73.9693864,
+                    Time = 0
                 }
             };
 

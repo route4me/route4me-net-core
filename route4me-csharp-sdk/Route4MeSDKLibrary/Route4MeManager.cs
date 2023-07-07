@@ -5,8 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +18,7 @@ using Route4MeSDKLibrary.DataTypes.Internal;
 using Route4MeSDKLibrary.DataTypes.Internal.QueryTypes;
 using Route4MeSDKLibrary.DataTypes.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.Internal.Response;
+using Route4MeSDKLibrary.QueryTypes;
 using Address = Route4MeSDK.DataTypes.Address;
 using AddressBookContact = Route4MeSDK.DataTypes.AddressBookContact;
 using AddressBookContactsResponse = Route4MeSDK.DataTypes.AddressBookContactsResponse;
@@ -79,7 +78,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -97,7 +96,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Post);
+                HttpMethodType.Post, null, false, true);
         }
 
         /// <summary>
@@ -116,7 +115,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -134,7 +133,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject[]>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Post);
+                HttpMethodType.Post, null, false, true);
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return result;
@@ -162,7 +161,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, false, true);
         }
 
         /// <summary>
@@ -179,7 +178,7 @@ namespace Route4MeSDK
         {
             var dataObjectOptimizations = GetJsonObjectFromAPI<DataObjectOptimizations>(queryParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return dataObjectOptimizations?.Optimizations;
@@ -198,7 +197,7 @@ namespace Route4MeSDK
         {
             var dataObjectOptimizations = await GetJsonObjectFromAPIAsync<DataObjectOptimizations>(queryParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             return new Tuple<DataObject[], string>(dataObjectOptimizations.Item1?.Optimizations,
                 dataObjectOptimizations.Item2);
@@ -223,6 +222,18 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Time prediction by action type ('matrix', 'optimization', 'direction')
+        /// </summary>
+        /// <param name="queryParameters">Optimization parameters</param>
+        /// <returns>Optimization time-consuming prediction</returns>
+        public Task<Tuple<OptimizationTimePrediction, string>> GetOptimizationPredictionAsync(OptimizationParameters queryParameters)
+        {
+            return GetJsonObjectFromAPIAsync<OptimizationTimePrediction>(queryParameters,
+                R4MEInfrastructureSettings.TimePrediction,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
         ///     Updates an existing optimization problem
         /// </summary>
         /// <param name="optimizationParameters">Parameters for updating an optimization</param>
@@ -234,7 +245,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -249,7 +260,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put);
+                HttpMethodType.Put, null, false, true);
         }
 
         /// <summary>
@@ -363,7 +374,7 @@ namespace Route4MeSDK
         {
             var result = GetJsonObjectFromAPI<DataObject>(hybridOptimizationParameters,
                 R4MEInfrastructureSettings.HybridOptimization,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return result;
@@ -378,7 +389,7 @@ namespace Route4MeSDK
         {
             return GetJsonObjectFromAPIAsync<DataObject>(hybridOptimizationParameters,
                 R4MEInfrastructureSettings.HybridOptimization,
-                HttpMethodType.Get);
+                HttpMethodType.Get, null, false, true);
         }
 
         /// <summary>
@@ -440,6 +451,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
+                null, false, true,
                 out errorString);
 
             #region Shift the route date and route time to make them as shown in the web app.
@@ -461,7 +473,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             #region Shift the route date and route time to make them as shown in the web app.
 
@@ -502,6 +514,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
+                null, false, true,
                 out errorString);
 
             if (result != null && result.GetType() == typeof(DataObjectRoute[]) && routeParameters.ShiftByTimeZone)
@@ -527,7 +540,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             if (result.Item1 != null && result.Item1.GetType() == typeof(DataObjectRoute[]) && routeParameters.ShiftByTimeZone)
             {
@@ -558,7 +571,7 @@ namespace Route4MeSDK
 
             var response = GetJsonObjectFromAPI<DataObject>(genericParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get,
+                HttpMethodType.Get, null, false, true,
                 out errorString);
 
             return response != null && response.Routes != null && response.Routes.Length > 0
@@ -579,7 +592,7 @@ namespace Route4MeSDK
 
             var response = await GetJsonObjectFromAPIAsync<DataObject>(genericParameters,
                 R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Get).ConfigureAwait(false);
+                HttpMethodType.Get, null, false, true).ConfigureAwait(false);
 
             return new Tuple<string, string>(response.Item1?.Routes?.FirstOrDefault()?.RouteId, response.Item2);
         }
@@ -595,6 +608,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put,
+                null, false, true,
                 out errorString);
 
             if (result != null && result.GetType() == typeof(DataObjectRoute) && routeParameters.ShiftByTimeZone)
@@ -612,7 +626,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(routeParameters,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             if (result.Item1 != null && result.Item1.GetType() == typeof(DataObjectRoute) && routeParameters.ShiftByTimeZone)
                 result = new Tuple<DataObjectRoute, string>(ShiftRouteDateTimeByTz(result.Item1), result.Item2);
@@ -720,7 +734,7 @@ namespace Route4MeSDK
 
                 initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
                 (genParams, R4MEInfrastructureSettings.RouteHost,
-                    HttpMethodType.Put, content, out errorString);
+                    HttpMethodType.Put, content, false, true, out errorString);
 
                 if (initialRoute == null) return null;
             }
@@ -755,7 +769,7 @@ namespace Route4MeSDK
 
                     initialRoute = GetJsonObjectFromAPI<DataObjectRoute>
                     (genParams, R4MEInfrastructureSettings.RouteHost,
-                        HttpMethodType.Put, content, out errorString);
+                        HttpMethodType.Put, content, false, true, out errorString);
                 }
             }
 
@@ -959,7 +973,7 @@ namespace Route4MeSDK
 
                 var res = await GetJsonObjectFromAPIAsync<DataObjectRoute>
                 (genParams, R4MEInfrastructureSettings.RouteHost,
-                    HttpMethodType.Put, content, false, false).ConfigureAwait(false);
+                    HttpMethodType.Put, content, false, true).ConfigureAwait(false);
                 initialRoute = res.Item1;
 
                 if (initialRoute == null) return res;
@@ -995,7 +1009,7 @@ namespace Route4MeSDK
 
                     var res = await GetJsonObjectFromAPIAsync<DataObjectRoute>
                     (genParams, R4MEInfrastructureSettings.RouteHost,
-                        HttpMethodType.Put, content, false, false).ConfigureAwait(false);
+                        HttpMethodType.Put, content, false, true).ConfigureAwait(false);
 
                     initialRoute = res.Item1;
                 }
@@ -1319,6 +1333,7 @@ namespace Route4MeSDK
             var result = GetJsonObjectFromAPI<DataObjectRoute>(queryParams,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put,
+                null, false, true,
                 out errorString);
 
             if (result != null && result.GetType() == typeof(DataObjectRoute) && queryParams.ShiftByTimeZone)
@@ -1341,7 +1356,7 @@ namespace Route4MeSDK
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute>(queryParams,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             if (result.Item1 != null && result.Item1.GetType() == typeof(DataObjectRoute) && queryParams.ShiftByTimeZone)
                 result = new Tuple<DataObjectRoute, string>(ShiftRouteDateTimeByTz(result.Item1), result.Item2);
@@ -1386,6 +1401,7 @@ namespace Route4MeSDK
             var route1 = GetJsonObjectFromAPI<DataObjectRoute>(request,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put,
+                null, false, true,
                 out errorString);
 
 
@@ -1429,7 +1445,7 @@ namespace Route4MeSDK
 
             var route1 = await GetJsonObjectFromAPIAsync<DataObjectRoute>(request,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
 
             if (route1.Item1 != null && route1.Item1.GetType() == typeof(DataObjectRoute) && rParams.ShiftByTimeZone)
@@ -1605,7 +1621,7 @@ namespace Route4MeSDK
                 propInfo.SetValue(request, propInfo.GetValue(addressParameters));
 
             var dataObject = GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put, out errorString);
+                HttpMethodType.Put, null, false, true, out errorString);
 
             return dataObject?.Addresses?.Where(x => x.RouteDestinationId == addressParameters.RouteDestinationId)
                 .FirstOrDefault();
@@ -1627,7 +1643,7 @@ namespace Route4MeSDK
                 propInfo.SetValue(request, propInfo.GetValue(addressParameters));
 
             var dataObject = await GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             return new Tuple<Address, string>(dataObject.Item1?.Addresses?.Where(x => x.RouteDestinationId == addressParameters.RouteDestinationId)
                 .FirstOrDefault(), dataObject.Item2);
@@ -1682,7 +1698,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Get,
                 false,
-                false,
+                true,
                 out errorString);
 
             return result;
@@ -1704,7 +1720,7 @@ namespace Route4MeSDK
                 HttpMethodType.Get,
                 null,
                 false,
-                false);
+                true);
         }
 
         /// <summary>
@@ -1860,11 +1876,12 @@ namespace Route4MeSDK
         #region Users
 
         /// <summary>
-        ///     Returns the object containing array of the user objects
+        ///     Returns the object containing array of the user objects (deprecated)
         /// </summary>
         /// <param name="parameters">Empty GenericParameters object</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>The object of the type GetUsersResponse</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.GetTeamMembers instead.")]
         public GetUsersResponse GetUsers(GenericParameters parameters, out string errorString)
         {
             var result = GetJsonObjectFromAPI<GetUsersResponse>(parameters,
@@ -1876,10 +1893,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns the object containing array of the user objects
+        ///     Returns the object containing array of the user objects (deprecated)
         /// </summary>
         /// <param name="parameters">Empty GenericParameters object</param>
         /// <returns>The object of the type GetUsersResponse</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.GetTeamMembersAsync instead.")]
         public Task<Tuple<GetUsersResponse, string>> GetUsersAsync(GenericParameters parameters)
         {
             return GetJsonObjectFromAPIAsync<GetUsersResponse>(parameters,
@@ -1888,11 +1906,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Creates new sub-user(member) in the user's account
+        ///     Creates new sub-user(member) in the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.CreateTeamMember instead.")]
         public MemberResponseV4 CreateUser(MemberParametersV4 memParams, out string errorString)
         {
             return GetJsonObjectFromAPI<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost,
@@ -1900,10 +1919,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Creates new sub-user(member) in the user's account
+        ///     Creates new sub-user(member) in the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.CreateTeamMemberAsync instead.")]
         public Task<Tuple<MemberResponseV4, string>> CreateUserAsync(MemberParametersV4 memParams)
         {
             return GetJsonObjectFromAPIAsync<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost,
@@ -1911,11 +1931,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Removes a sub-user(member) from the user's account
+        ///     Removes a sub-user(member) from the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>True if a member was successfuly removed from the user's account</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.RemoveTeamMember instead.")]
         public bool UserDelete(MemberParametersV4 memParams, out string errorString)
         {
             var response = GetJsonObjectFromAPI<StatusResponse>(
@@ -1928,10 +1949,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Removes a sub-user(member) from the user's account
+        ///     Removes a sub-user(member) from the user's account (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <returns>True if a member was successfuly removed from the user's account</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.RemoveTeamMemberAsync instead.")]
         public async Task<Tuple<bool, string>> UserDeleteAsync(MemberParametersV4 memParams)
         {
             var response = await GetJsonObjectFromAPIAsync<StatusResponse>(
@@ -1943,11 +1965,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Return a user by the parameter member_id
+        ///     Return a user by the parameter member_id (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.GetTeamMemberById instead.")]
         public MemberResponseV4 GetUserById(MemberParametersV4 memParams, out string errorString)
         {
             return GetJsonObjectFromAPI<MemberResponseV4>(
@@ -1958,10 +1981,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Return a user by the parameter member_id
+        ///     Return a user by the parameter member_id (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4 containg the parameter member_id</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.GetTeamMemberByIdAsync instead.")]
         public Task<Tuple<MemberResponseV4, string>> GetUserByIdAsync(MemberParametersV4 memParams)
         {
             return GetJsonObjectFromAPIAsync<MemberResponseV4>(
@@ -1972,11 +1996,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a user
+        ///     Updates a user (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <param name="errorString">Error message text</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.UpdateTeamMember instead.")]
         public MemberResponseV4 UserUpdate(MemberParametersV4 memParams, out string errorString)
         {
             return GetJsonObjectFromAPI<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost,
@@ -1984,10 +2009,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a user
+        ///     Updates a user (deprecated)
         /// </summary>
         /// <param name="memParams">An object of the type MemberParametersV4</param>
         /// <returns>An object of the type MemberResponseV4</returns>
+        [Obsolete("The method is obsolete, use the method TeamManagementManagerV5.UpdateTeamMemberAsync instead.")]
         public Task<Tuple<MemberResponseV4, string>> UserUpdateAsync(MemberParametersV4 memParams)
         {
             return GetJsonObjectFromAPIAsync<MemberResponseV4>(memParams, R4MEInfrastructureSettings.GetUsersHost, HttpMethodType.Put);
@@ -3049,24 +3075,23 @@ namespace Route4MeSDK
 
             var response = GetJsonObjectFromAPI<DataObject>(request,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put,
+                HttpMethodType.Put, null, false, true,
                 out errorString);
 
             var arrDestinationIds = new List<int>();
 
             if (response != null && response.Addresses != null)
+            {
                 addresses.ForEach(addressNew =>
                 {
-                    response.Addresses.Where(addressResp => addressResp.AddressString == addressNew.AddressString &&
-                                                            Math.Abs(addressResp.Latitude - addressNew.Latitude) <
-                                                            0.0001 &&
-                                                            Math.Abs(addressResp.Longitude - addressNew.Longitude) <
-                                                            0.0001 &&
-                                                            addressResp.RouteDestinationId != null).ForEach(addrResp =>
-                    {
-                        arrDestinationIds.Add((int) addrResp.RouteDestinationId);
-                    });
+                    response.Addresses.Where(addressResp =>
+                            (string.IsNullOrEmpty(addressNew.AddressString) || addressNew.AddressString.Equals(addressResp.AddressString, StringComparison.InvariantCultureIgnoreCase)) &&
+                            Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
+                            Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
+                            addressResp.RouteDestinationId != null)
+                        .ForEach(addrResp => { arrDestinationIds.Add((int)addrResp.RouteDestinationId); });
                 });
+            }
 
             return arrDestinationIds.ToArray();
         }
@@ -3089,23 +3114,22 @@ namespace Route4MeSDK
 
             var response = await GetJsonObjectFromAPIAsync<DataObject>(request,
                 R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             var arrDestinationIds = new List<int>();
 
             if (response.Item1 != null && response.Item1.Addresses != null)
+            {
                 addresses.ForEach(addressNew =>
                 {
-                    response.Item1.Addresses.Where(addressResp => addressResp.AddressString == addressNew.AddressString &&
-                                                            Math.Abs(addressResp.Latitude - addressNew.Latitude) <
-                                                            0.0001 &&
-                                                            Math.Abs(addressResp.Longitude - addressNew.Longitude) <
-                                                            0.0001 &&
-                                                            addressResp.RouteDestinationId != null).ForEach(addrResp =>
-                                                            {
-                                                                arrDestinationIds.Add((int)addrResp.RouteDestinationId);
-                                                            });
+                    response.Item1.Addresses.Where(addressResp =>
+                            (string.IsNullOrEmpty(addressNew.AddressString) || addressNew.AddressString.Equals(addressResp.AddressString, StringComparison.InvariantCultureIgnoreCase)) &&
+                            Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
+                            Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
+                            addressResp.RouteDestinationId != null)
+                        .ForEach(addrResp => { arrDestinationIds.Add((int)addrResp.RouteDestinationId); });
                 });
+            }
 
             return new Tuple<int[], string>(arrDestinationIds.ToArray(), response.Item2);
         }
@@ -3151,7 +3175,7 @@ namespace Route4MeSDK
             var addressesList = addresses.Select(x => x.AddressString).ToList();
 
             var dataObject = GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put, out errorString);
+                HttpMethodType.Put, null, false, true, out errorString);
 
             return dataObject?.Addresses?.Where(x => addressesList.Contains(x.AddressString))
                 .Select(y => y.RouteDestinationId).ToArray();
@@ -3174,7 +3198,7 @@ namespace Route4MeSDK
             var addressesList = addresses.Select(x => x.AddressString).ToList();
 
             var dataObject = await GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost,
-                HttpMethodType.Put).ConfigureAwait(false);
+                HttpMethodType.Put, null, false, true).ConfigureAwait(false);
 
             return new Tuple<long?[], string>(dataObject.Item1?.Addresses?.Where(x => addressesList.Contains(x.AddressString))
                 .Select(y => y.RouteDestinationId).ToArray(), dataObject.Item2);
@@ -3298,15 +3322,7 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public int MarkAddressVisited(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsVisited = aParams.IsVisited,
-                MemberId = 1
-            };
-
-            var response = GetJsonObjectFromAPI<string>(request, R4MEInfrastructureSettings.MarkAddressVisited,
+            var response = GetJsonObjectFromAPI<string>(aParams, R4MEInfrastructureSettings.MarkAddressVisited,
                 HttpMethodType.Get, out errorString);
 
             return int.TryParse(response, out _) ? Convert.ToInt32(response) : 0;
@@ -3322,15 +3338,7 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public async Task<Tuple<int, string>> MarkAddressVisitedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsVisited = aParams.IsVisited,
-                MemberId = 1
-            };
-
-            var response = await GetJsonObjectFromAPIAsync<string>(request, R4MEInfrastructureSettings.MarkAddressVisited,
+            var response = await GetJsonObjectFromAPIAsync<string>(aParams, R4MEInfrastructureSettings.MarkAddressVisited,
                 HttpMethodType.Get).ConfigureAwait(false);
 
             return new Tuple<int, string>(int.TryParse(response.Item1, out _) ? Convert.ToInt32(response.Item1) : 0, response.Item2);
@@ -3344,15 +3352,8 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public int MarkAddressDeparted(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             var response = GetJsonObjectFromAPI<MarkAddressDepartedResponse>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.MarkAddressDeparted,
                 HttpMethodType.Get, out errorString);
 
@@ -3366,15 +3367,8 @@ namespace Route4MeSDK
         /// <returns>Number of the marked addresses</returns>
         public async Task<Tuple<int, string>> MarkAddressDepartedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                AddressId = aParams.AddressId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             var response = await GetJsonObjectFromAPIAsync<MarkAddressDepartedResponse>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.MarkAddressDeparted,
                 HttpMethodType.Get).ConfigureAwait(false);
 
@@ -3389,15 +3383,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Address MarkAddressAsMarkedAsVisited(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited
-            };
-
             return GetJsonObjectFromAPI<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put,
                 out errorString);
@@ -3410,15 +3397,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Task<Tuple<Address, string>> MarkAddressAsMarkedAsVisitedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsVisited = aParams.IsVisited
-            };
-
             return GetJsonObjectFromAPIAsync<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put);
         }
@@ -3431,15 +3411,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Address MarkAddressAsMarkedAsDeparted(AddressParameters aParams, out string errorString)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             return GetJsonObjectFromAPI<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put,
                 out errorString);
@@ -3452,15 +3425,8 @@ namespace Route4MeSDK
         /// <returns>An Address type object</returns>
         public Task<Tuple<Address, string>> MarkAddressAsMarkedAsDepartedAsync(AddressParameters aParams)
         {
-            var request = new MarkAddressAsMarkedAsDepartedRequest
-            {
-                RouteId = aParams.RouteId,
-                RouteDestinationId = aParams.RouteDestinationId,
-                IsDeparted = aParams.IsDeparted
-            };
-
             return GetJsonObjectFromAPIAsync<Address>(
-                request,
+                aParams,
                 R4MEInfrastructureSettings.GetAddress,
                 HttpMethodType.Put);
         }
@@ -3479,6 +3445,7 @@ namespace Route4MeSDK
         /// <param name="total">out: Number of the returned contacts</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The array of the address book contacts</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.GetAddressBookContacts instead.")]
         public AddressBookContact[] GetAddressBookContacts(AddressBookParameters addressBookParameters, out uint total,
             out string errorString)
         {
@@ -3500,6 +3467,7 @@ namespace Route4MeSDK
         ///     Offset, Limit
         /// </param>
         /// <returns>The array of the address book contacts</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.GetAddressBookContactsAsync instead.")]
         public async Task<Tuple<AddressBookContact[], uint, string>> GetAddressBookContactsAsync(AddressBookParameters addressBookParameters)
         {
             var response = await GetJsonObjectFromAPIAsync<GetAddressBookContactsResponse>(addressBookParameters,
@@ -3531,7 +3499,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.AddressBook,
                 HttpMethodType.Get,
                 false,
-                true,
+                false,
                 out errorString);
 
             total = response?.Total ?? 0;
@@ -3756,6 +3724,7 @@ namespace Route4MeSDK
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.AddAddressBookContact instead.")]
         public AddressBookContact AddAddressBookContact(AddressBookContact contact, out string errorString)
         {
             contact.PrepareForSerialization();
@@ -3773,6 +3742,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.AddAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> AddAddressBookContactAsync(AddressBookContact contact)
         {
             contact.PrepareForSerialization();
@@ -3791,6 +3761,7 @@ namespace Route4MeSDK
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContact instead.")]
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact, out string errorString)
         {
             contact.PrepareForSerialization();
@@ -3805,6 +3776,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="contact">The AddressBookContact type object as input parameters</param>
         /// <returns>The AddressBookContact type object</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> UpdateAddressBookContactAsync(AddressBookContact contact)
         {
             contact.PrepareForSerialization();
@@ -3824,6 +3796,7 @@ namespace Route4MeSDK
         /// </param>
         /// <param name="errorString">Error strings</param>
         /// <returns>Address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContact instead.")]
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact, List<string> updatableProperties,
             out string errorString)
         {
@@ -3853,6 +3826,7 @@ namespace Route4MeSDK
         ///     despite are they null or not
         /// </param>
         /// <returns>Address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> UpdateAddressBookContactAsync(AddressBookContact contact, List<string> updatableProperties)
         {
             var myDynamicClass = new Route4MeDynamicClass();
@@ -3877,6 +3851,7 @@ namespace Route4MeSDK
         /// <param name="initialContact">An initial address book contact</param>
         /// <param name="errorString">Error string</param>
         /// <returns>Updated address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContact instead.")]
         public AddressBookContact UpdateAddressBookContact(AddressBookContact contact,
             AddressBookContact initialContact, out string errorString)
         {
@@ -3924,6 +3899,7 @@ namespace Route4MeSDK
         /// <param name="contact">A address book contact object as input (modified or created virtual contact)</param>
         /// <param name="initialContact">An initial address book contact</param>
         /// <returns>Updated address book contact</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.UpdateAddressBookContactAsync instead.")]
         public Task<Tuple<AddressBookContact, string>> UpdateAddressBookContactAsync(AddressBookContact contact, AddressBookContact initialContact)
         {
             string errorString;
@@ -3967,6 +3943,7 @@ namespace Route4MeSDK
         /// <param name="addressIds">The array of the address IDs</param>
         /// <param name="errorString">out: Error as string</param>
         /// <returns>If true the contacts were removed successfully</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.RemoveAddressBookContacts instead.")]
         public bool RemoveAddressBookContacts(string[] addressIds, out string errorString)
         {
             var request = new RemoveAddressBookContactsRequest
@@ -3987,6 +3964,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="addressIds">The array of the address IDs</param>
         /// <returns>If true the contacts were removed successfully</returns>
+        [Obsolete("The method is obsolete, use the method AddressBookContactsManagerV5.RemoveAddressBookContactsAsync instead.")]
         public async Task<Tuple<bool, string>> RemoveAddressBookContactsAsync(string[] addressIds)
         {
             var request = new RemoveAddressBookContactsRequest
@@ -4149,7 +4127,7 @@ namespace Route4MeSDK
 
             var addressBookGroupParams = new AddressBookGroupParameters
             {
-                groupID = addressBookGroup.GroupId,
+                GroupId = addressBookGroup.GroupId,
                 Fields = new[] {"address_id"}
             };
 
@@ -4165,7 +4143,7 @@ namespace Route4MeSDK
                 if (long.TryParse(oContId[0].ToString(), out var __))
                     contactIDs.Add(Convert.ToInt64(oContId[0]));
 
-            var removeGroupParams = new AddressBookGroupParameters {groupID = addressBookGroup.GroupId};
+            var removeGroupParams = new AddressBookGroupParameters {GroupId = addressBookGroup.GroupId};
             RemoveAddressBookGroup(removeGroupParams, out errorString);
 
             return contactIDs.Count > 0 ? contactIDs.ToArray() : null;
@@ -4218,7 +4196,7 @@ namespace Route4MeSDK
 
             var addressBookGroupParams = new AddressBookGroupParameters
             {
-                groupID = addressBookGroup.Item1.GroupId,
+                GroupId = addressBookGroup.Item1.GroupId,
                 Fields = new[] { "address_id" }
             };
 
@@ -4233,7 +4211,7 @@ namespace Route4MeSDK
                 if (long.TryParse(oContId[0].ToString(), out var __))
                     contactIDs.Add(Convert.ToInt64(oContId[0]));
 
-            var removeGroupParams = new AddressBookGroupParameters { groupID = addressBookGroup.Item1.GroupId };
+            var removeGroupParams = new AddressBookGroupParameters { GroupId = addressBookGroup.Item1.GroupId };
             var res = await RemoveAddressBookGroupAsync(removeGroupParams).ConfigureAwait(false);
 
             return new Tuple<long[], string>(contactIDs.Count > 0 ? contactIDs.ToArray() : null, res.Item2);
@@ -4762,7 +4740,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, false, false, out errorString);
+                HttpMethodType.Put, false, true, out errorString);
         }
 
         /// <summary>
@@ -4782,7 +4760,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, false, false, out errorString);
+                HttpMethodType.Put, false, true, out errorString);
         }
 
         /// <summary>
@@ -4804,7 +4782,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPIAsync<RouteResponse>(request, R4MEInfrastructureSettings.RouteHost,
-                HttpMethodType.Put, null, false, false);
+                HttpMethodType.Put, null, false, true);
         }
 
         /// <summary>
@@ -4827,7 +4805,7 @@ namespace Route4MeSDK
             };
 
             return GetJsonObjectFromAPI<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put,
-                false, false, out errorString);
+                false, true, out errorString);
         }
 
         /// <summary>
@@ -4847,8 +4825,103 @@ namespace Route4MeSDK
                 Parameters = rParams
             };
 
-            return GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put, null, false, false);
+            return GetJsonObjectFromAPIAsync<DataObject>(request, R4MEInfrastructureSettings.ApiHost, HttpMethodType.Put, null, false, true);
         }
+
+        /// <summary>
+        ///     Transfer an order to another account
+        /// </summary>
+        /// <param name="transferredOrder"> An order to transfer </param>
+        /// <param name="anotherPrimeryApiKey">A primery API key of a destination account</param>
+        /// <returns>Transferred order</returns>
+        public Order TransferOrderToOtherPrimaryAccount(Order transferredOrder, string anotherPrimeryApiKey, out string errorString)
+        {
+            var urlParams = new GenericParameters();
+            urlParams.ParametersCollection.Add("api_key", anotherPrimeryApiKey);
+
+            var updatableOrderProperties = new List<string>()
+            {
+                "Address1", "RootMemberId", "OrderId"
+            };
+
+            var dynamicOrderProperties = new Route4MeDynamicClass();
+
+            dynamicOrderProperties.CopyPropertiesFromClass(transferredOrder, updatableOrderProperties, out _);
+
+            string bodyJson = R4MeUtils.SerializeObjectToJson(dynamicOrderProperties.DynamicProperties, true);
+
+            HttpContent content = new StringContent(bodyJson);
+            content.Headers.Add("x-api-key", _mApiKey);
+
+            return GetJsonObjectFromAPI<Order>(urlParams, R4MEInfrastructureSettings.Order,
+                HttpMethodType.Put,
+                content,
+                false,
+                true,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Transfer an order to another account
+        /// </summary>
+        /// <param name="transferredOrder">An order to transfer</param>
+        /// <param name="anotherPrimeryApiKey">A primery API key of a destination account</param>
+        /// <returns>Transferred order or failure response</returns>
+        public Task<Tuple<Order, string>> TransferOrderToOtherPrimaryAccountAsync(Order transferredOrder, string anotherPrimeryApiKey)
+        {
+            var urlParams = new GenericParameters();
+            urlParams.ParametersCollection.Add("api_key", anotherPrimeryApiKey);
+
+            var updatableOrderProperties = new List<string>()
+            {
+                "Address1", "RootMemberId", "OrderId"
+            };
+
+            var dynamicOrderProperties = new Route4MeDynamicClass();
+
+            dynamicOrderProperties.CopyPropertiesFromClass(transferredOrder, updatableOrderProperties, out _);
+
+            string bodyJson = R4MeUtils.SerializeObjectToJson(dynamicOrderProperties.DynamicProperties, true);
+
+            HttpContent content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            content.Headers.Add("x-api-key", _mApiKey);
+
+            //var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+
+            return GetJsonObjectFromAPIAsync<Order>(urlParams, R4MEInfrastructureSettings.Order,
+                HttpMethodType.Put,
+                content,
+                false,
+                false);
+        }
+
+        /// <summary>
+        ///     Gets the Orders Updates
+        /// </summary>
+        /// <returns> List of the Orders updates </returns>
+        public OrdersUpdatesResponse GetOrdersUpdates(OrderUpdatesParameters parameters, out string errorString)
+        {
+            var response = GetJsonObjectFromAPI<OrdersUpdatesResponse>(parameters,
+                R4MEInfrastructureSettings.GetOrdersUpdate,
+                HttpMethodType.Get,
+                out errorString);
+
+            return response;
+        }
+
+        /// <summary>
+        ///     Gets the Orders Updates
+        /// </summary>
+        /// <returns> List of the Orders updates </returns>
+        public Task<Tuple<OrdersUpdatesResponse, string>> GetOrdersUpdatesAsync(OrderUpdatesParameters parameters)
+        {
+            var response = GetJsonObjectFromAPIAsync<OrdersUpdatesResponse>(parameters,
+                R4MEInfrastructureSettings.GetOrdersUpdate,
+                HttpMethodType.Get);
+
+            return response;
+        }
+
 
         #endregion
 
@@ -5496,11 +5569,12 @@ namespace Route4MeSDK
         #region Vehicles
 
         /// <summary>
-        ///     Creates a vehicle
+        ///     Creates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehicle">The VehicleV4Parameters type object as the request payload </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>A created vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.CreateVehicle instead.")]
         public VehicleV4CreateResponse CreateVehicle(VehicleV4Parameters vehicle, out string errorString)
         {
             return GetJsonObjectFromAPI<VehicleV4CreateResponse>(vehicle,
@@ -5510,10 +5584,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Creates a vehicle
+        ///     Creates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehicle">The VehicleV4Parameters type object as the request payload </param>
         /// <returns>A created vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.CreateVehicleAsync instead.")]
         public Task<Tuple<VehicleV4CreateResponse, string>> CreateVehicleAsync(VehicleV4Parameters vehicle)
         {
             return GetJsonObjectFromAPIAsync<VehicleV4CreateResponse>(vehicle,
@@ -5522,11 +5597,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns the VehiclesPaginated type object containing an array of the vehicles
+        ///     Returns the array of the vehicles (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> The VehiclesPaginated type object containing an array of the vehicles</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehicles instead.")]
         public Vehicle[] GetVehicles(VehicleParameters vehParams, out string errorString)
         {
             return GetJsonObjectFromAPI<Vehicle[]>(vehParams, R4MEInfrastructureSettings.Vehicle_V4,
@@ -5535,10 +5611,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns the VehiclesPaginated type object containing an array of the vehicles
+        ///     Returns the array of the vehicles (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <returns> The VehiclesPaginated type object containing an array of the vehicles</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehiclesAsync instead.")]
         public Task<Tuple<Vehicle[], string>> GetVehiclesAsync(VehicleParameters vehParams)
         {
             return GetJsonObjectFromAPIAsync<Vehicle[]>(vehParams, R4MEInfrastructureSettings.Vehicle_V4,
@@ -5546,11 +5623,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns a vehicle
+        ///     Returns a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> A vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehicle instead.")]
         public VehicleV4Response GetVehicle(VehicleParameters vehParams, out string errorString)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5566,10 +5644,11 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Returns a vehicle
+        ///     Returns a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters </param>
         /// <returns> A vehicle </returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.GetVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> GetVehicleAsync(VehicleParameters vehParams)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5583,12 +5662,13 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a vehicle
+        ///     Updates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams">The VehicleV4Parameters type object as the request payload</param>
         /// <param name="vehicleId">Vehicle ID</param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The updated vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.UpdateVehicle instead.")]
         public VehicleV4Response UpdateVehicle(VehicleV4Parameters vehParams, string vehicleId, out string errorString)
         {
             if ((vehicleId?.Length ?? 0) != 32)
@@ -5604,11 +5684,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Updates a vehicle
+        ///     Updates a vehicle (deprecated)
         /// </summary>
         /// <param name="vehParams">The VehicleV4Parameters type object as the request payload</param>
         /// <param name="vehicleId">Vehicle ID</param>
         /// <returns>The updated vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.UpdateVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> UpdateVehicleAsync(VehicleV4Parameters vehParams, string vehicleId)
         {
             if ((vehicleId?.Length ?? 0) != 32)
@@ -5622,11 +5703,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Removes a vehicle from a user's account
+        ///     Removes a vehicle from a user's account (deprecated)
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters containing parameter VehicleId </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicle instead.")]
         public VehicleV4Response DeleteVehicle(VehicleV4Parameters vehParams, out string errorString)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5646,6 +5728,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="vehParams"> The VehicleParameters type object as the query parameters containing parameter VehicleId </param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> DeleteVehicleAsync(VehicleV4Parameters vehParams)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5664,6 +5747,7 @@ namespace Route4MeSDK
         /// <param name="vehParams">The VehicleParameters type object as the query parameters containing parameter VehicleId</param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicle instead.")]
         public VehicleV4Response DeleteVehicle(VehicleParameters vehParams, out string errorString)
         {
             if ((vehParams?.VehicleId?.Length ?? 0) != 32)
@@ -5683,6 +5767,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="vehParams">The VehicleParameters type object as the query parameters containing parameter VehicleId</param>
         /// <returns>The removed vehicle</returns>
+        [Obsolete("The method is obsolete, use the method VehicleManagerV5.DeleteVehicleAsync instead.")]
         public Task<Tuple<VehicleV4Response, string>> DeleteVehicleAsync(VehicleParameters vehParams)
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
@@ -5726,14 +5811,55 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        ///     Creates a territory
+        /// </summary>
+        /// <param name="territoryZoneParameters"> The TerritoryZoneParameters type object as the request payload </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> The Territory type object </returns>
+        public TerritoryZone CreateTerritory(TerritoryZoneParameters territoryZoneParameters, out string errorString)
+        {
+            return GetJsonObjectFromAPI<TerritoryZone>(territoryZoneParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Post,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Creates a territory
+        /// </summary>
+        /// <param name="territoryZoneParameters"> The TerritoryZoneParameters type object as the request payload </param>
+        /// <returns> The Territory type object </returns>
+        public Task<Tuple<TerritoryZone, string>> CreateTerritoryAsync(TerritoryZoneParameters territoryZoneParameters)
+        {
+            return GetJsonObjectFromAPIAsync<TerritoryZone>(territoryZoneParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
         ///     Gets the territories by parameters
         /// </summary>
         /// <param name="avoidanceZoneQuery"> >The AvoidanceZoneQuery type object as the query parameters </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> The teritories </returns>
-        public AvoidanceZone[] GetTerritories(AvoidanceZoneQuery avoidanceZoneQuery, out string errorString)
+        public TerritoryZone[] GetTerritories(AvoidanceZoneQuery avoidanceZoneQuery, out string errorString)
         {
-            return GetJsonObjectFromAPI<AvoidanceZone[]>(avoidanceZoneQuery,
+            return GetJsonObjectFromAPI<TerritoryZone[]>(avoidanceZoneQuery,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Get,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Gets the territories by parameters
+        /// </summary>
+        /// <param name="territoryQuery"> >The TerritoryQuery type object as the query parameters </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> The teritories </returns>
+        public TerritoryZone[] GetTerritories(TerritoryQuery territoryQuery, out string errorString)
+        {
+
+            return GetJsonObjectFromAPI<TerritoryZone[]>(territoryQuery,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Get,
                 out errorString);
@@ -5747,6 +5873,18 @@ namespace Route4MeSDK
         public Task<Tuple<AvoidanceZone[], string>> GetTerritoriesAsync(AvoidanceZoneQuery avoidanceZoneQuery)
         {
             return GetJsonObjectFromAPIAsync<AvoidanceZone[]>(avoidanceZoneQuery,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Get);
+        }
+
+        /// <summary>
+        ///     Gets the territories by parameters
+        /// </summary>
+        /// <param name="territoryQuery"> >The TerritoryQuery type object as the query parameters </param>
+        /// <returns> The teritories </returns>
+        public Task<Tuple<TerritoryZone[], string>> GetTerritoriesAsync(TerritoryQuery territoryQuery)
+        {
+            return GetJsonObjectFromAPIAsync<TerritoryZone[]>(territoryQuery,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Get);
         }
@@ -5794,6 +5932,20 @@ namespace Route4MeSDK
         /// <summary>
         ///     Removes a trritory (by TerritoryId)
         /// </summary>
+        /// <param name="territoryQuery"> The TerritoryQuery type object as query parmaeters (TerritoryId) </param>
+        /// <param name="errorString"> out: Error as string </param>
+        /// <returns> Result status: true/false </returns>
+        public bool RemoveTerritory(TerritoryQuery territoryQuery, out string errorString)
+        {
+            var result = GetJsonObjectFromAPI<StatusResponse>(territoryQuery, R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Delete, out errorString);
+
+            return result.Status;
+        }
+
+        /// <summary>
+        ///     Removes a trritory (by TerritoryId)
+        /// </summary>
         /// <param name="territoryQuery"> The AvoidanceZoneQuery type object as query parmaeters (TerritoryId) </param>
         /// <returns> Result status: true/false </returns>
         public async Task<Tuple<bool, string>> RemoveTerritoryAsync(AvoidanceZoneQuery territoryQuery)
@@ -5805,14 +5957,27 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        ///     Removes a trritory (by TerritoryId)
+        /// </summary>
+        /// <param name="territoryQuery"> The TerritoryQuery type object as query parmaeters (TerritoryId) </param>
+        /// <returns> Result status: true/false </returns>
+        public async Task<Tuple<bool, string>> RemoveTerritoryAsync(TerritoryQuery territoryQuery)
+        {
+            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(territoryQuery, R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Delete).ConfigureAwait(false);
+
+            return new Tuple<bool, string>(result.Item1.Status, result.Item2);
+        }
+
+        /// <summary>
         ///     Updates a territory
         /// </summary>
-        /// <param name="tereritoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
+        /// <param name="territoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> Territory Object </returns>
-        public AvoidanceZone UpdateTerritory(AvoidanceZoneParameters tereritoryParameters, out string errorString)
+        public AvoidanceZone UpdateTerritory(AvoidanceZoneParameters territoryParameters, out string errorString)
         {
-            return GetJsonObjectFromAPI<AvoidanceZone>(tereritoryParameters,
+            return GetJsonObjectFromAPI<AvoidanceZone>(territoryParameters,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Put,
                 out errorString);
@@ -5821,11 +5986,37 @@ namespace Route4MeSDK
         /// <summary>
         ///     Updates a territory
         /// </summary>
-        /// <param name="tereritoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
+        /// <param name="territoryParameters"> The TerritoryZoneParameters type object as the request payload </param>
+        /// <param name="errorString"> out: Error as string </param>
         /// <returns> Territory Object </returns>
-        public Task<Tuple<AvoidanceZone, string>> UpdateTerritoryAsync(AvoidanceZoneParameters tereritoryParameters)
+        public TerritoryZone UpdateTerritory(TerritoryZoneParameters territoryParameters, out string errorString)
         {
-            return GetJsonObjectFromAPIAsync<AvoidanceZone>(tereritoryParameters,
+            return GetJsonObjectFromAPI<TerritoryZone>(territoryParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Put,
+                out errorString);
+        }
+
+        /// <summary>
+        ///     Updates a territory
+        /// </summary>
+        /// <param name="territoryParameters"> The AvoidanceZoneParameters type object as the request payload </param>
+        /// <returns> Territory Object </returns>
+        public Task<Tuple<AvoidanceZone, string>> UpdateTerritoryAsync(AvoidanceZoneParameters territoryParameters)
+        {
+            return GetJsonObjectFromAPIAsync<AvoidanceZone>(territoryParameters,
+                R4MEInfrastructureSettings.Territory,
+                HttpMethodType.Put);
+        }
+
+        /// <summary>
+        ///     Updates a territory
+        /// </summary>
+        /// <param name="territoryParameters"> The TerritoryQuery type object as the request payload </param>
+        /// <returns> Territory Object </returns>
+        public Task<Tuple<TerritoryZone, string>> UpdateTerritoryAsync(TerritoryZoneParameters territoryParameters)
+        {
+            return GetJsonObjectFromAPIAsync<TerritoryZone>(territoryParameters,
                 R4MEInfrastructureSettings.Territory,
                 HttpMethodType.Put);
         }
@@ -6638,45 +6829,16 @@ namespace Route4MeSDK
                             }
                             else
                             {
-                                ErrorResponse errorResponse = default;
+                                ErrorResponse errorResponse;
 
                                 try
                                 {
-                                    if (response.Result.Content is StreamContent)
-                                    {
-                                        var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
-                                        streamTask.Wait();
+                                    var streamTask = ((StreamContent) response.Result.Content).ReadAsStreamAsync();
+                                    streamTask.Wait();
 
-                                        errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
-                                    }
-                                    else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
-                                    {
-                                        var content2 = response.Result.Content;
-
-                                        //jobId = ExtractJobId(response.Result);
-
-                                        if (isString)
-                                        {
-                                            result = content2.ReadAsStreamAsync().Result.ReadString() as T;
-                                        }
-                                        else
-                                        {
-                                            result = parseWithNewtonJson
-                                                ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
-                                                : content2.ReadAsStreamAsync().Result.ReadObject<T>();
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                            errorResponse = new ErrorResponse();
-                                            errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
-                                            if ((response?.Exception?.Message ?? null)!=null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
-                                            
-                                    }
-                                        
+                                    errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
                                 }
-                                catch (Exception ex) // If cannot read ErrorResponse from the stream, try another way
+                                catch (Exception) // If cannot read ErrorResponse from the stream, try another way
                                 {
                                     if ((response.Result?.ReasonPhrase) != null)
                                     {
@@ -6685,7 +6847,7 @@ namespace Route4MeSDK
                                             Errors = new List<string> {response.Result.ReasonPhrase}
                                         };
 
-                                        var reqMessage = response.Result?.RequestMessage?.Content.ReadAsStringAsync()
+                                        var reqMessage = response.Result?.RequestMessage?.Content?.ReadAsStringAsync()
                                             .Result ?? "";
 
                                         if (reqMessage != "")

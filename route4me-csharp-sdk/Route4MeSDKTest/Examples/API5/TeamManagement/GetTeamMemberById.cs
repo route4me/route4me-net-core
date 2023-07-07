@@ -1,6 +1,7 @@
 ﻿using System;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
+using static Route4MeSDK.Route4MeManagerV5;
 
 namespace Route4MeSDK.Examples
 {
@@ -33,7 +34,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var member = route4Me.GetTeamMemberById(memberParams,
-                                                    out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintTeamMembers(member, resultResponse);
         }

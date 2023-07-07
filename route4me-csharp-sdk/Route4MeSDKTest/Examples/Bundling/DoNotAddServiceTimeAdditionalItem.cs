@@ -18,12 +18,13 @@ namespace Route4MeSDK.Examples
             var routeParameters = new RouteParameters()
             {
                 AlgorithmType = AlgorithmType.CVRP_TW_SD,
-                RouteName = $"Single Depot, Multiple Driver, Bundling Do not Add Service Time for Additional Item {DateTime.Now}",
+                RouteName =
+                    $"Single Depot, Multiple Driver, Bundling Do not Add Service Time for Additional Item {DateTime.Now}",
                 TravelMode = TravelMode.Driving.Description(),
                 Bundling = new AddressBundling()
                 {
                     Mode = AddressBundlingMode.Address,
-                    MergeMode = AddressBundlingMergeMode.MergeIntoSingleDestination,
+                    MergeMode = AddressBundlingMergeMode.KeepAsSeparateDestinations,
                     ServiceTimeRules = new ServiceTimeRulesClass()
                     {
                         FirstItemMode = AddressBundlingFirstItemMode.KeepOriginal,

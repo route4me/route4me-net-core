@@ -1,6 +1,97 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.7.0.0] - 2023-07-04
+/api.v4/orders/changes.php is supported
+
+## [7.6.0.0] - 2023-05-23
+Get rid of Get rid of GetRouteById V5.
+AddRouteDestinations improvements
+
+## [7.5.3.0] - 2023-05-05
+AddRouteDestinations fixed: supported addresses with no AddressString
+
+## [7.5.2.0] - 2023-04-20
+Switched from long to string (with timestamp inside) for actual_travel_time in RouteFilterResponse
+
+## [7.5.1.0] - 2023-04-19
+utc_time, lat/lng are supported for /api/route/mark_address_departed.php and /actions/address/update_address_visited.php
+
+## [7.5.0.0] - 2023-04-14
+Address Book Contact API V4 is depricated (switched to V5).
+utc_time, lat/lng are supported for api/route/mark_address_departed.php and api/route/mark_address_visited.php
+
+## [7.4.2.0] - 2023-04-06
+MarkAddressAsMarkedAsVisited/MarkAddressAsMarkedAsDeparted fixed on .NET Client SDK Library side with respect to resetting the is_visited flag.
+Obsolete messages are adjusted.
+
+## [7.4.1.0] - 2023-03-09
+Vehicle API V4 is depricated.
+
+## [7.4.0.0] - 2023-03-06
+Team API V4 is depricated. GetTeamOwner and GetUserIdsByEmails are introduced.
+
+## [7.3.0.0] - 2023-02-23
+Support 'sync' field in case of master route creation for schedules.
+
+## [7.2.3.0] - 2023-02-08
+3rd party dependencies are updated. Tests are switched to .NET6.
+
+## [7.2.2.0] - 2023-01-13
+Route deserialization from object to array in case of route list query with routeID is supported. As a result, list with 1 element is returned as result. Fix is relevant both for V4 and V5.
+
+## [7.2.1.0] - 2023-01-11
+Fixed schedules API deserialization issues
+
+## [7.2.0.0] - 2023-01-06
+Schedules are supproted.
+NOTE: IsRouteScheduleCopied/IsRouteScheduleCopiedAsync, GetRouteScheduleCopies/GetRouteScheduleCopiesAsync are not ready to be used.
+NOTE: Schedules API might be changed on server side which will require adaptation on .NET client side.
+
+## [7.1.0.0] - 2022-11-25
+GetOptimizationPredictionAsync API is added.
+Route4MeManagerV5 is splitted by submanager's with backward compatibility means Route4MeManagerV5 now is just a thin proxy.
+
+## [7.0.0.0] - 2022-10-06
+
+Fixed master_config_storage deserialization for Route (switched from DataContractJsonSerializer to Newtonsoft.JSON)
+Fixed threading in route4me manager.
+Restored route query API.
+Partial update is supported for Order (order_id is required).
+
+## [6.0.0.0] - 2022-09-02
+
+Fixed Orders Archive functionality.
+Tempoarary disabled EXT_FIELD_custom_data for Orders Archive.
+Team API is adjusted.
+Vehicle API is adjusted.
+Added group to Order.
+Internal bug fixes.
+
+## [5.1.1.0] - 2022-08-29
+
+Support update for Order which has been created with no lat/lng.
+
+## [5.1.0.0] - 2022-08-26
+
+Get Service Time By Address Type function is added.
+
+## [5.0.0.0] - 2022-08-23
+
+Route Status API is supported. V4 API with respect to territories/avoidance zones slightly changed.
+
+## [4.1.0.0] - 2022-07-24
+
+Address Book API is supported. Transfer order to another primary account is supported.
+
+## [4.0.0.0] - 2022-07-15
+
+New library features are introduced. Some existing API are slightly adjusted.
+
+## [3.3.0.0] - 2022-06-30
+
+Switched from SocketIoClientDotNet.core_2.2 to SocketIoClientDotNet.Standard usage.
+
 ## [3.2.0.0] - 2022-05-11
 
 Data types are adjusted.

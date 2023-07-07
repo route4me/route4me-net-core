@@ -1,4 +1,6 @@
-﻿namespace Route4MeSDK.QueryTypes
+﻿using System.Xml.Linq;
+
+namespace Route4MeSDK.QueryTypes
 {
     /// <summary>
     ///     Parameters for the route address(es) request.
@@ -48,8 +50,8 @@
         ///         <para>Query parameter.</para>
         ///     </remarks>
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "is_departed")]
-        public bool IsDeparted { get; set; }
+        [HttpQueryMemberAttribute(Name = "is_departed", EmitDefaultValue = false)]
+        public bool? IsDeparted { get; set; }
 
         /// <summary>
         ///     If true, the route destination will be marked as visited.
@@ -57,7 +59,29 @@
         ///         <para>Query parameter.</para>
         ///     </remarks>
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "is_visited")]
-        public bool IsVisited { get; set; }
+        [HttpQueryMemberAttribute(Name = "is_visited", EmitDefaultValue = false)]
+        public bool? IsVisited { get; set; }
+
+        /// <value>The member ID</value>
+        [HttpQueryMemberAttribute(Name = "member_id", EmitDefaultValue = false)]
+        public long? MemberId { get; set; }
+
+        /// <summary>
+        ///    Timestamp
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "utc_time", EmitDefaultValue = false)]
+        public long? UtcTime { get; set; }
+
+        /// <summary>
+        ///     The position latitude
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "lat", EmitDefaultValue = false)]
+        public double? Latitude { get; set; }
+
+        /// <summary>
+        ///     The position longitude
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "lng", EmitDefaultValue = false)]
+        public double? Longitude { get; set; }
     }
 }

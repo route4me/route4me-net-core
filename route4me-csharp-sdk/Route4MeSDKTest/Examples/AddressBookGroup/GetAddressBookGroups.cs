@@ -24,10 +24,10 @@ namespace Route4MeSDK.Examples
                 .GetAddressBookGroups(addressBookGroupParameters, out string errorString);
 
             Console.WriteLine(
-                    groups == null && groups.GetType() != typeof(AddressBookGroup[])
+                groups == null && groups.GetType() != typeof(AddressBookGroup[])
                     ? "Cannot retrieve the addres groups." + Environment.NewLine + errorString
                     : "Retrieved the address book groups: " + groups.Length
-                );
+            );
 
             RemoveAddressBookGroups();
         }

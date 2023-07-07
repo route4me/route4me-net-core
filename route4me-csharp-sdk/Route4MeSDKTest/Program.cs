@@ -13,9 +13,15 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "UnlinkRouteFromOptimization";
-            //object[] executeParams = new object[] { null }; // Uncomment if null or object array is sent as a parameter
-            object[] executeParams = null; // Uncomment if nothing is sent
+            string executeOption = "UpdateTerritory";
+
+            bool methodHasParams = (typeof(Route4MeExamples)
+                                    .GetMethod(executeOption)
+                                    ?.GetParameters()?.Length ?? 0) > 0;
+
+            object[] executeParams = methodHasParams 
+                ? new object[] { null } // Uncomment if null or object array is sent as a parameter
+                : null; // Uncomment if nothing is sent
 
             if (executeOption.ToLower() == "api4")
             {
@@ -38,6 +44,7 @@ namespace Route4MeSDKTest
 
                 examples.HybridOptimizationFrom1000Orders();
                 examples.HybridOptimizationFrom1000Addresses();
+                examples.SingleDriverRouteServiceTimeByAddressType();
 
                 var dataobject = examples.AsyncMultipleDepotMultipleDriver().GetAwaiter().GetResult();
 
@@ -74,6 +81,8 @@ namespace Route4MeSDKTest
                 examples.MarkAddressAsMarkedAsVisited();
                 examples.MarkAddressDeparted();
                 examples.MarkAddressVisited();
+                examples.MarkAddressDepartedWithTimestampAndGeoCoordinates();
+                examples.MarkAddressVisitedWithTimestampAndGeoCoordinates();
 
                 examples.RemoveDestinationFromOptimization();
                 examples.RemoveRouteDestination();
@@ -334,14 +343,15 @@ namespace Route4MeSDKTest
                 examples.AddOrder();
                 examples.AddOrdersToOptimization();
                 examples.AddOrdersToRoute();
+                examples.AddOrderWithNoLatAndLngAndUpdateAfterwards();
                 examples.AddScheduledOrder();
                 examples.CreateOrderWithCustomField();
                 examples.GetOrderByID();
-                examples.GetOrdersByInsertedDate();
-                examples.GetOrdersByScheduledDate();
-                examples.GetOrdersByCustomFields();
-                examples.GetOrdersByScheduleFilter();
-                examples.GetOrdersBySpecifiedText();
+                examples.SearchOrdersByInsertedDate();
+                examples.SearchOrdersByScheduledDate();
+                examples.ShowOrdersWithSelectedFields();
+                examples.FilterOrdersByScheduledDatesRange();
+                examples.SearchOrdersBySpecifiedText();
                 examples.RemoveOrders();
                 examples.GetOrders();
                 examples.UpdateOrder();
@@ -397,6 +407,12 @@ namespace Route4MeSDKTest
                 #region Route Types
 
                 examples.CreateOptimizationWithDriverSkills();
+
+                #endregion
+
+                #region Schedules
+
+                examples.CreateAndDeleteScheduleForRoute();
 
                 #endregion
 

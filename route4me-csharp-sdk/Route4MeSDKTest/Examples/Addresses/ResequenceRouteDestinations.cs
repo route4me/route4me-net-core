@@ -55,9 +55,9 @@ namespace Route4MeSDK.Examples
             // Run the query
             DataObjectRoute route1 = route4Me
                 .GetJsonObjectFromAPI<DataObjectRoute>(addressesOrderInfo,
-                                    R4MEInfrastructureSettings.RouteHost,
-                                    HttpMethodType.Put,
-                                    out string errorString1);
+                    R4MEInfrastructureSettings.RouteHost,
+                    HttpMethodType.Put,
+                    out string errorString1);
 
             // Output the result
             PrintExampleRouteResult(route1, errorString1);
@@ -71,11 +71,9 @@ namespace Route4MeSDK.Examples
             [DataMember(Name = "route_destination_id")]
             public long DestinationId { get; set; }
 
-            [DataMember(Name = "sequence_no")]
-            public int SequenceNo { get; set; }
+            [DataMember(Name = "sequence_no")] public int SequenceNo { get; set; }
 
-            [DataMember(Name = "is_depot")]
-            public bool IsDepot { get; set; }
+            [DataMember(Name = "is_depot")] public bool IsDepot { get; set; }
         }
 
         [DataContract]
@@ -84,9 +82,7 @@ namespace Route4MeSDK.Examples
             [HttpQueryMemberAttribute(Name = "route_id", EmitDefaultValue = false)]
             public string RouteId { get; set; }
 
-            [DataMember(Name = "addresses")]
-            public AddressInfo[] Addresses { get; set; }
+            [DataMember(Name = "addresses")] public AddressInfo[] Addresses { get; set; }
         }
-
     }
 }

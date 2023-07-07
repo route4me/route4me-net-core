@@ -78,6 +78,8 @@
 
         public const string TimePrediction = MainHost + "/api.v4/predict-optimization-time.php";
 
+        public const string GetOrdersUpdate = MainHost + "/api.v4/orders/changes.php";
+
         #endregion
     }
 
@@ -92,10 +94,13 @@
         public const string ApiVersion = "5";
 
         public const string MainHost = "https://wh.route4me.com/modules/api/v5.0";
+        public const string MainHost51 = "https://wh.route4me.com/modules/api/v5.1";
 
         public const string MainHostWeb = "https://wh.route4me.com/modules/webapi/v5.0";
 
         public const string Routes = MainHost + "/routes";
+        public const string Routes51 = MainHost51 + "/routes";
+
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
         public const string RoutesMerge = MainHost + "/routes/merge";
         public const string RoutesPaginate = MainHost + "/routes/paginate";
@@ -107,6 +112,7 @@
         public const string RoutesDatatableConfig = MainHost + "/routes/datatable/config";
         public const string RoutesDatatableConfigFallback = MainHost + "/routes/fallback/datatable/config";
         public const string RouteBreaks = MainHost + "/route-breaks";
+        public const string RouteAddressDynamicInsert = MainHost + "/routes/lookup-for-new-destination";
 
         public const string TeamUsers = MainHost + "/team/users";
 
@@ -120,17 +126,39 @@
 
         public const string Vehicles = MainHost + "/vehicles";
 
+        public const string VehiclePaginated = MainHost + "/vehicles/paginate";
+
         public const string VehicleTemporary = MainHost + "/vehicles/assign";
 
         public const string VehicleExecuteOrder = MainHost + "/vehicles/execute";
 
         public const string VehicleLocation = MainHost + "/vehicles/location";
 
-        public const string VehicleProfiles = MainHost + "/vehicle-profiles";
+        public const string VehicleSyncTelematics = MainHost + "/vehicles/sync/pending";
 
         public const string VehicleLicense = MainHost + "/vehicles/license";
 
         public const string VehicleSearch = MainHost + "/vehicles/search";
+
+
+        public const string VehicleProfiles = MainHost + "/vehicle-profiles";
+
+        public const string VehicleCapacityProfiles = MainHost + "/vehicle-capacity-profiles";
+
+
+        public const string VehicleBulkActivate = MainHost + "/vehicles/bulk/activate";
+
+        public const string VehicleBulkDeactivate = MainHost + "/vehicles/bulk/deactivate";
+
+        public const string VehicleBulkDelete = MainHost + "/vehicles/bulk/delete";
+
+        public const string VehicleBulkRestore = MainHost + "/vehicles/bulk/restore";
+
+        public const string VehicleBulkUpdate = MainHost + "/vehicles/bulk/update";
+
+        public const string VehicleJobResult = MainHost + "/vehicles/job-tracker/result";
+
+        public const string VehicleJobStatus = MainHost + "/vehicles/job-tracker/status";
 
         #endregion
 
@@ -209,13 +237,13 @@
         public const string ContactsDeleteMultiple = ContactHost + "/addresses/delete";
         public const string ContactsDeleteByAreas = ContactHost + "/addresses/delete-by-areas";
         public const string ContactsGetCustomFields = ContactHost + "/addresses/custom-fields";
-        public const string ContactsGetDepots = ContactHost + "/addresses/depots";
+		public const string ContactsGetDepots = ContactHost + "/addresses/depots";
         public const string ContactsReindexCallback = ContactHost + "/reindex-callback";
         public const string ContactsExport = ContactHost + "/addresses/export";
         public const string ContactsExportByAreas = ContactHost + "/addresses/export-by-areas";
         public const string ContactsExportByAreaIds = ContactHost + "/addresses/export-by-area-ids";
-        public const string ContactsGetAsyncJobStatus = ContactHost + "/addresses/job-tracker/status/{job_id}";
-        public const string ContactsGetAsyncJobResult = ContactHost + "/addresses/job-tracker/result/{job_id}";
+        public const string ContactsGetAsyncJobStatus = ContactHost + "/job-tracker/status";
+        public const string ContactsGetAsyncJobResult = ContactHost + "/job-tracker/result";
         public const string AddressBookDepots = ContactHost + "/addresses/depots";
 
         #endregion
@@ -227,6 +255,33 @@
         public const string Orders = MainHost + "/orders";
         public const string OrdersArchive = Orders + "/archive";
         public const string OrdersHistory = Orders + "/history";
+
+        #endregion
+
+        #region Route Status
+
+        public const string RouteStatusMainHost = MainHost + "/route-status";
+        public const string RouteStatus = RouteStatusMainHost + "/{routeId}";
+        public const string RouteStatusHistory = RouteStatus + "/history";
+        public const string RollbackRouteStatus = RouteStatus + "/rollback";
+        public const string PlannedRouteStatus = RouteStatusMainHost + "/planned";
+        public const string RouteStopStatus = MainHost + "/route-stop-status";
+
+        #endregion
+
+        #region  Schedules
+
+        public const string RecurringRoutes = MainHost + "/recurring-routes";
+        public const string Schedules = RecurringRoutes + "/schedules";
+        public const string SchedulesPagination = Schedules + "/pagination";
+
+        public const string RouteSchedules = RecurringRoutes + "/route-schedules";
+        public const string RouteSchedulesPagination = RouteSchedules + "/pagination";
+        public const string ReplaceRouteSchedules = RouteSchedules + "/replace";
+        public const string RouteSchedulesIsCopy = RouteSchedules + "/is-copy";
+        public const string RouteSchedulesCopies = RouteSchedules + "/get-copies";
+
+        public const string MasterRoutes = RecurringRoutes + "/master-routes";
 
         #endregion
 

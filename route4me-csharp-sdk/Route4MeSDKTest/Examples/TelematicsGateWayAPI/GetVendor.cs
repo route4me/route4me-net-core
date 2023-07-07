@@ -10,8 +10,8 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManager(ActualApiKey);
 
             var vendors = route4Me.GetAllTelematicsVendors(
-                                        new TelematicsVendorParameters(),
-                                        out string errorString);
+                new TelematicsVendorParameters(),
+                out string errorString);
 
             int randomNumber = (new Random()).Next(0, vendors.Vendors.Length - 1);
 

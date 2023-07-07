@@ -23,16 +23,16 @@ namespace Route4MeSDK.Examples
                 OrderCustomFieldType = "checkbox",
                 OrderCustomFieldTypeInfo = new Dictionary<string, object>()
                 {
-                    {"short_label", "cFl55" },
-                    {"description", "This is updated test order custom field" },
-                    {"custom field no", 12 }
+                    { "short_label", "cFl55" },
+                    { "description", "This is updated test order custom field" },
+                    { "custom field no", 12 }
                 }
             };
 
             var orderCustomUserField = route4Me.UpdateOrderCustomUserField(
                 orderCustomFieldParams,
                 out string errorString
-             );
+            );
 
             PrintOrderCustomField(orderCustomUserField, errorString);
 

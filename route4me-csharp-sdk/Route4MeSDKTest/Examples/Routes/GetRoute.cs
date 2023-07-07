@@ -13,8 +13,8 @@ namespace Route4MeSDK.Examples
         /// <param name="getRouteDirections">If true, the directions included in the response</param>
         /// <param name="getRoutePathPoints">If true, the path points included in the response</param>
         public void GetRoute(string routeId = null,
-                             bool? getRouteDirections = null,
-                             bool? getRoutePathPoints = null)
+            bool? getRouteDirections = null,
+            bool? getRoutePathPoints = null)
         {
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);

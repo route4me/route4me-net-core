@@ -32,18 +32,17 @@ namespace Route4MeSDK.Examples
                 {
                     new RouteBreak()
                     {
-                        Type =  RouteBreakTypes.CERTAIN_NUMBER_OF_TRAVEL_TIME.Description(),
+                        Type = RouteBreakTypes.CERTAIN_NUMBER_OF_TRAVEL_TIME.Description(),
                         Duration = 900,
                         Params = new int[] { 2700, 2700 }
                     }
                 },
                 ReplaceExistingBreaks = true
-
             };
 
 
             // Run the query
-           var result = route4Me.InsertRouteBreaks(routeBreaks, out ResultResponse resultResponse);
+            var result = route4Me.InsertRouteBreaks(routeBreaks, out ResultResponse resultResponse);
 
             if (result == null)
             {
@@ -52,7 +51,7 @@ namespace Route4MeSDK.Examples
             }
 
 
-            Console.WriteLine($"The route breaks " + (result.status ? "" : "not") + " inserted");
+            Console.WriteLine($"The route breaks " + (result.Status ? "" : "not") + " inserted");
 
             RemoveTestOptimizations();
         }

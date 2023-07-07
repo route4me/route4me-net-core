@@ -16,6 +16,7 @@ namespace Route4MeSDK.Examples
             Route4MeManager route4Me = new Route4MeManager("11111111111111111111111111111111");
 
             #region ======= Add scheduled address book locations to an user account ================================
+
             string sAddressFile = @"Data/addresses_1000.csv";
             Schedule sched0 = new Schedule("daily", false);
             //var csv = new CsvReader(File.OpenText("file.csv"));
@@ -71,6 +72,7 @@ namespace Route4MeSDK.Examples
                     {
                         if (sched_monthly_mode == "nth") blNth = true;
                     }
+
                     if (sched0.ValidateScheduleUseNth(sched_annually_usenth))
                     {
                         if (sched_annually_usenth.ToString().ToLower() == "true") blNth = true;
@@ -103,8 +105,10 @@ namespace Route4MeSDK.Examples
                                         {
                                             lsWeekdays.Add(Convert.ToInt32(arWeekdays[i]));
                                         }
+
                                         schedule.Weekly.Weekdays = lsWeekdays.ToArray();
                                     }
+
                                     break;
                                 case "monthly":
                                     if (schedule.ValidateScheduleMonthlyMode(sched_monthly_mode))
@@ -122,15 +126,20 @@ namespace Route4MeSDK.Examples
                                                     {
                                                         lsMonthdays.Add(Convert.ToInt32(arMonthdays[i]));
                                                     }
+
                                                     schedule.Monthly.Dates = lsMonthdays.ToArray();
                                                 }
+
                                                 break;
                                             case "nth":
-                                                if (schedule.ValidateScheduleNthN(sched_nth_n)) schedule.Monthly.Nth.N = Convert.ToInt32(sched_nth_n);
-                                                if (schedule.ValidateScheduleNthWhat(sched_nth_what)) schedule.Monthly.Nth.What = Convert.ToInt32(sched_nth_what);
+                                                if (schedule.ValidateScheduleNthN(sched_nth_n))
+                                                    schedule.Monthly.Nth.N = Convert.ToInt32(sched_nth_n);
+                                                if (schedule.ValidateScheduleNthWhat(sched_nth_what))
+                                                    schedule.Monthly.Nth.What = Convert.ToInt32(sched_nth_what);
                                                 break;
                                         }
                                     }
+
                                     break;
                                 case "annually":
                                     if (schedule.ValidateScheduleUseNth(sched_annually_usenth))
@@ -139,8 +148,10 @@ namespace Route4MeSDK.Examples
                                         schedule.Annually.UseNth = Convert.ToBoolean(sched_annually_usenth);
                                         if (schedule.Annually.UseNth)
                                         {
-                                            if (schedule.ValidateScheduleNthN(sched_nth_n)) schedule.Annually.Nth.N = Convert.ToInt32(sched_nth_n);
-                                            if (schedule.ValidateScheduleNthWhat(sched_nth_what)) schedule.Annually.Nth.What = Convert.ToInt32(sched_nth_what);
+                                            if (schedule.ValidateScheduleNthN(sched_nth_n))
+                                                schedule.Annually.Nth.N = Convert.ToInt32(sched_nth_n);
+                                            if (schedule.ValidateScheduleNthWhat(sched_nth_what))
+                                                schedule.Annually.Nth.What = Convert.ToInt32(sched_nth_what);
                                         }
                                         else
                                         {
@@ -152,15 +163,17 @@ namespace Route4MeSDK.Examples
                                                 {
                                                     lsMonths.Add(Convert.ToInt32(arYearmonths[i]));
                                                 }
+
                                                 schedule.Annually.Months = lsMonths.ToArray();
                                             }
                                         }
                                     }
+
                                     break;
                             }
                         }
-
                     }
+
                     newLocation.Schedule = (new List<Schedule>() { schedule }).ToArray();
                     //}
 
@@ -169,15 +182,17 @@ namespace Route4MeSDK.Examples
                     showResult(resultContact, errorString);
 
                     Thread.Sleep(1000);
-
                 }
-            };
+            }
+
+            ;
 
             #endregion
 
             Thread.Sleep(2000);
 
             #region ======= Get Hybrid Optimization ================================
+
             TimeSpan tsp1day = new TimeSpan(1, 0, 0, 0);
             List<string> lsScheduledDays = new List<string>();
             DateTime curDate = DateTime.Now;
@@ -188,47 +203,53 @@ namespace Route4MeSDK.Examples
             }
             //string[] ScheduledDays = new string[] { "2017-03-06", "2017-03-07", "2017-03-08", "2017-03-09", "2017-03-10" };
 
-            Address[] Depots = new Address[] {
-                new Address {
-                        AddressString = "2017 Ambler Ave, Abilene, TX, 79603-2239",
-                        IsDepot = true,
-                        Latitude = 32.474395,
-                        Longitude = -99.7447021,
-                        CurbsideLatitude = 32.474395,
-                        CurbsideLongitude = -99.7447021
-                    },
-                new Address {
-                        AddressString = "807 Ridge Rd, Alamo, TX, 78516-9596",
-                        IsDepot = true,
-                        Latitude = 26.170834,
-                        Longitude = -98.116201,
-                        CurbsideLatitude = 26.170834,
-                        CurbsideLongitude = -98.116201
-                    },
-                new Address {
-                        AddressString = "1430 W Amarillo Blvd, Amarillo, TX, 79107-5505",
-                        IsDepot = true,
-                        Latitude = 35.221969,
-                        Longitude = -101.835288,
-                        CurbsideLatitude = 35.221969,
-                        CurbsideLongitude = -101.835288
-                    },
-                new Address {
-                        AddressString = "3611 Ne 24Th Ave, Amarillo, TX, 79107-7242",
-                        IsDepot = true,
-                        Latitude = 35.236626,
-                        Longitude = -101.795117,
-                        CurbsideLatitude = 35.236626,
-                        CurbsideLongitude = -101.795117
-                    },
-                new Address {
-                        AddressString = "1525 New York Ave, Arlington, TX, 76010-4723",
-                        IsDepot = true,
-                        Latitude = 32.720524,
-                        Longitude = -97.080195,
-                        CurbsideLatitude = 32.720524,
-                        CurbsideLongitude = -97.080195
-                    }
+            Address[] Depots = new Address[]
+            {
+                new Address
+                {
+                    AddressString = "2017 Ambler Ave, Abilene, TX, 79603-2239",
+                    IsDepot = true,
+                    Latitude = 32.474395,
+                    Longitude = -99.7447021,
+                    CurbsideLatitude = 32.474395,
+                    CurbsideLongitude = -99.7447021
+                },
+                new Address
+                {
+                    AddressString = "807 Ridge Rd, Alamo, TX, 78516-9596",
+                    IsDepot = true,
+                    Latitude = 26.170834,
+                    Longitude = -98.116201,
+                    CurbsideLatitude = 26.170834,
+                    CurbsideLongitude = -98.116201
+                },
+                new Address
+                {
+                    AddressString = "1430 W Amarillo Blvd, Amarillo, TX, 79107-5505",
+                    IsDepot = true,
+                    Latitude = 35.221969,
+                    Longitude = -101.835288,
+                    CurbsideLatitude = 35.221969,
+                    CurbsideLongitude = -101.835288
+                },
+                new Address
+                {
+                    AddressString = "3611 Ne 24Th Ave, Amarillo, TX, 79107-7242",
+                    IsDepot = true,
+                    Latitude = 35.236626,
+                    Longitude = -101.795117,
+                    CurbsideLatitude = 35.236626,
+                    CurbsideLongitude = -101.795117
+                },
+                new Address
+                {
+                    AddressString = "1525 New York Ave, Arlington, TX, 76010-4723",
+                    IsDepot = true,
+                    Latitude = 32.720524,
+                    Longitude = -97.080195,
+                    CurbsideLatitude = 32.720524,
+                    CurbsideLongitude = -97.080195
+                }
             };
 
             string errorString1;

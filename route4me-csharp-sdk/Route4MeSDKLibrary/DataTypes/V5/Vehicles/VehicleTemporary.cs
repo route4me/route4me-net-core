@@ -6,6 +6,7 @@ namespace Route4MeSDK.DataTypes.V5
     /// <summary>
     ///     The class for the request/response data structure to/from the endpoint vehicles/assign.
     /// </summary>
+    [DataContract]
     public sealed class VehicleTemporary : GenericParameters
     {
         /// <summary>

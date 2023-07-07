@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Route4MeSDK.DataTypes.V5
 {
@@ -307,12 +310,18 @@ namespace Route4MeSDK.DataTypes.V5
         [IgnoreDataMember]
         public VehicleV4Response Vehilce { get; set; }
 
-        /// <summary>
-        ///     Member config key-value pairs.
-        /// </summary>
-        [DataMember(Name = "member_config_storage", EmitDefaultValue = false)]
-        [ReadOnly(true)]
-        public Dictionary<string, string> MemberConfigStorage { get; set; }
+        [JsonProperty("member_config_storage")]
+        private Dictionary<string, JToken> MemberConfigStorageInternal { get; set; }
+
+        [JsonIgnore]
+        public Dictionary<string, string> MemberConfigStorage
+        {
+            get
+            {
+                return MemberConfigStorageInternal.ToDictionary(x => x.Key,
+                    pair => pair.Value.ToString(Formatting.Indented));
+            }
+        }
 
         /// <summary>
         ///     If true, the route is master.

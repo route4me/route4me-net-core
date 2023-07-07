@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
+using static Route4MeSDK.Route4MeManagerV5;
 
 namespace Route4MeSDK.Examples
 {
@@ -38,16 +39,16 @@ namespace Route4MeSDK.Examples
             };
 
             var updatedMember = route4Me.AddSkillsToDriver(queryParams,
-                                                            skills,
-                                                            out ResultResponse resultResponse);
+                skills,
+                out ResultResponse resultResponse);
 
             PrintTeamMembers(updatedMember, resultResponse);
 
             Console.WriteLine("");
             Console.WriteLine(
                 (updatedMember?.CustomData?.ContainsKey("driver_skills") ?? false) == true
-                ? "Driver skills :" + updatedMember.CustomData["driver_skills"]
-                : "Cannot add skills to the driver"
+                    ? "Driver skills :" + updatedMember.CustomData["driver_skills"]
+                    : "Cannot add skills to the driver"
             );
 
             RemoveTestTeamMembers();

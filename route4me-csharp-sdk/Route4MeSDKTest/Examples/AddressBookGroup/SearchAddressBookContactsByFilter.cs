@@ -21,22 +21,22 @@ namespace Route4MeSDK.Examples
             var addressBookGroupParameters = new AddressBookGroupParameters()
             {
                 Fields = new string[] { "address_id", "address_1", "address_group" },
-                offset = 0,
-                limit = 10,
-                filter = filterParam
+                Offset = 0,
+                Limit = 10,
+                Filter = filterParam
             };
 
             // Run the query
             var response = route4Me
                 .SearchAddressBookContactsByFilter(
-                addressBookGroupParameters,
-                out string errorString);
+                    addressBookGroupParameters,
+                    out string errorString);
 
             Console.WriteLine(
                 (response?.Results?.Length ?? 0) < 1
-                ? "Cannot retrieve the contacts by filter" + Environment.NewLine + errorString
-                : "Retrieved the contacts by filter: " + response.Results.Length
-                );
+                    ? "Cannot retrieve the contacts by filter" + Environment.NewLine + errorString
+                    : "Retrieved the contacts by filter: " + response.Results.Length
+            );
         }
     }
 }

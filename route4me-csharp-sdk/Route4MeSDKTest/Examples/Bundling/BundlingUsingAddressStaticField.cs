@@ -23,18 +23,17 @@ namespace Route4MeSDK.Examples
                 Bundling = new AddressBundling()
                 {
                     Mode = AddressBundlingMode.AddressId,
-                    ModeParams = new string[] {"Alias"},
-                    MergeMode = AddressBundlingMergeMode.MergeIntoSingleDestination,
+                    ModeParams = new string[] { "Alias" },
+                    MergeMode = AddressBundlingMergeMode.KeepAsSeparateDestinations,
                     ServiceTimeRules = new ServiceTimeRulesClass()
                     {
                         FirstItemMode = AddressBundlingFirstItemMode.CustomTime,
-                        FirstItemModeParams = new int[] {900},
+                        FirstItemModeParams = new int[] { 900 },
                         AdditionalItemsMode = AddressBundlingAdditionalItemsMode.CustomTime,
-                        AdditionalItemsModeParams = new int[] {200}
+                        AdditionalItemsModeParams = new int[] { 200 }
                     }
                 }
             };
-
 
             var addresses = new List<Address>()
             {

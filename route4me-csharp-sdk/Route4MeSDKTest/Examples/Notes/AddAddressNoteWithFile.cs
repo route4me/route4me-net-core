@@ -36,7 +36,8 @@ namespace Route4MeSDK.Examples
             }
 
             string tempFilePath = null;
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Route4MeSDKTest.Resources.test.png"))
+            using (Stream stream = Assembly.GetExecutingAssembly()
+                       .GetManifestResourceStream("Route4MeSDKTest.Resources.test.png"))
             {
                 var tempFiles = new TempFileCollection();
                 {

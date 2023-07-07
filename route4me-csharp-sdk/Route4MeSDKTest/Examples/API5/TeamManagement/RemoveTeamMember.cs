@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
+using static Route4MeSDK.Route4MeManagerV5;
 
 namespace Route4MeSDK.Examples
 {
@@ -35,14 +36,14 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var removedMember = route4Me.RemoveTeamMember(memberParams,
-                                                            out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintTeamMembers(removedMember, resultResponse);
 
             Console.WriteLine(
                 (removedMember?.MemberEmail?.Contains(".deleted") ?? false)
-                ? String.Format("A member {0} removed succsessfully", removedMember.MemberId)
-                : String.Format("Cannot remove a member {0}", removedMember.MemberId)
+                    ? String.Format("A member {0} removed succsessfully", removedMember.MemberId)
+                    : String.Format("Cannot remove a member {0}", removedMember.MemberId)
             );
         }
     }

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client.Transports;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Quobject.EngineIoClientDotNet.Client;
+using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.SocketIoClientDotNet.Client;
-using Quobject.SocketIoClientDotNet.EngineIoClientDotNet.Client;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDKLibrary.DataTypes;
@@ -49,10 +49,17 @@ namespace Route4MeSDK.FastProcessing
         /// </summary>
         public bool GeocodeOnlyEmpty { get; set; } = false;
 
+        [Obsolete("enableTraceSource is not used anymore. Use overloaded constructor without enableTraceSource")]
         public FastBulkGeocoding(string apiKey, bool enableTraceSource = false)
         {
-            if (apiKey != "") _apiKey = apiKey;
-            Quobject.SocketIoClientDotNet.TraceSourceTools.LogTraceSource.TraceSourceLogging(enableTraceSource);
+        }
+
+        public FastBulkGeocoding(string apiKey)
+        {
+            if (apiKey != "")
+            {
+                _apiKey = apiKey;
+            }
         }
 
         /// <summary>
@@ -275,19 +282,19 @@ namespace Route4MeSDK.FastProcessing
                 Data = contactsChunk.ToArray()
             };
 
-            var response = route4Me.BatchCreateAdressBookContacts(
+            var response = route4Me.BatchCreateAddressBookContacts(
                 contactParams,
                 MandatoryFields,
                 out var resultResponse);
 
-            if (response?.status ?? false) _totalCsvChunks += contactsChunk.Count;
+            if (response?.Status ?? false) _totalCsvChunks += contactsChunk.Count;
 
             Console.WriteLine(
-                response?.status ?? false
+                response?.Status ?? false
                     ? _totalCsvChunks + " address book contacts added to database"
                     : "Faild to add " + contactsChunk.Count + " address book contacts");
 
-            if (!(response?.status ?? false))
+            if (!(response?.Status ?? false))
             {
                 Console.WriteLine("Exit code: " + resultResponse.ExitCode + Environment.NewLine +
                                   "Code: " + resultResponse.Code + Environment.NewLine +

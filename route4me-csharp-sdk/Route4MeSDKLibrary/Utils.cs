@@ -12,6 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using ReadOnlyAttribute = Route4MeSDK.DataTypes.ReadOnlyAttribute;
@@ -70,12 +72,26 @@ namespace Route4MeSDK
                 if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "[" + rslt.Groups[1] + "]");
             }
 
+            if (typeof(T) == typeof(DataTypes.V5.AddressBookContact) || typeof(T) == typeof(DataTypes.V5.AddressBookContact[]))
+            {
+                var pattern = string.Concat(
+                    "\\\"schedule_blacklist\\\"",
+                    @":(\[\[[\s\S\n\d\w]*\]\]),",
+                    "\"");
+
+                var rgx = new Regex(pattern);
+                var rslt = rgx.Match(text);
+
+                if (rslt.Success) text = text.Replace(rslt.Groups[1].ToString(), "null");
+            }
+
             if (typeof(T) == typeof(OrderHistoryResponse))
             {
                 try
                 {
                     return JsonConvert.DeserializeObject<T>(text, jsonSettings);
                 }
+
                 catch (JsonSerializationException)
                 {
                     OrderHistoryResponseInternal internalResponse = (OrderHistoryResponseInternal)JsonConvert.DeserializeObject(text, typeof(OrderHistoryResponseInternal));
@@ -108,50 +124,91 @@ namespace Route4MeSDK
                 }
             }
 
-            if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
+            if (typeof(T) == typeof(DataTypes.V5.DataObjectRoute[]))
             {
-                var pattern = string.Concat(
-                    "\\\"EXT_FIELD_custom_data\\\"",
-                    @":(\[\]),",
-                    "\"");
-
-                var rgx = new Regex(pattern);
-                var rslt = rgx.Match(text);
-
-                if (rslt?.Success ?? false) text = text.Replace("\"EXT_FIELD_custom_data\":[]", "\"EXT_FIELD_custom_data\":null");
-
-                pattern = string.Concat(
-                    "(\"EXT_FIELD_custom_data\"",
-                    @":(\[{)[^\]]*(}\])),");
-
-                string pattern2 = string.Concat(
-                    "(\"EXT_FIELD_custom_data\"",
-                    @":{[^\]]*}),");
-
-                var map = new Dictionary<string, string>()
+                try
                 {
-                   {pattern,pattern2}
-                   
-                };
-
-                rgx = new Regex(pattern);
-
-                var mathes = rgx.Matches(text);
-
-                if (mathes.Count>0)
-                {
-                    for (int i = 0; i< mathes.Count; i++)
-                    {
-                        if (mathes[i].Success && mathes[i].Captures.Count>0)
-                        {
-                            string sub2 = mathes[i].Captures[0].Value
-                                            .Replace("[{", "{")
-                                            .Replace("}]", "}");
-
-                            text = text.Replace(mathes[i].Captures[0].Value, sub2);
-                        }
-                    }
+                    return JsonConvert.DeserializeObject<T>(text, jsonSettings);
                 }
+
+                catch (JsonSerializationException)
+                {
+                    DataTypes.V5.DataObjectRoute internalResponse = (DataTypes.V5.DataObjectRoute)JsonConvert.DeserializeObject(text, typeof(DataTypes.V5.DataObjectRoute));
+                    var externalResponse = new[] { internalResponse };
+
+                    text = JsonConvert.SerializeObject(externalResponse);
+                }
+            }
+
+            if (typeof(T) == typeof(Route4MeSDK.DataTypes.DataObjectRoute[]))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(text, jsonSettings);
+                }
+
+                catch (JsonSerializationException)
+                {
+                    DataTypes.DataObjectRoute internalResponse = (DataTypes.DataObjectRoute)JsonConvert.DeserializeObject(text, typeof(DataTypes.DataObjectRoute));
+                    var externalResponse = new[] { internalResponse };
+
+                    text = JsonConvert.SerializeObject(externalResponse);
+                }
+            }
+
+            //if (typeof(T) == typeof(DataTypes.V5.ArchiveOrdersResponse))
+            //{
+            //    var pattern = string.Concat(
+            //        "\\\"EXT_FIELD_custom_data\\\"",
+            //        @":(\[\]),",
+            //        "\"");
+
+            //    var rgx = new Regex(pattern);
+            //    var rslt = rgx.Match(text);
+
+            //    if (rslt?.Success ?? false) text = text.Replace("\"EXT_FIELD_custom_data\":[]", "\"EXT_FIELD_custom_data\":null");
+
+            //    pattern = string.Concat(
+            //        "(\"EXT_FIELD_custom_data\"",
+            //        @":(\[{)[^\]]*(}\])),");
+
+            //    string pattern2 = string.Concat(
+            //        "(\"EXT_FIELD_custom_data\"",
+            //        @":{[^\]]*}),");
+
+            //    var map = new Dictionary<string, string>()
+            //    {
+            //       {pattern,pattern2}
+
+            //    };
+
+            //    rgx = new Regex(pattern);
+
+            //    var mathes = rgx.Matches(text);
+
+            //    if (mathes.Count>0)
+            //    {
+            //        for (int i = 0; i< mathes.Count; i++)
+            //        {
+            //            if (mathes[i].Success && mathes[i].Captures.Count>0)
+            //            {
+            //                string sub2 = mathes[i].Captures[0].Value
+            //                                .Replace("[{", "{")
+            //                                .Replace("}]", "}");
+
+            //                text = text.Replace(mathes[i].Captures[0].Value, sub2);
+            //            }
+            //        }
+            //    }
+            //}
+
+            if (text == "true")
+            {
+                text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse(){ Status = true });
+            }
+            else if (text == "false")
+            {
+                text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse() { Status = false });
             }
 
             return JsonConvert.DeserializeObject<T>(text, jsonSettings);
@@ -231,7 +288,7 @@ namespace Route4MeSDK
             var jsonSettings = new JsonSerializerSettings
             {
                 NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-                DefaultValueHandling = DefaultValueHandling.Include,
+                //DefaultValueHandling = DefaultValueHandling.Include,
                 ContractResolver = new DataContractResolver()
             };
 
@@ -245,7 +302,7 @@ namespace Route4MeSDK
         {
             var jsonSettings = new JsonSerializerSettings
             {
-                //NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
+                NullValueHandling = NullValueHandling.Ignore,
                 //DefaultValueHandling = DefaultValueHandling.Include,
                 ContractResolver = new DataContractResolver()
             };
@@ -869,6 +926,17 @@ namespace Route4MeSDK
 
             return new string(Enumerable.Repeat(sourceString, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        /// <summary>
+        /// Generates a test email on the basis of a template email.
+        /// </summary>
+        /// <param name="emailTemplate">Template email</param>
+        /// <returns>Generated email</returns>
+        public static string GenerateTestEmail(string emailTemplate)
+        {
+            string[] emailParts = emailTemplate.Split('@');
+            return emailParts[0] + "+" + ConvertToUnixTimestamp(DateTime.Now)+GenerateRandomString(4) + "@" + emailParts[1];
         }
     }
 }

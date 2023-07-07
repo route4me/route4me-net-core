@@ -20,10 +20,10 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var response = route4Me.AddCustomNoteType(
-                    customType,
-                    customValues,
-                    out string errorString
-                );
+                customType,
+                customValues,
+                out string errorString
+            );
 
             PrintExampleCustomNoteType(response, errorString);
 

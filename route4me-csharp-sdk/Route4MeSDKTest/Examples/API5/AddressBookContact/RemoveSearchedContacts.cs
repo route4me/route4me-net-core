@@ -38,10 +38,10 @@ namespace Route4MeSDK.Examples
             Console.WriteLine(resultResponse == null
                 ? addressIDs.Length + " contacts removed from database"
                 : "Cannot remove " + addressIDs.Length + " contacts." + Environment.NewLine +
-                "Exit code: " + (resultResponse?.ExitCode.ToString() ?? "") + Environment.NewLine +
-                "Code: " + (resultResponse?.Code.ToString() ?? "") + Environment.NewLine +
-                "Status: " + (resultResponse?.Status.ToString() ?? "") + Environment.NewLine
-                );
+                  "Exit code: " + (resultResponse?.ExitCode.ToString() ?? "") + Environment.NewLine +
+                  "Code: " + (resultResponse?.Code.ToString() ?? "") + Environment.NewLine +
+                  "Status: " + (resultResponse?.Status.ToString() ?? "") + Environment.NewLine
+            );
 
             if (resultResponse != null)
             {

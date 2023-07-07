@@ -10,19 +10,19 @@ namespace Route4MeSDK.Examples
         /// </summary>
         public void GetDriverReviewList()
         {
-            // Create the manager with the api key
+            // The example requires an API key with special features.
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
             var queryParameters = new DriverReviewParameters()
             {
                 Start = "2020-01-01",
                 End = "2030-01-01",
-                Page = 0,
+                Page = 1,
                 PerPage = 20
             };
 
             var reviewList = route4Me.GetDriverReviewList(queryParameters,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             PrintDriverReview(reviewList, resultResponse);
         }

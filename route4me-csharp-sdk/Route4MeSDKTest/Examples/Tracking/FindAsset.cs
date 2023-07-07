@@ -51,13 +51,13 @@ namespace Route4MeSDK.Examples
                 {
                     Console.WriteLine(
                         "from_unix_timestamp: " + nDateTime.AddSeconds(arriv1.FromUnixTimestamp >= 0
-                        ? (double)arriv1.FromUnixTimestamp
-                        : 0)
+                            ? (double)arriv1.FromUnixTimestamp
+                            : 0)
                     );
                     Console.WriteLine(
                         "to_unix_timestamp: " + nDateTime.AddSeconds(arriv1.ToUnixTimestamp >= 0
-                        ? (double)arriv1.ToUnixTimestamp
-                        : 0)
+                            ? (double)arriv1.ToUnixTimestamp
+                            : 0)
                     );
                 }
 

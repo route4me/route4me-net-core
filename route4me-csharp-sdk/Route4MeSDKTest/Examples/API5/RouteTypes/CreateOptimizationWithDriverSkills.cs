@@ -1,4 +1,5 @@
 ﻿using Route4MeSDK.DataTypes.V5;
+//using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var member1 = route4MeV5.CreateTeamMember(newMemberParameters1,
-                                                    out DataTypes.V5.ResultResponse resultResponse);
+                out DataTypes.V5.ResultResponse resultResponse);
 
             if (member1 != null && member1.GetType() == typeof(DataTypes.V5.TeamResponse)) membersToRemove.Add(member1);
 
@@ -57,8 +58,8 @@ namespace Route4MeSDK.Examples
             };
 
             var updatedMember1 = route4MeV5.AddSkillsToDriver(queryParams1,
-                                                            skills1,
-                                                            out resultResponse);
+                skills1,
+                out resultResponse);
 
             #endregion
 
@@ -78,7 +79,7 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             var member2 = route4MeV5.CreateTeamMember(newMemberParameters2,
-                                                    out resultResponse);
+                out resultResponse);
 
             if (member2 != null && member2.GetType() == typeof(DataTypes.V5.TeamResponse)) membersToRemove.Add(member2);
 
@@ -93,8 +94,8 @@ namespace Route4MeSDK.Examples
             };
 
             var updatedMember2 = route4MeV5.AddSkillsToDriver(queryParams2,
-                                                            skills2,
-                                                            out resultResponse);
+                skills2,
+                out resultResponse);
 
             #endregion
 
@@ -103,134 +104,182 @@ namespace Route4MeSDK.Examples
             // Prepare the addresses
             var addresses = new Address[]
             {
-        #region Addresses
+                #region Addresses
 
-        new Address() { AddressString   = "3634 W Market St, Fairlawn, OH 44333",
-                        //all possible originating locations are depots, should be marked as true
-                        //stylistically we recommend all depots should be at the top of the destinations list
-                        IsDepot         = true,
-                        Latitude        = 41.135762259364,
-                        Longitude       = -81.629313826561,
-                        
-                        //the number of seconds at destination
-                        Time            = 300,
-                        
-                        //together these two specify the time window of a destination
-                        //seconds offset relative to the route start time for the open availability of a destination
-                        TimeWindowStart = 28800,  
-                        
-                        //seconds offset relative to the route end time for the open availability of a destination
-                        TimeWindowEnd   = 29465},
+                new Address()
+                {
+                    AddressString = "3634 W Market St, Fairlawn, OH 44333",
+                    //all possible originating locations are depots, should be marked as true
+                    //stylistically we recommend all depots should be at the top of the destinations list
+                    IsDepot = true,
+                    Latitude = 41.135762259364,
+                    Longitude = -81.629313826561,
 
-        new Address() { AddressString   = "1218 Ruth Ave, Cuyahoga Falls, OH 44221",
-                        Latitude        = 41.135762259364,
-                        Longitude       = -81.629313826561,
-                        Time            = 300,
-                        TimeWindowStart = 29465,
-                        TimeWindowEnd   = 30529},
+                    //the number of seconds at destination
+                    Time = 300,
 
-        new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
-                        Latitude        = 41.003671512008,
-                        Longitude       = -81.598461046815,
-                        Time            = 300,
-                        TimeWindowStart = 30529,
-                        TimeWindowEnd   = 33779,
-                        Tags            = new string[] { "Class A CDL", "Forklift" } },
+                    //together these two specify the time window of a destination
+                    //seconds offset relative to the route start time for the open availability of a destination
+                    TimeWindowStart = 28800,
 
-        new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
-                        IsDepot         = true,
-                        Latitude        = 41.003671512008,
-                        Longitude       = -81.598461046815,
-                        Time            = 100,
-                        TimeWindowStart = 33779,
-                        TimeWindowEnd   = 33944},
+                    //seconds offset relative to the route end time for the open availability of a destination
+                    TimeWindowEnd = 29465
+                },
 
-        new Address() { AddressString   = "3495 Purdue St, Cuyahoga Falls, OH 44221",
-                        Latitude        = 41.162971496582,
-                        Longitude       = -81.479049682617,
-                        Time            = 300,
-                        TimeWindowStart = 33944,
-                        TimeWindowEnd   = 34801,
-                        Tags            = new string[] { "Forklift", "Skid Steer Loader" } },
+                new Address()
+                {
+                    AddressString = "1218 Ruth Ave, Cuyahoga Falls, OH 44221",
+                    Latitude = 41.135762259364,
+                    Longitude = -81.629313826561,
+                    Time = 300,
+                    TimeWindowStart = 29465,
+                    TimeWindowEnd = 30529
+                },
 
-        new Address() { AddressString   = "1659 Hibbard Dr, Stow, OH 44224",
-                        Latitude        = 41.194505989552,
-                        Longitude       = -81.443351581693,
-                        Time            = 300,
-                        TimeWindowStart = 34801,
-                        TimeWindowEnd   = 36366},
+                new Address()
+                {
+                    AddressString = "512 Florida Pl, Barberton, OH 44203",
+                    Latitude = 41.003671512008,
+                    Longitude = -81.598461046815,
+                    Time = 300,
+                    TimeWindowStart = 30529,
+                    TimeWindowEnd = 33779,
+                    Tags = new string[] { "Class A CDL", "Forklift" }
+                },
 
-        new Address() { AddressString   = "2705 N River Rd, Stow, OH 44224",
-                        Latitude        = 41.145240783691,
-                        Longitude       = -81.410247802734,
-                        Time            = 300,
-                        TimeWindowStart = 36366,
-                        TimeWindowEnd   = 39173},
+                new Address()
+                {
+                    AddressString = "512 Florida Pl, Barberton, OH 44203",
+                    IsDepot = true,
+                    Latitude = 41.003671512008,
+                    Longitude = -81.598461046815,
+                    Time = 100,
+                    TimeWindowStart = 33779,
+                    TimeWindowEnd = 33944
+                },
 
-        new Address() { AddressString   = "10159 Bissell Dr, Twinsburg, OH 44087",
-                        Latitude        = 41.340042114258,
-                        Longitude       = -81.421226501465,
-                        Time            = 300,
-                        TimeWindowStart = 39173,
-                        TimeWindowEnd   = 41617},
+                new Address()
+                {
+                    AddressString = "3495 Purdue St, Cuyahoga Falls, OH 44221",
+                    Latitude = 41.162971496582,
+                    Longitude = -81.479049682617,
+                    Time = 300,
+                    TimeWindowStart = 33944,
+                    TimeWindowEnd = 34801,
+                    Tags = new string[] { "Forklift", "Skid Steer Loader" }
+                },
 
-        new Address() { AddressString   = "367 Cathy Dr, Munroe Falls, OH 44262",
-                        Latitude        = 41.148578643799,
-                        Longitude       = -81.429229736328,
-                        Time            = 300,
-                        TimeWindowStart = 41617,
-                        TimeWindowEnd   = 43660},
+                new Address()
+                {
+                    AddressString = "1659 Hibbard Dr, Stow, OH 44224",
+                    Latitude = 41.194505989552,
+                    Longitude = -81.443351581693,
+                    Time = 300,
+                    TimeWindowStart = 34801,
+                    TimeWindowEnd = 36366
+                },
 
-        new Address() { AddressString   = "367 Cathy Dr, Munroe Falls, OH 44262",
-                        Latitude        = 41.148578643799,
-                        Longitude       = -81.429229736328,
-                        Time            = 300,
-                        TimeWindowStart = 43660,
-                        TimeWindowEnd   = 46392},
+                new Address()
+                {
+                    AddressString = "2705 N River Rd, Stow, OH 44224",
+                    Latitude = 41.145240783691,
+                    Longitude = -81.410247802734,
+                    Time = 300,
+                    TimeWindowStart = 36366,
+                    TimeWindowEnd = 39173
+                },
 
-        new Address() { AddressString   = "512 Florida Pl, Barberton, OH 44203",
-                        Latitude        = 41.003671512008,
-                        Longitude       = -81.598461046815,
-                        Time            = 300,
-                        TimeWindowStart = 46392,
-                        TimeWindowEnd   = 48389},
+                new Address()
+                {
+                    AddressString = "10159 Bissell Dr, Twinsburg, OH 44087",
+                    Latitude = 41.340042114258,
+                    Longitude = -81.421226501465,
+                    Time = 300,
+                    TimeWindowStart = 39173,
+                    TimeWindowEnd = 41617
+                },
 
-        new Address() { AddressString   = "559 W Aurora Rd, Northfield, OH 44067",
-                        Latitude        = 41.315116882324,
-                        Longitude       = -81.558746337891,
-                        Time            = 50,
-                        TimeWindowStart = 48389,
-                        TimeWindowEnd   = 48449},
+                new Address()
+                {
+                    AddressString = "367 Cathy Dr, Munroe Falls, OH 44262",
+                    Latitude = 41.148578643799,
+                    Longitude = -81.429229736328,
+                    Time = 300,
+                    TimeWindowStart = 41617,
+                    TimeWindowEnd = 43660
+                },
 
-        new Address() { AddressString   = "3933 Klein Ave, Stow, OH 44224",
-                        Latitude        = 41.169467926025,
-                        Longitude       = -81.429420471191,
-                        Time            = 300,
-                        TimeWindowStart = 48449,
-                        TimeWindowEnd   = 50152},
+                new Address()
+                {
+                    AddressString = "367 Cathy Dr, Munroe Falls, OH 44262",
+                    Latitude = 41.148578643799,
+                    Longitude = -81.429229736328,
+                    Time = 300,
+                    TimeWindowStart = 43660,
+                    TimeWindowEnd = 46392
+                },
 
-        new Address() { AddressString   = "2148 8th St, Cuyahoga Falls, OH 44221",
-                        Latitude        = 41.136692047119,
-                        Longitude       = -81.493492126465,
-                        Time            = 300,
-                        TimeWindowStart = 50152,
-                        TimeWindowEnd   = 51982},
+                new Address()
+                {
+                    AddressString = "512 Florida Pl, Barberton, OH 44203",
+                    Latitude = 41.003671512008,
+                    Longitude = -81.598461046815,
+                    Time = 300,
+                    TimeWindowStart = 46392,
+                    TimeWindowEnd = 48389
+                },
 
-        new Address() { AddressString   = "3731 Osage St, Stow, OH 44224",
-                        Latitude        = 41.161357879639,
-                        Longitude       = -81.42293548584,
-                        Time            = 100,
-                        TimeWindowStart = 51982,
-                        TimeWindowEnd   = 52180},
+                new Address()
+                {
+                    AddressString = "559 W Aurora Rd, Northfield, OH 44067",
+                    Latitude = 41.315116882324,
+                    Longitude = -81.558746337891,
+                    Time = 50,
+                    TimeWindowStart = 48389,
+                    TimeWindowEnd = 48449
+                },
 
-        new Address() { AddressString   = "3731 Osage St, Stow, OH 44224",
-                        Latitude        = 41.161357879639,
-                        Longitude       = -81.42293548584,
-                        Time            = 300,
-                        TimeWindowStart = 52180,
-                        TimeWindowEnd   = 54379}
+                new Address()
+                {
+                    AddressString = "3933 Klein Ave, Stow, OH 44224",
+                    Latitude = 41.169467926025,
+                    Longitude = -81.429420471191,
+                    Time = 300,
+                    TimeWindowStart = 48449,
+                    TimeWindowEnd = 50152
+                },
 
-        #endregion
+                new Address()
+                {
+                    AddressString = "2148 8th St, Cuyahoga Falls, OH 44221",
+                    Latitude = 41.136692047119,
+                    Longitude = -81.493492126465,
+                    Time = 300,
+                    TimeWindowStart = 50152,
+                    TimeWindowEnd = 51982
+                },
+
+                new Address()
+                {
+                    AddressString = "3731 Osage St, Stow, OH 44224",
+                    Latitude = 41.161357879639,
+                    Longitude = -81.42293548584,
+                    Time = 100,
+                    TimeWindowStart = 51982,
+                    TimeWindowEnd = 52180
+                },
+
+                new Address()
+                {
+                    AddressString = "3731 Osage St, Stow, OH 44224",
+                    Latitude = 41.161357879639,
+                    Longitude = -81.42293548584,
+                    Time = 300,
+                    TimeWindowStart = 52180,
+                    TimeWindowEnd = 54379
+                }
+
+                #endregion
             };
 
             // Set parameters
@@ -264,14 +313,14 @@ namespace Route4MeSDK.Examples
                     new DataTypes.V5.RouteAdvancedConstraints()
                     {
                         AvailableTimeWindows = new List<int[]>()
-                                        {
-                                            new int[] { 25200,39600 },
-                                            new int[] {57600,61200 }
-                                        },
+                        {
+                            new int[] { 25200, 39600 },
+                            new int[] { 57600, 61200 }
+                        },
                         MaximumCapacity = 30,
                         MaximumCargoVolume = 15,
                         MembersCount = 10,
-                        Tags = new string[] { "Forklift","Skid Steer Loader" },
+                        Tags = new string[] { "Forklift", "Skid Steer Loader" },
                         Route4meMembersId = new int[]
                         {
                             (int)updatedMember1.MemberId,
@@ -289,8 +338,8 @@ namespace Route4MeSDK.Examples
 
             // Run the query
             DataObject dataObject = route4Me.RunOptimization(
-                                        optimizationParameters,
-                                        out ResultResponse resultResponse1);
+                optimizationParameters,
+                out ResultResponse resultResponse1);
 
             OptimizationsToRemove = new List<string>()
             {
@@ -300,8 +349,8 @@ namespace Route4MeSDK.Examples
             // Output the result
             PrintExampleOptimizationResult(
                 dataObject,
-                resultResponse1.Messages.Count>0 ? String.Join(",", resultResponse1.Messages) : ""
-                );
+                resultResponse1.Messages.Count > 0 ? String.Join(",", resultResponse1.Messages) : ""
+            );
 
             RemoveTestOptimizations();
 

@@ -17,7 +17,7 @@ namespace Route4MeSDK.Examples
 
             string territoryId = TerritoryZonesToRemove[TerritoryZonesToRemove.Count - 1];
 
-            var territoryQuery = new AvoidanceZoneQuery
+            var territoryQuery = new TerritoryQuery
             {
                 TerritoryId = territoryId
             };
@@ -27,8 +27,8 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine(
                 removed
-                ? String.Format("The territory {0} removed successfully", territoryId)
-                : String.Format("Cannot remove the territory {0}", territoryId) + Environment.NewLine + errorString
+                    ? String.Format("The territory {0} removed successfully", territoryId)
+                    : String.Format("Cannot remove the territory {0}", territoryId) + Environment.NewLine + errorString
             );
         }
     }

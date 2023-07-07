@@ -13,6 +13,8 @@ namespace Route4MeSDK.Examples
             // Create the manager with the api key
             var route4Me = new Route4MeManager(ActualApiKey);
 
+            #region Prepare query parameters
+
             bool isInnerExample = orderIds == null ? true : false;
 
             if (isInnerExample) CreateExampleOrder();
@@ -21,16 +23,22 @@ namespace Route4MeSDK.Examples
                 ? new string[] { lastCreatedOrder.OrderId.ToString() }
                 : orderIds;
 
-            // Run the query
+            #endregion
+
+            // Send a request to the server
             bool removed = route4Me.RemoveOrders(orderIds, out string errorString);
+
+            #region Print the result
 
             Console.WriteLine("");
 
             Console.WriteLine(
                 removed
-                ? String.Format("RemoveOrders executed successfully, {0} orders removed", orderIds.Length)
-                : String.Format("RemoveOrders error: {0}", errorString)
+                    ? String.Format("RemoveOrders executed successfully, {0} orders removed", orderIds.Length)
+                    : String.Format("RemoveOrders error: {0}", errorString)
             );
+
+            #endregion
         }
     }
 }

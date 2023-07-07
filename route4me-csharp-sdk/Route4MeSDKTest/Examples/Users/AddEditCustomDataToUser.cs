@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
 
             int memberId = Convert.ToInt32(usersToRemove[usersToRemove.Count - 1]);
 
-            var @customParams = new  MemberParametersV4
+            var @customParams = new MemberParametersV4
             {
                 MemberId = memberId,
                 custom_data = new Dictionary<string, string>() { { "Custom Key 2", "Custom Value 2" } }
@@ -30,9 +30,11 @@ namespace Route4MeSDK.Examples
             {
                 var customData = result2.CustomData;
 
-                if (customData.Keys.ElementAt(0) != "Custom Key 2") Console.WriteLine("Custom Key is not 'Custom Key 2'");
+                if (customData.Keys.ElementAt(0) != "Custom Key 2")
+                    Console.WriteLine("Custom Key is not 'Custom Key 2'");
 
-                if (customData["Custom Key 2"] != "Custom Value 2") Console.WriteLine("Custom Value is not 'Custom Value 2'");
+                if (customData["Custom Key 2"] != "Custom Value 2")
+                    Console.WriteLine("Custom Value is not 'Custom Value 2'");
             }
 
             RemoveTestUsers();

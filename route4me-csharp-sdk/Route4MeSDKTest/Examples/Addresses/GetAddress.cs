@@ -28,8 +28,8 @@ namespace Route4MeSDK.Examples
             {
                 RouteId = (routeId == null) ? SD10Stops_route_id : routeId,
                 RouteDestinationId = (routeDestinationId == null)
-                                    ? (int)SD10Stops_route.Addresses[2].RouteDestinationId
-                                    : (int)routeDestinationId,
+                    ? (int)SD10Stops_route.Addresses[2].RouteDestinationId
+                    : (int)routeDestinationId,
                 Notes = true
             };
 

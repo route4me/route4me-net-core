@@ -8,18 +8,19 @@ namespace Route4MeSDK.Examples
     {
         public void GetDriverReviewById()
         {
+            // The example requires an API key with special features.
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
             #region Get Driver Review List
 
             var allQueryParameters = new DriverReviewParameters()
             {
-                Page = 0,
+                Page = 1,
                 PerPage = 2
             };
 
             var reviews = route4Me.GetDriverReviewList(allQueryParameters,
-                                                          out ResultResponse resultResponse);
+                out ResultResponse resultResponse);
 
             if ((reviews?.Data?.Length ?? 0) < 1)
             {
@@ -35,9 +36,9 @@ namespace Route4MeSDK.Examples
             };
 
             var review = route4Me.GetDriverReviewById(queryParameters,
-                                                          out resultResponse);
+                out resultResponse);
 
-            PrintDriverReview(review, resultResponse);
+            PrintDriverReview(review.Data, resultResponse);
         }
     }
 }

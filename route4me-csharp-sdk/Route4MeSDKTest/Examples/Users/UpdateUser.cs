@@ -32,10 +32,10 @@ namespace Route4MeSDK.Examples
             if (result != null && result.GetType() == typeof(MemberResponseV4))
             {
                 Console.WriteLine(
-                        result.MemberPhone != "571-259-5939"
+                    result.MemberPhone != "571-259-5939"
                         ? "The user phone is not '571-259-5939'"
                         : "The user phone is '571-259-5939'"
-                    );
+                );
             }
 
             RemoveTestUsers();

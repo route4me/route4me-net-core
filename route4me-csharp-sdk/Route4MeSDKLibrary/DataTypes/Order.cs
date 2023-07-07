@@ -27,8 +27,8 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         ///     Order ID
         /// </summary>
-        [DataMember(Name = "order_id", EmitDefaultValue = false)]
-        public long? OrderId { get; set; }
+        [DataMember(Name = "order_id")]
+        public long OrderId { get; set; }
 
         /// <summary>
         ///     Order status ID. Available values: 
@@ -55,7 +55,7 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         ///     Address 1 field. Required
         /// </summary>
-        [DataMember(Name = "address_1")]
+        [DataMember(Name = "address_1", EmitDefaultValue = false)]
         public string Address1 { get; set; }
 
         /// <summary>
@@ -71,15 +71,15 @@ namespace Route4MeSDK.DataTypes
         public long MemberId { get; set; }
 
         /// <summary>
-        ///     Geo latitude. Required
+        ///     Geo latitude
         /// </summary>
-        [DataMember(Name = "cached_lat")]
+        [DataMember(Name = "cached_lat", EmitDefaultValue = false)]
         public double CachedLat { get; set; }
 
         /// <summary>
-        ///     Geo longitude. Required
+        ///     Geo longitude
         /// </summary>
-        [DataMember(Name = "cached_lng")]
+        [DataMember(Name = "cached_lng", EmitDefaultValue = false)]
         public double CachedLng { get; set; }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         /// Order inserted date
         /// </summary>
-        [DataMember(Name = "day_added_YYMMDD")]
+        [DataMember(Name = "day_added_YYMMDD", EmitDefaultValue = false)]
         public string DayAddedYYMMDD { get; set; }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Route4MeSDK.DataTypes
         /// <summary>
         ///     Address Alias. Required
         /// </summary>
-        [DataMember(Name = "address_alias")]
+        [DataMember(Name = "address_alias", EmitDefaultValue = false)]
         public string AddressAlias { get; set; }
 
         /// <summary>
@@ -308,19 +308,19 @@ namespace Route4MeSDK.DataTypes
         ///     Route address stop type. For available values see Enums.AddressStopType
         ///     DELIVERY, PICKUP, BREAK, MEETUP, SERVICE, VISIT, DRIVEBY
         /// </summary>
-        [DataMember(Name = "address_stop_type")]
+        [DataMember(Name = "address_stop_type", EmitDefaultValue = false)]
         public string AddressStopType { get; set; }
 
         /// <summary>
         /// Last status of the order.
         /// </summary>
-        [DataMember(Name = "last_status")]
+        [DataMember(Name = "last_status", EmitDefaultValue = false)]
         public string lastStatus { get; set; }
 
         /// <summary>
         /// An order sorted on date.
         /// </summary>
-        [DataMember(Name = "sorted_on_date")]
+        [DataMember(Name = "sorted_on_date", EmitDefaultValue = false)]
         public string SortedOnDate { get; set; }
 
         /// <summary>
@@ -348,5 +348,18 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "done_day_id", EmitDefaultValue = false)]
         public int? DoneDayId { get; set; }
+
+        /// <summary>
+        ///     A day ID, when the order was possessed by an organization 
+        ///     (number of the days passed from 1/1/2010).
+        /// </summary>
+        [DataMember(Name = "possession_day_id", EmitDefaultValue = false)]
+        public int? PossessionDayId { get; set; }
+
+        /// <summary>
+        ///     Group.
+        /// </summary>
+        [DataMember(Name = "group", EmitDefaultValue = false)]
+        public string Group { get; set; }
     }
 }
