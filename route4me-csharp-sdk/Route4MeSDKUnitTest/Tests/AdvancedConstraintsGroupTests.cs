@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CsvHelper;
 using NUnit.Framework;
@@ -1705,7 +1706,7 @@ namespace Route4MeSDKUnitTest.Tests
         public async Task AdvancedConstraintsExample6()
         {
             // Route generation with more than 1000 addresses needs special permission.
-            if (2 > 1) return;
+            //if (2 > 1) return;
 
             var route4Me = new Route4MeManager(c_ApiKey);
 
@@ -1766,9 +1767,9 @@ namespace Route4MeSDKUnitTest.Tests
 
             #region Prepare Addresses
 
-            var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/locations_1999.csv";
+            var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"Data/CSV/locations_1999.csv";
 
-            var addresses = new List<Address>();
+             var addresses = new List<Address>();
 
             using (TextReader reader = File.OpenText(sAddressFile))
             {
@@ -1780,16 +1781,22 @@ namespace Route4MeSDKUnitTest.Tests
                         var lat = csv.GetField(1);
                         var lng = csv.GetField(2);
                         var group = csv.GetField(3);
+                        int igroup = int.TryParse(group, out int _) ? int.Parse(group) : -1;
+                        igroup = igroup >= 0 && igroup <= 2 ? igroup : -1;
 
-                        addresses.Add(
-                            new Address()
-                            {
-                                AddressString = address,
-                                Latitude = double.TryParse(lat.ToString(), out _) ? Convert.ToDouble(lat) : 0,
-                                Longitude = double.TryParse(lng.ToString(), out _) ? Convert.ToDouble(lng) : 0,
-                                Group = group
-                            }
-                        );
+
+
+                        var curAddress = new Address()
+                        {
+                            AddressString = address,
+                            Latitude = double.TryParse(lat.ToString(), out _) ? Convert.ToDouble(lat) : 0,
+                            Longitude = double.TryParse(lng.ToString(), out _) ? Convert.ToDouble(lng) : 0,
+                            Group = group
+                        };
+
+                        if (igroup > -1) curAddress.Tags = new string[] { "ZONE 0"+(igroup+1) };
+
+                        addresses.Add(curAddress);
                     }
                 }
             }
