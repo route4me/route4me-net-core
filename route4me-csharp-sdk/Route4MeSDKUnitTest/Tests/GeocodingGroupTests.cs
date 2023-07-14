@@ -23,7 +23,7 @@ namespace Route4MeSDKUnitTest.Tests
             var geoParams = new GeocodingParameters
             {
                 Addresses = "Los Angeles International Airport, CA||3495 Purdue St, Cuyahoga Falls, OH 44221",
-                ExportFormat = "json"
+                ExportFormat = "xml"
             };
 
             //Run the query
@@ -57,7 +57,7 @@ namespace Route4MeSDKUnitTest.Tests
             var geoParams = new GeocodingParameters
             {
                 Addresses = "Los Angeles International Airport, CA\n3495 Purdue St, Cuyahoga Falls, OH 44221",
-                ExportFormat = "json"
+                ExportFormat = "xml"
             };
 
             //Run the query
