@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6553,6 +6554,7 @@ namespace Route4MeSDK
         {
             T result = default;
             var errorMessage = string.Empty;
+            string jobId = default(string);
 
             var parametersUri = optimizationParameters.Serialize(_mApiKey);
             var uri = new Uri($"{url}{parametersUri}");
@@ -6624,19 +6626,19 @@ namespace Route4MeSDK
                             if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK ||
                                 response.StatusCode == HttpStatusCode.RedirectMethod)
                             {
-                                var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                                    var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
-                                if (isString)
-                                {
-                                    result = streamTask.ReadString() as T;
+                                    if (isString)
+                                    {
+                                        result = streamTask.ReadString() as T;
+                                    }
+                                    else
+                                    {
+                                        result = parseWithNewtonJson
+                                            ? streamTask.ReadObjectNew<T>()
+                                            : streamTask.ReadObject<T>();
+                                    }
                                 }
-                                else
-                                {
-                                    result = parseWithNewtonJson
-                                        ? streamTask.ReadObjectNew<T>()
-                                        : streamTask.ReadObject<T>();
-                                }
-                            }
                             else
                             {
                                 using (var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
@@ -6833,10 +6835,37 @@ namespace Route4MeSDK
 
                                 try
                                 {
-                                    var streamTask = ((StreamContent) response.Result.Content).ReadAsStreamAsync();
-                                    streamTask.Wait();
+                                    errorResponse = default; 
 
-                                    errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+									if (response.Result.Content is StreamContent)
+									{
+										var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+										streamTask.Wait();
+
+										errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+									}
+									else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
+									{
+										var content2 = response.Result.Content;
+
+										if (isString)
+										{
+											result = content2.ReadAsStreamAsync().Result.ReadString() as T;
+										}
+										else
+										{
+											result = parseWithNewtonJson
+												? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
+												: content2.ReadAsStreamAsync().Result.ReadObject<T>();
+										}
+									}
+									else
+									{
+										errorResponse = new ErrorResponse();
+										errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
+										if ((response?.Exception?.Message ?? null) != null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
+
+									}
                                 }
                                 catch (Exception) // If cannot read ErrorResponse from the stream, try another way
                                 {
@@ -6985,10 +7014,29 @@ namespace Route4MeSDK
 
                                     try
                                     {
-                                        var streamTask = ((StreamContent) response.Result.Content).ReadAsStreamAsync();
-                                        streamTask.Wait();
+                                        errorResponse = default;
 
-                                        errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+                                        if (response.Result.Content is StreamContent)
+                                        {
+                                            var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                            streamTask.Wait();
+
+                                            errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+                                        }
+                                        else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
+                                        {
+                                            var content2 = response.Result.Content;
+
+                                            result = content2.ReadAsStreamAsync().Result.ReadString();
+
+                                        }
+                                        else
+                                        {
+                                            errorResponse = new ErrorResponse();
+                                            errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
+                                            if ((response?.Exception?.Message ?? null) != null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
+
+                                        }
                                     }
                                     catch (Exception)
                                     {
