@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.7.1.0] - 2023-07-14
+HTTP response handling is improved.
+
 ## [7.7.0.0] - 2023-07-04
 /api.v4/orders/changes.php is supported
 
