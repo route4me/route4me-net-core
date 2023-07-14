@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
 
-            SaveAddressBacode(false);
+            SaveAddressBarcode(false);
 
             var barCodeAddress = SD10Stops_route.Addresses[1];
 

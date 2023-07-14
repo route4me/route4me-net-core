@@ -1,5 +1,4 @@
 ﻿using Route4MeSDK.DataTypes.V5;
-//using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example refers to the process of saving an address barcode.
         /// </summary>
-        public void SaveAddressBacode(bool removeOptimization = true)
+        public void SaveAddressBarcode(bool removeOptimization = true)
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);
 
