@@ -361,5 +361,11 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "group", EmitDefaultValue = false)]
         public string Group { get; set; }
+
+        /// <summary>
+        ///     Priority.
+        /// </summary>
+        [DataMember(Name = "priority", EmitDefaultValue = false)]
+        public byte? Priority { get; set; }
     }
 }

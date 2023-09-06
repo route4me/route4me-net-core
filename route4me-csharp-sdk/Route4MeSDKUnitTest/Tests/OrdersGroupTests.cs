@@ -654,7 +654,8 @@ namespace Route4MeSDKUnitTest.Tests
             var orderParams = new Order
             {
                 Address1 = "201 LAVACA ST APT 746, AUSTIN, TX, 78701, US",
-                ExtFieldCustomData = new Dictionary<string, string>(){ { "Assigned_Inspector", "12345" } }
+                ExtFieldCustomData = new Dictionary<string, string>(){ { "Assigned_Inspector", "12345" } },
+                Priority = 255
             };
             var order = route4Me.AddOrder(orderParams, out var errorString1);
 
@@ -662,6 +663,8 @@ namespace Route4MeSDKUnitTest.Tests
             order.ExtFieldCustomData["Assigned_Inspector"] = newAssignedInspector;
             var updatedOrder = route4Me.UpdateOrder(order, out var errorString3);
             updatedOrder = route4Me.GetOrderByID(new OrderParameters() { order_id = updatedOrder.OrderId.ToString() }, out var errIgnored);
+
+            Assert.That(updatedOrder.Priority, Is.EqualTo(255));
 
             var secondsIn10mins = 10 * 60;
             var lastKnownTs = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - secondsIn10mins;
