@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.7.3.0] - 2023-09-7
+AddRouteDestinations enhancement - try to re-read order and extract addresses's IDs out of it.
+
 ## [7.7.2.0] - 2023-09-06
 Order's priority is supported.
 
