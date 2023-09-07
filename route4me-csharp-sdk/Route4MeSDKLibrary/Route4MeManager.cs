@@ -3079,22 +3079,27 @@ namespace Route4MeSDK
                 HttpMethodType.Put, null, false, true,
                 out errorString);
 
-            var arrDestinationIds = new List<int>();
+            var responseAddresses = Array.Empty<Address>();
 
             if (response != null && response.Addresses != null)
             {
-                addresses.ForEach(addressNew =>
+                responseAddresses = response.Addresses;
+            }
+            else
+            {
+                // for some unknown reason customer (from time to time) did not receive inserted stop IDs
+                // to overcome it, we read the route and manually extract IDs out of it
+                var route = GetRoute(new RouteParametersQuery() { RouteId = routeId }, out errorString);
+                if (route != null && route.Addresses != null)
                 {
-                    response.Addresses.Where(addressResp =>
-                            (string.IsNullOrEmpty(addressNew.AddressString) || addressNew.AddressString.Equals(addressResp.AddressString, StringComparison.InvariantCultureIgnoreCase)) &&
-                            Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
-                            Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
-                            addressResp.RouteDestinationId != null)
-                        .ForEach(addrResp => { arrDestinationIds.Add((int)addrResp.RouteDestinationId); });
-                });
+                    responseAddresses = route.Addresses;
+                }
             }
 
+            var arrDestinationIds = ExtractIds(addresses, responseAddresses);
+
             return arrDestinationIds.ToArray();
+
         }
 
         /// <summary>
@@ -3116,23 +3121,29 @@ namespace Route4MeSDK
             var response = await GetJsonObjectFromAPIAsync<DataObject>(request,
                 R4MEInfrastructureSettings.RouteHost,
                 HttpMethodType.Put, null, false, true).ConfigureAwait(false);
+            var error = response.Item2;
 
-            var arrDestinationIds = new List<int>();
+            var responseAddresses = Array.Empty<Address>();
 
-            if (response.Item1 != null && response.Item1.Addresses != null)
+            if (response.Item1?.Addresses != null)
             {
-                addresses.ForEach(addressNew =>
+                responseAddresses = response.Item1.Addresses;
+            }
+            else
+            {
+                // for some unknown reason customer (from time to time) did not receive inserted stop IDs
+                // to overcome it, we read the route and manually extract IDs out of it
+                var route = await GetRouteAsync(new RouteParametersQuery() { RouteId = routeId }).ConfigureAwait(false);
+                error = route.Item2;
+                if (route.Item1?.Addresses != null)
                 {
-                    response.Item1.Addresses.Where(addressResp =>
-                            (string.IsNullOrEmpty(addressNew.AddressString) || addressNew.AddressString.Equals(addressResp.AddressString, StringComparison.InvariantCultureIgnoreCase)) &&
-                            Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
-                            Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
-                            addressResp.RouteDestinationId != null)
-                        .ForEach(addrResp => { arrDestinationIds.Add((int)addrResp.RouteDestinationId); });
-                });
+                    responseAddresses = route.Item1.Addresses;
+                }
             }
 
-            return new Tuple<int[], string>(arrDestinationIds.ToArray(), response.Item2);
+            var arrDestinationIds = ExtractIds(addresses, responseAddresses);
+
+            return new Tuple<int[], string>(arrDestinationIds.ToArray(), error);
         }
 
         /// <summary>
@@ -6444,6 +6455,24 @@ namespace Route4MeSDK
         #endregion
 
         #endregion
+
+        private static List<int> ExtractIds(Address[] requestAddresses, Address[] responseAddresses)
+        {
+            var result = new List<int>();
+            requestAddresses.ForEach(addressNew =>
+            {
+                responseAddresses.Where(addressResp =>
+                        (string.IsNullOrEmpty(addressNew.AddressString) ||
+                         addressNew.AddressString.Equals(addressResp.AddressString,
+                             StringComparison.InvariantCultureIgnoreCase)) &&
+                        Math.Abs(addressResp.Latitude - addressNew.Latitude) < 0.0001 &&
+                        Math.Abs(addressResp.Longitude - addressNew.Longitude) < 0.0001 &&
+                        addressResp.RouteDestinationId != null)
+                    .ForEach(addrResp => { result.Add((int)addrResp.RouteDestinationId); });
+            });
+
+            return result;
+        }
 
         #region Generic Methods
 
