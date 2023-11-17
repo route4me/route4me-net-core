@@ -20,6 +20,10 @@ The service is typically used by organizations who must route many drivers to ma
     <PackageReleaseNotes>See https://github.com/route4me/route4me-net-core/blob/master/route4me-csharp-sdk/CHANGELOG.md for release note details.</PackageReleaseNotes>
     <AssemblyVersion>7.7.3.0</AssemblyVersion>
     <FileVersion>7.7.3.0</FileVersion>
+
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>r4m_csharp_sdk.snk</AssemblyOriginatorKeyFile>
+
   </PropertyGroup>
 
   <ItemGroup>
