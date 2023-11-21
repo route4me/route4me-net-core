@@ -40,7 +40,6 @@ The service is typically used by organizations who must route many drivers to ma
     <PackageReference Include="SocketIoClientDotNet.Standard" Version="0.0.5" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
