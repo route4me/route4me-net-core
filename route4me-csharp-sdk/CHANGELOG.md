@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.7.5.0] - 2023-11-21
+Got rid of dependency to System.Configuration.ConfigurationManager nuget package.
+
 ## [7.7.4.0] - 2023-11-17
 Assembly is signed.
 
