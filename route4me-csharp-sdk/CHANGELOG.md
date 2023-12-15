@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.8.0.0] - 2023-12-15
+PoD workflows are supported.
+StatusResponse processing is fixed in case of response with empty body.
+
 ## [7.7.5.0] - 2023-11-21
 Got rid of dependency to System.Configuration.ConfigurationManager nuget package.
 
