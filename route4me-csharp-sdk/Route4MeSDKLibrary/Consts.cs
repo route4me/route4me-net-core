@@ -285,6 +285,10 @@
 
         #endregion
 
+        #region Workflows
+        public const string Workflows = MainHost  + "/workflows";
+        #endregion
+
         #endregion
     }
 }
