@@ -416,6 +416,12 @@ namespace Route4MeSDKTest
 
                 #endregion
 
+                #region POD Workflows
+
+                examples.CreateReadUpdateDeleteForPodWorkflow();
+
+                #endregion
+
                 #endregion
             }
             else // for a specifed example method
