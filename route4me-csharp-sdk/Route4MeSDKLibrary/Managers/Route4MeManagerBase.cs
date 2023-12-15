@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -251,11 +252,18 @@ namespace Route4MeSDKLibrary.Managers
 
                                 if (typeof(T) == typeof(StatusResponse))
                                 {
+                                    if (result == null)
+                                    {
+                                        result = JsonConvert.DeserializeObject<T>("{}");
+                                    }
                                     result.GetType().GetProperty("StatusCode")
-                                        .SetValue(result, (int)response.StatusCode);
+                                        ?.SetValue(result, (int)response.StatusCode);
 
                                     result.GetType().GetProperty("IsSuccessStatusCode")
-                                        .SetValue(result, response.IsSuccessStatusCode);
+                                        ?.SetValue(result, response.IsSuccessStatusCode);
+
+                                    result.GetType().GetProperty("Status")
+                                        ?.SetValue(result, response.IsSuccessStatusCode);
                                 }
                             }
                             else
@@ -501,11 +509,18 @@ namespace Route4MeSDKLibrary.Managers
                                     
                                 if (typeof(T) == typeof(StatusResponse))
                                 {
+                                    if (result == null)
+                                    {
+                                        result = JsonConvert.DeserializeObject<T>("{}");
+                                    }
                                     result.GetType().GetProperty("StatusCode")
-                                        .SetValue(result, (int)response.Result.StatusCode);
+                                        ?.SetValue(result, (int)response.Result.StatusCode);
 
                                     result.GetType().GetProperty("IsSuccessStatusCode")
-                                        .SetValue(result, response.Result.IsSuccessStatusCode);
+                                        ?.SetValue(result, response.Result.IsSuccessStatusCode);
+
+                                    result.GetType().GetProperty("Status")
+                                        ?.SetValue(result, response.Result.IsSuccessStatusCode);
                                 }
                                     
                             }
