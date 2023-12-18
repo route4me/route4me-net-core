@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.8.1.0] - 2023-12-18
+Fixed PodWorkflowManagerV5.GetPodWorkflows/GetPodWorkflowsAsync to take into account PodWorkflowListParameters
+
 ## [7.8.0.0] - 2023-12-15
 PoD workflows are supported.
 StatusResponse processing is fixed in case of response with empty body.
