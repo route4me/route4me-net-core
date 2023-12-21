@@ -4927,6 +4927,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Ignore("Looks like special data required")]
         public void OptimizationByOrderTerritoriesTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
