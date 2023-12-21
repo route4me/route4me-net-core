@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
@@ -227,9 +229,12 @@ namespace Route4MeSDKLibrary.Managers
         public AddressBookContactsResponse GetAddressBookContactsPaginated(AddressBookContactsBodyPaginatedRequest addressBookContactsBodyPaginatedRequest,
             out ResultResponse resultResponse)
         {
+            var content = new StringContent(string.Empty, Encoding.UTF8, "text/plain");
+
             var response = GetJsonObjectFromAPI<AddressBookContactsResponse>(addressBookContactsBodyPaginatedRequest,
                 R4MEInfrastructureSettingsV5.ContactsGetAllPaginated,
                 HttpMethodType.Post,
+                content,
                 out resultResponse);
 
             return response;
@@ -240,11 +245,14 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="addressBookContactsBodyPaginatedRequest">Input parameters</param>
         /// <returns>An AddressBookContactsResponse type object</returns>
-        public Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsPaginatedAsync(AddressBookContactsBodyPaginatedRequest addressBookContactsBodyPaginatedRequest)
+        public async Task<Tuple<AddressBookContactsResponse, ResultResponse>> GetAddressBookContactsPaginatedAsync(AddressBookContactsBodyPaginatedRequest addressBookContactsBodyPaginatedRequest)
         {
-            return GetJsonObjectFromAPIAsync<AddressBookContactsResponse>(addressBookContactsBodyPaginatedRequest,
+            var content = new StringContent(string.Empty, Encoding.UTF8, "text/plain");
+            var res = await GetJsonObjectFromAPIAsync<AddressBookContactsResponse>(addressBookContactsBodyPaginatedRequest,
                 R4MEInfrastructureSettingsV5.ContactsGetAllPaginated,
-                HttpMethodType.Post);
+                HttpMethodType.Post, content, false, false).ConfigureAwait(false);
+
+            return new Tuple<AddressBookContactsResponse, ResultResponse>(res.Item1, res.Item2);
         }
 
         /// <summary>
