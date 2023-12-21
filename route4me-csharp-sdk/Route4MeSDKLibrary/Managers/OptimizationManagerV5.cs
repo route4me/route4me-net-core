@@ -74,13 +74,8 @@ namespace Route4MeSDKLibrary.Managers
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Delete,
                 out resultResponse);
-            if (response != null)
-            {
-                if (response.Status && response.Removed > 0) return true;
-                return false;
-            }
 
-            return false;
+            return resultResponse == null;
         }
 
         /// <summary>
@@ -99,13 +94,8 @@ namespace Route4MeSDKLibrary.Managers
             var response = await GetJsonObjectFromAPIAsync<RemoveOptimizationResponse>(remParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Delete).ConfigureAwait(false);
-            if (response.Item1 != null)
-            {
-                if (response.Item1.Status && response.Item1.Removed > 0) return new Tuple<bool, ResultResponse>(true, response.Item2);
-                return new Tuple<bool, ResultResponse>(false, response.Item2);
-            }
 
-            return new Tuple<bool, ResultResponse>(false, response.Item2);
+            return new Tuple<bool, ResultResponse>(response.Item2 == null, response.Item2);
         }
     }
 }

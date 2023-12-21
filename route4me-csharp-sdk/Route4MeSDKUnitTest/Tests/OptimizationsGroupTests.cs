@@ -159,6 +159,19 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        public void RemoveNotExistingOptimizationTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            string[] OptIDs = { "not_existing_id" };
+
+            // Run the query
+            var removed = route4Me.RemoveOptimization(OptIDs, out var errorString);
+
+            Assert.IsFalse(removed, "RemoveOptimizationTest failed. " + errorString);
+        }
+
+        [Test]
         public void HybridOptimizationFrom1000AddressesTest()
         {
             var ApiKey =
