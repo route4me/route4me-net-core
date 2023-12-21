@@ -282,15 +282,8 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Delete,
                 out errorString);
-            if (response != null)
-            {
-                if (response.Status && response.Removed > 0) return true;
-                return false;
-            }
 
-            if (errorString == "")
-                errorString = "Error removing optimization";
-            return false;
+            return string.IsNullOrEmpty(errorString);
         }
 
         /// <summary>
@@ -309,15 +302,8 @@ namespace Route4MeSDK
             var response = await GetJsonObjectFromAPIAsync<RemoveOptimizationResponse>(remParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Delete).ConfigureAwait(false);
-            if (response.Item1 != null)
-            {
-                if (response.Item1.Status && response.Item1.Removed > 0) return new Tuple<bool, string>(true, response.Item2);
-                return new Tuple<bool, string>(false, response.Item2);
-            }
 
-            if (response.Item2 == "")
-                response = new Tuple<RemoveOptimizationResponse, string>(response.Item1, "Error removing optimization");
-            return new Tuple<bool, string>(false, response.Item2);
+             return new Tuple<bool, string>(string.IsNullOrEmpty(response.Item2), response.Item2);
         }
 
         /// <summary>
