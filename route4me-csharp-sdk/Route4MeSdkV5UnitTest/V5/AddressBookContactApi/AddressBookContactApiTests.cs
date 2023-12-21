@@ -330,7 +330,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
                 CachedLat = 38.024654,
                 CachedLng = -77.338814,
                 ScheduleBlacklist = new string[] {"2022-06-28"},
-                AddressStopType = AddressStopType.PickUp.Description()
+                AddressStopType = AddressStopType.PickUp.Description(),
+                AddressCustomData = new Dictionary<string, string>(){  {  "key1", "value1"} }
             };
 
             var contact = route4Me.AddAddressBookContact(contactParams, out ResultResponse resultResponse);
@@ -383,6 +384,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
 
             Assert.That(response.GetType(), Is.EqualTo(typeof(StatusResponse)));
             Assert.True(response.Status);
+
+            lsCreatedContacts.AddRange(lsContacts);
         }
 
         [Test]
