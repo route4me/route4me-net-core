@@ -141,13 +141,13 @@ namespace Route4MeSDKLibrary.Managers
             var resultResponse = default(ResultResponse);
             string jobId = default(string);
 
-            var parametersURI = optimizationParameters.Serialize();
+            var parametersURI = optimizationParameters.Serialize(ApiKey);
             var uri = new Uri($"{url}{parametersURI}");
 
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), ApiKey))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
                 {
                     switch (httpMethod)
                     {
@@ -383,13 +383,13 @@ namespace Route4MeSDKLibrary.Managers
             var result = default(T);
             resultResponse = default;
 
-            var parametersUri = optimizationParameters.Serialize();
+            var parametersUri = optimizationParameters.Serialize(ApiKey);
             var uri = new Uri($"{url}{parametersUri}");
 
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), ApiKey))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
                 {
                     switch (httpMethod)
                     {
