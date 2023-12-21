@@ -586,7 +586,9 @@ namespace Route4MeSDKUnitTest.Tests
             if ((result?.OrderId ?? null) != null)
                 route4Me.RemoveOrders(new[] {result.OrderId.ToString()}, out var errorString2);
 
-            Assert.IsNull(result, "CreateWrongOrderTest failed. " + errorString);
+            Assert.IsNotNull(result);
+            Assert.IsNull(result.Address1);
+            Assert.IsNotNull(errorString, "CreateWrongOrderTest failed. " + errorString);
         }
 
         [Test]

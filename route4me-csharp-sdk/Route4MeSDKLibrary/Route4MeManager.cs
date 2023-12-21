@@ -3089,7 +3089,7 @@ namespace Route4MeSDK
             {
                 // for some unknown reason customer (from time to time) did not receive inserted stop IDs
                 // to overcome it, we read the route and manually extract IDs out of it
-                var route = GetRoute(new RouteParametersQuery() { RouteId = routeId }, out errorString);
+                var route = GetRoute(new RouteParametersQuery() { RouteId = routeId }, out _);
                 if (route != null && route.Addresses != null)
                 {
                     responseAddresses = route.Addresses;
@@ -3134,7 +3134,6 @@ namespace Route4MeSDK
                 // for some unknown reason customer (from time to time) did not receive inserted stop IDs
                 // to overcome it, we read the route and manually extract IDs out of it
                 var route = await GetRouteAsync(new RouteParametersQuery() { RouteId = routeId }).ConfigureAwait(false);
-                error = route.Item2;
                 if (route.Item1?.Addresses != null)
                 {
                     responseAddresses = route.Item1.Addresses;
@@ -4333,7 +4332,13 @@ namespace Route4MeSDK
         public StatusResponse RemoveAddressBookGroup(AddressBookGroupParameters groupID, out string errorString)
         {
             groupID.PrepareForSerialization();
-            var result = GetJsonObjectFromAPI<StatusResponse>(groupID,
+
+            var request = new RemoveAddressBookGroupRequest
+            {
+                GroupId = groupID.GroupId
+            };
+
+            var result = GetJsonObjectFromAPI<StatusResponse>(request,
                 R4MEInfrastructureSettings.AddressBookGroup,
                 HttpMethodType.Delete,
                 out errorString);
@@ -4349,7 +4354,13 @@ namespace Route4MeSDK
         public Task<Tuple<StatusResponse, string>> RemoveAddressBookGroupAsync(AddressBookGroupParameters groupID)
         {
             groupID.PrepareForSerialization();
-            return GetJsonObjectFromAPIAsync<StatusResponse>(groupID,
+
+            var request = new RemoveAddressBookGroupRequest
+            {
+                GroupId = groupID.GroupId
+            };
+
+            return GetJsonObjectFromAPIAsync<StatusResponse>(request,
                 R4MEInfrastructureSettings.AddressBookGroup,
                 HttpMethodType.Delete);
         }

@@ -14,6 +14,6 @@ namespace Route4MeSDKLibrary.DataTypes.Internal.Response
 
         /// <value>The number of the removed optimizations </value>
         [DataMember(Name = "removed")]
-        public int Removed { get; set; }
+        public int? Removed { get; set; }
     }
 }
