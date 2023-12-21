@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.8.2.0] - 2023-12-21
+Switched (for V5 API only) from ApiKey as query parameter to bearer token in HTTP header
+
 ## [7.8.1.0] - 2023-12-18
 Fixed PodWorkflowManagerV5.GetPodWorkflows/GetPodWorkflowsAsync to take into account PodWorkflowListParameters
 
