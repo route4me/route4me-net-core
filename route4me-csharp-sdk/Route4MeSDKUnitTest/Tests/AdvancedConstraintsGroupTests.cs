@@ -2724,6 +2724,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Drivers Schedules with Address from Territories created in Route4Me
         /// Note: This test needs an account with special permissions and the areas that cover hundreds of addresses.
         /// </summary>
+        [Ignore("Special data required")]
         [Test]
         public void AdvancedConstraintsExample13()
         {
