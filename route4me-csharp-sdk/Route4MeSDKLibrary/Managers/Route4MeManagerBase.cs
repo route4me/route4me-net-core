@@ -141,13 +141,15 @@ namespace Route4MeSDKLibrary.Managers
             var resultResponse = default(ResultResponse);
             string jobId = default(string);
 
-            var parametersURI = optimizationParameters.Serialize(ApiKey);
+            bool v5 = R4MeUtils.IsV5(url);
+
+            var parametersURI = optimizationParameters.Serialize(v5 ? null : ApiKey);
             var uri = new Uri($"{url}{parametersURI}");
 
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null))
                 {
                     switch (httpMethod)
                     {
@@ -382,14 +384,14 @@ namespace Route4MeSDKLibrary.Managers
         {
             var result = default(T);
             resultResponse = default;
-
-            var parametersUri = optimizationParameters.Serialize(ApiKey);
+            bool v5 = R4MeUtils.IsV5(url);
+            var parametersUri = optimizationParameters.Serialize(v5 ? null : ApiKey);
             var uri = new Uri($"{url}{parametersUri}");
 
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null))
                 {
                     switch (httpMethod)
                     {
