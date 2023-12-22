@@ -561,7 +561,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="routeId">Route ID</param>
         /// <param name="resultResponse">Failed response</param>
         /// <returns>Status response</returns>
-        /// /// <remarks>TODO: 404 error at the moment </remarks>
+        /// <remarks>TODO: response structure is not finalized</remarks>
         public StatusResponse IsRouteScheduleCopied(string routeId, out ResultResponse resultResponse)
         {
             var response = GetJsonObjectFromAPI<StatusResponse>(new GenericParameters(),
@@ -577,7 +577,8 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="routeId">Route ID</param>
         /// <returns>Status response</returns>
-        /// <remarks>TODO: 404 error at the moment </remarks>
+        /// /// <remarks></remarks>
+        /// <remarks>TODO: response structure is not finalized</remarks>
         public async Task<Tuple<StatusResponse, ResultResponse>> IsRouteScheduleCopiedAsync(string routeId)
         {
             var result = await GetJsonObjectFromAPIAsync<StatusResponse>(new GenericParameters(),
@@ -596,12 +597,11 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="request">Body payload</param>
         /// <param name="resultResponse">Failed response</param>
         /// <returns>Response</returns>
-        /// <remarks>TODO: response structure is different. API is not workable at the moment </remarks>
         public RouteScheduleCopiesResponse GetRouteScheduleCopies(GetRouteScheduleCopiesRequest request, out ResultResponse resultResponse)
         {
-            var response = GetJsonObjectFromAPI<RouteScheduleCopiesResponse>(new GenericParameters(),
+            var response = GetJsonObjectFromAPI<RouteScheduleCopiesResponse>(request,
                 R4MEInfrastructureSettingsV5.RouteSchedulesCopies,
-                HttpMethodType.Get, null, false, true,
+                HttpMethodType.Post, null, false, true,
                 out resultResponse, serializeBodyWithNewtonJson: true);
 
             return response;
@@ -612,12 +612,11 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="request">Body payload</param>
         /// <returns>Response</returns>
-        /// <remarks>TODO: response structure is different. API is not workable at the moment </remarks>
         public async Task<Tuple<RouteScheduleCopiesResponse, ResultResponse>> GetRouteScheduleCopiesAsync(GetRouteScheduleCopiesRequest request)
         {
-            var result = await GetJsonObjectFromAPIAsync<RouteScheduleCopiesResponse>(new GenericParameters(),
+            var result = await GetJsonObjectFromAPIAsync<RouteScheduleCopiesResponse>(request,
                 R4MEInfrastructureSettingsV5.RouteSchedulesCopies,
-                HttpMethodType.Get,
+                HttpMethodType.Post,
                 null,
                 true,
                 false, serializeBodyWithNewtonJson: true).ConfigureAwait(false);

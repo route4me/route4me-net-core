@@ -276,10 +276,11 @@
         public const string SchedulesPagination = Schedules + "/pagination";
 
         public const string RouteSchedules = RecurringRoutes + "/route-schedules";
+        public const string ScheduledRoutes = RecurringRoutes + "/scheduled-routes";
         public const string RouteSchedulesPagination = RouteSchedules + "/pagination";
         public const string ReplaceRouteSchedules = RouteSchedules + "/replace";
-        public const string RouteSchedulesIsCopy = RouteSchedules + "/is-copy";
-        public const string RouteSchedulesCopies = RouteSchedules + "/get-copies";
+        public const string RouteSchedulesIsCopy = ScheduledRoutes + "/is-copy";
+        public const string RouteSchedulesCopies = ScheduledRoutes + "/get-copies";
 
         public const string MasterRoutes = RecurringRoutes + "/master-routes";
 
