@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.8.3.0] - 2023-12-22
+Fixed ApiKey in HTTP header
+Fixed/enabled Schedules API.
+Fixed AddRouteDestinations/AddRouteDestinationsAsync API in case of failed to add route.
+Fixed RemoveAddressBookGroup/RemoveAddressBookGroupAsync API.
+Fixed RemoveOptimizationResponse deserialization.
+Fixed RemoveOptimization/RemoveOptimizationAsync API.
+Fixed GetAddressBookContactsPaginated/GetAddressBookContactsPaginatedAsync API.
+Fixed CreateWrongOrderTest test.
+Fixed server-side memory leaks in CreateAddressBookContactTest.
+Fixed Fixed OrdersHistoryTest/OrderHistoryAsyncTest.
+Make TeamManagementTests green locally.
+Fixed red unit tests (~50).
+
 ## [7.8.2.0] - 2023-12-21
 Switched (for V5 API only) from ApiKey as query parameter to bearer token in HTTP header
 
