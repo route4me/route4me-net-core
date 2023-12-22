@@ -61,6 +61,6 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Schedules
         ///     Schedule
         /// </summary>
         [DataMember(Name = "schedule", EmitDefaultValue = false)]
-        public JToken ScheduleData { get; set; }
+        public JArray ScheduleData { get; set; }
     }
 }

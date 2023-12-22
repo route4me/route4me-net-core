@@ -355,7 +355,7 @@ namespace Route4MeSdkV5UnitTest.V5
             Assert.That(response.Data.Single().Schedule.AdvancedInterval, Is.EqualTo(10));
         }
 
-        [Test] //TODO: 404 error on server side has to be fixed
+        [Test]
         public void RouteScheduleIsCopyTest()
         {
             var route4Me = new SchedulesManagerV5(CApiKey);
@@ -379,7 +379,7 @@ namespace Route4MeSdkV5UnitTest.V5
             Assert.That(response.Status, Is.False);
         }
 
-        [Test] //TODO: response structure is different: {"data":[]}
+        [Test] //TODO: response structure is different: [] instead of object
         public void RouteScheduleGetCopiesTest()
         {
             var route4Me = new SchedulesManagerV5(CApiKey);
