@@ -24,7 +24,7 @@ namespace Route4MeSDKLibrary
             new SequentialTimer(OnTimerCallback, TimeSpan.FromHours(2));
         }
 
-        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress)
+        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null)
         {
             lock (SyncRoot)
             {
@@ -37,7 +37,7 @@ namespace Route4MeSDKLibrary
                 }
                 else
                 {
-                    wrapper = new HttpClientWrapper(CreateHttpClient(baseAddress));
+                    wrapper = new HttpClientWrapper(CreateHttpClient(baseAddress, apiKey));
                     HttpClientWrappers.Add(baseAddress, wrapper);
                 }
 
@@ -57,13 +57,17 @@ namespace Route4MeSDKLibrary
             }
         }
 
-        private static HttpClient CreateHttpClient(string baseAddress)
+        private static HttpClient CreateHttpClient(string baseAddress, string apiKey = null)
         {
             var result = new HttpClient {BaseAddress = new Uri(baseAddress), Timeout = TimeSpan.FromMinutes(30)};
 
             result.DefaultRequestHeaders.Accept.Clear();
             result.DefaultRequestHeaders.ConnectionClose = false;
             result.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (apiKey != null)
+            {
+                result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            }
 
             ServicePointManager.FindServicePoint(new Uri(baseAddress)).ConnectionLeaseTimeout = 60 * 1000;
 
