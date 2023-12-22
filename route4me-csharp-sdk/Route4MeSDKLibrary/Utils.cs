@@ -938,5 +938,16 @@ namespace Route4MeSDK
             string[] emailParts = emailTemplate.Split('@');
             return emailParts[0] + "+" + ConvertToUnixTimestamp(DateTime.Now)+GenerateRandomString(4) + "@" + emailParts[1];
         }
+
+        public static bool IsV5(string url)
+        {
+            bool v5 = false;
+            if (Uri.TryCreate(url, UriKind.Absolute, out var u))
+            {
+                v5 = u.Host.StartsWith("wh");
+            }
+
+            return v5;
+        }
     }
 }
