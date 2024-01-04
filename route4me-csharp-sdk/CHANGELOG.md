@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.8.4.0] - 2024-01-04
+additional_status and required_skills are supported for Address
+
 ## [7.8.3.0] - 2023-12-22
 Fixed ApiKey in HTTP header
 Fixed/enabled Schedules API.
