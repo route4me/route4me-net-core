@@ -577,6 +577,18 @@ namespace Route4MeSDK.DataTypes
         [DefaultValue(false)]
         public string[] Tags { get; set; }
 
+        /// <summary>
+        ///     Additional Status of the address
+        /// </summary>
+        [DataMember(Name = "additional_status", EmitDefaultValue = false)]
+        public string AdditionalStatus { get; set; }
+
+        /// <summary>
+        ///     Required Skills
+        /// </summary>
+        [DataMember(Name = "required_skills", EmitDefaultValue = false)]
+        public string[] RequiredSkills { get; set; }
+
         public bool ShouldSerializeLatitude()
         {
             return (Latitude != 0 || Longitude != 0);
