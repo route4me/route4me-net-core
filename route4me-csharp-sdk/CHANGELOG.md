@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.9.0.0] - 2024-01-15
+Optimization profiles are supported (OptimizationProfileManagerV5). Optimization creation using optimization profile is supported.
+
 ## [7.8.4.0] - 2024-01-04
 additional_status and required_skills are supported for Address
 
