@@ -422,6 +422,12 @@ namespace Route4MeSDKTest
 
                 #endregion
 
+                #region Optimization Profiles
+
+                examples.GetOptimizationProfiles();
+
+                #endregion
+
                 #endregion
             }
             else // for a specifed example method

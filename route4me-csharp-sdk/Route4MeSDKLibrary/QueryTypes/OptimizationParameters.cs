@@ -157,5 +157,11 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [DataMember(Name = "order_territories")]
         public OrderTerritories OrderTerritories { get; set; }
+
+        /// <summary>
+        /// Optimization profile ID
+        /// </summary>
+        [DataMember(Name = "optimization_profile_id", EmitDefaultValue = false)]
+        public string OptimizationProfileId { get; set; }
     }
 }

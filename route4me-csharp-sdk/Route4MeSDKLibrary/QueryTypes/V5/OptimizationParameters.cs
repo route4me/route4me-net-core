@@ -113,5 +113,11 @@ namespace Route4MeSDK.QueryTypes.V5
         /// </summary>
         [DataMember(Name = "depots", EmitDefaultValue = false)]
         public Address[] Depots { get; set; }
+
+        /// <summary>
+        /// Optimization profile ID
+        /// </summary>
+        [DataMember(Name = "optimization_profile_id", EmitDefaultValue = false)]
+        public string OptimizationProfileId { get; set; }
     }
 }
