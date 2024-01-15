@@ -677,6 +677,12 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "group_max_routes", EmitDefaultValue = false)]
         public List<object[]> GroupMaxRoutes { get; set; }
+
+        /// <summary>
+        /// Route start date local
+        /// </summary>
+        [DataMember(Name = "route_start_date_local", EmitDefaultValue = false)]
+        public string RouteStartDateLocal { get; set; }
     }
 
     /// <summary>

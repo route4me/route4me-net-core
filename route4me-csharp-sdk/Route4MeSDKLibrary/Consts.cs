@@ -290,6 +290,11 @@
         public const string Workflows = MainHost  + "/workflows";
         #endregion
 
+        #region Optimization Profiles
+        public const string OptimizationProfiles = MainHost + "/optimization-profiles";
+        public const string OptimizationProfilesList = OptimizationProfiles + "/list";
+        #endregion
+
         #endregion
     }
 }
