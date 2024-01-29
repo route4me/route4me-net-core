@@ -42,28 +42,6 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Orders
         public int? OrganizationId { get; set; }
 
         /// <summary>
-        ///     Order status ID. Available values: 
-        ///     0: New, 
-        ///     1: Inbound Scan, 
-        ///     2: Sorted by Territory, 
-        ///     3: Loaded, 
-        ///     4: Missing, 
-        ///     5: Damaged, 
-        ///     6: Manually Loaded, 
-        ///     7: Routed, 
-        ///     8: Unrouted, 
-        ///     9: Sorted by Route, 
-        ///     10: Route Started, 
-        ///     11: Failed, 
-        ///     12: Skipped, 
-        ///     13: Done, 
-        ///     14: Cancelled, 
-        ///     15: Scheduled
-        /// </summary>
-        [DataMember(Name = "order_status_id", EmitDefaultValue = false)]
-        public int OrderStatusId { get; set; }
-
-        /// <summary>
         ///     A day ID, when the order was completed.
         /// </summary>
         [DataMember(Name = "done_day_id", EmitDefaultValue = false)]
