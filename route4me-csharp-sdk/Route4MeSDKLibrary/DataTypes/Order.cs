@@ -31,6 +31,12 @@ namespace Route4MeSDK.DataTypes
         public long OrderId { get; set; }
 
         /// <summary>
+        ///     Order UUID
+        /// </summary>
+        [DataMember(Name = "order_uuid")]
+        public string OrderUuid { get; set; }
+
+        /// <summary>
         ///     Order status ID. Available values: 
         ///     0: New, 
         ///     1: Inbound Scan, 

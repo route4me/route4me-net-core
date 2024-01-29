@@ -12,12 +12,12 @@ namespace Route4MeSDK.DataTypes
         ///     Latitude
         /// </summary>
         [DataMember(Name = "lat")]
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         /// <summary>
         ///     Longitude
         /// </summary>
         [DataMember(Name = "lng")]
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
     }
 }
