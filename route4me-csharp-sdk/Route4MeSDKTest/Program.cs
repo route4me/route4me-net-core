@@ -347,6 +347,7 @@ namespace Route4MeSDKTest
                 examples.AddScheduledOrder();
                 examples.CreateOrderWithCustomField();
                 examples.GetOrderByID();
+                examples.GetOrderByUUID();
                 examples.SearchOrdersByInsertedDate();
                 examples.SearchOrdersByScheduledDate();
                 examples.ShowOrdersWithSelectedFields();
@@ -425,6 +426,15 @@ namespace Route4MeSDKTest
                 #region Optimization Profiles
 
                 examples.GetOptimizationProfiles();
+
+                #endregion
+
+                #region Orders
+
+                examples.OrdersV5Examples();
+                examples.OrdersV5CustomUserFields();
+                examples.ArchiveOrdersV5();
+                examples.GetOrdersHistoryV5();
 
                 #endregion
 
