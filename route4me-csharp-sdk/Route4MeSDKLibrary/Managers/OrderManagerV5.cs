@@ -133,7 +133,7 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
-        ///  Get single order by its ID.
+        ///  Update order.
         /// </summary>
         /// <param name="order">Request body</param>
         /// <returns>Updated order</returns>
@@ -238,7 +238,7 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
-        ///  Create order.
+        ///  Search orders.
         /// </summary>
         /// <param name="request">Request body</param>
         /// <returns>Orders</returns>
@@ -340,7 +340,7 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
-        ///  Batch delete orders.
+        ///  Batch update orders.
         /// </summary>
         /// <param name="request">Request body</param>
         /// <returns>Status</returns>
@@ -374,7 +374,7 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
-        ///  Create order.
+        ///  Batch create order.
         /// </summary>
         /// <param name="request">Request body</param>
         /// <returns>Created order</returns>
@@ -427,7 +427,7 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="request">Request body</param>
         /// <param name="resultResponse">Error response</param>
-        /// <returns>Create Custom user field</returns>
+        /// <returns>Created Custom user field</returns>
         public CustomUserFieldResponse CreateCustomUserFields(CreateCustomUserFieldRequest request, out ResultResponse resultResponse)
         {
             return GetJsonObjectFromAPI<CustomUserFieldResponse>(request,
