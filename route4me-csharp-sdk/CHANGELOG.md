@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.10.0.0] - 2024-01-29
+order_uuid is supported for Order V4.
+Order V5 API is supported.
+
 ## [7.9.0.0] - 2024-01-15
 Optimization profiles are supported (OptimizationProfileManagerV5). Optimization creation using optimization profile is supported.
 
