@@ -121,6 +121,34 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        public void GetOrderByUuidTest()
+        {
+            var order = new Order
+            {
+                Address1 = "Test Address1 " + new Random().Next(),
+                AddressAlias = "Test AddressAlias " + new Random().Next(),
+                CachedLat = 37.773972,
+                CachedLng = -122.431297
+            };
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var createdOrder = route4Me.AddOrder(order, out _);
+
+            var orderParameters = new OrderParameters
+            {
+                order_id = createdOrder.OrderUuid
+            };
+
+            var loadedOrder = route4Me.GetOrderByID(orderParameters, out var errorString);
+
+            Assert.That(loadedOrder.OrderUuid, Is.EqualTo(createdOrder.OrderUuid));
+            Assert.That(loadedOrder.OrderId, Is.EqualTo(createdOrder.OrderId));
+
+            route4Me.RemoveOrders(new[] { loadedOrder.OrderUuid }, out _);
+        }
+
+        [Test]
         public void GetOrderByInsertedDateTest()
         {
             if (_skip == "yes") return;

@@ -255,6 +255,13 @@
         public const string Orders = MainHost + "/orders";
         public const string OrdersArchive = Orders + "/archive";
         public const string OrdersHistory = Orders + "/history";
+        public const string OrdersPlatform = MainHost + "/orders-platform";
+        public const string OrdersPlatformCreate = OrdersPlatform + "/create";
+        public const string OrdersPlatformBatchUpdateFilter = OrdersPlatform + "/batch-update/filter";
+        public static string OrdersPlatformBatchDelete = OrdersPlatform + "/batch-delete";
+        public const string OrdersPlatformBatchUpdate = OrdersPlatform + "/batch-update";
+        public static string OrdersPlatformBatchCreate = OrdersPlatform + "/batch-create";
+        public static string OrdersPlatformCustomUserFields = OrdersPlatform + "/order-custom-user-fields";
 
         #endregion
 
