@@ -144,7 +144,8 @@ namespace Route4MeSDK.DataTypes
         Optimized = 4,
         Error = 5,
         ComputingDirections = 6,
-        InQueue = 7
+        InQueue = 7,
+        NoSolution = 8
     }
 
     /// <summary>
