@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.11.0.0] - 2024-01-31
+NoSolution is supported in OptimizationState
+
 ## [7.10.0.0] - 2024-01-29
 order_uuid is supported for Order V4.
 Order V5 API is supported.
