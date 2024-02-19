@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -4534,19 +4533,13 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Gets an array of the Order type objects by list of the order IDs.
+        ///     Gets Order by ID or UUID.
         /// </summary>
-        /// <param name="orderQuery">
-        ///     The OrderParameters type object as the input parameters containing coma-delimited list of the
-        ///     order IDs.
-        /// </param>
+        /// <param name="orderQuery">Parameter containing order id or uuid</param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns>List of the Order type objects</returns>
         public Order GetOrderByID(OrderParameters orderQuery, out string errorString)
         {
-            //string[] ids = orderQuery.order_id.Split(',');
-            //if (ids.Length == 1) orderQuery.order_id = orderQuery.order_id + "," + orderQuery.order_id;
-
             var response = GetJsonObjectFromAPI<Order>(orderQuery,
                 R4MEInfrastructureSettings.Order, HttpMethodType.Get, out errorString);
 
@@ -4554,18 +4547,12 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        ///     Gets an array of the Order type objects by list of the order IDs.
+        ///     Gets Order by ID or UUID.
         /// </summary>
-        /// <param name="orderQuery">
-        ///     The OrderParameters type object as the input parameters containing coma-delimited list of the
-        ///     order IDs.
-        /// </param>
+        /// <param name="orderQuery">Parameter containing order id or uuid</param>
         /// <returns>List of the Order type objects</returns>
         public Task<Tuple<Order, string>> GetOrderByIDAsync(OrderParameters orderQuery)
         {
-            //string[] ids = orderQuery.order_id.Split(',');
-            //if (ids.Length == 1) orderQuery.order_id = orderQuery.order_id + "," + orderQuery.order_id;
-
             return GetJsonObjectFromAPIAsync<Order>(orderQuery,
                 R4MEInfrastructureSettings.Order, HttpMethodType.Get);
         }
@@ -4692,7 +4679,7 @@ namespace Route4MeSDK
         /// <summary>
         ///     Removes the orders
         /// </summary>
-        /// <param name="orderIds"> The array of the order IDs </param>
+        /// <param name="orderIds"> The array of the order IDs or UUIDs </param>
         /// <param name="errorString"> out: Error as string </param>
         /// <returns> Result status: true/false </returns>
         public bool RemoveOrders(string[] orderIds, out string errorString)
@@ -4713,7 +4700,7 @@ namespace Route4MeSDK
         /// <summary>
         ///     Removes the orders
         /// </summary>
-        /// <param name="orderIds"> The array of the order IDs </param>
+        /// <param name="orderIds"> The array of the order IDs or UUIDs </param>
         /// <returns> Result status: true/false </returns>
         public async Task<Tuple<bool, string>> RemoveOrdersAsync(string[] orderIds)
         {

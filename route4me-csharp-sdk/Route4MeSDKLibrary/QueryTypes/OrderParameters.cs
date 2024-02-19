@@ -53,7 +53,7 @@
         public string Display { get; set; }
 
         /// <summary>
-        ///     Unque ID of an order.
+        ///     Unique ID or UUID of an order.
         ///     <remarks>
         ///         <para>Query parameter.</para>
         ///     </remarks>
