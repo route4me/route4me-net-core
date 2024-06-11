@@ -20,7 +20,7 @@ namespace Route4MeSDK.Examples
             }, out _);
 
             //Read 
-            var customUserFields = route4Me.GetCustomUserFieldsAsync();
+            var customUserFields = route4Me.GetCustomUserFields(out var resultResponse);
 
             //Update
             var updateCustomUserFieldRequest = new UpdateCustomUserFieldRequest()
