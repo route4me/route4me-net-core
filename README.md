@@ -89,3 +89,53 @@ Route4Me does not currently lease or sell servers, and does not have on-premise 
 
 ### Does the Route4Me API/SDK require me to have my own programmers?
 The time required to integrate the SDK can be as little as 1 hour or may take several weeks, depending on the number of features being incorporated into the customer’s application and how much integration testing will be done by the client. A programmer’s involvement is almost always required to use Route4Me’s technology when accessing it through the API.
+
+
+### Examples
+Route4Me examples can be found [here](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKTest/)
+
+### Installation instuctions options:
+
+#### NuGet package using Visual Studio (Manage NuGet packages)
+1. Open your project in Visual Studio.
+2. Right-click on your project in the Solution Explorer and choose "Manage NuGet Packages..."
+3. In the NuGet Package Manager, search for the name of the package (Route4MeSDKLibrary) in the "Browse" tab.
+4. Select the package and click "Install".
+
+#### NuGet package using .NET CLI: 
+1. Open a command prompt.
+2. Navigate to your project directory.
+3. Run the following command
+```shell
+dotnet add package Route4MeSDKLibrary
+```
+
+####  NuGet package using Visual Studio (Package Manager Console)
+1. Go to Tools -> NuGet Package Manager -> Package Manager Console.
+2. In the console, type the following command and press Enter:
+```shell
+Install-Package Route4MeSDKLibrary -ProjectName YourProjectName
+```
+Replace YourProjectName with the name of your project.
+
+#### NuGet package using csproj directly
+1. Open your .csproj file in a text editor.
+2. Inside the <ItemGroup> tag, add the following line:
+```xml
+<PackageReference Include="Route4MeSDKLibrary" Version="YourPackageVersion" />
+```
+Replace YourPackageName with the name of the package and YourPackageVersion with the version number of the package.
+
+3. Save and close the .csproj file.
+4. Open a command prompt, navigate to your project directory and run the following command to restore the package:
+```shell
+dotnet restore
+```
+
+#### From GitHub releases 
+1. Navigate to the project's GitHub page.
+2. Click on the "Releases" tab.
+3. Download the required release.
+4. Extract the downloaded file.
+5. In your project in Visual Studio, right-click on the Solution Explorer and choose "Add" -> "Existing Project...".
+5. Navigate to the location where you extracted the downloaded file, select the .csproj file and click "Open".
