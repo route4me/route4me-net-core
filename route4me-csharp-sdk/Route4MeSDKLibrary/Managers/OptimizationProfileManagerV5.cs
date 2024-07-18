@@ -22,7 +22,7 @@ namespace Route4MeSDKLibrary.Managers
         {
             var response = GetJsonObjectFromAPI<OptimizationProfilesResponse>(new GenericParameters(),
                 R4MEInfrastructureSettingsV5.OptimizationProfilesList,
-                HttpMethodType.Get, false, true,
+                HttpMethodType.Post, false, true,
                 out resultResponse);
 
             return response;
@@ -32,7 +32,7 @@ namespace Route4MeSDKLibrary.Managers
         /// Get Optimization profiles
         /// </summary>
         /// <returns>List of optimization profiles</returns>
-        public async Task<Tuple<OptimizationProfilesResponse, ResultResponse>> GetPodWorkflowsAsync()
+        public async Task<Tuple<OptimizationProfilesResponse, ResultResponse>> GetOptimizationProfilesAsync()
         {
             var result = await GetJsonObjectFromAPIAsync<OptimizationProfilesResponse>(new GenericParameters(),
                 R4MEInfrastructureSettingsV5.OptimizationProfilesList,
