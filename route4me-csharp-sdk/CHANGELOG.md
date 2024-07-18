@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.11.1.0] - 2024-07-18
+Fixed OptimizationProfileManagerV5.
+
 ## [7.11.0.0] - 2024-01-31
 NoSolution is supported in OptimizationState
 
