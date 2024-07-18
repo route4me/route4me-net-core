@@ -10,7 +10,7 @@ namespace Route4MeSdkV5UnitTest.V5.OptimizationProfiles
         private static readonly string CApiKey = ApiKeys.ActualApiKey;
 
         [Test]
-        public void GetPodWorkflowsTest()
+        public void GetGetOptimizationProfilesTest()
         {
             var route4Me = new OptimizationProfileManagerV5(CApiKey);
 
