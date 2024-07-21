@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.11.2.0] - 2024-07-21
+Supported all parameters for routes  filtering.
+Fixed optimization creation with profile id.
+
 ## [7.11.1.0] - 2024-07-18
 Fixed OptimizationProfileManagerV5.
 
