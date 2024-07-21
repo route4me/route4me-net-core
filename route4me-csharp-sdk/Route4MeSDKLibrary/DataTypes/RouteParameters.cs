@@ -262,13 +262,13 @@ namespace Route4MeSDK.DataTypes
         ///     </para>
         /// </summary>
         [DataMember(Name = "metric", EmitDefaultValue = false)]
-        public Metric Metric { get; set; }
+        public Metric? Metric { get; set; }
 
         /// <summary>
         ///     The algorithm type to use when optimizing the route. See <see cref="DataTypes.AlgorithmType" />
         /// </summary>
         [DataMember(Name = "algorithm_type", EmitDefaultValue = false)]
-        public AlgorithmType AlgorithmType { get; set; }
+        public AlgorithmType? AlgorithmType { get; set; }
 
         /// <summary>
         ///     The route owner's member ID.
