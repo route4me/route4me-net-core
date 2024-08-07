@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.12.0.0] - 2024-08-07
+Optimization profile -  save/delete entities are supported
+Fixed GetOptimizationProfilesAsync.
+
 ## [7.11.2.0] - 2024-07-21
 Supported all parameters for routes  filtering.
 Fixed optimization creation with profile id.
