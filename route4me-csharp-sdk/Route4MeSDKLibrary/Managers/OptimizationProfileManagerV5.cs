@@ -22,7 +22,7 @@ namespace Route4MeSDKLibrary.Managers
         {
             var response = GetJsonObjectFromAPI<OptimizationProfilesResponse>(new GenericParameters(),
                 R4MEInfrastructureSettingsV5.OptimizationProfilesList,
-                HttpMethodType.Post, false, true,
+                HttpMethodType.Get, false, true,
                 out resultResponse);
 
             return response;
@@ -36,7 +36,7 @@ namespace Route4MeSDKLibrary.Managers
         {
             var result = await GetJsonObjectFromAPIAsync<OptimizationProfilesResponse>(new GenericParameters(),
                 R4MEInfrastructureSettingsV5.OptimizationProfilesList,
-                HttpMethodType.Post,
+                HttpMethodType.Get,
                 null,
                 true,
                 false).ConfigureAwait(false);

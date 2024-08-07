@@ -11,6 +11,9 @@ namespace Route4MeSDK.Examples
         {
             var route4Me = new OptimizationProfileManagerV5(ActualApiKey);
 
+            var data = new JObject();
+            data["append_date_to_route_name"] = true;
+
             var saveResult = route4Me.SaveEntities(
                 new OptimizationProfileSaveEntities()
                 {
@@ -24,7 +27,7 @@ namespace Route4MeSDK.Examples
                                 new()
                                 {
                                     Guid = "pav",
-                                    Data = JObject.Parse("{\"append_date_to_route_name\":true}")
+                                    Data = data
                                 }
                             }
                         }
@@ -36,7 +39,7 @@ namespace Route4MeSDK.Examples
             {
                 Items = new OptimizationProfileDeleteEntitiesRequestItem[1]
                 {
-                    new OptimizationProfileDeleteEntitiesRequestItem() { Id = saveResult.Items.First().Id }
+                    new() { Id = saveResult.Items.First().Id }
                 }
             }, out resultResponse);
         }
