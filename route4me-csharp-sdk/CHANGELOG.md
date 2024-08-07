@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.12.1.0] - 2024-08-07
+Fixed get optimization profile endpoint
+Adjust OptimizationProfileEntities and OptimizationWithProfile examples
+Adjust OptimizationProfileManagerV5Tests
+
 ## [7.12.0.0] - 2024-08-07
 Optimization profile -  save/delete entities are supported
 Fixed GetOptimizationProfilesAsync.
