@@ -26,6 +26,9 @@ namespace Route4MeSdkV5UnitTest.V5.OptimizationProfiles
         {
             var route4Me = new OptimizationProfileManagerV5(CApiKey);
 
+            var data = new JObject();
+            data["append_date_to_route_name"] = true;
+
             var result = route4Me.SaveEntities(
                 new OptimizationProfileSaveEntities()
                 {
@@ -39,7 +42,7 @@ namespace Route4MeSdkV5UnitTest.V5.OptimizationProfiles
                                 new()
                                 {
                                     Guid = "pav",
-                                    Data = JObject.Parse("{\"append_date_to_route_name\":true}")
+                                    Data = data
                                 }
                             }
                         }
@@ -54,6 +57,9 @@ namespace Route4MeSdkV5UnitTest.V5.OptimizationProfiles
         {
             var route4Me = new OptimizationProfileManagerV5(CApiKey);
 
+            var data = new JObject();
+            data["append_date_to_route_name"] = true;
+
             var saveResult = route4Me.SaveEntities(
                 new OptimizationProfileSaveEntities()
                 {
@@ -67,7 +73,7 @@ namespace Route4MeSdkV5UnitTest.V5.OptimizationProfiles
                                 new()
                                 {
                                     Guid = "pav",
-                                    Data = JObject.Parse("{\"append_date_to_route_name\":true}")
+                                    Data = data
                                 }
                             }
                         }

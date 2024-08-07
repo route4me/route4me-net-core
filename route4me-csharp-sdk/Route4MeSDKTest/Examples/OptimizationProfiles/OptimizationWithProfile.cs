@@ -116,7 +116,9 @@ namespace Route4MeSDK.Examples
                 {
                     Addresses = addresses.ToArray(),
 
-                    Parameters = parameters
+                    Parameters = parameters,
+
+                    OptimizationProfileId = optimizationProfile.Id
                 };
 
                 var route4Me = new Route4MeManager(ActualApiKey);

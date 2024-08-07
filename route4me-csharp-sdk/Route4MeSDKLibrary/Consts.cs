@@ -299,7 +299,7 @@
 
         #region Optimization Profiles
         public const string OptimizationProfiles = MainHost + "/optimization-profiles";
-        public const string OptimizationProfilesList = OptimizationProfiles + "/list";
+        public const string OptimizationProfilesList = OptimizationProfiles + "/data-list";
         public const string OptimizationProfilesSaveEntities = OptimizationProfiles + "/save-entities";
         public const string OptimizationProfilesDeleteEntities = OptimizationProfiles + "/delete-entities";
         #endregion
