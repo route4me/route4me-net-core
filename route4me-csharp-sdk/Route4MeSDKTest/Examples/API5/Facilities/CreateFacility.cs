@@ -42,7 +42,7 @@ namespace Route4MeSDK.Examples
 
             if (createdFacility != null && resultResponse == null)
             {
-                Console.WriteLine("✓ Facility created successfully!");
+                Console.WriteLine("Facility created successfully!");
                 Console.WriteLine($"  Facility ID: {createdFacility.FacilityId}");
                 Console.WriteLine($"  Name: {createdFacility.FacilityAlias}");
                 Console.WriteLine($"  Address: {createdFacility.Address}");
@@ -63,7 +63,7 @@ namespace Route4MeSDK.Examples
 
                 if (retrievedFacility != null)
                 {
-                    Console.WriteLine($"✓ Facility retrieved: {retrievedFacility.FacilityAlias}");
+                    Console.WriteLine($"Facility retrieved: {retrievedFacility.FacilityAlias}");
                 }
 
                 Console.WriteLine("\nUpdating the facility...");
@@ -87,7 +87,7 @@ namespace Route4MeSDK.Examples
 
                 if (updatedFacility != null)
                 {
-                    Console.WriteLine($"✓ Facility updated: {updatedFacility.FacilityAlias}");
+                    Console.WriteLine($"Facility updated: {updatedFacility.FacilityAlias}");
                     Console.WriteLine($"  New status: {updatedFacility.Status}");
                 }
                 else
@@ -107,7 +107,7 @@ namespace Route4MeSDK.Examples
 
                 if (facilityTypes != null && facilityTypes.Count > 0)
                 {
-                    Console.WriteLine($"✓ Found {facilityTypes.Count} facility type(s):");
+                    Console.WriteLine($"Found {facilityTypes.Count} facility type(s):");
                     foreach (var type in facilityTypes)
                     {
                         Console.WriteLine($"  - ID: {type.FacilityTypeId}, Name: {type.FacilityTypeAlias}");
@@ -134,7 +134,7 @@ namespace Route4MeSDK.Examples
 
                 if (singleFacilityType != null)
                 {
-                    Console.WriteLine($"✓ Retrieved facility type by ID {facilityTypeId}:");
+                    Console.WriteLine($"Retrieved facility type by ID {facilityTypeId}:");
                     Console.WriteLine($"  - ID: {singleFacilityType.FacilityTypeId}");
                     Console.WriteLine($"  - Name: {singleFacilityType.FacilityTypeAlias}");
                 }
@@ -164,7 +164,7 @@ namespace Route4MeSDK.Examples
 
                 if (facilitiesBefore != null && facilitiesBefore.Data != null)
                 {
-                    Console.WriteLine($"✓ Total facilities BEFORE delete: {facilitiesBefore.Total}");
+                    Console.WriteLine($"Total facilities BEFORE delete: {facilitiesBefore.Total}");
                 }
 
                 Console.WriteLine("\nDeleting the facility...");
@@ -178,7 +178,7 @@ namespace Route4MeSDK.Examples
 
                 if (verifyDeleted == null)
                 {
-                    Console.WriteLine($"✓ Facility deletion verified - facility no longer exists");
+                    Console.WriteLine($"Facility deletion verified - facility no longer exists");
                 }
                 else
                 {
@@ -201,10 +201,10 @@ namespace Route4MeSDK.Examples
 
                 if (facilitiesAfter != null && facilitiesAfter.Data != null)
                 {
-                    Console.WriteLine($"✓ Total facilities AFTER delete: {facilitiesAfter.Total}");
+                    Console.WriteLine($"Total facilities AFTER delete: {facilitiesAfter.Total}");
                     if (facilitiesBefore.Total > facilitiesAfter.Total)
                     {
-                        Console.WriteLine($"✓ Delete verified! Count decreased by {facilitiesBefore.Total - facilitiesAfter.Total}");
+                        Console.WriteLine($"Delete verified! Count decreased by {facilitiesBefore.Total - facilitiesAfter.Total}");
                     }
                     else
                     {
@@ -241,7 +241,7 @@ namespace Route4MeSDK.Examples
                 
                 if (result != null && response == null)
                 {
-                    Console.WriteLine($"✓ Deleted facility: {facilityId}");
+                    Console.WriteLine($"Deleted facility: {facilityId}");
                 }
                 else
                 {
