@@ -1,0 +1,100 @@
+# =============================================================================
+# Docker Compose configuration for Route4Me C# SDK Testing Environment
+# 
+# This file provides convenient commands for building, testing, and developing
+# the Route4Me C# SDK in a containerized environment.
+#
+# Usage:
+#   Build and run tests: docker-compose up test
+#   Development environment: docker-compose up dev
+#   Interactive shell: docker-compose run dev /bin/bash
+#   Build SDK only: docker-compose up build
+#
+# =============================================================================
+
+services:
+  # Build service - builds the SDK and all test projects
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+      no_cache: false
+    container_name: route4me-sdk-build
+    volumes:
+      - .:/app
+    working_dir: /app/route4me-csharp-sdk
+    command: >
+      sh -c "
+        echo 'Building Route4Me SDK...' &&
+        dotnet restore ./Route4MeSDK.sln &&
+        dotnet build -v q -c Release ./Route4MeSDKLibrary/Route4MeSDKLibrary.csproj &&
+        dotnet build -v q -c Release ./Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj &&
+        dotnet build -v q -c Release ./Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj &&
+        echo 'Build completed successfully!'
+      "
+
+  # Test service - runs all unit tests
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+      no_cache: false
+    container_name: route4me-sdk-test
+    volumes:
+      - .:/app
+    working_dir: /app/route4me-csharp-sdk
+    command: >
+      sh -c "
+        echo 'Running Route4Me SDK Tests...' &&
+        echo '==============================' &&
+        dotnet test -v n -p:ParallelizeTestCollections=false -f netcoreapp2.1 --filter Category!=Beacon ./route4me-csharp-sdk/Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj
+        echo 'All tests completed!'
+      "
+
+  # Development service - provides an interactive development environment
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      no_cache: true
+    container_name: route4me-sdk-dev
+    volumes:
+      - .:/app
+    working_dir: /app/route4me-csharp-sdk
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    environment:
+      - DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+
+
+  # Clean service - removes build artifacts and temporary files
+  clean:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+      no_cache: false
+    container_name: route4me-sdk-clean
+    volumes:
+      - .:/app
+    working_dir: /app/route4me-csharp-sdk
+    command: >
+      sh -c "
+        echo 'Cleaning build artifacts...' &&
+        find . -name 'bin' -type d -exec rm -rf {} + 2>/dev/null || true &&
+        find . -name 'obj' -type d -exec rm -rf {} + 2>/dev/null || true &&
+        find . -name 'TestResults' -type d -exec rm -rf {} + 2>/dev/null || true &&
+        echo 'Clean completed!'
+      "
+
+# =============================================================================
+# Additional configurations for different scenarios
+# =============================================================================
+
+# Override for CI/CD environments
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up test
