@@ -34,11 +34,7 @@ namespace Route4MeSDK.Examples
                         IsDefault = true
                     }
                 },
-                Status = 1,
-                ContactPersonFirstName = "John",
-                ContactPersonLastName = "Doe",
-                ContactPersonEmail = "john.doe@example.com",
-                ContactPersonPhone = "+1-555-0100"
+                Status = 1
             };
 
             var createdFacility = route4Me.FacilityManager.CreateFacility(
@@ -62,7 +58,6 @@ namespace Route4MeSDK.Examples
             Console.WriteLine($"Test facility created: {createdFacility.FacilityId}");
             Console.WriteLine($"  Original name: {createdFacility.FacilityAlias}");
             Console.WriteLine($"  Original status: {createdFacility.Status}");
-            Console.WriteLine($"  Original contact: {createdFacility.ContactPersonFirstName} {createdFacility.ContactPersonLastName}");
 
             // Now update the facility
             Console.WriteLine("\nUpdating facility...");
@@ -83,11 +78,7 @@ namespace Route4MeSDK.Examples
                         IsDefault = true
                     }
                 },
-                Status = 2, // Change to INACTIVE
-                ContactPersonFirstName = "Jane",
-                ContactPersonLastName = "Smith",
-                ContactPersonEmail = "jane.smith@example.com",
-                ContactPersonPhone = "+1-555-0200"
+                Status = 2 
             };
 
             var updatedFacility = route4Me.FacilityManager.UpdateFacility(
@@ -104,9 +95,6 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine($"  New address: {updatedFacility.Address}");
                 Console.WriteLine($"  New status: {updatedFacility.Status}");
                 Console.WriteLine($"  New coordinates: ({updatedFacility.Coordinates?.Lat}, {updatedFacility.Coordinates?.Lng})");
-                Console.WriteLine($"  New contact: {updatedFacility.ContactPersonFirstName} {updatedFacility.ContactPersonLastName}");
-                Console.WriteLine($"  New email: {updatedFacility.ContactPersonEmail}");
-                Console.WriteLine($"  New phone: {updatedFacility.ContactPersonPhone}");
                 Console.WriteLine($"  Updated at: {updatedFacility.UpdatedAt}");
             }
             else
