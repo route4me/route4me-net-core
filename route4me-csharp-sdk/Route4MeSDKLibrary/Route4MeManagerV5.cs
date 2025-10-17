@@ -1,16 +1,18 @@
-﻿using System;
-using System.Threading.Tasks;
-using Route4MeSDK.DataTypes.V5;
+﻿using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
+using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using Route4MeSDKLibrary.DataTypes.V5.Routes;
 using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 using Route4MeSDKLibrary.Managers;
+using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
+using System;
+using System.Threading.Tasks;
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
 using OptimizationParameters = Route4MeSDK.QueryTypes.V5.OptimizationParameters;
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
@@ -46,6 +48,7 @@ namespace Route4MeSDK
             _telematicsManager = new TelematicsManagerV5(apiKey);
             _orderManager = new OrderManagerV5(apiKey);
             _routeStatusManager = new RouteStatusManagerV5(apiKey);
+            _facilityManager = new FacilityManagerV5(apiKey);
         }
 
         #endregion
@@ -63,6 +66,7 @@ namespace Route4MeSDK
         private readonly TelematicsManagerV5 _telematicsManager;
         private readonly OrderManagerV5 _orderManager;
         private readonly RouteStatusManagerV5 _routeStatusManager;
+        private readonly FacilityManagerV5 _facilityManager;
 
         #endregion
 
@@ -2248,6 +2252,87 @@ namespace Route4MeSDK
         public Task<Tuple<StatusResponse, ResultResponse>> SetRouteStopStatusAsync(SetRouteStopStatusParameters parameters)
         {
             return _routeStatusManager.SetRouteStopStatusAsync(parameters);
+        }
+
+        #endregion
+
+        #region Facilities
+
+        /// <summary>
+        /// Gets the paginated list of facilities
+        /// </summary>
+        /// <param name="facilityParams">Query params</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>An array of the facilities</returns>
+        public FacilitiesPaginateResource GetFacilities(FacilityGetParameters facilityParams, out ResultResponse resultResponse)
+        {
+            return _facilityManager.GetFacilities(facilityParams, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the facility by specifying facility id
+        /// </summary>
+        /// <param name="facilityId">Facility id</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The facility</returns
+        public FacilityResource GetFacility(string facilityId, out ResultResponse resultResponse)
+        {
+            return _facilityManager.GetFacility(facilityId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Creates a new facility
+        /// </summary>
+        /// <param name="request">The request data to create a new facility</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The created facility</returns>
+        public FacilityResource CreateFacility(FacilityCreateRequest request, out ResultResponse resultResponse)
+        {
+            return _facilityManager.CreateFacility(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Updates an existing facility
+        /// </summary>
+        /// <param name="facilityId">Facility id</param>
+        /// <param name="request">The request data to update an existing facility</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The updated facility</returns>
+        public FacilityResource UpdateFacility(string facilityId, FacilityUpdateRequest request, out ResultResponse resultResponse)
+        {
+            return _facilityManager.UpdateFacility(facilityId, request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Removes an existing facility
+        /// </summary>
+        /// <param name="facilityId">Facility id</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The removed facility</returns>
+        public FacilityResource DeleteFacility(string facilityId, out ResultResponse resultResponse)
+        {
+            return _facilityManager.DeleteFacility(facilityId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets facility types list
+        /// </summary>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>An array of the facility types</returns>
+        public FacilityTypeCollectionResource GetFacilityTypes(out ResultResponse resultResponse)
+        {
+            return _facilityManager.GetFacilityTypes(out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the facility type by specifying facility type id
+        /// </summary>
+        /// <param name="typeId">Facility type id</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The facility type</returns>
+        public FacilityTypeResource GetFacilityTypeById(int typeId, out ResultResponse resultResponse)
+        {
+            return _facilityManager.GetFacilityType(typeId, out resultResponse);
         }
 
         #endregion

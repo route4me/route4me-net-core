@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
-using static Route4MeSDK.Route4MeManagerV5;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Route4MeSDK.Examples
 {
@@ -516,6 +516,61 @@ namespace Route4MeSDK.Examples
                     (result != null && resultResponse == null)
                         ? String.Format("The vehicle profile {0} removed successfully.", vehicleCapacityProfileId)
                         : String.Format("Cannot remove the vehicle profile {0}.", vehicleCapacityProfileId)
+                );
+            }
+        }
+
+        #endregion
+
+        #region Facilities V5
+
+        private void PrintTestFacilitiesV5(object result, ResultResponse resultResponse)
+        {
+            Console.WriteLine("");
+
+            string testName = (new StackTrace()).GetFrame(1).GetMethod().Name;
+            testName = testName != null ? testName : "";
+
+            if (result != null)
+            {
+                Console.WriteLine(testName + " executed successfully");
+
+                if (result.GetType() == typeof(FacilityResource))
+                {
+                    var facility = (FacilityResource)result;
+
+                    Console.WriteLine(
+                        "Facility ID: {0}, Alias: {1}",
+                        facility.FacilityId,
+                        facility.FacilityAlias
+                    );
+                }
+                else
+                {
+                    Console.WriteLine(testName + ": unknown response type");
+                }
+            }
+            else
+            {
+                PrintFailResponse(resultResponse, testName);
+            }
+        }
+
+        private void RemoveTestFacilitiesV5()
+        {
+            var route4Me = new Route4MeManagerV5(ActualApiKey);
+
+            // Run the query
+            if ((facilitiesToRemove?.Count ?? 0) < 1) return;
+
+            foreach (var facilityId in facilitiesToRemove)
+            {
+                var result = route4Me.DeleteFacility(facilityId, out ResultResponse resultResponse);
+
+                Console.WriteLine(
+                    (result != null && result.GetType() == typeof(FacilityResource))
+                        ? String.Format("The facility {0} removed successfully.", facilityId)
+                        : String.Format("Cannot remove the facility {0}.", facilityId)
                 );
             }
         }

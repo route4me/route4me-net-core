@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.12.2.0] - 2025-10-17
+Added Facility API V5 MVP
+
 ## [7.12.1.0] - 2024-08-07
 Fixed get optimization profile endpoint
 Adjust OptimizationProfileEntities and OptimizationWithProfile examples

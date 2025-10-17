@@ -72,6 +72,7 @@ namespace Route4MeSDK.Examples
         MemberResponseV4 lastCreatedUser;
 
         List<string> vehiclesToRemove = new List<string>();
+        List<string> facilitiesToRemove = new List<string>();
 
         #region Optimizations, Routes, Destinations
 
