@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -237,6 +238,210 @@ namespace Route4MeSDKLibrary.Managers
 
             return result;
         }
+
+        #region Async Methods
+
+        /// <summary>
+        /// Get a single facility by ID asynchronously
+        /// </summary>
+        /// <param name="facilityId">Facility ID</param>
+        /// <returns>A Tuple containing the facility resource and error response</returns>
+        public async Task<Tuple<FacilityResource, ResultResponse>> GetFacilityAsync(string facilityId)
+        {
+            if (string.IsNullOrWhiteSpace(facilityId))
+            {
+                var error = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new System.Collections.Generic.Dictionary<string, string[]>
+                    {
+                        { "error", new[] { "Facility ID is required" } }
+                    }
+                };
+                return new Tuple<FacilityResource, ResultResponse>(null, error);
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<FacilityResource>(
+                new GenericParameters(),
+                $"{R4MEInfrastructureSettingsV5.Facilities}/{facilityId}",
+                HttpMethodType.Get
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilityResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Get a paginated list of facilities asynchronously
+        /// </summary>
+        /// <param name="parameters">Query parameters</param>
+        /// <returns>A Tuple containing paginated facilities and error response</returns>
+        public async Task<Tuple<FacilitiesPaginateResource, ResultResponse>> GetFacilitiesAsync(
+            FacilityGetParameters parameters = null)
+        {
+            if (parameters == null)
+            {
+                parameters = new FacilityGetParameters();
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<FacilitiesPaginateResource>(
+                parameters,
+                R4MEInfrastructureSettingsV5.Facilities,
+                HttpMethodType.Get
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilitiesPaginateResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Create a new facility asynchronously
+        /// </summary>
+        /// <param name="facility">Facility creation request</param>
+        /// <returns>A Tuple containing the created facility and error response</returns>
+        public async Task<Tuple<FacilityResource, ResultResponse>> CreateFacilityAsync(
+            FacilityCreateRequest facility)
+        {
+            if (facility == null)
+            {
+                var error = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new System.Collections.Generic.Dictionary<string, string[]>
+                    {
+                        { "error", new[] { "Facility data is required" } }
+                    }
+                };
+                return new Tuple<FacilityResource, ResultResponse>(null, error);
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<FacilityResource>(
+                facility,
+                R4MEInfrastructureSettingsV5.Facilities,
+                HttpMethodType.Post
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilityResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Update an existing facility asynchronously
+        /// </summary>
+        /// <param name="facilityId">Facility ID</param>
+        /// <param name="facility">Facility update request</param>
+        /// <returns>A Tuple containing the updated facility and error response</returns>
+        public async Task<Tuple<FacilityResource, ResultResponse>> UpdateFacilityAsync(
+            string facilityId,
+            FacilityUpdateRequest facility)
+        {
+            if (string.IsNullOrWhiteSpace(facilityId))
+            {
+                var error = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new System.Collections.Generic.Dictionary<string, string[]>
+                    {
+                        { "error", new[] { "Facility ID is required" } }
+                    }
+                };
+                return new Tuple<FacilityResource, ResultResponse>(null, error);
+            }
+
+            if (facility == null)
+            {
+                var error = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new System.Collections.Generic.Dictionary<string, string[]>
+                    {
+                        { "error", new[] { "Facility update data is required" } }
+                    }
+                };
+                return new Tuple<FacilityResource, ResultResponse>(null, error);
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<FacilityResource>(
+                facility,
+                $"{R4MEInfrastructureSettingsV5.Facilities}/{facilityId}",
+                HttpMethodType.Put
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilityResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Delete a facility by ID asynchronously
+        /// </summary>
+        /// <param name="facilityId">Facility ID</param>
+        /// <returns>A Tuple containing the remaining facilities collection and error response</returns>
+        public async Task<Tuple<FacilityResource[], ResultResponse>> DeleteFacilityAsync(
+            string facilityId)
+        {
+            if (string.IsNullOrWhiteSpace(facilityId))
+            {
+                var error = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new System.Collections.Generic.Dictionary<string, string[]>
+                    {
+                        { "error", new[] { "Facility ID is required" } }
+                    }
+                };
+                return new Tuple<FacilityResource[], ResultResponse>(null, error);
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<FacilityResource[]>(
+                new GenericParameters(),
+                $"{R4MEInfrastructureSettingsV5.Facilities}/{facilityId}",
+                HttpMethodType.Delete
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilityResource[], ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Get all facility types asynchronously
+        /// </summary>
+        /// <returns>A Tuple containing collection of facility types and error response</returns>
+        public async Task<Tuple<FacilityTypeCollectionResource, ResultResponse>> GetFacilityTypesAsync()
+        {
+            var result = await GetJsonObjectFromAPIAsync<FacilityTypeCollectionResource>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.FacilityTypes,
+                HttpMethodType.Get
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilityTypeCollectionResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Get a single facility type by ID asynchronously
+        /// </summary>
+        /// <param name="typeId">Facility type ID</param>
+        /// <returns>A Tuple containing the facility type resource and error response</returns>
+        public async Task<Tuple<FacilityTypeResource, ResultResponse>> GetFacilityTypeAsync(int typeId)
+        {
+            if (typeId <= 0)
+            {
+                var error = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new System.Collections.Generic.Dictionary<string, string[]>
+                    {
+                        { "error", new[] { "Valid facility type ID is required" } }
+                    }
+                };
+                return new Tuple<FacilityTypeResource, ResultResponse>(null, error);
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<FacilityTypeResource>(
+                new GenericParameters(),
+                $"{R4MEInfrastructureSettingsV5.FacilityTypes}/{typeId}",
+                HttpMethodType.Get
+            ).ConfigureAwait(false);
+
+            return new Tuple<FacilityTypeResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        #endregion
     }
 }
 
