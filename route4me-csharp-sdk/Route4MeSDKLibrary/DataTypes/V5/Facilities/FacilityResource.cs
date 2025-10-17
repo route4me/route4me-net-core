@@ -51,30 +51,6 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Facilities
         public FacilityTypeRelation[] FacilityTypes { get; set; }
 
         /// <summary>
-        /// Contact person first name
-        /// </summary>
-        [DataMember(Name = "contact_person_first_name", EmitDefaultValue = false)]
-        public string ContactPersonFirstName { get; set; }
-
-        /// <summary>
-        /// Contact person last name
-        /// </summary>
-        [DataMember(Name = "contact_person_last_name", EmitDefaultValue = false)]
-        public string ContactPersonLastName { get; set; }
-
-        /// <summary>
-        /// Contact person email
-        /// </summary>
-        [DataMember(Name = "contact_person_email", EmitDefaultValue = false)]
-        public string ContactPersonEmail { get; set; }
-
-        /// <summary>
-        /// Contact person phone
-        /// </summary>
-        [DataMember(Name = "contact_person_phone", EmitDefaultValue = false)]
-        public string ContactPersonPhone { get; set; }
-
-        /// <summary>
         /// Timestamp when facility was created
         /// </summary>
         [DataMember(Name = "created_at", EmitDefaultValue = false)]
