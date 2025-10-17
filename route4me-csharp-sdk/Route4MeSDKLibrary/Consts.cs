@@ -311,6 +311,7 @@
         public const string NotesByRoute = Notes + "/route/{route_id}";
         public const string NotesByDestination = Notes + "/destination/{route_destination_id}";
         public const string NotesCustomTypes = Notes + "/custom-types";
+        public const string NotesBulkCreate = Notes + "/bulk-create";
 
         #endregion
 

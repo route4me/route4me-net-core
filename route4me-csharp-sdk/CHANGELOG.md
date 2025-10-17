@@ -3,8 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 Added:
-- Notes API v5.0 support with 7 MVP methods
+- Notes API v5.0 support with 9 MVP methods
 - Create note: `POST /notes`
+- Bulk create notes: `POST /notes/bulk-create`
 - Get note by ID: `GET /notes/{note_id}`
 - Update note by ID: `POST /notes/{note_id}`
 - Delete note by ID: `DELETE /notes/{note_id}`

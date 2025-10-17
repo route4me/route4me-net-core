@@ -831,5 +831,339 @@ namespace Route4MeSdkV5UnitTest.V5.Notes
         }
 
         #endregion
+
+        #region Bulk Create Tests
+
+        [Test]
+        public void BulkCreateNotesTest()
+        {
+            var notesManager = new NotesManagerV5(CApiKey);
+
+            var bulkRequest = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Bulk note 1 created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        AddressId = _testDestinationId,
+                        DeviceType = "web"
+                    },
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Bulk note 2 created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        AddressId = _testDestinationId,
+                        DeviceType = "web"
+                    },
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Bulk note 3 created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        AddressId = _testDestinationId,
+                        StrUpdateType = "dropoff"
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result = notesManager.BulkCreateNotes(bulkRequest, out ResultResponse resultResponse);
+
+            Assert.IsNotNull(result, "BulkCreateNotes failed");
+            Assert.IsTrue(result.Status, "Bulk create status is false");
+            Assert.IsTrue(result.Async, "Expected async flag to be true");
+        }
+
+        [Test]
+        public async Task BulkCreateNotesAsyncTest()
+        {
+            var notesManager = new NotesManagerV5(CApiKey);
+
+            var bulkRequest = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Async bulk note 1 created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        AddressId = _testDestinationId,
+                        DeviceType = "web"
+                    },
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Async bulk note 2 created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        AddressId = _testDestinationId,
+                        DevLat = 38.024654,
+                        DevLng = -77.338814
+                    }
+                },
+                DeviceType = "api"
+            };
+
+            var result = await notesManager.BulkCreateNotesAsync(bulkRequest);
+
+            Assert.IsNotNull(result.Item1, "BulkCreateNotesAsync failed");
+            Assert.IsTrue(result.Item1.Status, "Bulk create status is false");
+            Assert.IsTrue(result.Item1.Async, "Expected async flag to be true");
+        }
+
+        [Test]
+        public void BulkCreateNotesValidationTest()
+        {
+            var notesManager = new NotesManagerV5(CApiKey);
+
+            // Test with null request
+            var result1 = notesManager.BulkCreateNotes(null, out ResultResponse resultResponse1);
+            Assert.IsNull(result1, "Expected null result for null request");
+            Assert.IsFalse(resultResponse1.Status, "Expected validation error status");
+            Assert.IsTrue(resultResponse1.Messages.ContainsKey("Error"), "Expected error messages");
+
+            // Test with null notes array
+            var request2 = new NoteStoreBulkRequest
+            {
+                Notes = null,
+                DeviceType = "web"
+            };
+
+            var result2 = notesManager.BulkCreateNotes(request2, out ResultResponse resultResponse2);
+            Assert.IsNull(result2, "Expected null result for null notes array");
+            Assert.IsFalse(resultResponse2.Status, "Expected validation error status");
+            Assert.IsTrue(resultResponse2.Messages.ContainsKey("Error"), "Expected error messages");
+
+            // Test with empty notes array
+            var request3 = new NoteStoreBulkRequest
+            {
+                Notes = new NoteStoreBulkItem[] { },
+                DeviceType = "web"
+            };
+
+            var result3 = notesManager.BulkCreateNotes(request3, out ResultResponse resultResponse3);
+            Assert.IsNull(result3, "Expected null result for empty notes array");
+            Assert.IsFalse(resultResponse3.Status, "Expected validation error status");
+            Assert.IsTrue(resultResponse3.Messages.ContainsKey("Error"), "Expected error messages");
+
+            // Test with missing route_id in one note
+            var request4 = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Valid note"
+                    },
+                    new NoteStoreBulkItem
+                    {
+                        // Missing RouteId
+                        StrNoteContents = "Invalid note - missing route_id"
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result4 = notesManager.BulkCreateNotes(request4, out ResultResponse resultResponse4);
+            Assert.IsNull(result4, "Expected null result for missing route_id");
+            Assert.IsFalse(resultResponse4.Status, "Expected validation error status");
+            Assert.IsTrue(resultResponse4.Messages.ContainsKey("Error"), "Expected error messages");
+            Assert.IsTrue(resultResponse4.Messages["Error"][0].Contains("index 1"), "Expected error to mention index 1");
+
+            // Test with missing note contents in one note
+            var request5 = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Valid note"
+                    },
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId
+                        // Missing StrNoteContents
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result5 = notesManager.BulkCreateNotes(request5, out ResultResponse resultResponse5);
+            Assert.IsNull(result5, "Expected null result for missing note contents");
+            Assert.IsFalse(resultResponse5.Status, "Expected validation error status");
+            Assert.IsTrue(resultResponse5.Messages.ContainsKey("Error"), "Expected error messages");
+            Assert.IsTrue(resultResponse5.Messages["Error"][0].Contains("index 1"), "Expected error to mention index 1");
+
+            // Test with empty route_id in first note
+            var request6 = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = "",
+                        StrNoteContents = "Note with empty route_id"
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result6 = notesManager.BulkCreateNotes(request6, out ResultResponse resultResponse6);
+            Assert.IsNull(result6, "Expected null result for empty route_id");
+            Assert.IsFalse(resultResponse6.Status, "Expected validation error status");
+            Assert.IsTrue(resultResponse6.Messages["Error"][0].Contains("index 0"), "Expected error to mention index 0");
+
+            // Test with whitespace route_id
+            var request7 = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = "   ",
+                        StrNoteContents = "Note with whitespace route_id"
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result7 = notesManager.BulkCreateNotes(request7, out ResultResponse resultResponse7);
+            Assert.IsNull(result7, "Expected null result for whitespace route_id");
+            Assert.IsFalse(resultResponse7.Status, "Expected validation error status");
+
+            // Test with empty note contents
+            var request8 = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = ""
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result8 = notesManager.BulkCreateNotes(request8, out ResultResponse resultResponse8);
+            Assert.IsNull(result8, "Expected null result for empty note contents");
+            Assert.IsFalse(resultResponse8.Status, "Expected validation error status");
+
+            // Test with whitespace note contents
+            var request9 = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "   "
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result9 = notesManager.BulkCreateNotes(request9, out ResultResponse resultResponse9);
+            Assert.IsNull(result9, "Expected null result for whitespace note contents");
+            Assert.IsFalse(resultResponse9.Status, "Expected validation error status");
+        }
+
+        [Test]
+        public async Task BulkCreateNotesAsyncValidationTest()
+        {
+            var notesManager = new NotesManagerV5(CApiKey);
+
+            // Test with null request
+            var result1 = await notesManager.BulkCreateNotesAsync(null);
+            Assert.IsNull(result1.Item1, "Expected null result for null request");
+            Assert.IsFalse(result1.Item2.Status, "Expected validation error status");
+            Assert.IsTrue(result1.Item2.Messages.ContainsKey("Error"), "Expected error messages");
+
+            // Test with null notes array
+            var result2 = await notesManager.BulkCreateNotesAsync(new NoteStoreBulkRequest
+            {
+                Notes = null
+            });
+            Assert.IsNull(result2.Item1, "Expected null result for null notes array");
+            Assert.IsFalse(result2.Item2.Status, "Expected validation error status");
+
+            // Test with empty notes array
+            var result3 = await notesManager.BulkCreateNotesAsync(new NoteStoreBulkRequest
+            {
+                Notes = new NoteStoreBulkItem[] { }
+            });
+            Assert.IsNull(result3.Item1, "Expected null result for empty notes array");
+            Assert.IsFalse(result3.Item2.Status, "Expected validation error status");
+
+            // Test with missing route_id
+            var result4 = await notesManager.BulkCreateNotesAsync(new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        StrNoteContents = "Note without route_id"
+                    }
+                }
+            });
+            Assert.IsNull(result4.Item1, "Expected null result for missing route_id");
+            Assert.IsFalse(result4.Item2.Status, "Expected validation error status");
+
+            // Test with missing note contents
+            var result5 = await notesManager.BulkCreateNotesAsync(new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId
+                    }
+                }
+            });
+            Assert.IsNull(result5.Item1, "Expected null result for missing note contents");
+            Assert.IsFalse(result5.Item2.Status, "Expected validation error status");
+        }
+
+        [Test]
+        public void BulkCreateNotesWithOptionalFieldsTest()
+        {
+            var notesManager = new NotesManagerV5(CApiKey);
+
+            var bulkRequest = new NoteStoreBulkRequest
+            {
+                Notes = new[]
+                {
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Note with all optional fields",
+                        AddressId = _testDestinationId,
+                        DevLat = 38.024654,
+                        DevLng = -77.338814,
+                        RemoteSpeed = 50.5,
+                        RemoteAltitude = 100.0,
+                        StrUpdateType = "dropoff",
+                        DeviceType = "iphone",
+                        UtcTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                    },
+                    new NoteStoreBulkItem
+                    {
+                        RouteId = _testRouteId,
+                        StrNoteContents = "Note with minimal fields",
+                        DeviceType = "android_phone"
+                    }
+                },
+                DeviceType = "web"
+            };
+
+            var result = notesManager.BulkCreateNotes(bulkRequest, out ResultResponse resultResponse);
+
+            Assert.IsNotNull(result, "BulkCreateNotes with optional fields failed");
+            Assert.IsTrue(result.Status, "Bulk create status is false");
+        }
+
+        #endregion
     }
 }
+
