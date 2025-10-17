@@ -115,9 +115,7 @@ namespace Route4MeSdkV5UnitTest.V5
                 {
                     new FacilityTypeAssignment { FacilityTypeId = 1, IsDefault = true }
                 },
-                Status = 1,
-                ContactPersonFirstName = "John",
-                ContactPersonLastName = "Doe"
+                Status = 1
             };
 
             var createdFacility = route4Me.FacilityManager.CreateFacility(createRequest, out var createError);
@@ -134,11 +132,7 @@ namespace Route4MeSdkV5UnitTest.V5
                 {
                     new FacilityTypeAssignment { FacilityTypeId = 1, IsDefault = true }
                 },
-                Status = 2,
-                ContactPersonFirstName = "Jane",
-                ContactPersonLastName = "Smith",
-                ContactPersonEmail = "jane.smith@example.com",
-                ContactPersonPhone = "+1-555-0200"
+                Status = 2
             };
 
             var updatedFacility = route4Me.FacilityManager.UpdateFacility(
@@ -150,8 +144,6 @@ namespace Route4MeSdkV5UnitTest.V5
             Assert.IsNotNull(updatedFacility, "Failed to update facility");
             Assert.AreEqual("Updated Facility Name", updatedFacility.FacilityAlias, "Facility name was not updated");
             Assert.AreEqual(2, updatedFacility.Status, "Facility status was not updated");
-            Assert.AreEqual("Jane", updatedFacility.ContactPersonFirstName, "Contact first name was not updated");
-            Assert.AreEqual("Smith", updatedFacility.ContactPersonLastName, "Contact last name was not updated");
             Assert.IsNull(updateError, "Update facility should not return error");
         }
 
@@ -359,46 +351,6 @@ namespace Route4MeSdkV5UnitTest.V5
             Assert.IsFalse(error.Status, "Error status should be false");
         }
 
-        /// <summary>
-        /// Test 13: Facility with Contact Information
-        /// Tests creating and retrieving facility with contact person fields
-        /// </summary>
-        [Test]
-        public void FacilityWithContactInformationTest()
-        {
-            var route4Me = new Route4MeManagerV5(CApiKey);
-
-            var createRequest = new FacilityCreateRequest
-            {
-                FacilityAlias = "Facility with Contacts",
-                Address = "789 Contact Rd, Chicago, IL 60603",
-                Coordinates = new FacilityCoordinates
-                {
-                    Lat = 41.8781,
-                    Lng = -87.6298
-                },
-                FacilityTypes = new FacilityTypeAssignment[]
-                {
-                    new FacilityTypeAssignment { FacilityTypeId = 1, IsDefault = true }
-                },
-                Status = 1,
-                ContactPersonFirstName = "Alice",
-                ContactPersonLastName = "Johnson",
-                ContactPersonEmail = "alice.johnson@example.com",
-                ContactPersonPhone = "+1-555-0300"
-            };
-
-            var createdFacility = route4Me.FacilityManager.CreateFacility(createRequest, out var createError);
-
-            Assert.IsNotNull(createdFacility, "Failed to create facility with contact information");
-            Assert.AreEqual("Alice", createdFacility.ContactPersonFirstName, "Contact first name mismatch");
-            Assert.AreEqual("Johnson", createdFacility.ContactPersonLastName, "Contact last name mismatch");
-            Assert.AreEqual("alice.johnson@example.com", createdFacility.ContactPersonEmail, "Contact email mismatch");
-            Assert.AreEqual("+1-555-0300", createdFacility.ContactPersonPhone, "Contact phone mismatch");
-            Assert.IsNull(createError, "Create facility should not return error");
-
-            _createdFacilityId = createdFacility.FacilityId;
-        }
     }
 }
 

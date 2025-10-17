@@ -39,30 +39,6 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Facilities
         /// </summary>
         [DataMember(Name = "status", EmitDefaultValue = false)]
         public int? Status { get; set; }
-
-        /// <summary>
-        /// Contact person first name
-        /// </summary>
-        [DataMember(Name = "contact_person_first_name", EmitDefaultValue = false)]
-        public string ContactPersonFirstName { get; set; }
-
-        /// <summary>
-        /// Contact person last name
-        /// </summary>
-        [DataMember(Name = "contact_person_last_name", EmitDefaultValue = false)]
-        public string ContactPersonLastName { get; set; }
-
-        /// <summary>
-        /// Contact person email
-        /// </summary>
-        [DataMember(Name = "contact_person_email", EmitDefaultValue = false)]
-        public string ContactPersonEmail { get; set; }
-
-        /// <summary>
-        /// Contact person phone
-        /// </summary>
-        [DataMember(Name = "contact_person_phone", EmitDefaultValue = false)]
-        public string ContactPersonPhone { get; set; }
     }
 
     /// <summary>
