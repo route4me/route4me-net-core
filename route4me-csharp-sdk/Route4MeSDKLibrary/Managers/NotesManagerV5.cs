@@ -776,5 +776,150 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         #endregion
+
+        #region Bulk Create Notes
+
+        /// <summary>
+        ///     Bulk create notes
+        /// </summary>
+        /// <param name="request">Bulk note creation request</param>
+        /// <param name="resultResponse">Error response</param>
+        /// <returns>Bulk create response with status and async flag</returns>
+        public BulkNotesResponse BulkCreateNotes(NoteStoreBulkRequest request, out ResultResponse resultResponse)
+        {
+            if (request == null)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"Error", new[] {"The bulk note request cannot be null"}}
+                    }
+                };
+                return null;
+            }
+
+            if (request.Notes == null || request.Notes.Length == 0)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"Error", new[] {"The notes array cannot be null or empty"}}
+                    }
+                };
+                return null;
+            }
+
+            for (int i = 0; i < request.Notes.Length; i++)
+            {
+                var note = request.Notes[i];
+                
+                if (string.IsNullOrWhiteSpace(note.RouteId))
+                {
+                    resultResponse = new ResultResponse
+                    {
+                        Status = false,
+                        Messages = new Dictionary<string, string[]>
+                        {
+                            {"Error", new[] {$"The route_id is required for note at index {i}"}}
+                        }
+                    };
+                    return null;
+                }
+
+                if (string.IsNullOrWhiteSpace(note.StrNoteContents))
+                {
+                    resultResponse = new ResultResponse
+                    {
+                    Status = false,
+                        Messages = new Dictionary<string, string[]>
+                        {
+                            {"Error", new[] {$"The note contents (strNoteContents) is required for note at index {i}"}}
+                        }
+                    };
+                    return null;
+                }
+            }
+
+            return GetJsonObjectFromAPI<BulkNotesResponse>(
+                request,
+                R4MEInfrastructureSettingsV5.NotesBulkCreate,
+                HttpMethodType.Post,
+                out resultResponse);
+        }
+
+        /// <summary>
+        ///     Bulk create notes asynchronously
+        /// </summary>
+        /// <param name="request">Bulk note creation request</param>
+        /// <returns>Bulk create response with status and async flag</returns>
+        public async Task<Tuple<BulkNotesResponse, ResultResponse>> BulkCreateNotesAsync(NoteStoreBulkRequest request)
+        {
+            if (request == null)
+            {
+                return new Tuple<BulkNotesResponse, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"Error", new[] {"The bulk note request cannot be null"}}
+                    }
+                });
+            }
+
+            if (request.Notes == null || request.Notes.Length == 0)
+            {
+                return new Tuple<BulkNotesResponse, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"Error", new[] {"The notes array cannot be null or empty"}}
+                    }
+                });
+            }
+
+            for (int i = 0; i < request.Notes.Length; i++)
+            {
+                var note = request.Notes[i];
+                
+                if (string.IsNullOrWhiteSpace(note.RouteId))
+                {
+                    return new Tuple<BulkNotesResponse, ResultResponse>(null, new ResultResponse
+                    {
+                        Status = false,
+                        Messages = new Dictionary<string, string[]>
+                        {
+                            {"Error", new[] {$"The route_id is required for note at index {i}"}}
+                        }
+                    });
+                }
+
+                if (string.IsNullOrWhiteSpace(note.StrNoteContents))
+                {
+                    return new Tuple<BulkNotesResponse, ResultResponse>(null, new ResultResponse
+                    {
+                        Status = false,
+                        Messages = new Dictionary<string, string[]>
+                        {
+                            {"Error", new[] {$"The note contents (strNoteContents) is required for note at index {i}"}}
+                        }
+                    });
+                }
+            }
+
+            var result = await GetJsonObjectFromAPIAsync<BulkNotesResponse>(
+                request,
+                R4MEInfrastructureSettingsV5.NotesBulkCreate,
+                HttpMethodType.Post);
+
+            return new Tuple<BulkNotesResponse, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        #endregion
     }
 }
+
