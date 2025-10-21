@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using static Route4MeSDK.Route4MeManagerV5;
 
 namespace Route4MeSDK.Examples
@@ -804,6 +805,92 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine("The result is null");
             }
         }
+
+        #endregion
+
+        #region Customer
+
+        private void PrintTestCustomer(object result, ResultResponse resultResponse)
+        {
+            Console.WriteLine("");
+
+            string testName = new StackTrace().GetFrame(1)?.GetMethod()?.Name ?? string.Empty;
+
+            if (result == null)
+            {
+                PrintFailResponse(resultResponse, testName);
+                return;
+            }
+
+            Console.WriteLine($"{testName} executed successfully");
+
+            if (result is CustomerResource customerResource)
+            {
+                Console.WriteLine($"Customer ID: {customerResource.CustomerId}");
+                Console.WriteLine($"Name: {customerResource.Name}");
+                Console.WriteLine($"External ID: {customerResource.ExternalId}");
+                Console.WriteLine($"Currency: {customerResource.Currency}");
+                Console.WriteLine($"Status: {customerResource.Status}");
+                return;
+            }
+
+            if (result is CustomerShowResource customerShow)
+            {
+                Console.WriteLine($"Customer ID: {customerShow.CustomerId}");
+                Console.WriteLine($"Name: {customerShow.Name}");
+                Console.WriteLine($"External ID: {customerShow.ExternalId}");
+                Console.WriteLine($"Accountable Person ID: {customerShow.AccountablePersonId}");
+                Console.WriteLine($"Status: {customerShow.Status}");
+                Console.WriteLine($"Currency: {customerShow.Currency}");
+                return;
+            }
+
+            if (result is CustomerListResponse listResponse)
+            {
+                var customers = listResponse.Items;
+
+                if (customers == null || customers.Count == 0)
+                {
+                    Console.WriteLine("No customers found in response.");
+                    return;
+                }
+
+                Console.WriteLine($"Total customers: {customers.Count}");
+
+                foreach (var c in customers)
+                {
+                    Console.WriteLine($"Customer ID: {c.CustomerId}");
+                    Console.WriteLine($"Name: {c.Name}");
+                    Console.WriteLine($"External ID: {c.ExternalId}");
+                    Console.WriteLine($"Status: {(c.Status == 1 ? "Active" : "Inactive")}");
+                    Console.WriteLine($"Accountable person: {c.AccountablePersonFirstName} {c.AccountablePersonLastName}");
+                    Console.WriteLine($"Currency: {c.Currency}");
+                    Console.WriteLine($"Locations: {c.CustomerLocationCount}");
+                    Console.WriteLine($"Created by member ID: {c.CreatedByMemberId}");
+                    Console.WriteLine($"Created at: {c.CreationDate}");
+                    Console.WriteLine($"Updated timestamp: {c.UpdatedTimestamp}");
+
+                    if (c.Contacts != null && c.Contacts.Count > 0)
+                    {
+                        Console.WriteLine("Contacts:");
+                        foreach (var contact in c.Contacts)
+                        {
+                            Console.WriteLine($"  • {contact.Type}: {contact.Name} ({contact.Email}, {contact.Phone})");
+                        }
+                    }
+
+                    if (c.FacilityIds != null && c.FacilityIds.Count > 0)
+                    {
+                        Console.WriteLine($"Facility IDs: {string.Join(", ", c.FacilityIds)}");
+                    }
+                }
+
+                return;
+            }
+
+            Console.WriteLine($"{testName}: Unknown response type ({result.GetType().Name})");
+        }
+
 
         #endregion
     }

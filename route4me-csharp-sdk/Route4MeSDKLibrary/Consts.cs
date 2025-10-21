@@ -265,6 +265,14 @@
 
         #endregion
 
+        #region Customers
+
+        public const string Customers = MainHost + "/customers";
+        public const string CustomersList = Customers + "/list";
+        public const string CustomersById = Customers + "/{customer_id}";
+
+        #endregion
+
         #region Route Status
 
         public const string RouteStatusMainHost = MainHost + "/route-status";
