@@ -306,7 +306,7 @@
 
         #region Facilities
         public const string Facilities = MainHost + "/facilities";
-        public const string FacilityTypes = MainHost + "/types";
+        public const string FacilityTypes = Facilities + "/types";
         #endregion
 
         #endregion

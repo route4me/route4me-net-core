@@ -3,10 +3,16 @@ using System.Runtime.Serialization;
 namespace Route4MeSDKLibrary.DataTypes.V5.Facilities
 {
     /// <summary>
-    /// This is just an alias for array of FacilityTypeResource
-    /// The API returns an array directly, not wrapped in an object
+    /// Response wrapper for facility types collection
+    /// The API returns: { "data": [ {...}, {...} ] }
     /// </summary>
-    public class FacilityTypeCollectionResource : System.Collections.Generic.List<FacilityTypeResource>
+    [DataContract]
+    public class FacilityTypeCollectionResource
     {
+        /// <summary>
+        /// Array of facility types
+        /// </summary>
+        [DataMember(Name = "data")]
+        public FacilityTypeResource[] Data { get; set; }
     }
 }

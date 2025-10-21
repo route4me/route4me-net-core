@@ -15,7 +15,6 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine("Retrieving all facility types...\n");
 
-            // Get all facility types
             var facilityTypes = route4Me.FacilityManager.GetFacilityTypes(
                 out ResultResponse response
             );
@@ -23,23 +22,22 @@ namespace Route4MeSDK.Examples
             if (facilityTypes != null && response == null)
             {
                 Console.WriteLine("Facility types retrieved successfully!");
-                Console.WriteLine($"  Total types available: {facilityTypes.Count}\n");
+                Console.WriteLine($"  Total types available: {facilityTypes.Data?.Length ?? 0}\n");
 
-                if (facilityTypes.Count > 0)
+                if (facilityTypes.Data != null && facilityTypes.Data.Length > 0)
                 {
                     Console.WriteLine("Available facility types:");
-                    for (int i = 0; i < facilityTypes.Count; i++)
+                    for (int i = 0; i < facilityTypes.Data.Length; i++)
                     {
-                        var type = facilityTypes[i];
+                        var type = facilityTypes.Data[i];
                         Console.WriteLine($"  {i + 1}. ID: {type.FacilityTypeId}");
                         Console.WriteLine($"     Name: {type.FacilityTypeAlias}");
                         Console.WriteLine();
                     }
 
-                    // Example: Get a specific facility type by ID
-                    if (facilityTypes.Count > 0)
+                    if (facilityTypes.Data.Length > 0)
                     {
-                        int firstTypeId = facilityTypes[0].FacilityTypeId;
+                        int firstTypeId = facilityTypes.Data[0].FacilityTypeId;
                         Console.WriteLine($"Retrieving specific facility type (ID: {firstTypeId})...\n");
 
                         var singleType = route4Me.FacilityManager.GetFacilityType(
@@ -66,10 +64,9 @@ namespace Route4MeSDK.Examples
                         }
                     }
 
-                    // Demonstrate error handling with invalid ID
                     Console.WriteLine("\n\nDemonstrating error handling with invalid facility type ID...");
                     var invalidType = route4Me.FacilityManager.GetFacilityType(
-                        0, // Invalid ID
+                        0, 
                         out ResultResponse invalidResponse
                     );
 
