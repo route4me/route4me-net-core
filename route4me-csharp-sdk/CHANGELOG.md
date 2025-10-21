@@ -1,6 +1,26 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+
+## [Unreleased]
+Added:
+- Notes API v5.0 support with 9 MVP methods
+- Create note: `POST /notes`
+- Bulk create notes: `POST /notes/bulk-create`
+- Get note by ID: `GET /notes/{note_id}`
+- Update note by ID: `POST /notes/{note_id}`
+- Delete note by ID: `DELETE /notes/{note_id}`
+- Get notes by route: `GET /notes/route/{route_id}`
+- Get notes by destination: `GET /notes/destination/{route_destination_id}`
+- Get custom note types: `GET /notes/custom-types`
+- Create custom note type: `POST /notes/custom-types`
+- New `NotesManagerV5` manager class for Notes API operations
+- Data types: `RouteNoteResource`, `RouteNoteCollection`, `NoteCustomTypeResource`, `NoteCustomTypeCollection`
+- Request types: `NoteStoreRequest`, `NoteUpdateRequest`, `NoteCustomTypeStoreRequest`
+- Comprehensive unit tests for all Notes API methods
+- Sample application demonstrating Notes API usage
+- Documentation for Notes API v5.0
+
 ## [7.13.0.0] - 2025-10-15
 Added Facility Management API V5 support:
 - FacilityManagerV5 with core CRUD operations
@@ -297,7 +317,7 @@ The file [SequentialTimer.cs: ](https://github.com/route4me/route4me-net-core/bl
 The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
 – Switch from HttpClient per HTTP Request to usage of HttpClientHolderManager
 
-The file [Route4MeManagerV5.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
+The file [Route4MeManagerV5cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
 – Switch from HttpClient per HTTP Request to usage of HttpClientHolderManager
 
 
