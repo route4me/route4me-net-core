@@ -1,6 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+
 ## [Unreleased]
 Added:
 - Notes API v5.0 support with 9 MVP methods
@@ -19,6 +20,19 @@ Added:
 - Comprehensive unit tests for all Notes API methods
 - Sample application demonstrating Notes API usage
 - Documentation for Notes API v5.0
+
+## [7.13.0.0] - 2025-10-15
+Added Facility Management API V5 support:
+- FacilityManagerV5 with core CRUD operations
+- Get single facility by ID
+- Get paginated list of facilities with filters
+- Create new facilities
+- Update existing facilities
+- Delete facilities
+- Get facility types
+- Comprehensive XML documentation on all public methods
+- Unit tests for facility operations
+- Example implementation in Examples/API5/Facilities/
 
 ## [7.12.1.0] - 2024-08-07
 Fixed get optimization profile endpoint

@@ -40,6 +40,7 @@ namespace Route4MeSDK.Examples
         public List<string> CustomNoteTypesToRemove = new List<string>();
         public List<string> OrdersToRemove = new List<string>();
         public List<long> OrderCustomFieldsToRemove = new List<long>();
+        public List<string> facilitiesToRemove = new List<string>();
 
         Order lastCreatedOrder;
 
