@@ -49,6 +49,7 @@ namespace Route4MeSDK
             _orderManager = new OrderManagerV5(apiKey);
             _routeStatusManager = new RouteStatusManagerV5(apiKey);
             _customerManager = new CustomerManagerV5(apiKey);
+            _facilityManager = new FacilityManagerV5(apiKey);
         }
 
         #endregion
@@ -67,6 +68,7 @@ namespace Route4MeSDK
         private readonly OrderManagerV5 _orderManager;
         private readonly RouteStatusManagerV5 _routeStatusManager;
         private readonly CustomerManagerV5 _customerManager;
+        private readonly FacilityManagerV5 _facilityManager;
 
         #endregion
 
@@ -2366,5 +2368,13 @@ namespace Route4MeSDK
 
         #endregion
 
+        #region Facilities
+
+        /// <summary>
+        /// Access to Facility Management API
+        /// </summary>
+        public FacilityManagerV5 FacilityManager => _facilityManager;
+
+        #endregion
     }
 }

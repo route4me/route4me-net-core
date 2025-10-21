@@ -13,7 +13,7 @@ namespace Route4MeSDKTest
             // "api4" - execute all the examples related to the API 4 
             // "api5" - execute all the examples related to the API 5 
             // a method name - execute a specifed example method (e.g. "GetTeamMemberById")
-            string executeOption = "UpdateTerritory";
+            string executeOption = "CreateFacility";
 
             bool methodHasParams = (typeof(Route4MeExamples)
                                     .GetMethod(executeOption)
@@ -383,6 +383,10 @@ namespace Route4MeSDKTest
             else if (executeOption.ToLower() == "api5")
             {
                 #region API 5
+
+                #region Notes
+                examples.NotesV5Examples();
+                #endregion
 
                 #region Team Management
 
