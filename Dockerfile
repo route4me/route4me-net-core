@@ -112,5 +112,5 @@ echo "Build completed!"\n\
 ' > /usr/local/bin/build-sdk.sh && chmod +x /usr/local/bin/build-sdk.sh
 
 # Set the default command to run tests
-CMD ["/usr/local/bin/run-tests.sh"]
+# CMD ["/usr/local/bin/run-tests.sh"]
 

@@ -100,12 +100,30 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
+            // Debug: Log the API call details
+            System.Console.WriteLine($"[DEBUG] Creating facility at URL: {R4MEInfrastructureSettingsV5.Facilities}");
+            System.Console.WriteLine($"[DEBUG] Request data: FacilityAlias={facility.FacilityAlias}, Address={facility.Address}, Status={facility.Status}");
+
             var result = GetJsonObjectFromAPI<FacilityResource>(
                 facility,
                 R4MEInfrastructureSettingsV5.Facilities,
                 HttpMethodType.Post,
                 out resultResponse
             );
+
+            // Debug: Log the response
+            System.Console.WriteLine($"[DEBUG] API Response: Result={(result != null ? "SUCCESS" : "NULL")}");
+            if (resultResponse != null)
+            {
+                System.Console.WriteLine($"[DEBUG] Error Response: Status={resultResponse.Status}, Code={resultResponse.Code}");
+                if (resultResponse.Messages != null)
+                {
+                    foreach (var msg in resultResponse.Messages)
+                    {
+                        System.Console.WriteLine($"[DEBUG] Error Message: {msg.Key} = {string.Join(", ", msg.Value)}");
+                    }
+                }
+            }
 
             return result;
         }
@@ -198,12 +216,33 @@ namespace Route4MeSDKLibrary.Managers
         /// <returns>Collection of facility types</returns>
         public FacilityTypeCollectionResource GetFacilityTypes(out ResultResponse resultResponse)
         {
+            // Debug: Log the API call details
+            System.Console.WriteLine($"[DEBUG] Getting facility types at URL: {R4MEInfrastructureSettingsV5.FacilityTypes}");
+
             var result = GetJsonObjectFromAPI<FacilityTypeCollectionResource>(
                 new GenericParameters(),
                 R4MEInfrastructureSettingsV5.FacilityTypes,
                 HttpMethodType.Get,
                 out resultResponse
             );
+
+            // Debug: Log the response
+            System.Console.WriteLine($"[DEBUG] Facility Types Response: Result={(result != null ? "SUCCESS" : "NULL")}");
+            if (result != null)
+            {
+                System.Console.WriteLine($"[DEBUG] Facility Types Count: {result.Data?.Length ?? 0}");
+            }
+            if (resultResponse != null)
+            {
+                System.Console.WriteLine($"[DEBUG] Error Response: Status={resultResponse.Status}, Code={resultResponse.Code}");
+                if (resultResponse.Messages != null)
+                {
+                    foreach (var msg in resultResponse.Messages)
+                    {
+                        System.Console.WriteLine($"[DEBUG] Error Message: {msg.Key} = {string.Join(", ", msg.Value)}");
+                    }
+                }
+            }
 
             return result;
         }

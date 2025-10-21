@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: build
-      no_cache: false
+      no_cache: true
     container_name: route4me-sdk-build
     volumes:
       - .:/app
@@ -40,7 +40,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: test
-      no_cache: false
+      no_cache: true
     container_name: route4me-sdk-test
     volumes:
       - .:/app
@@ -49,7 +49,7 @@ services:
       sh -c "
         echo 'Running Route4Me SDK Tests...' &&
         echo '==============================' &&
-        dotnet test -v n -p:ParallelizeTestCollections=false -f netcoreapp2.1 --filter Category!=Beacon ./route4me-csharp-sdk/Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj
+        dotnet test -v n -p:ParallelizeTestCollections=false -f netcoreapp2.1 --filter Category!=Beacon ./route4me-csharp-sdk/Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj &&
         echo 'All tests completed!'
       "
 
@@ -78,7 +78,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
-      no_cache: false
+      no_cache: true
     container_name: route4me-sdk-clean
     volumes:
       - .:/app
