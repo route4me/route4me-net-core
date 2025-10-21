@@ -46,6 +46,7 @@ namespace Route4MeSDK
             _telematicsManager = new TelematicsManagerV5(apiKey);
             _orderManager = new OrderManagerV5(apiKey);
             _routeStatusManager = new RouteStatusManagerV5(apiKey);
+            _facilityManager = new FacilityManagerV5(apiKey);
         }
 
         #endregion
@@ -63,6 +64,7 @@ namespace Route4MeSDK
         private readonly TelematicsManagerV5 _telematicsManager;
         private readonly OrderManagerV5 _orderManager;
         private readonly RouteStatusManagerV5 _routeStatusManager;
+        private readonly FacilityManagerV5 _facilityManager;
 
         #endregion
 
@@ -2249,6 +2251,15 @@ namespace Route4MeSDK
         {
             return _routeStatusManager.SetRouteStopStatusAsync(parameters);
         }
+
+        #endregion
+
+        #region Facilities
+
+        /// <summary>
+        /// Access to Facility Management API
+        /// </summary>
+        public FacilityManagerV5 FacilityManager => _facilityManager;
 
         #endregion
     }
