@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+Added Location API V5 support (LocationManagerV5) with full CRUD operations for address book locations.
+Implemented location clustering, heatmap, territories, export functionality, and location types management.
+Added comprehensive unit tests and integration examples for all location operations.
+
 ## [7.12.1.0] - 2024-08-07
 Fixed get optimization profile endpoint
 Adjust OptimizationProfileEntities and OptimizationWithProfile examples
