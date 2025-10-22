@@ -248,6 +248,25 @@
 
         #endregion
 
+        #region Locations
+
+        public const string LocationsListCombined = ContactHost + "/locations/list/combined";
+        public const string LocationsList = ContactHost + "/locations/list";
+        public const string LocationsClustering = ContactHost + "/locations/clustering";
+        public const string LocationsHeatmap = ContactHost + "/locations/heatmap";
+        public const string LocationsTerritories = ContactHost + "/locations/territories";
+        public const string LocationsExportColumns = ContactHost + "/locations/export/columns";
+        public const string LocationsExport = ContactHost + "/locations/export";
+
+        #endregion
+
+        #region Location Types
+
+        public const string LocationTypes = ContactHost + "/locations/types";
+        public const string LocationTypeById = ContactHost + "/locations/types/{location_type_id}";
+
+        #endregion
+
         public const string AddressBarcodes = MainHost + "/address-barcodes";
 
         #region Orders
