@@ -302,6 +302,10 @@
         public const string OptimizationProfilesList = OptimizationProfiles + "/data-list";
         public const string OptimizationProfilesSaveEntities = OptimizationProfiles + "/save-entities";
         public const string OptimizationProfilesDeleteEntities = OptimizationProfiles + "/delete-entities";
+        public const string OptimizationProfilesGetEntities = OptimizationProfiles + "/get-entities";
+        public const string OptimizationProfilesGetEntitiesTemplate = OptimizationProfiles + "/get-entities-template";
+        public const string OptimizationProfilesDatatableList = OptimizationProfiles + "/list";
+        public const string OptimizationProfilesDatatableConfig = OptimizationProfiles + "/list/config";
         #endregion
 
         #region Facilities
