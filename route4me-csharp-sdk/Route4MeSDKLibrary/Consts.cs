@@ -304,6 +304,11 @@
         public const string OptimizationProfilesDeleteEntities = OptimizationProfiles + "/delete-entities";
         #endregion
 
+        #region Facilities
+        public const string Facilities = MainHost + "/facilities";
+        public const string FacilityTypes = Facilities + "/types";
+        #endregion
+
         #endregion
     }
 }
