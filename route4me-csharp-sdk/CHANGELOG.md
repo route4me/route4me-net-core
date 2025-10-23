@@ -6,6 +6,19 @@ Added Location API V5 support (LocationManagerV5) with full CRUD operations for 
 Implemented location clustering, heatmap, territories, export functionality, and location types management.
 Added comprehensive unit tests and integration examples for all location operations.
 
+## [7.13.0.0] - 2025-10-15
+Added Facility Management API V5 support:
+- FacilityManagerV5 with core CRUD operations
+- Get single facility by ID
+- Get paginated list of facilities with filters
+- Create new facilities
+- Update existing facilities
+- Delete facilities
+- Get facility types
+- Comprehensive XML documentation on all public methods
+- Unit tests for facility operations
+- Example implementation in Examples/API5/Facilities/
+
 ## [7.12.1.0] - 2024-08-07
 Fixed get optimization profile endpoint
 Adjust OptimizationProfileEntities and OptimizationWithProfile examples
