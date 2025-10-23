@@ -384,6 +384,10 @@ namespace Route4MeSDKTest
             {
                 #region API 5
 
+                #region Notes
+                examples.NotesV5Examples();
+                #endregion
+
                 #region Team Management
 
                 examples.GetTeamMembers();

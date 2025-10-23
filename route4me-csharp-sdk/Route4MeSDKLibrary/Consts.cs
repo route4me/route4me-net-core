@@ -265,6 +265,14 @@
 
         #endregion
 
+        #region Customers
+
+        public const string Customers = MainHost + "/customers";
+        public const string CustomersList = Customers + "/list";
+        public const string CustomersById = Customers + "/{customer_id}";
+
+        #endregion
+
         #region Route Status
 
         public const string RouteStatusMainHost = MainHost + "/route-status";
@@ -304,9 +312,19 @@
         public const string OptimizationProfilesDeleteEntities = OptimizationProfiles + "/delete-entities";
         #endregion
 
+
+        #region Notes
+        public const string Notes = MainHost + "/notes";
+        public const string NoteById = Notes + "/{note_id}";
+        public const string NotesByRoute = Notes + "/route/{route_id}";
+        public const string NotesByDestination = Notes + "/destination/{route_destination_id}";
+        public const string NotesCustomTypes = Notes + "/custom-types";
+        public const string NotesBulkCreate = Notes + "/bulk-create";
+
         #region Facilities
         public const string Facilities = MainHost + "/facilities";
         public const string FacilityTypes = Facilities + "/types";
+
         #endregion
 
         #endregion

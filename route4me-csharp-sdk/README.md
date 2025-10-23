@@ -90,6 +90,31 @@ Route4Me does not currently lease or sell servers, and does not have on-premise 
 ### Does the Route4Me API/SDK require me to have my own programmers?
 The time required to integrate the SDK can be as little as 1 hour or may take several weeks, depending on the number of features being incorporated into the customer’s application and how much integration testing will be done by the client. A programmer’s involvement is almost always required to use Route4Me’s technology when accessing it through the API.
 
+## 🚀 What's New in Version 7.13.0.0
+
+The SDK now supports **Customer Management API (V5)** — a complete implementation for managing customers in Route4Me.
+
+### Implemented Endpoints
+- `GET /api/v5.0/customers/{customer_id}` – Get customer by ID  
+- `POST /api/v5.0/customers` – Create new customer  
+- `PUT /api/v5.0/customers/{customer_id}` – Update existing customer  
+- `DELETE /api/v5.0/customers/{customer_id}` – Delete customer  
+- `POST /api/v5.0/customers/list` – Get paginated list of customers  
+
+### Added Files
+**Under `Route4MeSDKLibrary`:**
+- `Managers/CustomerManagerV5.cs`  
+- `DataTypes/V5/Customers/CustomerResource.cs`  
+- `DataTypes/V5/Customers/CustomerShowResource.cs`  
+- `DataTypes/V5/Customers/CustomerListResource.cs`  
+- `DataTypes/V5/Customers/FacilityResource.cs`  
+- `DataTypes/V5/Customers/StoreRequest.cs`  
+- `DataTypes/V5/Customers/UpdateRequest.cs`  
+- `DataTypes/V5/Customers/CustomerListParameters.cs`  
+- `DataTypes/V5/Customers/CustomerListFilters.cs`
+
+All endpoints have synchronous and asynchronous variants  
+(e.g., `CreateCustomerV5Async`, `GetCustomerByIdV5Async`, etc.).
 
 ### Installation and Usage
 
