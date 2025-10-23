@@ -1,19 +1,14 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
 {
     /// <summary>
-    /// Optimization profile with complete configuration settings
+    /// Request to create or update an optimization profile
     /// </summary>
     [DataContract]
-    public class OptimizationProfile
+    public class OptimizationProfileCreateRequest : GenericParameters
     {
-        /// <summary>
-        /// Optimization profile ID
-        /// </summary>
-        [DataMember(Name = "optimization_profile_id", EmitDefaultValue = false)]
-        public string OptimizationProfileId { get; set; }
-
         /// <summary>
         /// Profile name
         /// </summary>
@@ -25,18 +20,6 @@ namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
         /// </summary>
         [DataMember(Name = "is_default", EmitDefaultValue = false)]
         public bool IsDefault { get; set; }
-
-        /// <summary>
-        /// Created timestamp
-        /// </summary>
-        [DataMember(Name = "created_at", EmitDefaultValue = false)]
-        public string CreatedAt { get; set; }
-
-        /// <summary>
-        /// Updated timestamp
-        /// </summary>
-        [DataMember(Name = "updated_at", EmitDefaultValue = false)]
-        public string UpdatedAt { get; set; }
 
         /// <summary>
         /// Append date to route name
@@ -187,12 +170,6 @@ namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
         /// </summary>
         [DataMember(Name = "depot_longitude", EmitDefaultValue = false)]
         public double? DepotLongitude { get; set; }
-
-        /// <summary>
-        /// Depot timezone
-        /// </summary>
-        [DataMember(Name = "depot_timezone", EmitDefaultValue = false)]
-        public string DepotTimezone { get; set; }
 
         /// <summary>
         /// Facility ID
@@ -403,26 +380,5 @@ namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
         /// </summary>
         [DataMember(Name = "speed_cap_unit", EmitDefaultValue = false)]
         public string SpeedCapUnit { get; set; }
-
-        // Legacy properties for backward compatibility
-        /// <summary>
-        /// Optimization profile ID (legacy property)
-        /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false)]
-        public string Id 
-        { 
-            get => OptimizationProfileId; 
-            set => OptimizationProfileId = value; 
-        }
-
-        /// <summary>
-        /// Profile name (legacy property)
-        /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false)]
-        public string Name 
-        { 
-            get => ProfileName; 
-            set => ProfileName = value; 
-        }
     }
 }
