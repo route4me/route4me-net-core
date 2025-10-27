@@ -469,4 +469,44 @@ namespace Route4MeSDK.DataTypes.V5
     }
 
     #endregion
+
+    public enum ContactType
+    {
+        [Description("primary")] Primary,
+
+        [Description("billing")] Billing,
+
+        [Description("sales")] Sales,
+
+        [Description("shipping")] Shipping,
+
+        [Description("technical")] Technical,
+
+        [Description("returns")] Returns,
+
+        [Description("customer_service")] CustomerService,
+
+        [Description("maintenance")] Maintenance,
+
+        [Description("operations")] Operations,
+
+        [Description("other")] Other
+    }
+
+    public enum AddressType
+    {
+        [Description("billing")] Billing,
+
+        [Description("shipping")] Shipping,
+
+        [Description("delivery")] Delivery
+    }
+
+    public enum CustomerStatus
+    {
+        [Description("inactive")] Inactive = 0,
+
+        [Description("active")] Active = 1
+    }
+
 }
