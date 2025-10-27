@@ -1,99 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [7.13.0.0] - 2025-10-17
-
-### Added
-
-**Customer Management API (V5)** — full implementation according to the official Route4Me OpenAPI specification.
-
-New supported endpoints:
-- `GET /api/v5.0/customers/{customer_id}` – Get customer by ID  
-- `POST /api/v5.0/customers` – Create a new customer  
-- `PUT /api/v5.0/customers/{customer_id}` – Update an existing customer  
-- `DELETE /api/v5.0/customers/{customer_id}` – Delete a customer  
-- `POST /api/v5.0/customers/list` – Retrieve paginated list of customers  
-
-New classes introduced under **DataTypes/V5/Customers/**:
-- `Contact.cs`
-- `Contract.cs`
-- `CustomerAddress.cs`
-- `CustomerResource.cs`
-- `CustomerContactResource.cs`  
-- `CustomerListResource.cs`  
-- `CustomerListResponse.cs`  
-- `CustomerResource.cs`  
-- `CustomerShowResource.cs`  
-- `Facility.cs`  
-- `StoreRequest.cs`
-
-**QueryTypes/V5/Customers/**:
-- `CustomerIdParameters.cs`
-- `CustomerListFilters.cs`
-- `CustomerListParameters.cs`
-- `UpdateCustomerParameters.cs`
-
-New manager under **Managers/**:
-- `CustomerManagerV5.cs` — provides sync and async access to all customer endpoints (`CreateCustomerV5`, `GetCustomerByIdV5`, `DeleteCustomerV5`, etc.)
-
-### Changed
-- **Consts.cs** – added new API endpoints for `/api/v5.0/customers`.  
-- **Route4MeManagerV5.cs** – integrated `CustomerManagerV5` initialization into constructor for seamless V5 access.
-- **Enum.cs** – added new ContactType, AddressType, CustomerStatus enums
-
-### Documentation
-- Added examples for all Customer API endpoints under `Examples/V5/Customers/`.  
-- Updated `README.md` with usage instructions for `CustomerManagerV5`.  
-- Updated `CHANGELOG.md` and internal metadata to reflect the new Customer Management feature.
-
-### Tests
-- Added **CustomersTests.cs** under `Route4MeSDKTest/V5/Customers/` to cover all new endpoints:  
-  - `CreateCustomerTest`
-  - `CreateCustomerAsyncTest`
-  - `GetCustomerByIdTest`  
-  - `GetCustomerByIdAsyncTest`  
-  - `UpdateCustomerTest`  
-  - `UpdateCustomerAsyncTest`
-  - `GetCustomersListTest`
-  - `GetCustomersListAsyncTest`
-  - `DeleteCustomerTest`
-  - `DeleteCustomerAsyncTest`  
-- Integration test coverage temporarily skipped.
-
-### Examples
-- Added full usage examples under `Examples/API5/Customers/`:  
-  - `CreateCustomerV5.cs`
-  - `CreateCustomerV5Async.cs`  
-  - `GetCustomerByIdV5.cs`
-  - `GetCustomerByIdV5Async.cs`  
-  - `UpdateCustomerV5.cs`
-  - `UpdateCustomerV5Async.cs` 
-  - `DeleteCustomerV5.cs`
-  - `DeleteCustomerV5Async.cs` 
-  - `GetCustomersListV5.cs`
-  - `GetCustomersListV5Async.cs`
-- In examples demonstrates both sync and async SDK patterns.  
-- Examples are verified and compatible with the latest Route4Me API documentation.
-
-### Notes
-- Implementation follows SDK async/sync conventions, SOLID principles, and thread-safety patterns.
-Added:
-- Notes API v5.0 support with 9 MVP methods
-- Create note: `POST /notes`
-- Bulk create notes: `POST /notes/bulk-create`
-- Get note by ID: `GET /notes/{note_id}`
-- Update note by ID: `POST /notes/{note_id}`
-- Delete note by ID: `DELETE /notes/{note_id}`
-- Get notes by route: `GET /notes/route/{route_id}`
-- Get notes by destination: `GET /notes/destination/{route_destination_id}`
-- Get custom note types: `GET /notes/custom-types`
-- Create custom note type: `POST /notes/custom-types`
-- New `NotesManagerV5` manager class for Notes API operations
-- Data types: `RouteNoteResource`, `RouteNoteCollection`, `NoteCustomTypeResource`, `NoteCustomTypeCollection`
-- Request types: `NoteStoreRequest`, `NoteUpdateRequest`, `NoteCustomTypeStoreRequest`
-- Comprehensive unit tests for all Notes API methods
-- Sample application demonstrating Notes API usage
-- Documentation for Notes API v5.0
+## [7.14.0.0] - 2025-10-24
+Added Location API V5 support (LocationManagerV5) with full CRUD operations for address book locations.
+Implemented location clustering, heatmap, territories, export functionality, and location types management.
+Added comprehensive unit tests and integration examples for all location operations.
 
 ## [7.13.0.0] - 2025-10-15
 Added Facility Management API V5 support:
