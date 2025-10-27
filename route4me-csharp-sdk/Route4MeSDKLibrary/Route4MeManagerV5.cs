@@ -48,6 +48,7 @@ namespace Route4MeSDK
             _telematicsManager = new TelematicsManagerV5(apiKey);
             _orderManager = new OrderManagerV5(apiKey);
             _routeStatusManager = new RouteStatusManagerV5(apiKey);
+            _locationManager = new LocationManagerV5(apiKey);
             _customerManager = new CustomerManagerV5(apiKey);
             _facilityManager = new FacilityManagerV5(apiKey);
         }
@@ -67,6 +68,7 @@ namespace Route4MeSDK
         private readonly TelematicsManagerV5 _telematicsManager;
         private readonly OrderManagerV5 _orderManager;
         private readonly RouteStatusManagerV5 _routeStatusManager;
+        private readonly LocationManagerV5 _locationManager;
         private readonly CustomerManagerV5 _customerManager;
         private readonly FacilityManagerV5 _facilityManager;
 
@@ -2374,6 +2376,241 @@ namespace Route4MeSDK
         /// Access to Facility Management API
         /// </summary>
         public FacilityManagerV5 FacilityManager => _facilityManager;
+
+        #endregion
+
+        #region Locations
+
+        /// <summary>
+        /// Get combined list of locations with data and configuration
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationCombinedResource GetLocationsCombined(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationCombinedRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationsCombined(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get combined list of locations with data and configuration (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationCombinedResource, ResultResponse>>
+            GetLocationsCombinedAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationCombinedRequest request)
+        {
+            return _locationManager.GetLocationsCombinedAsync(request);
+        }
+
+        /// <summary>
+        /// Get list of locations
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationListResource GetLocationsList(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationCombinedRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationsList(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get list of locations (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationListResource, ResultResponse>>
+            GetLocationsListAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationCombinedRequest request)
+        {
+            return _locationManager.GetLocationsListAsync(request);
+        }
+
+        /// <summary>
+        /// Get clustered locations
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationClusteringResource GetLocationsClustering(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationClusteringRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationsClustering(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get clustered locations (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationClusteringResource, ResultResponse>>
+            GetLocationsClusteringAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationClusteringRequest request)
+        {
+            return _locationManager.GetLocationsClusteringAsync(request);
+        }
+
+        /// <summary>
+        /// Get location heatmap data
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationHeatmapCollection GetLocationsHeatmap(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationHeatmapRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationsHeatmap(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get location heatmap data (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationHeatmapCollection, ResultResponse>>
+            GetLocationsHeatmapAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationHeatmapRequest request)
+        {
+            return _locationManager.GetLocationsHeatmapAsync(request);
+        }
+
+        /// <summary>
+        /// Get territories with location counts
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTerritoriesCollection GetLocationsTerritories(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationTerritoriesRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationsTerritories(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get territories with location counts (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTerritoriesCollection, ResultResponse>>
+            GetLocationsTerritoriesAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationTerritoriesRequest request)
+        {
+            return _locationManager.GetLocationsTerritoriesAsync(request);
+        }
+
+        /// <summary>
+        /// Get available export columns for locations
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationExportColumnsResource[] GetLocationsExportColumns(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationExportColumnsRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationsExportColumns(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get available export columns for locations (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationExportColumnsResource[], ResultResponse>>
+            GetLocationsExportColumnsAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationExportColumnsRequest request)
+        {
+            return _locationManager.GetLocationsExportColumnsAsync(request);
+        }
+
+        /// <summary>
+        /// Export locations to file
+        /// </summary>
+        public StatusResponse ExportLocations(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationExportRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.ExportLocations(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Export locations to file (async)
+        /// </summary>
+        public Task<Tuple<StatusResponse, ResultResponse, string>>
+            ExportLocationsAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.LocationExportRequest request)
+        {
+            return _locationManager.ExportLocationsAsync(request);
+        }
+
+        /// <summary>
+        /// Get all location types
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeCollection GetLocationTypes(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.GetLocationTypesRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationTypes(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get all location types (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeCollection, ResultResponse>>
+            GetLocationTypesAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.GetLocationTypesRequest request)
+        {
+            return _locationManager.GetLocationTypesAsync(request);
+        }
+
+        /// <summary>
+        /// Get location type by ID
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource GetLocationTypeById(
+            string locationTypeId,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationTypeById(locationTypeId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get location type by ID (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource, ResultResponse>>
+            GetLocationTypeByIdAsync(string locationTypeId)
+        {
+            return _locationManager.GetLocationTypeByIdAsync(locationTypeId);
+        }
+
+        /// <summary>
+        /// Create a new location type
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource CreateLocationType(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.CreateLocationType(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Create a new location type (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource, ResultResponse>>
+            CreateLocationTypeAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request)
+        {
+            return _locationManager.CreateLocationTypeAsync(request);
+        }
+
+        /// <summary>
+        /// Update an existing location type
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource UpdateLocationType(
+            string locationTypeId,
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.UpdateLocationType(locationTypeId, request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Update an existing location type (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource, ResultResponse>>
+            UpdateLocationTypeAsync(
+                string locationTypeId,
+                Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request)
+        {
+            return _locationManager.UpdateLocationTypeAsync(locationTypeId, request);
+        }
+
+        /// <summary>
+        /// Delete a location type
+        /// </summary>
+        public Route4MeSDKLibrary.QueryTypes.V5.Locations.DeleteLocationTypeResponse DeleteLocationType(
+            string locationTypeId,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.DeleteLocationType(locationTypeId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Delete a location type (async)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.QueryTypes.V5.Locations.DeleteLocationTypeResponse, ResultResponse>>
+            DeleteLocationTypeAsync(string locationTypeId)
+        {
+            return _locationManager.DeleteLocationTypeAsync(locationTypeId);
+        }
 
         #endregion
     }
