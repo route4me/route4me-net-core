@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [7.14.0.0] - 2025-10-24
 Added Location API V5 support (LocationManagerV5) with full CRUD operations for address book locations.
 Implemented location clustering, heatmap, territories, export functionality, and location types management.
 Added comprehensive unit tests and integration examples for all location operations.
@@ -18,6 +18,7 @@ Added Facility Management API V5 support:
 - Comprehensive XML documentation on all public methods
 - Unit tests for facility operations
 - Example implementation in Examples/API5/Facilities/
+
 
 ## [7.12.1.0] - 2024-08-07
 Fixed get optimization profile endpoint
@@ -302,7 +303,7 @@ The file [SequentialTimer.cs: ](https://github.com/route4me/route4me-net-core/bl
 The file [Route4MeManager.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManager.cs)  
 – Switch from HttpClient per HTTP Request to usage of HttpClientHolderManager
 
-The file [Route4MeManagerV5.cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
+The file [Route4MeManagerV5cs: ](https://github.com/route4me/route4me-net-core/tree/master/route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeManagerV5.cs)  
 – Switch from HttpClient per HTTP Request to usage of HttpClientHolderManager
 
 
