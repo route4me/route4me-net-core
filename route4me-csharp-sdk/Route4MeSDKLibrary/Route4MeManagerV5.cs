@@ -1,16 +1,18 @@
-﻿using System;
-using System.Threading.Tasks;
-using Route4MeSDK.DataTypes.V5;
+﻿using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
+using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using Route4MeSDKLibrary.DataTypes.V5.Routes;
 using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 using Route4MeSDKLibrary.Managers;
+using Route4MeSDKLibrary.QueryTypes.V5.Customers;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
+using System;
+using System.Threading.Tasks;
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
 using OptimizationParameters = Route4MeSDK.QueryTypes.V5.OptimizationParameters;
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
@@ -47,6 +49,7 @@ namespace Route4MeSDK
             _orderManager = new OrderManagerV5(apiKey);
             _routeStatusManager = new RouteStatusManagerV5(apiKey);
             _locationManager = new LocationManagerV5(apiKey);
+            _customerManager = new CustomerManagerV5(apiKey);
             _facilityManager = new FacilityManagerV5(apiKey);
         }
 
@@ -66,6 +69,7 @@ namespace Route4MeSDK
         private readonly OrderManagerV5 _orderManager;
         private readonly RouteStatusManagerV5 _routeStatusManager;
         private readonly LocationManagerV5 _locationManager;
+        private readonly CustomerManagerV5 _customerManager;
         private readonly FacilityManagerV5 _facilityManager;
 
         #endregion
@@ -2252,6 +2256,116 @@ namespace Route4MeSDK
         public Task<Tuple<StatusResponse, ResultResponse>> SetRouteStopStatusAsync(SetRouteStopStatusParameters parameters)
         {
             return _routeStatusManager.SetRouteStopStatusAsync(parameters);
+        }
+
+        #endregion
+
+        #region Customers
+
+        /// <summary>
+        /// Get customers list (paginated)
+        /// </summary>
+        /// <param name="parameters">Query parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Customers list</returns>
+        public CustomerListResponse GetCustomersList(CustomerListParameters parameters, out ResultResponse resultResponse)
+        {
+            return _customerManager.GetCustomersList(parameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get customers list (paginated)
+        /// </summary>
+        /// <param name="parameters">Query parameters</param>
+        /// <returns>Customers list</returns>
+        public Task<Tuple<CustomerListResponse, ResultResponse>> GetCustomersListAsync(CustomerListParameters parameters)
+        {
+            return _customerManager.GetCustomersListAsync(parameters);
+        }
+
+        /// <summary>
+        /// Get customer by ID
+        /// </summary>
+        /// <param name="parameters">Parameters containing CustomerId</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Customer resource</returns>
+        public CustomerShowResource GetCustomerById(CustomerIdParameters parameters, out ResultResponse resultResponse)
+        {
+            return _customerManager.GetCustomerById(parameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get customer by ID (async)
+        /// </summary>
+        /// <param name="parameters">Parameters containing CustomerId</param>
+        /// <returns>Customer resource</returns>
+        public Task<Tuple<CustomerShowResource, ResultResponse>> GetCustomerByIdAsync(CustomerIdParameters parameters)
+        {
+            return _customerManager.GetCustomerByIdAsync(parameters);
+        }
+
+        /// <summary>
+        /// Create a new customer
+        /// </summary>
+        /// <param name="request">Request body</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Created customer</returns>
+        public CustomerResource CreateCustomer(StoreRequest request, out ResultResponse resultResponse)
+        {
+            return _customerManager.CreateCustomer(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Create a new customer (async)
+        /// </summary>
+        /// <param name="request">Request body</param>
+        /// <returns>Created customer</returns>
+        public Task<Tuple<CustomerResource, ResultResponse>> CreateCustomerAsync(StoreRequest request)
+        {
+            return _customerManager.CreateCustomerAsync(request);
+        }
+
+        /// <summary>
+        /// Update existing customer.
+        /// </summary>
+        /// <param name="parameters">Update customer parameters.</param>
+        /// <param name="resultResponse">Failure response.</param>
+        /// <returns>Updated customer.</returns>
+        public CustomerResource UpdateCustomer(UpdateCustomerParameters parameters, out ResultResponse resultResponse)
+        {
+            return _customerManager.UpdateCustomer(parameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Update existing customer (async).
+        /// </summary>
+        /// <param name="parameters">Update customer parameters.</param>
+        /// <returns>Updated customer.</returns>
+        public Task<Tuple<CustomerResource, ResultResponse>> UpdateCustomerAsync(UpdateCustomerParameters parameters)
+        {
+            return _customerManager.UpdateCustomerAsync(parameters);
+        }
+
+
+        /// <summary>
+        /// Delete a customer
+        /// </summary>
+        /// <param name="parameters">Parameters containing CustomerId</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Result status</returns>
+        public ResultResponse DeleteCustomer(CustomerIdParameters parameters, out ResultResponse resultResponse)
+        {
+            return _customerManager.DeleteCustomer(parameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Delete a customer (async)
+        /// </summary>
+        /// <param name="parameters">Parameters containing CustomerId</param>
+        /// <returns>Result status</returns>
+        public Task<Tuple<ResultResponse, ResultResponse>> DeleteCustomerAsync(CustomerIdParameters parameters)
+        {
+            return _customerManager.DeleteCustomerAsync(parameters);
         }
 
         #endregion
