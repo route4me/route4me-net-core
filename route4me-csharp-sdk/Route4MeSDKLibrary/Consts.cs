@@ -102,6 +102,7 @@
         public const string Routes51 = MainHost51 + "/routes";
 
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
+        public const string RoutesDelete = MainHost + "/routes/delete";
         public const string RoutesMerge = MainHost + "/routes/merge";
         public const string RoutesPaginate = MainHost + "/routes/paginate";
         public const string RoutesFallbackPaginate = MainHost + "/routes/fallback/paginate";
