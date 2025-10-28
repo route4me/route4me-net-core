@@ -327,6 +327,12 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Orders
         public string[] AggregationIds { get; set; }
 
         /// <summary>
+        /// Facility IDs (hexadecimal UUID strings)
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
+
+        /// <summary>
         /// Organization Api Key
         /// </summary>
         [HttpQueryMember(Name = "organization_api_key", EmitDefaultValue = false)]
