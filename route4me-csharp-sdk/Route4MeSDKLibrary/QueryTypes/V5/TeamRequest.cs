@@ -184,6 +184,12 @@ namespace Route4MeSDK.QueryTypes.V5
         public string Timezone { get; set; }
 
         /// <summary>
+        ///     Facility IDs (hexadecimal UUID strings)
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
+
+        /// <summary>
         ///     The user's custom data
         /// </summary>
         [DataMember(Name = "custom_data", EmitDefaultValue = false)]

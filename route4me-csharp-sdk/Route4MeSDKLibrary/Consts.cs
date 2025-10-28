@@ -335,7 +335,6 @@
         public const string OptimizationProfilesDatatableConfig = OptimizationProfiles + "/list/config";
         #endregion
 
-
         #region Notes
         public const string Notes = MainHost + "/notes";
         public const string NoteById = Notes + "/{note_id}";
@@ -343,6 +342,7 @@
         public const string NotesByDestination = Notes + "/destination/{route_destination_id}";
         public const string NotesCustomTypes = Notes + "/custom-types";
         public const string NotesBulkCreate = Notes + "/bulk-create";
+        #endregion
 
         #region Facilities
         public const string Facilities = MainHost + "/facilities";

@@ -31,5 +31,14 @@ namespace Route4MeSDK.QueryTypes.V5
         /// </summary>
         [DataMember(Name = "lng", EmitDefaultValue = false)]
         public double? Longitude { get; set; }
+
+        /// <summary>
+        ///     Filter vehicles by facility IDs (hexadecimal UUID strings).
+        ///     <remarks>
+        ///         <para>Query parameter.</para>
+        ///     </remarks>
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }
