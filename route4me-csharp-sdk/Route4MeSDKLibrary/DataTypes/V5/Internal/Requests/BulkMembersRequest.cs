@@ -20,7 +20,7 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Internal.Requests
         /// <summary>
         /// Conflict resolving rule (see <seealso cref="Conflicts"/>)
         /// </summary>
-        [HttpQueryMember(Name = "conflicts", EmitDefaultValue = false)]
+        [DataMember(Name = "conflicts")]
         public string Conflicts { get; set; }
     }
 
