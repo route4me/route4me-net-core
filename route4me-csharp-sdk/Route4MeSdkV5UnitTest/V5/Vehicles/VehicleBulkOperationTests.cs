@@ -221,7 +221,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
 
             JobId = result.Item3;
 
-            Assert.True((result.Item3?.Length ?? 0) == 32);
+            Assert.True(Guid.TryParse(result.Item3, out _));
         }
 
         [Test, Order(4)]
@@ -241,7 +241,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
 
             JobId = result.Item3;
 
-            Assert.True((result.Item3?.Length ?? 0) == 32);
+            Assert.True(Guid.TryParse(result.Item3, out _));
         }
 
         [Test, Order(5)]
@@ -261,7 +261,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
 
             JobId = result.Item3;
 
-            Assert.True((result.Item3?.Length ?? 0) == 32);
+            Assert.True(Guid.TryParse(result.Item3, out _));
         }
 
         [Test, Order(6)]
