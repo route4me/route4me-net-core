@@ -82,13 +82,13 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Locations
         public string GroupBy { get; set; }
 
         [DataMember(Name = "current_sorting")]
-        public Dictionary<string, string> CurrentSorting { get; set; }
+        public object[] CurrentSorting { get; set; }
 
         [DataMember(Name = "current_filter_data")]
-        public Dictionary<string, string> CurrentFilterData { get; set; }
+        public object[] CurrentFilterData { get; set; }
 
         [DataMember(Name = "totals")]
-        public Dictionary<string, string> Totals { get; set; }
+        public object[] Totals { get; set; }
 
         [DataMember(Name = "columns")]
         public LocationColumn[] Columns { get; set; }
