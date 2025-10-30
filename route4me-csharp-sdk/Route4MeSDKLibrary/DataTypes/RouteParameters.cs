@@ -683,6 +683,12 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "route_start_date_local", EmitDefaultValue = false)]
         public string RouteStartDateLocal { get; set; }
+
+        /// <summary>
+        /// Facility IDs to attribute all optimization routes with.
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 
     /// <summary>
