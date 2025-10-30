@@ -164,6 +164,9 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Locations
 
         [DataMember(Name = "excluded_ids", EmitDefaultValue = false)]
         public int[] ExcludedIds { get; set; }
+
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 
     /// <summary>

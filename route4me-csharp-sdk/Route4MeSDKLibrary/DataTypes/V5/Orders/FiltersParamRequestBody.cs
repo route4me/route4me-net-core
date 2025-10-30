@@ -106,6 +106,12 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Orders
         public string[] Groups { get; set; }
 
         /// <summary>
+        ///     Facility IDs (hexadecimal UUID strings)
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
+
+        /// <summary>
         ///     Display (see <see cref="DisplayValues"/>). Default is <seealso cref="DisplayValues.All"/>
         /// </summary>
         [DataMember(Name = "display", EmitDefaultValue = false)]
