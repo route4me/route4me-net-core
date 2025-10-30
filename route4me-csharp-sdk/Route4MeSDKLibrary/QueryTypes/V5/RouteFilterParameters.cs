@@ -204,5 +204,8 @@ namespace Route4MeSDK.QueryTypes.V5
 
         [DataMember(Name = "weight", EmitDefaultValue = false)]
         public int[] Weight { get; set; }
+
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }
