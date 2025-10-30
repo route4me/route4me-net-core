@@ -66,5 +66,14 @@
         /// </summary>
         [HttpQueryMemberAttribute(Name = "display", EmitDefaultValue = false)]
         public string Display { get; set; }
+
+        /// <summary>
+        ///     Filter address book contacts by facility IDs (hexadecimal UUID strings).
+        ///     <remarks>
+        ///         <para>Query parameter.</para>
+        ///     </remarks>
+        /// </summary>
+        [HttpQueryMemberAttribute(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }

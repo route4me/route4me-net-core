@@ -347,5 +347,11 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "route_status", EmitDefaultValue = false)]
         public string RouteStatus { get; set; }
+
+        /// <summary>
+        ///     Facility IDs (hexadecimal UUID strings)
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }

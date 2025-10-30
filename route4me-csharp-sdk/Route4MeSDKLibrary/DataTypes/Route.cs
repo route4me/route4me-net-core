@@ -335,5 +335,11 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "bundle_items", EmitDefaultValue = true)]
         [ReadOnly(true)]
         public BundledItemResponse[] BundleItems { get; set; }
+
+        /// <summary>
+        ///     Facility IDs attributed to this route.
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }

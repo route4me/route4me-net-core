@@ -27,7 +27,7 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "vehicle_vin", EmitDefaultValue = false)]
         public string VehicleVin { get; set; }
 
-        // <summary>
+        /// <summary>
         ///     A license plate of the vehicle.
         /// </summary>
         [DataMember(Name = "vehicle_license_plate", EmitDefaultValue = false)]
@@ -86,10 +86,16 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "license_end_date", EmitDefaultValue = false)]
         public string LicenseEndDate { get; set; }
 
-        // <summary>
+        /// <summary>
         ///     If equal to '1', the vehicle is operational.
         /// </summary>
         [DataMember(Name = "is_operational", EmitDefaultValue = false)]
         public bool? IsOsperational { get; set; }
+
+        /// <summary>
+        ///     Facility IDs (hexadecimal UUID strings)
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }

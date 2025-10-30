@@ -366,7 +366,7 @@ namespace Route4MeSDKLibrary.Managers
                 ? jobLocation.OriginalString.Split('/').Last()
                 : null;
 
-            return (jobId?.Length ?? 0) == 32 ? jobId : null;
+            return (jobId?.Length ?? 0) == 36 ? jobId : null;
         }
 
 

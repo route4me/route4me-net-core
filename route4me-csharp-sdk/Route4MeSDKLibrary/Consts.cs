@@ -102,6 +102,7 @@
         public const string Routes51 = MainHost51 + "/routes";
 
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
+        public const string RoutesDelete = MainHost + "/routes/delete";
         public const string RoutesMerge = MainHost + "/routes/merge";
         public const string RoutesPaginate = MainHost + "/routes/paginate";
         public const string RoutesFallbackPaginate = MainHost + "/routes/fallback/paginate";
@@ -335,7 +336,6 @@
         public const string OptimizationProfilesDatatableConfig = OptimizationProfiles + "/list/config";
         #endregion
 
-
         #region Notes
         public const string Notes = MainHost + "/notes";
         public const string NoteById = Notes + "/{note_id}";
@@ -343,6 +343,7 @@
         public const string NotesByDestination = Notes + "/destination/{route_destination_id}";
         public const string NotesCustomTypes = Notes + "/custom-types";
         public const string NotesBulkCreate = Notes + "/bulk-create";
+        #endregion
 
         #region Facilities
         public const string Facilities = MainHost + "/facilities";

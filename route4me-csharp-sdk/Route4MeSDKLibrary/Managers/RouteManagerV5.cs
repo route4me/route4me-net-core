@@ -28,7 +28,7 @@ namespace Route4MeSDKLibrary.Managers
         {
             var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
-                HttpMethodType.Get,
+                HttpMethodType.Post,
                 false,
                 true,
                 out resultResponse);
@@ -45,7 +45,7 @@ namespace Route4MeSDKLibrary.Managers
         {
             var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
-                HttpMethodType.Get,
+                HttpMethodType.Post,
                 null, true, false).ConfigureAwait(false);
 
             return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
@@ -298,7 +298,7 @@ namespace Route4MeSDKLibrary.Managers
             genericParameters.ParametersCollection.Add("route_id", strRouteIds);
 
             var response = GetJsonObjectFromAPI<RoutesDeleteResponse>(genericParameters,
-                R4MEInfrastructureSettingsV5.Routes,
+                R4MEInfrastructureSettingsV5.RoutesDelete,
                 HttpMethodType.Delete,
                 out resultResponse);
 
@@ -326,7 +326,7 @@ namespace Route4MeSDKLibrary.Managers
             genericParameters.ParametersCollection.Add("route_id", strRouteIds);
 
             return GetJsonObjectFromAPIAsync<RoutesDeleteResponse>(genericParameters,
-                R4MEInfrastructureSettingsV5.Routes,
+                R4MEInfrastructureSettingsV5.RoutesDelete,
                 HttpMethodType.Delete);
         }
 
