@@ -1,12 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [7.14.0.0] - 2025-10-24
+## [7.13.0.0] - 2025-10-24
 Added Location API V5 support (LocationManagerV5) with full CRUD operations for address book locations.
 Implemented location clustering, heatmap, territories, export functionality, and location types management.
 Added comprehensive unit tests and integration examples for all location operations.
 
-## [7.13.0.0] - 2025-10-15
 Added Facility Management API V5 support:
 - FacilityManagerV5 with core CRUD operations
 - Get single facility by ID
