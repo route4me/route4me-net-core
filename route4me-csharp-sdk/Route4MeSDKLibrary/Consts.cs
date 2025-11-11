@@ -104,10 +104,6 @@
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
         public const string RoutesDelete = MainHost + "/routes/delete";
         public const string RoutesMerge = MainHost + "/routes/merge";
-        public const string RoutesPaginate = MainHost + "/routes/paginate";
-        public const string RoutesFallbackPaginate = MainHost + "/routes/fallback/paginate";
-        public const string RoutesFallbackDatatable = MainHost + "/routes/fallback/datatable";
-        public const string RoutesFallback = MainHost + "/routes/fallback";
         public const string RoutesReindexCallback = MainHost + "/routes/reindex-callback";
         public const string RoutesDatatable = MainHost + "/routes/datatable";
         public const string RoutesDatatableConfig = MainHost + "/routes/datatable/config";
