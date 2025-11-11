@@ -247,5 +247,11 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "root_member_id", EmitDefaultValue = false)]
         public long? RootMemberId { get; set; }
+        
+        /// <summary>
+        ///     Facility ID's
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
     }
 }
