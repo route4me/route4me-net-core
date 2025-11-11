@@ -1,0 +1,33 @@
+﻿name: Code Quality
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  code-quality:
+    name: Code Quality Checks
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore route4me-csharp-sdk/Route4MeSDK.sln
+
+    - name: Check code formatting
+      run: dotnet format route4me-csharp-sdk/Route4MeSDK.sln --verify-no-changes --verbosity diagnostic
+
+    - name: Build with analyzers
+      run: dotnet build route4me-csharp-sdk/Route4MeSDK.sln --configuration Release --no-restore /p:TreatWarningsAsErrors=true
+
+    - name: Run tests
+      run: dotnet test route4me-csharp-sdk/Route4MeSDK.sln --configuration Release --no-build --verbosity normal
