@@ -1,16 +1,14 @@
 ﻿using NUnit.Framework;
 using Route4MeSDK;
-using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.Managers;
+using Route4MeSDKLibrary.QueryTypes.V5;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -414,6 +412,199 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
             #endregion
 
+        }
+
+        [Test, Order(15)]
+        public void GetTeamMembersWithQueryParametersTest()
+        {
+            // Test with drivers_only filter
+            var driversOnlyParams = new TeamUsersQueryParameters()
+            {
+                DriversOnly = true
+            };
+
+            var drivers = tm.GetTeamMembers(driversOnlyParams, out ResultResponse resultResponse1);
+
+            Assert.IsTrue(resultResponse1.Status);
+            Assert.That(drivers.GetType(), Is.EqualTo(typeof(TeamResponse[])));
+
+            // Verify all returned members are drivers
+            if (drivers?.Length > 0)
+            {
+                foreach (var driver in drivers)
+                {
+                    Assert.IsTrue(driver.MemberType.Contains("DRIVER"),
+                        $"Expected driver but got member type: {driver.MemberType}");
+                }
+            }
+
+            // Test with search query
+            var searchParams = new TeamUsersQueryParameters()
+            {
+                Query = "John"
+            };
+
+            var searchResults = tm.GetTeamMembers(searchParams, out ResultResponse resultResponse2);
+
+            Assert.IsTrue(resultResponse2.Status);
+            Assert.That(searchResults.GetType(), Is.EqualTo(typeof(TeamResponse[])));
+        }
+
+        [Test, Order(16)]
+        public async Task GetTeamMembersWithQueryParametersAsyncTest()
+        {
+            // Test with drivers_only filter
+            var driversOnlyParams = new TeamUsersQueryParameters()
+            {
+                DriversOnly = true
+            };
+
+            var result = await tm.GetTeamMembersAsync(driversOnlyParams);
+
+            Assert.IsTrue(result.Item2.Status);
+            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(TeamResponse[])));
+
+            // Verify all returned members are drivers
+            if (result.Item1?.Length > 0)
+            {
+                foreach (var driver in result.Item1)
+                {
+                    Assert.IsTrue(driver.MemberType.Contains("DRIVER"),
+                        $"Expected driver but got member type: {driver.MemberType}");
+                }
+            }
+        }
+
+        [Test, Order(17)]
+        public void GetUserIdsByEmails_WithValidEmails_ReturnsMatchingIds()
+        {
+            // Get some test emails from existing members
+            var allMembers = tm.GetTeamMembers(out ResultResponse resultResponse1);
+            Assert.IsTrue(resultResponse1.Status);
+            Assert.IsNotNull(allMembers);
+            Assert.Greater(allMembers.Length, 0);
+
+            // Take first 2 emails
+            var testEmails = allMembers.Take(2).Select(m => m.MemberEmail).ToList();
+
+            // Test the refactored method
+            var userIds = tm.GetUserIdsByEmails(testEmails, out ResultResponse resultResponse);
+
+            Assert.IsTrue(resultResponse.Status, "GetUserIdsByEmails should succeed");
+            Assert.IsNotNull(userIds, "Should return user IDs");
+            Assert.AreEqual(2, userIds.Count, "Should return 2 user IDs");
+
+            // Verify IDs match the original members
+            var expectedIds = allMembers.Take(2).Select(m => m.MemberId).ToList();
+            foreach (var expectedId in expectedIds)
+            {
+                Assert.Contains(expectedId, userIds, $"Should contain member ID {expectedId}");
+            }
+        }
+
+        [Test, Order(18)]
+        public async Task GetUserIdsByEmails_WithValidEmails_ReturnsMatchingIdsAsync()
+        {
+            // Get some test emails from existing members
+            var allMembersResult = await tm.GetTeamMembersAsync();
+            Assert.IsTrue(allMembersResult.Item2.Status);
+            Assert.IsNotNull(allMembersResult.Item1);
+            Assert.Greater(allMembersResult.Item1.Length, 0);
+
+            // Take first 2 emails
+            var testEmails = allMembersResult.Item1.Take(2).Select(m => m.MemberEmail).ToList();
+
+            // Test the refactored async method
+            var result = await tm.GetUserIdsByEmailsAsync(testEmails);
+
+            Assert.IsTrue(result.Item2.Status, "GetUserIdsByEmailsAsync should succeed");
+            Assert.IsNotNull(result.Item1, "Should return user IDs");
+            Assert.AreEqual(2, result.Item1.Count, "Should return 2 user IDs");
+
+            // Verify IDs match the original members
+            var expectedIds = allMembersResult.Item1.Take(2).Select(m => m.MemberId).ToList();
+            foreach (var expectedId in expectedIds)
+            {
+                Assert.Contains(expectedId, result.Item1, $"Should contain member ID {expectedId}");
+            }
+        }
+
+        [Test, Order(19)]
+        public void GetUserIdsByEmails_WithNonExistentEmails_ReturnsNull()
+        {
+            var nonExistentEmails = new List<string>
+            {
+                "nonexistent1@example.com",
+                "nonexistent2@example.com"
+            };
+
+            var userIds = tm.GetUserIdsByEmails(nonExistentEmails, out ResultResponse resultResponse);
+
+            Assert.IsTrue(resultResponse.Status, "Should not fail even with non-existent emails");
+            Assert.IsNull(userIds, "Should return null when no members found");
+        }
+
+        [Test, Order(20)]
+        public async Task GetUserIdsByEmails_WithNonExistentEmails_ReturnsNullAsync()
+        {
+            var nonExistentEmails = new List<string>
+            {
+                "nonexistent1@example.com",
+                "nonexistent2@example.com"
+            };
+
+            var result = await tm.GetUserIdsByEmailsAsync(nonExistentEmails);
+
+            Assert.IsTrue(result.Item2.Status, "Should not fail even with non-existent emails");
+            Assert.IsNull(result.Item1, "Should return null when no members found");
+        }
+
+        [Test, Order(21)]
+        public void GetUserIdsByEmails_WithEmptyList_HandlesGracefully()
+        {
+            var emptyList = new List<string>();
+
+            var userIds = tm.GetUserIdsByEmails(emptyList, out ResultResponse resultResponse);
+
+            Assert.IsFalse(resultResponse.Status, "Should indicate error for empty list");
+            Assert.IsNull(userIds, "Should return null for empty list");
+            Assert.IsTrue(resultResponse.Messages.ContainsKey("Error"), "Should contain error message");
+        }
+
+        [Test, Order(22)]
+        public async Task GetUserIdsByEmails_WithEmptyList_HandlesGracefullyAsync()
+        {
+            var emptyList = new List<string>();
+
+            var result = await tm.GetUserIdsByEmailsAsync(emptyList);
+
+            Assert.IsFalse(result.Item2.Status, "Should indicate error for empty list");
+            Assert.IsNull(result.Item1, "Should return null for empty list");
+            Assert.IsTrue(result.Item2.Messages.ContainsKey("Error"), "Should contain error message");
+        }
+
+        [Test, Order(23)]
+        public void GetUserIdsByEmails_WithNullList_HandlesGracefully()
+        {
+            List<string> nullList = null;
+
+            var userIds = tm.GetUserIdsByEmails(nullList, out ResultResponse resultResponse);
+
+            Assert.IsFalse(resultResponse.Status, "Should indicate error for null list");
+            Assert.IsNull(userIds, "Should return null for null list");
+            Assert.IsTrue(resultResponse.Messages.ContainsKey("Error"), "Should contain error message");
+        }
+
+        [Test, Order(24)]
+        public async Task GetUserIdsByEmails_WithNullList_HandlesGracefullyAsync()
+        {
+            List<string> nullList = null;
+
+            var result = await tm.GetUserIdsByEmailsAsync(nullList);
+
+            Assert.IsFalse(result.Item2.Status, "Should indicate error for null list");
+            Assert.IsNull(result.Item1, "Should return null for null list");
+            Assert.IsTrue(result.Item2.Messages.ContainsKey("Error"), "Should contain error message");
         }
     }
 }
