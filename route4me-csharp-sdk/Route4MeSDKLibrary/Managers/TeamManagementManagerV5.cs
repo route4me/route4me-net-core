@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
-using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
+using Route4MeSDKLibrary.QueryTypes.V5;
 
 namespace Route4MeSDKLibrary.Managers
 {
@@ -18,31 +18,44 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
-        ///     Retrieve all existing sub-users associated with the Member’s account.
+        ///     Retrieve all existing sub-users associated with the Member's account.
         /// </summary>
+        /// <param name="parameters">Query parameters for filtering team members (optional)</param>
         /// <param name="failResponse">Failing response</param>
         /// <returns>An array of the TeamResponseV5 type objects</returns>
-        public TeamResponse[] GetTeamMembers(out ResultResponse failResponse)
+        public TeamResponse[] GetTeamMembers(TeamUsersQueryParameters parameters, out ResultResponse failResponse)
         {
-            var parameters = new GenericParameters();
+            var queryParameters = parameters ?? new TeamUsersQueryParameters();
 
-            var result = GetJsonObjectFromAPI<TeamResponse[]>(parameters,
+            var result = GetJsonObjectFromAPI<TeamResponse[]>(queryParameters,
                 R4MEInfrastructureSettingsV5.TeamUsers,
                 HttpMethodType.Get,
                 out failResponse);
 
             return result;
         }
+        
 
         /// <summary>
-        ///     Retrieve all existing sub-users associated with the Member’s account.
+        ///     Retrieve all existing sub-users associated with the Member's account.
         /// </summary>
+        /// <param name="failResponse">Failing response</param>
         /// <returns>An array of the TeamResponseV5 type objects</returns>
-        public Task<Tuple<TeamResponse[], ResultResponse>> GetTeamMembersAsync()
+        public TeamResponse[] GetTeamMembers(out ResultResponse failResponse)
         {
-            var parameters = new GenericParameters();
+            return GetTeamMembers(null, out failResponse);
+        }
 
-            return GetJsonObjectFromAPIAsync<TeamResponse[]>(parameters,
+        /// <summary>
+        ///     Retrieve all existing sub-users associated with the Member's account.
+        /// </summary>
+        /// <param name="parameters">Query parameters for filtering team members (optional)</param>
+        /// <returns>An array of the TeamResponseV5 type objects</returns>
+        public Task<Tuple<TeamResponse[], ResultResponse>> GetTeamMembersAsync(TeamUsersQueryParameters parameters = null)
+        {
+            var queryParameters = parameters ?? new TeamUsersQueryParameters();
+
+            return GetJsonObjectFromAPIAsync<TeamResponse[]>(queryParameters,
                 R4MEInfrastructureSettingsV5.TeamUsers,
                 HttpMethodType.Get);
         }
@@ -587,53 +600,129 @@ namespace Route4MeSDKLibrary.Managers
 
         }
 
+        /// <summary>
+        ///     Get user IDs by their email addresses using the API query parameter.
+        ///     This method makes optimized API calls using the query parameter instead of fetching all members.
+        /// </summary>
+        /// <param name="emails">List of email addresses to search for</param>
+        /// <param name="resultResponse">Response object containing error details if the operation fails</param>
+        /// <returns>List of member IDs matching the provided emails, or null if no members found</returns>
         public List<long?> GetUserIdsByEmails(List<string> emails, out ResultResponse resultResponse)
         {
-            var userIds = new List<string>();
+            resultResponse = new ResultResponse { Status = true };
 
-            var members = GetTeamMembers(out resultResponse);
-
-            if ((members?.Length ?? 0) < 1) return null;
-
-            var foundMembers = members.ToList().Where(x => emails.Contains(x.MemberEmail));
-
-            if ((foundMembers?.Count() ?? 0) > 0) return foundMembers.Select(x => x.MemberId).ToList();
-
-            return null;
-        }
-
-        public Task<Tuple<List<long?>, ResultResponse>> GetUserIdsByEmailsAsync(List<string> emails)
-        {
-            var resultResponse = new ResultResponse();
-
-            return Task.Run<Tuple<List<long?>, ResultResponse>>(async () =>
+            // Handle null or empty email list
+            if (emails == null || emails.Count == 0)
             {
-                var userIds = new List<string>();
-
-                var membersResult = await GetTeamMembersAsync();
-
-                if ((membersResult?.Item1.Length ?? 0) > 0)
-                {
-                    var foundMembers = membersResult.Item1.ToList().Where(x => emails.Contains(x.MemberEmail));
-
-                    if ((foundMembers?.Count() ?? 0) > 0)
-                    {
-                        return new Tuple<List<long?>, ResultResponse>(foundMembers.Select(x => x.MemberId).ToList(), resultResponse); 
-                    }
-                }
-
-                resultResponse = new ResultResponse()
+                resultResponse = new ResultResponse
                 {
                     Status = false,
-                    ExitCode = 404,
                     Messages = new Dictionary<string, string[]>
-                        {
-                            {"Error", new[] {"Can not retrieve the team members."}}
-                        }
+                    {
+                        {"Error", new[] {"The emails list is null or empty"}}
+                    }
+                };
+                return null;
+            }
+
+            var foundMemberIds = new List<long?>();
+            var allMembers = new List<TeamResponse>();
+
+            foreach (var email in emails.Distinct())
+            {
+                var queryParams = new TeamUsersQueryParameters
+                {
+                    Query = email
                 };
 
+                var members = GetTeamMembers(queryParams, out var tempResponse);
+
+                if (!tempResponse.Status)
+                {
+                    resultResponse = tempResponse;
+                    continue;
+                }
+
+                if (members != null && members.Length > 0)
+                {
+                    var exactMatches = members.Where(m =>
+                        string.Equals(m.MemberEmail, email, StringComparison.OrdinalIgnoreCase));
+                    allMembers.AddRange(exactMatches);
+                }
+            }
+
+            if (allMembers.Count > 0)
+            {
+                foundMemberIds = allMembers
+                    .Select(x => x.MemberId)
+                    .Distinct()
+                    .ToList();
+            }
+
+            return foundMemberIds.Count > 0 ? foundMemberIds : null;
+        }
+
+        /// <summary>
+        ///     Asynchronously get user IDs by their email addresses using the API query parameter.
+        ///     This method makes optimized API calls using the query parameter instead of fetching all members.
+        /// </summary>
+        /// <param name="emails">List of email addresses to search for</param>
+        /// <returns>Tuple containing list of member IDs and result response</returns>
+        public async Task<Tuple<List<long?>, ResultResponse>> GetUserIdsByEmailsAsync(List<string> emails)
+        {
+            var resultResponse = new ResultResponse { Status = true };
+
+            if (emails == null || emails.Count == 0)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"Error", new[] {"The emails list is null or empty"}}
+                    }
+                };
                 return new Tuple<List<long?>, ResultResponse>(null, resultResponse);
-            });
+            }
+
+            var foundMemberIds = new List<long?>();
+            var allMembers = new List<TeamResponse>();
+
+            foreach (var email in emails.Distinct())
+            {
+                var queryParams = new TeamUsersQueryParameters
+                {
+                    Query = email
+                };
+
+                var membersResult = await GetTeamMembersAsync(queryParams);
+
+                if (!membersResult.Item2.Status)
+                {
+                    resultResponse = membersResult.Item2;
+                    continue;
+                }
+
+                if (membersResult.Item1 != null && membersResult.Item1.Length > 0)
+                {
+                    var exactMatches = membersResult.Item1.Where(m =>
+                        string.Equals(m.MemberEmail, email, StringComparison.OrdinalIgnoreCase));
+                    allMembers.AddRange(exactMatches);
+                }
+            }
+
+            if (allMembers.Count > 0)
+            {
+                foundMemberIds = allMembers
+                    .Select(x => x.MemberId)
+                    .Distinct()
+                    .ToList();
+            }
+
+            return new Tuple<List<long?>, ResultResponse>(
+                foundMemberIds.Count > 0 ? foundMemberIds : null,
+                resultResponse
+            );
         }
     }
 }
