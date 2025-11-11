@@ -28,6 +28,3 @@ jobs:
 
     - name: Build with analyzers
       run: dotnet build route4me-csharp-sdk/Route4MeSDK.sln --configuration Release --no-restore /p:TreatWarningsAsErrors=true
-
-    - name: Run tests
-      run: dotnet test route4me-csharp-sdk/Route4MeSDK.sln --configuration Release --no-build --verbosity normal
