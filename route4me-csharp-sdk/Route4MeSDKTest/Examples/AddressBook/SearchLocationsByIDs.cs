@@ -8,6 +8,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Search Locations By IDs
         /// </summary>
+        [System.Obsolete]
         public void SearchLocationsByIDs()
         {
             // Create the manager with the api key

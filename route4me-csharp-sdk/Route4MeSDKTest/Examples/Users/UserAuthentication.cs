@@ -8,6 +8,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// User Authetntication
         /// </summary>
+        [System.Obsolete]
         public void UserAuthentication()
         {
             // Create the manager with the api key

@@ -41,7 +41,7 @@ namespace Route4MeSDK.FastProcessing
 
             for (i = 0; i < chunks.Length; i++) _threadPackage.Add(chunks[i].ToList());
 
-            Parallel.ForEach(_threadPackage, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
+            Parallel.ForEach(_threadPackage, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
                 RemoveContactsChunks);
 
             return TotalRemovedContacts;

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Routes;
+
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
 
 namespace Route4MeSDKLibrary.Managers
