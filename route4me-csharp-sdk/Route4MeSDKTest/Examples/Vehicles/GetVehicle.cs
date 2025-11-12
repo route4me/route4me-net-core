@@ -7,6 +7,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example refers to the process of getting a vehicle using the vehicleID path parameter.
         /// </summary>
+        [System.Obsolete]
         public void GetVehicle()
         {
             // Create the manager with the api key

@@ -1,13 +1,17 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Customers;
+
 using Route4MeSdkV5UnitTest.V5;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Route4MeSDKUnitTest.V5
 {
@@ -268,7 +272,7 @@ namespace Route4MeSDKUnitTest.V5
 
             return accountablePersonId;
         }
-         
+
         private string GetErrorMessage(ResultResponse response)
         {
             if (response == null)

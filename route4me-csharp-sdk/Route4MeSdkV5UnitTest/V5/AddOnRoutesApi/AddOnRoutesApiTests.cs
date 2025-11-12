@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 
 namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
@@ -125,7 +128,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
                 PerPage = 20,
                 Filters = new RouteFilterParametersFilters
                 {
-                    ScheduleDate = new[] {"2021-02-01", "2021-02-01"}
+                    ScheduleDate = new[] { "2021-02-01", "2021-02-01" }
                 },
                 OrderBy = new List<string[]>
                 {
@@ -152,7 +155,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
                 PerPage = 20,
                 Filters = new RouteFilterParametersFilters
                 {
-                    ScheduleDate = new[] {"2021-02-01", "2021-02-01"}
+                    ScheduleDate = new[] { "2021-02-01", "2021-02-01" }
                 },
                 OrderBy = new List<string[]>
                 {
@@ -189,7 +192,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
-            var routeIDs = new[] {_tdr.SD10Stops_route.RouteID};
+            var routeIDs = new[] { _tdr.SD10Stops_route.RouteID };
 
             var result = route4Me.DuplicateRoute(routeIDs, out _);
 
@@ -207,7 +210,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
-            var routeIDs = new[] {_tdr2.MDMD24_route_id};
+            var routeIDs = new[] { _tdr2.MDMD24_route_id };
 
             var result = route4Me.DeleteRoutes(routeIDs, out _);
 
@@ -309,7 +312,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
                 Limit = 1,
                 Offset = 15
             };
-            
+
             var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
 
             var routeStatusResponse = route4Me.GetRouteStatus(dataObjects.First().RouteID, out var _);
@@ -473,7 +476,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
                 DestinationIds = new long[] { routeDestinationId.Value },
                 Status = RouteStopStatus.Failed.Description()
             }, out var err3);
-            
+
 
             Assert.That(result.GetType(), Is.EqualTo(typeof(StatusResponse)));
         }

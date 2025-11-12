@@ -7,6 +7,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Get address book contacts asynchronously.
         /// </summary>
+        [System.Obsolete]
         public async void GetAddressBookContactsAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);

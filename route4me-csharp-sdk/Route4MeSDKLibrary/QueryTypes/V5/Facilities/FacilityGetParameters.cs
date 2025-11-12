@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.QueryTypes.V5.Facilities
@@ -41,4 +42,3 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Facilities
         public string SearchQuery { get; set; }
     }
 }
-

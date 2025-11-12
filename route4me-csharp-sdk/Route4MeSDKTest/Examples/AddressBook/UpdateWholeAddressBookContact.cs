@@ -1,5 +1,6 @@
-﻿using Route4MeSDK.DataTypes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -8,6 +9,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Update an address book contact by sending whole modified contact object.
         /// </summary>
+        [System.Obsolete]
         public void UpdateWholeAddressBookContact()
         {
             var route4Me = new Route4MeManager(ActualApiKey);

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -91,7 +94,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Course = 1,
                 Speed = 120,
                 DeviceType = DeviceType.IPhone.Description(),
-                MemberId = (int) _tdr.SDRT_route.Addresses[1].MemberId,
+                MemberId = (int)_tdr.SDRT_route.Addresses[1].MemberId,
                 DeviceGuid = "TEST_GPS",
                 DeviceTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             };
@@ -159,7 +162,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Course = 1,
                 Speed = 120,
                 DeviceType = DeviceType.IPhone.Description(),
-                MemberId = (int) address.MemberId,
+                MemberId = (int)address.MemberId,
                 DeviceGuid = "TEST_GPS",
                 DeviceTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             };

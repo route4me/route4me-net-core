@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+
+using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
-using NUnit.Framework;
 
 namespace Route4MeSdkV5UnitTest.V5.Vehicles
 {
@@ -11,7 +13,7 @@ namespace Route4MeSdkV5UnitTest.V5.Vehicles
     public class VehicleCapacityProfiles
     {
         private static readonly string c_ApiKey = ApiKeys.ActualApiKey;
-        
+
         public bool skip { get; set; } = false;
         public List<VehicleCapacityProfile> lsCreatedVehicleCapacityProfiles { get; set; }
 

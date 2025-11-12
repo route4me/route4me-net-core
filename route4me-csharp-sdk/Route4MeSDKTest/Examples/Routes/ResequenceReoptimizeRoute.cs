@@ -9,6 +9,7 @@ namespace Route4MeSDK.Examples
         /// Resequence/Reoprimize All Route Destinations
         /// </summary>
         /// <param name="routeId">Route ID</param>
+        [Obsolete]
         public void ResequenceReoptimizeRoute(string routeId = null)
         {
             // Create the manager with the api key

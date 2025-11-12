@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
@@ -59,7 +61,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="resultResponse">Error response</param>
         /// <returns>Paginated facilities</returns>
         public FacilitiesPaginateResource GetFacilities(
-            FacilityGetParameters parameters, 
+            FacilityGetParameters parameters,
             out ResultResponse resultResponse)
         {
             if (parameters == null)
@@ -84,7 +86,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="resultResponse">Error response</param>
         /// <returns>Created facility</returns>
         public FacilityResource CreateFacility(
-            FacilityCreateRequest facility, 
+            FacilityCreateRequest facility,
             out ResultResponse resultResponse)
         {
             if (facility == null)
@@ -137,7 +139,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <returns>Updated facility</returns>
         public FacilityResource UpdateFacility(
             string facilityId,
-            FacilityUpdateRequest facility, 
+            FacilityUpdateRequest facility,
             out ResultResponse resultResponse)
         {
             if (string.IsNullOrWhiteSpace(facilityId))
@@ -183,7 +185,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="resultResponse">Error response</param>
         /// <returns>Remaining facilities collection</returns>
         public FacilityResource[] DeleteFacility(
-            string facilityId, 
+            string facilityId,
             out ResultResponse resultResponse)
         {
             if (string.IsNullOrWhiteSpace(facilityId))
@@ -483,4 +485,3 @@ namespace Route4MeSDKLibrary.Managers
         #endregion
     }
 }
-
