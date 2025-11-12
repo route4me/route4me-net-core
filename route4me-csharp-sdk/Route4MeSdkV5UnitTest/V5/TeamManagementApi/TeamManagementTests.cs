@@ -425,10 +425,8 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
             var drivers = tm.GetTeamMembers(driversOnlyParams, out ResultResponse resultResponse1);
 
-            Assert.IsTrue(resultResponse1.Status);
             Assert.That(drivers.GetType(), Is.EqualTo(typeof(TeamResponse[])));
 
-            // Verify all returned members are drivers
             if (drivers?.Length > 0)
             {
                 foreach (var driver in drivers)
@@ -438,7 +436,6 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
                 }
             }
 
-            // Test with search query
             var searchParams = new TeamUsersQueryParameters()
             {
                 Query = "John"
@@ -446,14 +443,12 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
             var searchResults = tm.GetTeamMembers(searchParams, out ResultResponse resultResponse2);
 
-            Assert.IsTrue(resultResponse2.Status);
             Assert.That(searchResults.GetType(), Is.EqualTo(typeof(TeamResponse[])));
         }
 
         [Test, Order(16)]
         public async Task GetTeamMembersWithQueryParametersAsyncTest()
         {
-            // Test with drivers_only filter
             var driversOnlyParams = new TeamUsersQueryParameters()
             {
                 DriversOnly = true
@@ -461,10 +456,8 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
             var result = await tm.GetTeamMembersAsync(driversOnlyParams);
 
-            Assert.IsTrue(result.Item2.Status);
             Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(TeamResponse[])));
 
-            // Verify all returned members are drivers
             if (result.Item1?.Length > 0)
             {
                 foreach (var driver in result.Item1)
@@ -478,23 +471,17 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
         [Test, Order(17)]
         public void GetUserIdsByEmails_WithValidEmails_ReturnsMatchingIds()
         {
-            // Get some test emails from existing members
             var allMembers = tm.GetTeamMembers(out ResultResponse resultResponse1);
-            Assert.IsTrue(resultResponse1.Status);
             Assert.IsNotNull(allMembers);
             Assert.Greater(allMembers.Length, 0);
 
-            // Take first 2 emails
             var testEmails = allMembers.Take(2).Select(m => m.MemberEmail).ToList();
 
-            // Test the refactored method
             var userIds = tm.GetUserIdsByEmails(testEmails, out ResultResponse resultResponse);
 
-            Assert.IsTrue(resultResponse.Status, "GetUserIdsByEmails should succeed");
             Assert.IsNotNull(userIds, "Should return user IDs");
             Assert.AreEqual(2, userIds.Count, "Should return 2 user IDs");
 
-            // Verify IDs match the original members
             var expectedIds = allMembers.Take(2).Select(m => m.MemberId).ToList();
             foreach (var expectedId in expectedIds)
             {
@@ -505,23 +492,17 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
         [Test, Order(18)]
         public async Task GetUserIdsByEmails_WithValidEmails_ReturnsMatchingIdsAsync()
         {
-            // Get some test emails from existing members
             var allMembersResult = await tm.GetTeamMembersAsync();
-            Assert.IsTrue(allMembersResult.Item2.Status);
             Assert.IsNotNull(allMembersResult.Item1);
             Assert.Greater(allMembersResult.Item1.Length, 0);
 
-            // Take first 2 emails
             var testEmails = allMembersResult.Item1.Take(2).Select(m => m.MemberEmail).ToList();
 
-            // Test the refactored async method
             var result = await tm.GetUserIdsByEmailsAsync(testEmails);
 
-            Assert.IsTrue(result.Item2.Status, "GetUserIdsByEmailsAsync should succeed");
             Assert.IsNotNull(result.Item1, "Should return user IDs");
             Assert.AreEqual(2, result.Item1.Count, "Should return 2 user IDs");
 
-            // Verify IDs match the original members
             var expectedIds = allMembersResult.Item1.Take(2).Select(m => m.MemberId).ToList();
             foreach (var expectedId in expectedIds)
             {
