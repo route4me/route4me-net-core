@@ -53,13 +53,22 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="parameters">Query parameters for filtering team members (optional)</param>
         /// <returns>An array of the TeamResponseV5 type objects</returns>
-        public Task<Tuple<TeamResponse[], ResultResponse>> GetTeamMembersAsync(TeamUsersQueryParameters parameters = null)
+        public Task<Tuple<TeamResponse[], ResultResponse>> GetTeamMembersAsync(TeamUsersQueryParameters parameters)
         {
             var queryParameters = parameters ?? new TeamUsersQueryParameters();
 
             return GetJsonObjectFromAPIAsync<TeamResponse[]>(queryParameters,
                 R4MEInfrastructureSettingsV5.TeamUsers,
                 HttpMethodType.Get);
+        }
+
+        /// <summary>
+        ///     Retrieve all existing sub-users associated with the Member's account.
+        /// </summary>
+        /// <returns>An array of the TeamResponseV5 type objects</returns>
+        public Task<Tuple<TeamResponse[], ResultResponse>> GetTeamMembersAsync()
+        {
+            return GetTeamMembersAsync(new TeamUsersQueryParameters());
         }
 
         /// <summary>
