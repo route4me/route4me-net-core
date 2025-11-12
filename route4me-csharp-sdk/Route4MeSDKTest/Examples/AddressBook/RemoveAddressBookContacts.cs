@@ -8,6 +8,7 @@ namespace Route4MeSDK.Examples
         /// Remove an array of the address book contacts
         /// </summary>
         /// <param name="addressIds"></param>
+        [Obsolete]
         public void RemoveAddressBookContacts(string[] addressIds = null)
         {
             // Create the manager with the api key

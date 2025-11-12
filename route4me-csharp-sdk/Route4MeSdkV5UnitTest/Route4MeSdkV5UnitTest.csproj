@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+    <WarningsNotAsErrors>CS0612</WarningsNotAsErrors>
+
   </PropertyGroup>
 
   <ItemGroup>

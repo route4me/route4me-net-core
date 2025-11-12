@@ -7,7 +7,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Newtonsoft.Json;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -154,156 +156,156 @@ namespace Route4MeSDKLibrary.Managers
                     switch (httpMethod)
                     {
                         case HttpMethodType.Get:
-                        {
-                            var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
+                            {
+                                var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
 
-                            if (isString)
-                            {
-                                result = response.ReadString() as T;
+                                if (isString)
+                                {
+                                    result = response.ReadString() as T;
+                                }
+                                else
+                                {
+                                    result = parseWithNewtonJson
+                                        ? response.ReadObjectNew<T>()
+                                        : response.ReadObject<T>();
+                                }
+                                break;
                             }
-                            else
-                            {
-                                result = parseWithNewtonJson
-                                    ? response.ReadObjectNew<T>()
-                                    : response.ReadObject<T>();
-                            }
-                            break;
-                        }
                         case HttpMethodType.Post:
                         case HttpMethodType.Put:
                         case HttpMethodType.Patch:
                         case HttpMethodType.Delete:
-                        {
-                            var isPut = httpMethod == HttpMethodType.Put;
-                            var isPatch = httpMethod == HttpMethodType.Patch;
-                            var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content;
-                            if (httpContent != null)
                             {
-                                content = httpContent;
-                            }
-                            else
-                            {
-                                var jsonString = ((mandatoryFields?.Length ?? 0) > 0) || serializeBodyWithNewtonJson
-                                    ? R4MeUtils.SerializeObjectToJson(optimizationParameters, mandatoryFields)
-                                    : R4MeUtils.SerializeObjectToJson(optimizationParameters);
-                                content = new StringContent(jsonString);
-                                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                            }
-
-                            HttpResponseMessage response;
-                            if (isPut)
-                            {
-                                response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
-                            }
-                            else if (isPatch)
-                            {
-                                content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-                                response = await httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content).ConfigureAwait(false);
-                            }
-                            else if (isDelete)
-                            {
-                                var request = new HttpRequestMessage
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isPatch = httpMethod == HttpMethodType.Patch;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
                                 {
-                                    Content = content,
-                                    Method = HttpMethod.Delete,
-                                    RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                };
-                                response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
-                            }
-                            else
-                            {
-                                response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
-                                    .ConfigureAwait(false);
-                            }
-
-                            // Check if successful
-                            if (response.Content is StreamContent)
-                            {
-                                var streamTask = await ((StreamContent)response.Content).ReadAsStreamAsync().ConfigureAwait(false);
-
-                                if (isString)
-                                {
-                                    result = streamTask.ReadString() as T;
+                                    content = httpContent;
                                 }
                                 else
                                 {
-                                    result = parseWithNewtonJson
-                                        ? streamTask.ReadObjectNew<T>()
-                                        : streamTask.ReadObject<T>();
-                                }
-                            }
-                            else if (response.Content
-                                     .GetType().ToString().ToLower()
-                                     .Contains("httpconnectionresponsecontent"))
-                            {
-                                var content2 = response.Content;
-
-                                jobId = ExtractJobId(response);
-
-                                if (isString)
-                                {
-                                    result = content2.ReadAsStreamAsync().Result.ReadString() as T;
-                                }
-                                else
-                                {
-                                    result = parseWithNewtonJson
-                                        ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
-                                        : content2.ReadAsStreamAsync().Result.ReadObject<T>();
+                                    var jsonString = ((mandatoryFields?.Length ?? 0) > 0) || serializeBodyWithNewtonJson
+                                        ? R4MeUtils.SerializeObjectToJson(optimizationParameters, mandatoryFields)
+                                        : R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                                 }
 
-                                if (typeof(T) == typeof(StatusResponse))
+                                HttpResponseMessage response;
+                                if (isPut)
                                 {
-                                    if (result == null)
+                                    response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                }
+                                else if (isPatch)
+                                {
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
+                                    response = await httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
                                     {
-                                        result = JsonConvert.DeserializeObject<T>("{}");
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
+                                }
+                                else
+                                {
+                                    response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
+                                        .ConfigureAwait(false);
+                                }
+
+                                // Check if successful
+                                if (response.Content is StreamContent)
+                                {
+                                    var streamTask = await ((StreamContent)response.Content).ReadAsStreamAsync().ConfigureAwait(false);
+
+                                    if (isString)
+                                    {
+                                        result = streamTask.ReadString() as T;
                                     }
-                                    result.GetType().GetProperty("StatusCode")
-                                        ?.SetValue(result, (int)response.StatusCode);
-
-                                    result.GetType().GetProperty("IsSuccessStatusCode")
-                                        ?.SetValue(result, response.IsSuccessStatusCode);
-
-                                    result.GetType().GetProperty("Status")
-                                        ?.SetValue(result, response.IsSuccessStatusCode);
-                                }
-                            }
-                            else
-                            {
-                                Task<string> errorMessageContent = null;
-
-                                if (response.Content.GetType() != typeof(StreamContent))
-                                    errorMessageContent = response.Content.ReadAsStringAsync();
-
-                                if (errorMessageContent != null)
-                                {
-                                    resultResponse = new ResultResponse
+                                    else
                                     {
-                                        Status = false,
-                                        Messages = new Dictionary<string, string[]>
+                                        result = parseWithNewtonJson
+                                            ? streamTask.ReadObjectNew<T>()
+                                            : streamTask.ReadObject<T>();
+                                    }
+                                }
+                                else if (response.Content
+                                         .GetType().ToString().ToLower()
+                                         .Contains("httpconnectionresponsecontent"))
+                                {
+                                    var content2 = response.Content;
+
+                                    jobId = ExtractJobId(response);
+
+                                    if (isString)
+                                    {
+                                        result = content2.ReadAsStreamAsync().Result.ReadString() as T;
+                                    }
+                                    else
+                                    {
+                                        result = parseWithNewtonJson
+                                            ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
+                                            : content2.ReadAsStreamAsync().Result.ReadObject<T>();
+                                    }
+
+                                    if (typeof(T) == typeof(StatusResponse))
+                                    {
+                                        if (result == null)
+                                        {
+                                            result = JsonConvert.DeserializeObject<T>("{}");
+                                        }
+                                        result.GetType().GetProperty("StatusCode")
+                                            ?.SetValue(result, (int)response.StatusCode);
+
+                                        result.GetType().GetProperty("IsSuccessStatusCode")
+                                            ?.SetValue(result, response.IsSuccessStatusCode);
+
+                                        result.GetType().GetProperty("Status")
+                                            ?.SetValue(result, response.IsSuccessStatusCode);
+                                    }
+                                }
+                                else
+                                {
+                                    Task<string> errorMessageContent = null;
+
+                                    if (response.Content.GetType() != typeof(StreamContent))
+                                        errorMessageContent = response.Content.ReadAsStringAsync();
+
+                                    if (errorMessageContent != null)
+                                    {
+                                        resultResponse = new ResultResponse
+                                        {
+                                            Status = false,
+                                            Messages = new Dictionary<string, string[]>
                                         {
                                             {"ErrorMessageContent", new[] {errorMessageContent.Result}}
                                         }
-                                    };
-                                }
-                                else
-                                {
-                                    var responseStream = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                                    var responseString = responseStream;
-
-                                    resultResponse = new ResultResponse
+                                        };
+                                    }
+                                    else
                                     {
-                                        Status = false,
-                                        Messages = new Dictionary<string, string[]>
+                                        var responseStream = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                        var responseString = responseStream;
+
+                                        resultResponse = new ResultResponse
+                                        {
+                                            Status = false,
+                                            Messages = new Dictionary<string, string[]>
                                         {
                                             {"Response", new[] {responseString}}
                                         }
-                                    };
+                                        };
+                                    }
                                 }
-                            }
 
-                            break;
-                        }
+                                break;
+                            }
                     }
                 }
             }
@@ -396,189 +398,189 @@ namespace Route4MeSDKLibrary.Managers
                     switch (httpMethod)
                     {
                         case HttpMethodType.Get:
-                        {
-                            var response = httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
-                            response.Wait();
-
-                            if (isString)
                             {
-                                result = response.Result.ReadString() as T;
-                            }
-                            else
-                            {
-                                result = parseWithNewtonJson
-                                    ? response.Result.ReadObjectNew<T>()
-                                    : response.Result.ReadObject<T>();
-                            }
-                            break;
-                        }
-                        case HttpMethodType.Post:
-                        case HttpMethodType.Put:
-                        case HttpMethodType.Patch:
-                        case HttpMethodType.Delete:
-                        {
-                            var isPut = httpMethod == HttpMethodType.Put;
-                            var isPatch = httpMethod == HttpMethodType.Patch;
-                            var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content;
-                            if (httpContent != null)
-                            {
-                                content = httpContent;
-                            }
-                            else
-                            {
-                                var jsonString = ((mandatoryFields?.Length ?? 0) > 0) || serializeBodyWithNewtonJson
-                                    ? R4MeUtils.SerializeObjectToJson(optimizationParameters, mandatoryFields)
-                                    : R4MeUtils.SerializeObjectToJson(optimizationParameters);
-                                content = new StringContent(jsonString);
-                                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                            }
-
-                            Task<HttpResponseMessage> response;
-                            if (isPut)
-                            {
-                                response = httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
-                            }
-                            else if (isPatch)
-                            {
-                                //content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-                                response = httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content);
-                            }
-                            else if (isDelete)
-                            {
-                                var request = new HttpRequestMessage
-                                {
-                                    Content = content,
-                                    Method = HttpMethod.Delete,
-                                    RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                };
-                                response = httpClientHolder.HttpClient.SendAsync(request);
-                            }
-                            else
-                            {
-                                var cts = new CancellationTokenSource();
-                                cts.CancelAfter(1000 * 60 * 5); // 3 seconds
-
-                                response = httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
-                            }
-
-                            // Wait for response
-                            response.Wait();
-
-                            // Check if successful
-                            if (response.IsCompleted &&
-                                response.Result.IsSuccessStatusCode &&
-                                response.Result.Content is StreamContent)
-                            {
-                                var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
-                                streamTask.Wait();
+                                var response = httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
+                                response.Wait();
 
                                 if (isString)
                                 {
-                                    result = streamTask.Result.ReadString() as T;
+                                    result = response.Result.ReadString() as T;
                                 }
                                 else
                                 {
                                     result = parseWithNewtonJson
-                                        ? streamTask.Result.ReadObjectNew<T>()
-                                        : streamTask.Result.ReadObject<T>();
+                                        ? response.Result.ReadObjectNew<T>()
+                                        : response.Result.ReadObject<T>();
                                 }
+                                break;
                             }
-                            else if (response.IsCompleted &&
-                                     response.Result.IsSuccessStatusCode &&
-                                     response.Result.Content
-                                         .GetType().ToString().ToLower()
-                                         .Contains("httpconnectionresponsecontent"))
+                        case HttpMethodType.Post:
+                        case HttpMethodType.Put:
+                        case HttpMethodType.Patch:
+                        case HttpMethodType.Delete:
                             {
-                                var streamTask2 = response.Result.Content.ReadAsStreamAsync();
-                                streamTask2.Wait();
-
-                                if (streamTask2.IsCompleted)
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isPatch = httpMethod == HttpMethodType.Patch;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
                                 {
-                                    var content2 = response.Result.Content;
+                                    content = httpContent;
+                                }
+                                else
+                                {
+                                    var jsonString = ((mandatoryFields?.Length ?? 0) > 0) || serializeBodyWithNewtonJson
+                                        ? R4MeUtils.SerializeObjectToJson(optimizationParameters, mandatoryFields)
+                                        : R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                                }
+
+                                Task<HttpResponseMessage> response;
+                                if (isPut)
+                                {
+                                    response = httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
+                                }
+                                else if (isPatch)
+                                {
+                                    //content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
+                                    response = httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
+                                    {
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = httpClientHolder.HttpClient.SendAsync(request);
+                                }
+                                else
+                                {
+                                    var cts = new CancellationTokenSource();
+                                    cts.CancelAfter(1000 * 60 * 5); // 3 seconds
+
+                                    response = httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
+                                }
+
+                                // Wait for response
+                                response.Wait();
+
+                                // Check if successful
+                                if (response.IsCompleted &&
+                                    response.Result.IsSuccessStatusCode &&
+                                    response.Result.Content is StreamContent)
+                                {
+                                    var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                    streamTask.Wait();
 
                                     if (isString)
                                     {
-                                        result = content2.ReadAsStreamAsync().Result.ReadString() as T;
+                                        result = streamTask.Result.ReadString() as T;
                                     }
                                     else
                                     {
                                         result = parseWithNewtonJson
-                                            ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
-                                            : content2.ReadAsStreamAsync().Result.ReadObject<T>();
+                                            ? streamTask.Result.ReadObjectNew<T>()
+                                            : streamTask.Result.ReadObject<T>();
                                     }
                                 }
-                                    
-                                if (typeof(T) == typeof(StatusResponse))
+                                else if (response.IsCompleted &&
+                                         response.Result.IsSuccessStatusCode &&
+                                         response.Result.Content
+                                             .GetType().ToString().ToLower()
+                                             .Contains("httpconnectionresponsecontent"))
                                 {
-                                    if (result == null)
+                                    var streamTask2 = response.Result.Content.ReadAsStreamAsync();
+                                    streamTask2.Wait();
+
+                                    if (streamTask2.IsCompleted)
                                     {
-                                        result = JsonConvert.DeserializeObject<T>("{}");
+                                        var content2 = response.Result.Content;
+
+                                        if (isString)
+                                        {
+                                            result = content2.ReadAsStreamAsync().Result.ReadString() as T;
+                                        }
+                                        else
+                                        {
+                                            result = parseWithNewtonJson
+                                                ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
+                                                : content2.ReadAsStreamAsync().Result.ReadObject<T>();
+                                        }
                                     }
-                                    result.GetType().GetProperty("StatusCode")
-                                        ?.SetValue(result, (int)response.Result.StatusCode);
 
-                                    result.GetType().GetProperty("IsSuccessStatusCode")
-                                        ?.SetValue(result, response.Result.IsSuccessStatusCode);
+                                    if (typeof(T) == typeof(StatusResponse))
+                                    {
+                                        if (result == null)
+                                        {
+                                            result = JsonConvert.DeserializeObject<T>("{}");
+                                        }
+                                        result.GetType().GetProperty("StatusCode")
+                                            ?.SetValue(result, (int)response.Result.StatusCode);
 
-                                    result.GetType().GetProperty("Status")
-                                        ?.SetValue(result, response.Result.IsSuccessStatusCode);
+                                        result.GetType().GetProperty("IsSuccessStatusCode")
+                                            ?.SetValue(result, response.Result.IsSuccessStatusCode);
+
+                                        result.GetType().GetProperty("Status")
+                                            ?.SetValue(result, response.Result.IsSuccessStatusCode);
+                                    }
+
                                 }
-                                    
-                            }
-                            else
-                            {
-                                Task<Stream> streamTask = null;
-                                Task<string> errorMessageContent = null;
-
-                                if (response.Result.Content.GetType() == typeof(StreamContent))
-                                    streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
                                 else
-                                    errorMessageContent = response.Result.Content.ReadAsStringAsync();
-
-                                streamTask?.Wait();
-                                errorMessageContent?.Wait();
-
-                                try
                                 {
-                                    resultResponse = streamTask?.Result.ReadObject<ResultResponse>();
-                                }
-                                catch
-                                {
-                                    resultResponse = default;
-                                }
+                                    Task<Stream> streamTask = null;
+                                    Task<string> errorMessageContent = null;
 
+                                    if (response.Result.Content.GetType() == typeof(StreamContent))
+                                        streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                    else
+                                        errorMessageContent = response.Result.Content.ReadAsStringAsync();
 
-                                if (errorMessageContent != null)
-                                {
-                                    resultResponse = new ResultResponse
+                                    streamTask?.Wait();
+                                    errorMessageContent?.Wait();
+
+                                    try
                                     {
-                                        Status = false,
-                                        Messages = new Dictionary<string, string[]>
+                                        resultResponse = streamTask?.Result.ReadObject<ResultResponse>();
+                                    }
+                                    catch
+                                    {
+                                        resultResponse = default;
+                                    }
+
+
+                                    if (errorMessageContent != null)
+                                    {
+                                        resultResponse = new ResultResponse
+                                        {
+                                            Status = false,
+                                            Messages = new Dictionary<string, string[]>
                                         {
                                             {"ErrorMessageContent", new[] {errorMessageContent.Result}}
                                         }
-                                    };
-                                }
-                                else
-                                {
-                                    var responseStream = response.Result.Content.ReadAsStringAsync();
-                                    responseStream.Wait();
-                                    var responseString = responseStream.Result;
-
-                                    resultResponse = new ResultResponse
+                                        };
+                                    }
+                                    else
                                     {
-                                        Status = false,
-                                        Messages = new Dictionary<string, string[]>
+                                        var responseStream = response.Result.Content.ReadAsStringAsync();
+                                        responseStream.Wait();
+                                        var responseString = responseStream.Result;
+
+                                        resultResponse = new ResultResponse
+                                        {
+                                            Status = false,
+                                            Messages = new Dictionary<string, string[]>
                                         {
                                             {"Response", new[] {responseString}}
                                         }
-                                    };
+                                        };
+                                    }
                                 }
-                            }
 
-                            break;
-                        }
+                                break;
+                            }
                     }
                 }
             }

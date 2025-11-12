@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.FastProcessing;
-using System.Linq;
 
 namespace Route4MeSDK.Examples
 {

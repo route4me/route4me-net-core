@@ -1,13 +1,15 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
+        [Obsolete]
         public void AddEditCustomDataToUser()
         {
             var route4Me = new Route4MeManager(ActualApiKey);

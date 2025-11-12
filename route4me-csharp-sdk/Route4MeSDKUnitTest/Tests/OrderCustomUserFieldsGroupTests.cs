@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -67,7 +70,7 @@ namespace Route4MeSDKUnitTest.Tests
                 customFieldId = createdCustomField.Data.OrderCustomFieldId;
             }
 
-            _lsOrderCustomUserFieldIDs = new List<long> {customFieldId};
+            _lsOrderCustomUserFieldIDs = new List<long> { customFieldId };
         }
 
 

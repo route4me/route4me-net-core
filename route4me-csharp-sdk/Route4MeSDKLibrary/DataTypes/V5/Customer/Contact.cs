@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+
+using Newtonsoft.Json.Linq;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.Customers
 {

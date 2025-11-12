@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5
@@ -27,10 +28,10 @@ namespace Route4MeSDK.DataTypes.V5
         ///     Address alias
         /// </summary>
         [DataMember(Name = "alias", EmitDefaultValue = false)]
-        public string Alias 
-        { 
-            get { return _alias;  }
-            set { _alias = value=="" ? null : value;  } 
+        public string Alias
+        {
+            get { return _alias; }
+            set { _alias = value == "" ? null : value; }
         }
 
         /// <summary>
