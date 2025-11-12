@@ -605,6 +605,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void AssignVehicleToRouteTest()
         {
             var route4Me = new Route4MeManager(CApiKey);

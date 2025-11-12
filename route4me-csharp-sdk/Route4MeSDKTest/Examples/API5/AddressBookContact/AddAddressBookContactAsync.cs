@@ -10,6 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Add address book contact asynchronously.
         /// </summary>
+        [Obsolete]
         public async void AddAddressBookContactAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);
