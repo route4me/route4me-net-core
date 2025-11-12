@@ -10,6 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Search for Specified Text, Show Specified Fields
         /// </summary>
+        [System.Obsolete]
         public void GetSpecifiedFieldsSearchText()
         {
             // Create the manager with the api key

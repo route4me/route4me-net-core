@@ -13,6 +13,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example demonstrates the process of asynchronously creating many address book contacts at once.
         /// </summary>
+        [Obsolete]
         public async void BatchCreateAdressBookContactsAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);

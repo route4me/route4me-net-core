@@ -11,6 +11,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// User Registration
         /// </summary>
+        [Obsolete]
         public void UserRegistration()
         {
             // Create the manager with the api key

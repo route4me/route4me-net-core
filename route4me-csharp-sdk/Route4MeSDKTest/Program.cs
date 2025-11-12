@@ -6,6 +6,7 @@ namespace Route4MeSDKTest
 {
     internal sealed class Program
     {
+        [Obsolete]
         static void Main(string[] args)
         {
             var examples = new Route4MeExamples();

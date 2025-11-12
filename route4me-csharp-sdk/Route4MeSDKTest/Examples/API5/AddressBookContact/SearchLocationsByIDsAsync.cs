@@ -14,6 +14,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Search locations by IDs asynchronously.
         /// </summary>
+        [Obsolete]
         public async void SearchLocationsByIDsAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);

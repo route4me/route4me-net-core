@@ -19,6 +19,7 @@ namespace Route4MeSDKUnitTest.Tests
         private List<string> _lsVehicleIDs;
 
         [OneTimeSetUp]
+        [System.Obsolete]
         public void VehiclesGroupInitialize()
         {
             _lsVehicleIDs = new List<string>();
@@ -45,6 +46,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [System.Obsolete]
         public void GetVehiclesListTest()
         {
             GetVehiclesList();
@@ -69,6 +71,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [System.Obsolete]
         public void CreateVehicleTest()
         {
             // Create common vehicle

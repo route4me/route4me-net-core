@@ -587,11 +587,13 @@ namespace Route4MeSDK
             return _accountProfileManager.GetAccountProfileAsync();
         }
 
+        [Obsolete]
         public string GetAccountPreferredUnit(out ResultResponse failResponse)
         {
             return _accountProfileManager.GetAccountPreferredUnit(out failResponse);
         }
 
+        [Obsolete]
         public Task<Tuple<string, ResultResponse>> GetAccountPreferredUnitAsync()
         {
             return _accountProfileManager.GetAccountPreferredUnitAsync();
