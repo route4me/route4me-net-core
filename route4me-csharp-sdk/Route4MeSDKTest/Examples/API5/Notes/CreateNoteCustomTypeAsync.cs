@@ -1,5 +1,7 @@
 using System;
+
 using Route4MeSDK.QueryTypes.V5.Notes;
+
 using Route4MeSDKLibrary.Managers;
 
 namespace Route4MeSDK.Examples

@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+
 using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.Locations

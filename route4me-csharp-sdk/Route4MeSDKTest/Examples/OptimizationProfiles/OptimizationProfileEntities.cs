@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Linq;
+
+using Newtonsoft.Json.Linq;
+
 using Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles;
 using Route4MeSDKLibrary.Managers;
-using System.Linq;
 
 namespace Route4MeSDK.Examples
 {

@@ -1,11 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Route4MeSDK.DataTypes;
-using System;
+﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK.Examples
 {

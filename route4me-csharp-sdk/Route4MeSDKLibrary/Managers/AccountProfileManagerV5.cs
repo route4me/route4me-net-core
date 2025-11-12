@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -42,6 +43,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Get);
         }
 
+        [Obsolete]
         public string GetAccountPreferredUnit(out ResultResponse failResponse)
         {
             var accountProfile = GetAccountProfile(out failResponse);
@@ -59,6 +61,7 @@ namespace Route4MeSDKLibrary.Managers
             return prefUnit;
         }
 
+        [Obsolete]
         public async Task<Tuple<string, ResultResponse>> GetAccountPreferredUnitAsync()
         {
             var accountProfile = await GetAccountProfileAsync().ConfigureAwait(false);

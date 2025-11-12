@@ -1,7 +1,9 @@
+using System;
+
 using Route4MeSDK.DataTypes.V5.Notes;
 using Route4MeSDK.QueryTypes.V5.Notes;
+
 using Route4MeSDKLibrary.Managers;
-using System;
 
 namespace Route4MeSDK.Examples
 {
