@@ -1,5 +1,7 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
@@ -38,7 +40,7 @@ namespace Route4MeSDK.Examples
             };
 
             var createdFacility = route4Me.FacilityManager.CreateFacility(
-                facilityRequest, 
+                facilityRequest,
                 out ResultResponse resultResponse
             );
 
@@ -51,7 +53,7 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine($"  Status: {createdFacility.Status}");
                 Console.WriteLine($"  Coordinates: ({createdFacility.Coordinates?.Lat}, {createdFacility.Coordinates?.Lng})");
                 Console.WriteLine($"  Created at: {createdFacility.CreatedAt}");
-                
+
                 if (createdFacility.FacilityTypes != null && createdFacility.FacilityTypes.Length > 0)
                 {
                     Console.WriteLine($"  Facility Types: {createdFacility.FacilityTypes.Length}");
@@ -95,7 +97,7 @@ namespace Route4MeSDK.Examples
             foreach (var facilityId in facilitiesToRemove)
             {
                 var result = route4Me.FacilityManager.DeleteFacility(facilityId, out ResultResponse response);
-                
+
                 if (result != null && response == null)
                 {
                     Console.WriteLine($"Deleted facility: {facilityId}");
@@ -117,4 +119,3 @@ namespace Route4MeSDK.Examples
         }
     }
 }
-

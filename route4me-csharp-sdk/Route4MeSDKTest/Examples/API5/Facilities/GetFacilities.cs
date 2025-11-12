@@ -1,5 +1,7 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
 namespace Route4MeSDK.Examples
@@ -24,7 +26,7 @@ namespace Route4MeSDK.Examples
             };
 
             var facilities = route4Me.FacilityManager.GetFacilities(
-                parameters, 
+                parameters,
                 out ResultResponse response
             );
 
@@ -48,7 +50,7 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine($"     Address: {facility.Address}");
                         Console.WriteLine($"     Status: {facility.Status}");
                         Console.WriteLine($"     Coordinates: ({facility.Coordinates?.Lat}, {facility.Coordinates?.Lng})");
-                        
+
                         if (facility.FacilityTypes != null && facility.FacilityTypes.Length > 0)
                         {
                             Console.WriteLine($"     Types: {string.Join(", ", Array.ConvertAll(facility.FacilityTypes, t => t.FacilityTypeId.ToString()))}");
@@ -72,7 +74,7 @@ namespace Route4MeSDK.Examples
                     };
 
                     var page2Facilities = route4Me.FacilityManager.GetFacilities(
-                        page2Parameters, 
+                        page2Parameters,
                         out ResultResponse page2Response
                     );
 
@@ -91,7 +93,7 @@ namespace Route4MeSDK.Examples
                 };
 
                 var largePage = route4Me.FacilityManager.GetFacilities(
-                    largePageParameters, 
+                    largePageParameters,
                     out ResultResponse largePageResponse
                 );
 
@@ -114,5 +116,3 @@ namespace Route4MeSDK.Examples
         }
     }
 }
-
-

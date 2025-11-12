@@ -2,12 +2,15 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
+
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
 
 namespace Route4MeSDKLibrary.Managers

@@ -1,5 +1,7 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
@@ -38,7 +40,7 @@ namespace Route4MeSDK.Examples
             };
 
             var createdFacility = route4Me.FacilityManager.CreateFacility(
-                createRequest, 
+                createRequest,
                 out ResultResponse createResponse
             );
 
@@ -78,7 +80,7 @@ namespace Route4MeSDK.Examples
                         IsDefault = true
                     }
                 },
-                Status = 2 
+                Status = 2
             };
 
             var updatedFacility = route4Me.FacilityManager.UpdateFacility(
@@ -112,7 +114,7 @@ namespace Route4MeSDK.Examples
             // Verify the update by retrieving the facility
             Console.WriteLine("\nVerifying update...");
             var verifyFacility = route4Me.FacilityManager.GetFacility(
-                createdFacility.FacilityId, 
+                createdFacility.FacilityId,
                 out ResultResponse verifyResponse
             );
 
@@ -134,4 +136,3 @@ namespace Route4MeSDK.Examples
         }
     }
 }
-

@@ -1,5 +1,7 @@
 ﻿using System.Runtime.Serialization;
+
 using Newtonsoft.Json.Linq;
+
 using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.Orders

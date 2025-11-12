@@ -1,5 +1,6 @@
-﻿using Route4MeSDK.DataTypes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK.Examples
 {

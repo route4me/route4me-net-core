@@ -5,6 +5,7 @@
         /// <summary>
         /// Get the locations eligable for depots asynchronously.
         /// </summary>
+        [System.Obsolete]
         public async void GetDepotsFromAddressBookAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);

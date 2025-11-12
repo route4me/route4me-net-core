@@ -1,5 +1,7 @@
 ﻿using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
 
 namespace Route4MeSDK.DataTypes.V5

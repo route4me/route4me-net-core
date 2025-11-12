@@ -1,11 +1,13 @@
-﻿using Route4MeSDK;
-using Route4MeSDK.DataTypes.V5;
-using Route4MeSDK.QueryTypes;
-using Route4MeSDKLibrary.DataTypes.V5.Customers;
-using Route4MeSDKLibrary.QueryTypes.V5.Customers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using Route4MeSDK;
+using Route4MeSDK.DataTypes.V5;
+using Route4MeSDK.QueryTypes;
+
+using Route4MeSDKLibrary.DataTypes.V5.Customers;
+using Route4MeSDKLibrary.QueryTypes.V5.Customers;
 
 namespace Route4MeSDKLibrary.Managers
 {
