@@ -1,5 +1,7 @@
 ﻿using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes.Internal.QueryTypes;
 
 namespace Route4MeSDKLibrary.DataTypes.Internal.Requests

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5.TelematicsPlatform

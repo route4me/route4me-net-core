@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+
 using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.FastProcessing
@@ -60,7 +61,7 @@ namespace Route4MeSDK.FastProcessing
 
         private void FileReading_CsvFileReadingIsDone(object sender, FastFileReading.CsvFileReadingIsDoneArgs e)
         {
-            Parallel.ForEach(e.Packages, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
+            Parallel.ForEach(e.Packages, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
                 CsvFileChunkIsReady);
         }
 
@@ -74,7 +75,7 @@ namespace Route4MeSDK.FastProcessing
             if (e.TotalResult.Count > 15)
             {
                 Parallel.ForEach(e.TotalResult,
-                    new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, CsvFileChunkIsReady);
+                    new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, CsvFileChunkIsReady);
 
                 e.TotalResult.Clear();
             }

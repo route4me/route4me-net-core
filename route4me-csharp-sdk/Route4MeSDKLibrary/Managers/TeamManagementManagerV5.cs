@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.QueryTypes.V5;
@@ -497,7 +499,7 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
-            
+
         }
 
         /// <summary>
@@ -558,10 +560,10 @@ namespace Route4MeSDKLibrary.Managers
         {
             var members = GetTeamMembers(out resultResponse);
 
-            if ((members?.Length ?? 0)>0)
+            if ((members?.Length ?? 0) > 0)
             {
-                var ownerMember = members.ToList().Where(x => x.MemberType=="PRIMARY_ACCOUNT").FirstOrDefault();
-                
+                var ownerMember = members.ToList().Where(x => x.MemberType == "PRIMARY_ACCOUNT").FirstOrDefault();
+
                 if (ownerMember != null) return ownerMember.MemberId;
             }
 
@@ -580,7 +582,7 @@ namespace Route4MeSDKLibrary.Managers
                 {
                     var ownerMember = membersResult?.Item1.ToList().Where(x => x.MemberType == "PRIMARY_ACCOUNT").FirstOrDefault();
 
-                    if (ownerMember != null) 
+                    if (ownerMember != null)
                         return new Tuple<long?, ResultResponse>(ownerMember.MemberId, resultResponse);
                 }
 

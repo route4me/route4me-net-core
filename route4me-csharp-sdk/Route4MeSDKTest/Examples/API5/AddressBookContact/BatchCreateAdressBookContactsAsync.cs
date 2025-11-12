@@ -1,8 +1,10 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using Route4MeSDK.QueryTypes.V5;
-using Route4MeSDKLibrary.DataTypes.V5;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes.V5;
+using Route4MeSDK.QueryTypes.V5;
+
+using Route4MeSDKLibrary.DataTypes.V5;
 
 namespace Route4MeSDK.Examples
 {
@@ -11,6 +13,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example demonstrates the process of asynchronously creating many address book contacts at once.
         /// </summary>
+        [Obsolete]
         public async void BatchCreateAdressBookContactsAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);

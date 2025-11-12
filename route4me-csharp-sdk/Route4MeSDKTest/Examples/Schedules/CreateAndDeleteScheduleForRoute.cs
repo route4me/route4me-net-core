@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.Schedules;
 using Route4MeSDKLibrary.Managers;

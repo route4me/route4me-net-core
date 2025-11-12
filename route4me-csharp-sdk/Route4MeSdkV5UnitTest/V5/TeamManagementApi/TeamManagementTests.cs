@@ -1,16 +1,19 @@
-﻿using NUnit.Framework;
-using Route4MeSDK;
-using Route4MeSDK.DataTypes.V5;
-using Route4MeSDK.QueryTypes.V5;
-using Route4MeSDKLibrary.DataTypes.V5;
-using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
-using Route4MeSDKLibrary.Managers;
-using Route4MeSDKLibrary.QueryTypes.V5;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using NUnit.Framework;
+
+using Route4MeSDK;
+using Route4MeSDK.DataTypes.V5;
+using Route4MeSDK.QueryTypes.V5;
+
+using Route4MeSDKLibrary.DataTypes.V5;
+using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
+using Route4MeSDKLibrary.Managers;
+using Route4MeSDKLibrary.QueryTypes.V5;
 
 namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 {
@@ -73,7 +76,7 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
                     Console.WriteLine($"Removed the member: {result.Item1.MemberId}");
                 }
-                
+
             }
         }
 
@@ -197,8 +200,8 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
             Conflicts conflicts = Conflicts.Skip;
 
-            var result = tm.BulkCreateTeamMembers(memberParams.ToArray(), 
-                conflicts, 
+            var result = tm.BulkCreateTeamMembers(memberParams.ToArray(),
+                conflicts,
                 out ResultResponse resultResponse);
 
             Assert.IsNotNull(result);
@@ -208,7 +211,7 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
 
             List<long?> createdMemberIds = tm.GetUserIdsByEmails(emails, out ResultResponse resultResponse1);
 
-            if ((createdMemberIds?.Count ?? 0) > 0) 
+            if ((createdMemberIds?.Count ?? 0) > 0)
                 memberIds.AddRange(createdMemberIds.Select(x => (long)x));
 
         }
@@ -263,7 +266,7 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
         {
             var parameters = new MemberQueryParameters()
             {
-                UserId = memberIds[memberIds.Count-1].ToString()
+                UserId = memberIds[memberIds.Count - 1].ToString()
             };
 
             var removedMember = tm.RemoveTeamMember(parameters, out ResultResponse resultResponse);
@@ -271,7 +274,7 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
             Assert.That(removedMember.GetType(), Is.EqualTo(typeof(TeamResponse)));
             Assert.IsTrue(removedMember.MemberEmail.EndsWith(".deleted"));
 
-            memberIds.RemoveAt(memberIds.Count-1);
+            memberIds.RemoveAt(memberIds.Count - 1);
         }
 
         [Test, Order(10)]
@@ -304,8 +307,8 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
                 MemberLastName = "Doe Renamed"
             };
 
-            var updatedMember = tm.UpdateTeamMember(queryParams, 
-                payload, 
+            var updatedMember = tm.UpdateTeamMember(queryParams,
+                payload,
                 out ResultResponse resultResponse);
 
             Assert.That(updatedMember.GetType(), Is.EqualTo(typeof(TeamResponse)));
@@ -341,7 +344,7 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
         {
             var queryParams = new MemberQueryParameters()
             {
-                UserId = memberIds[memberIds.Count-1].ToString()
+                UserId = memberIds[memberIds.Count - 1].ToString()
             };
 
             Console.WriteLine($"AddSkillsToDriverTest UserId: {queryParams.UserId}");
@@ -353,12 +356,12 @@ namespace Route4MeSdkV5UnitTest.V5.TeamManagementApi
                 "Forklift"
             };
 
-            var skilledDriver = tm.AddSkillsToDriver(queryParams, 
-                skills.ToArray(), 
+            var skilledDriver = tm.AddSkillsToDriver(queryParams,
+                skills.ToArray(),
                 out ResultResponse resultResponse);
 
-            Assert.That(skilledDriver.GetType(), Is.EqualTo(typeof(TeamResponse)), 
-                    String.Join(", ", (resultResponse?.Messages?.Select(x=>x.Key+": "+x.Value).ToList() ?? new List<string>()))
+            Assert.That(skilledDriver.GetType(), Is.EqualTo(typeof(TeamResponse)),
+                    String.Join(", ", (resultResponse?.Messages?.Select(x => x.Key + ": " + x.Value).ToList() ?? new List<string>()))
                     );
 
 

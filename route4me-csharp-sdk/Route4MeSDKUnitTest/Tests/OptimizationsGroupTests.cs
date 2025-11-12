@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+
 using CsvHelper;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -128,8 +132,7 @@ namespace Route4MeSDKUnitTest.Tests
             address.FirstName = "UpdatedFirstName";
             address.LastName = "UpdatedLastName";
 
-            var errorString = "";
-            var updatedAddress = route4Me.UpdateOptimizationDestination(address, out errorString);
+            var updatedAddress = route4Me.UpdateOptimizationDestination(address, out var _);
 
             Assert.IsNotNull(
                 updatedAddress,
@@ -150,7 +153,7 @@ namespace Route4MeSDKUnitTest.Tests
             var opt_id = _tdr.SDRT_optimization_problem_id;
             Assert.IsNotNull(opt_id, "optimizationProblemID is null.");
 
-            string[] OptIDs = {opt_id};
+            string[] OptIDs = { opt_id };
 
             // Run the query
             var removed = route4Me.RemoveOptimization(OptIDs, out var errorString);
@@ -172,6 +175,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void HybridOptimizationFrom1000AddressesTest()
         {
             var ApiKey =
@@ -338,7 +342,7 @@ namespace Route4MeSDKUnitTest.Tests
                             }
                         }
 
-                        newLocation.Schedule = new List<Schedule> {schedule}.ToArray();
+                        newLocation.Schedule = new List<Schedule> { schedule }.ToArray();
                         //}
 
                         //string errorString;
@@ -453,7 +457,7 @@ namespace Route4MeSDKUnitTest.Tests
                 {
                     OptimizationProblemId = HybridOptimizationId,
                     DeleteOldDepots = true,
-                    NewDepots = new[] {Depots[lsScheduledDays.IndexOf(ScheduledDay)]}
+                    NewDepots = new[] { Depots[lsScheduledDays.IndexOf(ScheduledDay)] }
                 };
 
                 var addDepotResult = route4Me.AddDepotsToHybridOptimization(hDepotParams, out var errorString3);
@@ -549,7 +553,7 @@ namespace Route4MeSDKUnitTest.Tests
 
                         if (resultOrder != null)
                         {
-                            var OrderId = resultOrder.OrderId != null ? resultOrder.OrderId.ToString() : "";
+                            var OrderId = resultOrder.OrderId.ToString();
 
                             if (OrderId != "") _lsOrders.Add(OrderId);
                         }
@@ -658,7 +662,7 @@ namespace Route4MeSDKUnitTest.Tests
                 {
                     OptimizationProblemId = HybridOptimizationId,
                     DeleteOldDepots = true,
-                    NewDepots = new[] {Depots[lsScheduledDays.IndexOf(ScheduledDay)]}
+                    NewDepots = new[] { Depots[lsScheduledDays.IndexOf(ScheduledDay)] }
                 };
 
                 var addDepotResult = route4Me.AddDepotsToHybridOptimization(hDepotParams, out var errorString3);

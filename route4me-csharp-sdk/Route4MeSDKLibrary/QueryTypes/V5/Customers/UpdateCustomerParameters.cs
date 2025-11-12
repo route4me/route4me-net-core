@@ -1,6 +1,8 @@
-﻿using Route4MeSDK.QueryTypes;
+﻿using System.Runtime.Serialization;
+
+using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes.V5.Customers;
-using System.Runtime.Serialization;
 
 namespace Route4MeSDKLibrary.QueryTypes.V5.Customers
 {

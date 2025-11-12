@@ -24,6 +24,8 @@ The service is typically used by organizations who must route many drivers to ma
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>r4m_csharp_sdk.snk</AssemblyOriginatorKeyFile>
 
+    <WarningsNotAsErrors>CS0612</WarningsNotAsErrors>
+
   </PropertyGroup>
 
   <ItemGroup>

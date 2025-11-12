@@ -1,5 +1,7 @@
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 
 namespace Route4MeSDKLibrary.QueryTypes.V5.Facilities
@@ -60,4 +62,3 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Facilities
         public bool? IsDefault { get; set; }
     }
 }
-
