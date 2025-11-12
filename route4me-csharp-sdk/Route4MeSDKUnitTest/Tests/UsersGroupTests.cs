@@ -33,6 +33,7 @@ namespace Route4MeSDKUnitTest.Tests
 #pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
 
         [OneTimeSetUp]
+        [Obsolete]
         public void UserGroupInitialize()
         {
             _skip = CApiKey == CApiKey1 ? "yes" : "no";
@@ -51,6 +52,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void CreateUserTest()
         {
             if (_skip == "yes") return;
