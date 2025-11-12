@@ -637,7 +637,7 @@ namespace Route4MeSDKLibrary.Managers
 
                 var members = GetTeamMembers(queryParams, out var tempResponse);
 
-                if (!tempResponse.Status)
+                if (tempResponse != null && !tempResponse.Status)
                 {
                     resultResponse = tempResponse;
                     continue;
@@ -679,7 +679,7 @@ namespace Route4MeSDKLibrary.Managers
                     Status = false,
                     Messages = new Dictionary<string, string[]>
                     {
-                        {"Error", new[] {"The emails list is null or empty"}}
+                        { "Error", new[] { "The emails list is null or empty" } }
                     }
                 };
                 return new Tuple<List<long?>, ResultResponse>(null, resultResponse);
@@ -697,7 +697,7 @@ namespace Route4MeSDKLibrary.Managers
 
                 var membersResult = await GetTeamMembersAsync(queryParams);
 
-                if (!membersResult.Item2.Status)
+                if (membersResult.Item2 != null && !membersResult.Item2.Status)
                 {
                     resultResponse = membersResult.Item2;
                     continue;
