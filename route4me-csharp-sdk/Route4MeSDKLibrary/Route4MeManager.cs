@@ -8,10 +8,13 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using fastJSON;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary;
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.Internal;
@@ -19,6 +22,7 @@ using Route4MeSDKLibrary.DataTypes.Internal.QueryTypes;
 using Route4MeSDKLibrary.DataTypes.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.Internal.Response;
 using Route4MeSDKLibrary.QueryTypes;
+
 using Address = Route4MeSDK.DataTypes.Address;
 using AddressBookContact = Route4MeSDK.DataTypes.AddressBookContact;
 using AddressBookContactsResponse = Route4MeSDK.DataTypes.AddressBookContactsResponse;
@@ -302,7 +306,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Delete).ConfigureAwait(false);
 
-             return new Tuple<bool, string>(string.IsNullOrEmpty(response.Item2), response.Item2);
+            return new Tuple<bool, string>(string.IsNullOrEmpty(response.Item2), response.Item2);
         }
 
         /// <summary>
@@ -479,12 +483,12 @@ namespace Route4MeSDK
         public DataObjectRoute ShiftRouteDateTimeByTz(DataObjectRoute route)
         {
             var tz = R4MeUtils.GetLocalTimeZone();
-            var totalTime = (long) (route.Parameters.RouteDate + route.Parameters.RouteTime);
+            var totalTime = (long)(route.Parameters.RouteDate + route.Parameters.RouteTime);
 
             totalTime += tz;
 
             route.Parameters.RouteDate = totalTime / 86400 * 86400;
-            route.Parameters.RouteTime = (int) (totalTime - route.Parameters.RouteDate);
+            route.Parameters.RouteTime = (int)(totalTime - route.Parameters.RouteDate);
 
             return route;
         }
@@ -825,7 +829,7 @@ namespace Route4MeSDK
                                     {
                                         RouteId = initialRoute.RouteId,
                                         AddressId = updatedAddress.RouteDestinationId != null
-                                            ? (int) updatedAddress.RouteDestinationId
+                                            ? (int)updatedAddress.RouteDestinationId
                                             : note1.RouteDestinationId,
                                         Latitude = note1.Latitude,
                                         Longitude = note1.Longitude
@@ -1274,7 +1278,7 @@ namespace Route4MeSDK
                 (roParames, R4MEInfrastructureSettings.MergeRoutes,
                     HttpMethodType.Post, httpContent, false, false).ConfigureAwait(false);
 
-                return  new Tuple<bool, string>(response.Item1 != null && response.Item1.Status, response.Item2);
+                return new Tuple<bool, string>(response.Item1 != null && response.Item1.Status, response.Item2);
             }
         }
 
@@ -1810,7 +1814,7 @@ namespace Route4MeSDK
         /// <returns>The object of the type FindAssetResponse</returns>
         public FindAssetResponse FindAsset(string tracking, out string errorString)
         {
-            var request = new FindAssetRequest {Tracking = tracking};
+            var request = new FindAssetRequest { Tracking = tracking };
 
             return GetJsonObjectFromAPI<FindAssetResponse>(request, R4MEInfrastructureSettings.AssetTracking,
                 HttpMethodType.Get, false, false, out errorString);
@@ -2373,7 +2377,7 @@ namespace Route4MeSDK
 
                 if (commercialSubscription.GetValue(memberCapabilities).GetType() != typeof(bool)) return false;
 
-                var isCommercial = (bool) commercialSubscription.GetValue(memberCapabilities);
+                var isCommercial = (bool)commercialSubscription.GetValue(memberCapabilities);
 
                 if (!isCommercial) return false;
 
@@ -2732,7 +2736,7 @@ namespace Route4MeSDK
                 HttpMethodType.Post,
                 out errorString);
 
-            return response != null ? response.Result == "OK" ? response.Affected : -1 : (object) errorString;
+            return response != null ? response.Result == "OK" ? response.Affected : -1 : (object)errorString;
         }
 
         /// <summary>
@@ -2764,14 +2768,14 @@ namespace Route4MeSDK
         /// <returns>if succefful, returns non-negative affected number, otherwise: -1</returns>
         public object RemoveCustomNoteType(long customNoteId, out string errorString)
         {
-            var request = new RemoveCustomNoteTypeRequest {Id = customNoteId};
+            var request = new RemoveCustomNoteTypeRequest { Id = customNoteId };
 
             var response = GetJsonObjectFromAPI<AddCustomNoteTypeResponse>(request,
                 R4MEInfrastructureSettings.CustomNoteType,
                 HttpMethodType.Delete,
                 out errorString);
 
-            return response != null ? response.Result == "OK" ? response.Affected : -1 : (object) errorString;
+            return response != null ? response.Result == "OK" ? response.Affected : -1 : (object)errorString;
         }
 
         /// <summary>
@@ -2803,7 +2807,7 @@ namespace Route4MeSDK
                 R4MEInfrastructureSettings.CustomNoteType,
                 HttpMethodType.Get,
                 out errorString);
-            return response ?? (object) errorString;
+            return response ?? (object)errorString;
         }
 
         /// <summary>
@@ -2817,7 +2821,7 @@ namespace Route4MeSDK
             var response = await GetJsonObjectFromAPIAsync<CustomNoteType[]>(request,
                 R4MEInfrastructureSettings.CustomNoteType,
                 HttpMethodType.Get).ConfigureAwait(false);
-            return  new Tuple<object, string>(response.Item1 ?? (object)response.Item2, response.Item2);
+            return new Tuple<object, string>(response.Item1 ?? (object)response.Item2, response.Item2);
         }
 
         /// <summary>
@@ -2847,7 +2851,7 @@ namespace Route4MeSDK
                     : response.GetType() != typeof(AddAddressNoteResponse)
                         ? "Can not add custom note to the route"
                         : response.Status
-                            ? (object) response.Note
+                            ? (object)response.Note
                             : "Can not add custom note to the route";
             }
         }
@@ -3553,9 +3557,9 @@ namespace Route4MeSDK
             if (addressBookParameters.Query != null) request.Query = addressBookParameters.Query;
             request.Fields = addressBookParameters.Fields;
             if (addressBookParameters.Offset != null)
-                request.Offset = addressBookParameters.Offset >= 0 ? (int) addressBookParameters.Offset : 0;
+                request.Offset = addressBookParameters.Offset >= 0 ? (int)addressBookParameters.Offset : 0;
             if (addressBookParameters.Limit != null)
-                request.Limit = addressBookParameters.Limit >= 0 ? (int) addressBookParameters.Limit : 0;
+                request.Limit = addressBookParameters.Limit >= 0 ? (int)addressBookParameters.Limit : 0;
 
             var response = GetJsonObjectFromAPI<SearchAddressBookLocationResponse>(request,
                 R4MEInfrastructureSettings.AddressBook, HttpMethodType.Get, false, true, out var errorString0);
@@ -3587,7 +3591,7 @@ namespace Route4MeSDK
                                     propInfo.SetValue(contactFromObject, customData);
                                 else
                                     propInfo.SetValue(contactFromObject,
-                                        new Dictionary<string, string> {{"<WRONG DATA>", "<WRONG DATA>"}});
+                                        new Dictionary<string, string> { { "<WRONG DATA>", "<WRONG DATA>" } });
                                 break;
                             case "schedule":
                                 var schedules = R4MeUtils.ToObject<Schedule[]>(value, out var errorString2);
@@ -3601,7 +3605,7 @@ namespace Route4MeSDK
                                 if (errorString3 == "")
                                     propInfo.SetValue(contactFromObject, scheduleBlackList);
                                 else
-                                    propInfo.SetValue(contactFromObject, new[] {"<WRONG DATA>"});
+                                    propInfo.SetValue(contactFromObject, new[] { "<WRONG DATA>" });
                                 break;
                             default:
                                 var convertedValue = valueType != ""
@@ -4124,7 +4128,7 @@ namespace Route4MeSDK
             var addressBookGroupParams = new AddressBookGroupParameters
             {
                 GroupId = addressBookGroup.GroupId,
-                Fields = new[] {"address_id"}
+                Fields = new[] { "address_id" }
             };
 
             var response = GetAddressBookContactsByGroup(
@@ -4139,7 +4143,7 @@ namespace Route4MeSDK
                 if (long.TryParse(oContId[0].ToString(), out var __))
                     contactIDs.Add(Convert.ToInt64(oContId[0]));
 
-            var removeGroupParams = new AddressBookGroupParameters {GroupId = addressBookGroup.GroupId};
+            var removeGroupParams = new AddressBookGroupParameters { GroupId = addressBookGroup.GroupId };
             RemoveAddressBookGroup(removeGroupParams, out errorString);
 
             return contactIDs.Count > 0 ? contactIDs.ToArray() : null;
@@ -5649,7 +5653,7 @@ namespace Route4MeSDK
         {
             if (vehParams == null || (vehParams.VehicleId?.Length ?? 0) != 32)
             {
-                return Task.FromResult(new Tuple<VehicleV4Response, string>(null, "The vehicle ID is not specified")) ;
+                return Task.FromResult(new Tuple<VehicleV4Response, string>(null, "The vehicle ID is not specified"));
             }
 
             return GetJsonObjectFromAPIAsync<VehicleV4Response>(vehParams,
@@ -6567,7 +6571,6 @@ namespace Route4MeSDK
         {
             T result = default;
             var errorMessage = string.Empty;
-            string jobId = default(string);
 
             var parametersUri = optimizationParameters.Serialize(_mApiKey);
             var uri = new Uri($"{url}{parametersUri}");
@@ -6580,65 +6583,65 @@ namespace Route4MeSDK
                     switch (httpMethod)
                     {
                         case HttpMethodType.Get:
-                        {
-                            var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
+                            {
+                                var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
 
-                            if (isString)
-                            {
-                                result = response.ReadString() as T;
+                                if (isString)
+                                {
+                                    result = response.ReadString() as T;
+                                }
+                                else
+                                {
+                                    result = parseWithNewtonJson
+                                        ? response.ReadObjectNew<T>()
+                                        : response.ReadObject<T>();
+                                }
+                                break;
                             }
-                            else
-                            {
-                                result = parseWithNewtonJson
-                                    ? response.ReadObjectNew<T>()
-                                    : response.ReadObject<T>();
-                            }
-                            break;
-                        }
                         case HttpMethodType.Post:
                         case HttpMethodType.Put:
                         case HttpMethodType.Delete:
-                        {
-                            var isPut = httpMethod == HttpMethodType.Put;
-                            var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content;
-                            if (httpContent != null)
                             {
-                                content = httpContent;
-                            }
-                            else
-                            {
-                                var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
-                                content = new StringContent(jsonString);
-                                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                            }
-
-                            HttpResponseMessage response;
-
-                            if (isPut)
-                            {
-                                response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
-                            }
-                            else if (isDelete)
-                            {
-                                var request = new HttpRequestMessage
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
                                 {
-                                    Content = content,
-                                    Method = HttpMethod.Delete,
-                                    RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                };
-                                response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
-                            }
-                            else
-                            {
-                                response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
-                                    .ConfigureAwait(false);
-                            }
+                                    content = httpContent;
+                                }
+                                else
+                                {
+                                    var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                                }
 
-                            // Check if successful
-                            if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK ||
-                                response.StatusCode == HttpStatusCode.RedirectMethod)
-                            {
+                                HttpResponseMessage response;
+
+                                if (isPut)
+                                {
+                                    response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
+                                    {
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
+                                }
+                                else
+                                {
+                                    response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
+                                        .ConfigureAwait(false);
+                                }
+
+                                // Check if successful
+                                if (response.IsSuccessStatusCode && response.StatusCode == HttpStatusCode.OK ||
+                                    response.StatusCode == HttpStatusCode.RedirectMethod)
+                                {
                                     var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                                     if (isString)
@@ -6652,60 +6655,60 @@ namespace Route4MeSDK
                                             : streamTask.ReadObject<T>();
                                     }
                                 }
-                            else
-                            {
-                                using (var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                                else
                                 {
-                                    ErrorResponse errorResponse;
+                                    using (var streamTask = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                                    {
+                                        ErrorResponse errorResponse;
 
-                                    try
-                                    {
-                                        errorResponse = streamTask.ReadObject<ErrorResponse>();
-                                    }
-                                    catch (Exception)
-                                    {
-                                        if (response.ReasonPhrase != null)
+                                        try
                                         {
-                                            errorResponse = new ErrorResponse
+                                            errorResponse = streamTask.ReadObject<ErrorResponse>();
+                                        }
+                                        catch (Exception)
+                                        {
+                                            if (response.ReasonPhrase != null)
                                             {
-                                                Errors = new List<string> {response.ReasonPhrase}
-                                            };
+                                                errorResponse = new ErrorResponse
+                                                {
+                                                    Errors = new List<string> { response.ReasonPhrase }
+                                                };
 
-                                            var reqMessage = response.RequestMessage?.Content.ReadAsStringAsync()
-                                                .Result ?? "";
+                                                var reqMessage = response.RequestMessage?.Content.ReadAsStringAsync()
+                                                    .Result ?? "";
 
-                                            if (reqMessage != "")
-                                                errorResponse.Errors.Add(
-                                                    $"Request content: {Environment.NewLine} {reqMessage}");
+                                                if (reqMessage != "")
+                                                    errorResponse.Errors.Add(
+                                                        $"Request content: {Environment.NewLine} {reqMessage}");
+                                            }
+                                            else
+                                            {
+                                                errorResponse = default;
+                                            }
+                                        }
+
+                                        if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
+                                        {
+                                            foreach (var error in errorResponse.Errors)
+                                            {
+                                                if (errorMessage.Length > 0)
+                                                    errorMessage += "; ";
+                                                errorMessage += error;
+                                            }
                                         }
                                         else
                                         {
-                                            errorResponse = default;
+                                            var responseStream = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                            var responseString = responseStream;
+                                            if (responseString != null)
+                                                errorMessage = "Response: " + responseString;
                                         }
-                                    }
-
-                                    if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
-                                    {
-                                        foreach (var error in errorResponse.Errors)
-                                        {
-                                            if (errorMessage.Length > 0)
-                                                errorMessage += "; ";
-                                            errorMessage += error;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var responseStream = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                                        var responseString = responseStream;
-                                        if (responseString != null)
-                                            errorMessage = "Response: " + responseString;
                                     }
                                 }
-                            }
 
-                            response.Dispose();
-                            break;
-                        }
+                                response.Dispose();
+                                break;
+                            }
                     }
                 }
             }
@@ -6756,176 +6759,176 @@ namespace Route4MeSDK
                     switch (httpMethod)
                     {
                         case HttpMethodType.Get:
-                        {
-                            var response = acquireHttpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
-                            response.Wait();
+                            {
+                                var response = acquireHttpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
+                                response.Wait();
 
-                            if (isString)
-                            {
-                                result = response.Result.ReadString() as T;
+                                if (isString)
+                                {
+                                    result = response.Result.ReadString() as T;
+                                }
+                                else
+                                {
+                                    result = parseWithNewtonJson
+                                        ? response.Result.ReadObjectNew<T>()
+                                        : response.Result.ReadObject<T>();
+                                }
+                                break;
                             }
-                            else
-                            {
-                                result = parseWithNewtonJson
-                                    ? response.Result.ReadObjectNew<T>()
-                                    : response.Result.ReadObject<T>();
-                            }
-                            break;
-                        }
                         case HttpMethodType.Post:
                         case HttpMethodType.Put:
                         case HttpMethodType.Delete:
-                        {
-                            var isPut = httpMethod == HttpMethodType.Put;
-                            var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content;
-                            if (httpContent != null)
                             {
-                                content = httpContent;
-                            }
-                            else
-                            {
-                                var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
-                                content = new StringContent(jsonString);
-                                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                            }
-
-                            Task<HttpResponseMessage> response;
-
-                            if (isPut)
-                            {
-                                response = acquireHttpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
-                            }
-                            else if (isDelete)
-                            {
-                                var request = new HttpRequestMessage
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
                                 {
-                                    Content = content,
-                                    Method = HttpMethod.Delete,
-                                    RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                };
-                                response = acquireHttpClientHolder.HttpClient.SendAsync(request);
-                            }
-                            else
-                            {
-                                using (var cts = new CancellationTokenSource())
-                                {
-                                    cts.CancelAfter(1000 * 60 * 5); // 3 seconds
-
-                                    response = acquireHttpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content,
-                                        cts.Token);
+                                    content = httpContent;
                                 }
-                            }
-
-                            // Wait for response
-                            response.Wait();
-
-                            // Check if successful
-                            if (response.IsCompleted &&
-                                response.Result.IsSuccessStatusCode &&
-                                response.Result.StatusCode == HttpStatusCode.OK)
-                            {
-                                var streamTask = response.Result.Content.ReadAsStreamAsync();
-                                streamTask.Wait();
-
-                                if (streamTask.IsCompleted)
+                                else
                                 {
-                                    if (isString)
+                                    var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                                }
+
+                                Task<HttpResponseMessage> response;
+
+                                if (isPut)
+                                {
+                                    response = acquireHttpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
                                     {
-                                        result = streamTask.Result.ReadString() as T;
-                                    }
-                                    else
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = acquireHttpClientHolder.HttpClient.SendAsync(request);
+                                }
+                                else
+                                {
+                                    using (var cts = new CancellationTokenSource())
                                     {
-                                        result = parseWithNewtonJson
-                                            ? streamTask.Result.ReadObjectNew<T>()
-                                            : streamTask.Result.ReadObject<T>();
+                                        cts.CancelAfter(1000 * 60 * 5); // 3 seconds
+
+                                        response = acquireHttpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content,
+                                            cts.Token);
                                     }
                                 }
-                            }
-                            else
-                            {
-                                ErrorResponse errorResponse;
 
-                                try
+                                // Wait for response
+                                response.Wait();
+
+                                // Check if successful
+                                if (response.IsCompleted &&
+                                    response.Result.IsSuccessStatusCode &&
+                                    response.Result.StatusCode == HttpStatusCode.OK)
                                 {
-                                    errorResponse = default; 
+                                    var streamTask = response.Result.Content.ReadAsStreamAsync();
+                                    streamTask.Wait();
 
-									if (response.Result.Content is StreamContent)
-									{
-										var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
-										streamTask.Wait();
-
-										errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
-									}
-									else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
-									{
-										var content2 = response.Result.Content;
-
-										if (isString)
-										{
-											result = content2.ReadAsStreamAsync().Result.ReadString() as T;
-										}
-										else
-										{
-											result = parseWithNewtonJson
-												? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
-												: content2.ReadAsStreamAsync().Result.ReadObject<T>();
-										}
-									}
-									else
-									{
-										errorResponse = new ErrorResponse();
-										errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
-										if ((response?.Exception?.Message ?? null) != null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
-
-									}
-                                }
-                                catch (Exception) // If cannot read ErrorResponse from the stream, try another way
-                                {
-                                    if ((response.Result?.ReasonPhrase) != null)
+                                    if (streamTask.IsCompleted)
                                     {
-                                        errorResponse = new ErrorResponse
+                                        if (isString)
                                         {
-                                            Errors = new List<string> {response.Result.ReasonPhrase}
-                                        };
-
-                                        var reqMessage = response.Result?.RequestMessage?.Content?.ReadAsStringAsync()
-                                            .Result ?? "";
-
-                                        if (reqMessage != "")
-                                            errorResponse.Errors.Add(
-                                                $"Request content: {Environment.NewLine} {reqMessage}");
-                                    }
-                                    else
-                                    {
-                                        errorResponse = default;
-                                    }
-                                }
-
-                                if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
-                                {
-                                    foreach (var error in errorResponse.Errors)
-                                    {
-                                        if (errorMessage.Length > 0)
-                                            errorMessage += "; ";
-                                        errorMessage += error;
+                                            result = streamTask.Result.ReadString() as T;
+                                        }
+                                        else
+                                        {
+                                            result = parseWithNewtonJson
+                                                ? streamTask.Result.ReadObjectNew<T>()
+                                                : streamTask.Result.ReadObject<T>();
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    if (response.Result != null)
+                                    ErrorResponse errorResponse;
+
+                                    try
                                     {
-                                        var responseStream = response.Result.Content.ReadAsStringAsync();
-                                        responseStream.Wait();
-                                        var responseString = responseStream.Result;
-                                        if (responseString != null)
-                                            errorMessage = "Response: " + responseString;
+                                        errorResponse = default;
+
+                                        if (response.Result.Content is StreamContent)
+                                        {
+                                            var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                            streamTask.Wait();
+
+                                            errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+                                        }
+                                        else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
+                                        {
+                                            var content2 = response.Result.Content;
+
+                                            if (isString)
+                                            {
+                                                result = content2.ReadAsStreamAsync().Result.ReadString() as T;
+                                            }
+                                            else
+                                            {
+                                                result = parseWithNewtonJson
+                                                    ? content2.ReadAsStreamAsync().Result.ReadObjectNew<T>()
+                                                    : content2.ReadAsStreamAsync().Result.ReadObject<T>();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            errorResponse = new ErrorResponse();
+                                            errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
+                                            if ((response?.Exception?.Message ?? null) != null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
+
+                                        }
+                                    }
+                                    catch (Exception) // If cannot read ErrorResponse from the stream, try another way
+                                    {
+                                        if ((response.Result?.ReasonPhrase) != null)
+                                        {
+                                            errorResponse = new ErrorResponse
+                                            {
+                                                Errors = new List<string> { response.Result.ReasonPhrase }
+                                            };
+
+                                            var reqMessage = response.Result?.RequestMessage?.Content?.ReadAsStringAsync()
+                                                .Result ?? "";
+
+                                            if (reqMessage != "")
+                                                errorResponse.Errors.Add(
+                                                    $"Request content: {Environment.NewLine} {reqMessage}");
+                                        }
+                                        else
+                                        {
+                                            errorResponse = default;
+                                        }
+                                    }
+
+                                    if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
+                                    {
+                                        foreach (var error in errorResponse.Errors)
+                                        {
+                                            if (errorMessage.Length > 0)
+                                                errorMessage += "; ";
+                                            errorMessage += error;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (response.Result != null)
+                                        {
+                                            var responseStream = response.Result.Content.ReadAsStringAsync();
+                                            responseStream.Wait();
+                                            var responseString = responseStream.Result;
+                                            if (responseString != null)
+                                                errorMessage = "Response: " + responseString;
+                                        }
                                     }
                                 }
-                            }
 
-                            break;
-                        }
+                                break;
+                            }
                     }
                 }
             }
@@ -7016,7 +7019,7 @@ namespace Route4MeSDK
                                 if (response.IsCompleted && response.Result.IsSuccessStatusCode &&
                                     response.Result.Content is StreamContent)
                                 {
-                                    var streamTask = ((StreamContent) response.Result.Content).ReadAsStreamAsync();
+                                    var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
                                     streamTask.Wait();
 
                                     if (streamTask.IsCompleted) result = streamTask.Result.ReadString();
@@ -7057,7 +7060,7 @@ namespace Route4MeSDK
                                         {
                                             errorResponse = new ErrorResponse
                                             {
-                                                Errors = new List<string> {response.Result.ReasonPhrase}
+                                                Errors = new List<string> { response.Result.ReasonPhrase }
                                             };
 
                                             var reqMessage = response.Result?.RequestMessage?.Content
@@ -7176,7 +7179,7 @@ namespace Route4MeSDK
                                 {
                                     var stream = await ((StreamContent)response.Content).ReadAsStreamAsync().ConfigureAwait(false);
 
-                                     result = stream.ReadString() as T;
+                                    result = stream.ReadString() as T;
                                 }
                                 else
                                 {

@@ -1,5 +1,6 @@
-﻿using Route4MeSDKLibrary.QueryTypes.V5.Customers;
-using System;
+﻿using System;
+
+using Route4MeSDKLibrary.QueryTypes.V5.Customers;
 
 namespace Route4MeSDK.Examples
 {

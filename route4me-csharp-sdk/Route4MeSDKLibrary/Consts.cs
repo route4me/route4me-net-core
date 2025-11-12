@@ -234,7 +234,7 @@
         public const string ContactsDeleteMultiple = ContactHost + "/addresses/delete";
         public const string ContactsDeleteByAreas = ContactHost + "/addresses/delete-by-areas";
         public const string ContactsGetCustomFields = ContactHost + "/addresses/custom-fields";
-		public const string ContactsGetDepots = ContactHost + "/addresses/depots";
+        public const string ContactsGetDepots = ContactHost + "/addresses/depots";
         public const string ContactsReindexCallback = ContactHost + "/reindex-callback";
         public const string ContactsExport = ContactHost + "/addresses/export";
         public const string ContactsExportByAreas = ContactHost + "/addresses/export-by-areas";
@@ -318,7 +318,7 @@
         #endregion
 
         #region Workflows
-        public const string Workflows = MainHost  + "/workflows";
+        public const string Workflows = MainHost + "/workflows";
         #endregion
 
         #region Optimization Profiles

@@ -1,10 +1,11 @@
-﻿using Route4MeSDK.QueryTypes;
-using Route4MeSDK;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Route4MeSDK;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {

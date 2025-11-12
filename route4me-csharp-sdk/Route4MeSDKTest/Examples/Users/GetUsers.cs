@@ -1,4 +1,5 @@
 ﻿using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDK.Examples
@@ -8,6 +9,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example refers to the process of getting the existing sub-users.
         /// </summary>
+        [System.Obsolete]
         public void GetUsers()
         {
             // Create the manager with the api key

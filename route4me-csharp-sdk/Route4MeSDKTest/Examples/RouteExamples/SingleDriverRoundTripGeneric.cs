@@ -1,8 +1,9 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -21,11 +22,13 @@ namespace Route4MeSDK.Examples
         {
             [DataMember]
             public Address[]
-                addresses { get; set; } // Using the defined class "Address", can use user-defined class instead
+                addresses
+            { get; set; } // Using the defined class "Address", can use user-defined class instead
 
             [DataMember]
             public RouteParameters
-                parameters { get; set; } // Using the defined "RouteParameters", can use user-defined class instead
+                parameters
+            { get; set; } // Using the defined "RouteParameters", can use user-defined class instead
         }
 
         // Generic class for returned JSON holder
@@ -39,11 +42,13 @@ namespace Route4MeSDK.Examples
 
             [DataMember(Name = "addresses")]
             public Address[]
-                Addresses { get; set; } // Using the defined class "Address", can use user-defined class instead
+                Addresses
+            { get; set; } // Using the defined class "Address", can use user-defined class instead
 
             [DataMember(Name = "parameters")]
             public RouteParameters
-                Parameters { get; set; } // Using the defined "RouteParameters", can use user-defined class instead
+                Parameters
+            { get; set; } // Using the defined "RouteParameters", can use user-defined class instead
         }
 
         #endregion

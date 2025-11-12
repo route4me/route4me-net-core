@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+
 using Newtonsoft.Json.Linq;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.Orders
@@ -12,7 +13,7 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Orders
         /// <summary>
         ///     Order IDs
         /// </summary>
-        [DataMember(Name = "order_ids", EmitDefaultValue = false )]
+        [DataMember(Name = "order_ids", EmitDefaultValue = false)]
         public string[] OrderIds { get; set; }
 
         /// <summary>

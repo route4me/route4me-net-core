@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes
@@ -16,7 +17,7 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "mode", EmitDefaultValue = true)]
         [DefaultValue(AddressBundlingMode.Address)]
-        [Range((int) AddressBundlingMode.Address, (int) AddressBundlingMode.Coordinates)]
+        [Range((int)AddressBundlingMode.Address, (int)AddressBundlingMode.Coordinates)]
         public AddressBundlingMode Mode { get; set; }
 
         /// <summary>
@@ -32,8 +33,8 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "merge_mode", EmitDefaultValue = true)]
         [DefaultValue(AddressBundlingMergeMode.KeepAsSeparateDestinations)]
-        [Range((int) AddressBundlingMergeMode.KeepAsSeparateDestinations,
-            (int) AddressBundlingMergeMode.MergeIntoSingleDestination)]
+        [Range((int)AddressBundlingMergeMode.KeepAsSeparateDestinations,
+            (int)AddressBundlingMergeMode.MergeIntoSingleDestination)]
         public AddressBundlingMergeMode MergeMode { get; set; }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "first_item_mode", EmitDefaultValue = true)]
         [DefaultValue(AddressBundlingFirstItemMode.KeepOriginal)]
-        [Range((int) AddressBundlingFirstItemMode.KeepOriginal, (int) AddressBundlingFirstItemMode.CustomTime)]
+        [Range((int)AddressBundlingFirstItemMode.KeepOriginal, (int)AddressBundlingFirstItemMode.CustomTime)]
         public AddressBundlingFirstItemMode FirstItemMode { get; set; }
 
         /// <summary>
@@ -69,8 +70,8 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "additional_items_mode", EmitDefaultValue = false)]
         [DefaultValue(AddressBundlingAdditionalItemsMode.KeepOriginal)]
-        [Range((int) AddressBundlingAdditionalItemsMode.KeepOriginal,
-            (int) AddressBundlingAdditionalItemsMode.InheritFromPrimary)]
+        [Range((int)AddressBundlingAdditionalItemsMode.KeepOriginal,
+            (int)AddressBundlingAdditionalItemsMode.InheritFromPrimary)]
         public AddressBundlingAdditionalItemsMode AdditionalItemsMode { get; set; }
 
         /// <summary>

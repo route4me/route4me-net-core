@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -118,7 +121,7 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var @params = new MemberConfigurationParameters {ConfigKey = "Test My height"};
+            var @params = new MemberConfigurationParameters { ConfigKey = "Test My height" };
 
             // Run the query
             var result = route4Me.GetConfigurationData(@params, out var errorString);
@@ -174,7 +177,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             foreach (var testKey in _lsConfigurationKeys)
             {
-                var @params = new MemberConfigurationParameters {ConfigKey = testKey};
+                var @params = new MemberConfigurationParameters { ConfigKey = testKey };
 
                 var result = route4Me.RemoveConfigurationKey(@params, out var errorString);
 

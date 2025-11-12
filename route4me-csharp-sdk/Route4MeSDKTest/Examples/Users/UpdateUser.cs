@@ -1,6 +1,7 @@
-﻿using Route4MeSDK.DataTypes;
+﻿using System;
+
+using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -9,6 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Update an User
         /// </summary>
+        [Obsolete]
         public void UpdateUser()
         {
             // Create the manager with the api key
