@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -24,7 +28,9 @@ namespace Route4MeSDKUnitTest.Tests
 
         private List<string> _lsMembers;
 
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
         private readonly int? createdMemberID;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
 
         [OneTimeSetUp]
         public void UserGroupInitialize()
@@ -64,6 +70,7 @@ namespace Route4MeSDKUnitTest.Tests
             _lsMembers.Add(dispetcher.MemberId);
         }
 
+        [Obsolete]
         public MemberResponseV4 CreateUser(string memberType, out string errorString)
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -110,6 +117,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void AddEditCustomDataToUserTest()
         {
             if (_skip == "yes") return;
@@ -121,7 +129,7 @@ namespace Route4MeSDKUnitTest.Tests
             var customParams = new MemberParametersV4
             {
                 member_id = memberId,
-                custom_data = new Dictionary<string, string> {{"Custom Key 2", "Custom Value 2"}}
+                custom_data = new Dictionary<string, string> { { "Custom Key 2", "Custom Value 2" } }
             };
 
             var result2 = route4Me.UserUpdate(customParams, out var errorString);
@@ -140,6 +148,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void GetUserByIdTest()
         {
             if (_skip == "yes") return;
@@ -147,7 +156,7 @@ namespace Route4MeSDKUnitTest.Tests
             var route4Me = new Route4MeManager(CApiKey);
 
             var memberID = Convert.ToInt32(_lsMembers[0]);
-            var @params = new MemberParametersV4 {MemberId = memberID};
+            var @params = new MemberParametersV4 { MemberId = memberID };
 
             // Run the query
             var result = route4Me.GetUserById(@params, out var errorString);
@@ -156,6 +165,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void GetUsersTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -169,6 +179,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void UpdateUserTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -258,6 +269,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void DeleteUserTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -276,6 +288,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [OneTimeTearDown]
+        [Obsolete]
         public void UsersGroupCleanup()
         {
             var route4Me = new Route4MeManager(CApiKey);

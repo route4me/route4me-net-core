@@ -1,4 +1,5 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.Examples
@@ -41,7 +42,7 @@ namespace Route4MeSDK.Examples
                         Console.WriteLine($"Retrieving specific facility type (ID: {firstTypeId})...\n");
 
                         var singleType = route4Me.FacilityManager.GetFacilityType(
-                            firstTypeId, 
+                            firstTypeId,
                             out ResultResponse singleTypeResponse
                         );
 
@@ -66,7 +67,7 @@ namespace Route4MeSDK.Examples
 
                     Console.WriteLine("\n\nDemonstrating error handling with invalid facility type ID...");
                     var invalidType = route4Me.FacilityManager.GetFacilityType(
-                        0, 
+                        0,
                         out ResultResponse invalidResponse
                     );
 
@@ -102,4 +103,3 @@ namespace Route4MeSDK.Examples
         }
     }
 }
-

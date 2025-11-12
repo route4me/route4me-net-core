@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -21,6 +25,7 @@ namespace Route4MeSDKUnitTest.Tests
         private TelematicsVendors _tomtomVendor;
 
         [OneTimeSetUp]
+        [Obsolete]
         public void TelematicsGateWayAPIInitialize()
         {
             if (ApiKeys.ActualApiKey == ApiKeys.DemoApiKey)
@@ -54,7 +59,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             apiToken = result.ApiToken;
 
-            var vendParams = new TelematicsVendorParameters {Search = "tomtom"};
+            var vendParams = new TelematicsVendorParameters { Search = "tomtom" };
 
             var vendors = route4Me.SearchTelematicsVendors(vendParams, out var errorString2);
 

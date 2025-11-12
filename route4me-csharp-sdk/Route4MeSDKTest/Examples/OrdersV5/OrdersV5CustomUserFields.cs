@@ -1,6 +1,7 @@
-﻿using Route4MeSDKLibrary.Managers;
+﻿using Newtonsoft.Json.Linq;
+
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
-using Newtonsoft.Json.Linq;
+using Route4MeSDKLibrary.Managers;
 
 namespace Route4MeSDK.Examples
 {

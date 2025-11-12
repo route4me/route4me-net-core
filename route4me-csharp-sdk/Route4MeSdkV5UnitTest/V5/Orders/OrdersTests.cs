@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Newtonsoft.Json.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
+
 using Order = Route4MeSDK.DataTypes.Order;
 
 namespace Route4MeSdkV5UnitTest.V5.Orders
@@ -125,7 +130,8 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
         {
             var route4me = new OrderManagerV5(ApiKeys.ActualApiKey);
 
-            var createdOrder = await route4me.CreateOrderAsync(new Route4MeSDKLibrary.DataTypes.V5.Orders.Order(){
+            var createdOrder = await route4me.CreateOrderAsync(new Route4MeSDKLibrary.DataTypes.V5.Orders.Order()
+            {
                 Address1 = "Test Address1 " + (new Random()).Next(),
                 AddressAlias = "Test AddressAlias " + (new Random()).Next(),
                 AddressGeo = new GeoPoint()
@@ -209,7 +215,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
                 }
             });
 
-            var searchOrderResponse = await route4me.SearchOrdersAsync(new SearchOrdersRequest(){Limit = 1});
+            var searchOrderResponse = await route4me.SearchOrdersAsync(new SearchOrdersRequest() { Limit = 1 });
 
             Assert.That(searchOrderResponse.Item1.Results.Length, Is.EqualTo(1));
 
@@ -245,7 +251,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
                 }
             });
 
-            await route4me.BatchUpdateFilterAsync(new BatchUpdateFilterOrderRequest(){ Data = createdOrder2.Item1, Filters = new FiltersParamRequestBody(){ OrderIds = new string[]{ createdOrder1.Item1.OrderUuid }}});
+            await route4me.BatchUpdateFilterAsync(new BatchUpdateFilterOrderRequest() { Data = createdOrder2.Item1, Filters = new FiltersParamRequestBody() { OrderIds = new string[] { createdOrder1.Item1.OrderUuid } } });
 
             await Task.Delay(TimeSpan.FromSeconds(5));
 
@@ -272,7 +278,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
                     Longitude = -34.6
                 }
             });
- 
+
             var createdOrder2 = await route4me.CreateOrderAsync(new Route4MeSDKLibrary.DataTypes.V5.Orders.Order()
             {
                 Address1 = "Test Address2 " + (new Random()).Next(),
@@ -284,7 +290,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
                 }
             });
 
-            await route4me.BatchDeleteAsync(new BatchDeleteOrdersRequest(){ OrderIds = new[] { createdOrder1.Item1.OrderUuid, createdOrder2.Item1.OrderUuid } });
+            await route4me.BatchDeleteAsync(new BatchDeleteOrdersRequest() { OrderIds = new[] { createdOrder1.Item1.OrderUuid, createdOrder2.Item1.OrderUuid } });
 
             var getOrder2 = await route4me.SearchOrdersAsync(new SearchOrdersRequest() { OrderIds = new[] { createdOrder1.Item1.OrderUuid, createdOrder2.Item1.OrderUuid } });
 
@@ -319,7 +325,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
                 }
             });
 
-            await route4me.BatchUpdateAsync(new BatchUpdateOrdersRequest() { Data = createdOrder2.Item1, OrderIds = new[]{ createdOrder1.Item1.OrderUuid } });
+            await route4me.BatchUpdateAsync(new BatchUpdateOrdersRequest() { Data = createdOrder2.Item1, OrderIds = new[] { createdOrder1.Item1.OrderUuid } });
 
             var getOrder2 = await route4me.GetOrderAsync(new GetOrderParameters() { OrderUuid = createdOrder2.Item1.OrderUuid });
 
@@ -391,8 +397,10 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
 
             var createdCustomUserFields = await route4me.CreateCustomUserFieldsAsync(new CreateCustomUserFieldRequest()
             {
-                OrderCustomFieldLabel = "Test label 2", OrderCustomFieldName = "Test name 2",
-                OrderCustomFieldType = "Test type 2", OrderCustomFieldTypeInfo = JObject.Parse("{\"prop1\": 123}")
+                OrderCustomFieldLabel = "Test label 2",
+                OrderCustomFieldName = "Test name 2",
+                OrderCustomFieldType = "Test type 2",
+                OrderCustomFieldTypeInfo = JObject.Parse("{\"prop1\": 123}")
             });
             Assert.That(createdCustomUserFields.Item1.Data, Is.Not.Null);
 
@@ -411,8 +419,10 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
             var orderCustomFieldName = "Test name 2";
             var createdCustomUserFields = await route4me.CreateCustomUserFieldsAsync(new CreateCustomUserFieldRequest()
             {
-                OrderCustomFieldLabel = "Test label 2", OrderCustomFieldName = orderCustomFieldName,
-                OrderCustomFieldType = "Test type 2", OrderCustomFieldTypeInfo = JObject.Parse("{\"prop1\": 123}")
+                OrderCustomFieldLabel = "Test label 2",
+                OrderCustomFieldName = orderCustomFieldName,
+                OrderCustomFieldType = "Test type 2",
+                OrderCustomFieldTypeInfo = JObject.Parse("{\"prop1\": 123}")
             });
             Assert.That(createdCustomUserFields.Item1.Data, Is.Not.Null);
 
@@ -448,8 +458,10 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
             var route4me = new OrderManagerV5(ApiKeys.ActualApiKey);
             var createdCustomUserFields = await route4me.CreateCustomUserFieldsAsync(new CreateCustomUserFieldRequest()
             {
-                OrderCustomFieldLabel = "Test label 2", OrderCustomFieldName = "Test name 2",
-                OrderCustomFieldType = "Test type 2", OrderCustomFieldTypeInfo = JObject.Parse("{\"prop1\": 123}")
+                OrderCustomFieldLabel = "Test label 2",
+                OrderCustomFieldName = "Test name 2",
+                OrderCustomFieldType = "Test type 2",
+                OrderCustomFieldTypeInfo = JObject.Parse("{\"prop1\": 123}")
             });
             Assert.That(createdCustomUserFields.Item1.Data, Is.Not.Null);
 

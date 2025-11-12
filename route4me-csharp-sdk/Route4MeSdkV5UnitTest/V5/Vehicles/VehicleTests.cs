@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
-using NUnit.Framework;
 
 namespace Route4MeSdkV5UnitTest.V5.Vehicles
 {
