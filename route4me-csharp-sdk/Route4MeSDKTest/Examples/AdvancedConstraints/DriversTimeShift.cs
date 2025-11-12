@@ -1,6 +1,7 @@
-﻿using Route4MeSDK.DataTypes;
+﻿using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System.Collections.Generic;
 
 namespace Route4MeSDK.Examples
 {
@@ -9,6 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Driver's Shift
         /// </summary>
+        [System.Obsolete]
         public void DriversTimeShift()
         {
             // Create the manager with the api key

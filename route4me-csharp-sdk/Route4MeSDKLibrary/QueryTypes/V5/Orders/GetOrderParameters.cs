@@ -1,5 +1,6 @@
-﻿using Route4MeSDK.QueryTypes;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.QueryTypes.V5.Orders
 {

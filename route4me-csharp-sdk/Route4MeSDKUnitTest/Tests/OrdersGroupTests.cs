@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -157,7 +161,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var InsertedDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            var oParams = new OrderParameters {DayAddedYYMMDD = InsertedDate};
+            var oParams = new OrderParameters { DayAddedYYMMDD = InsertedDate };
 
             var orders = route4Me.SearchOrders(oParams, out var errorString);
 
@@ -199,7 +203,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Filter = new FilterDetails
                 {
                     Display = "all",
-                    Scheduled_for_YYYYMMDD = new[] {startDate, endDate}
+                    Scheduled_for_YYYYMMDD = new[] { startDate, endDate }
                 }
             };
 
@@ -221,7 +225,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Filter = new FilterDetails
                 {
                     Display = "all",
-                    TrackingNumbers = new[] {"TN1"}
+                    TrackingNumbers = new[] { "TN1" }
                 }
             };
 
@@ -267,7 +271,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Filter = new FilterDetails
                 {
                     Display = "all",
-                    Scheduled_for_YYYYMMDD = new[] {startDate, endDate}
+                    Scheduled_for_YYYYMMDD = new[] { startDate, endDate }
                 }
             };
 
@@ -329,7 +333,7 @@ namespace Route4MeSDKUnitTest.Tests
                 ExtFieldLastName = "Carol",
                 ExtFieldEmail = "lcarol654@yahoo.com",
                 ExtFieldPhone = "897946541",
-                ExtFieldCustomData = new Dictionary<string, string> {{"order_type", "scheduled order"}},
+                ExtFieldCustomData = new Dictionary<string, string> { { "order_type", "scheduled order" } },
                 DayScheduledFor_YYYYMMDD = "2020-12-20",
                 LocalTimeWindowEnd = 39000,
                 LocalTimeWindowEnd2 = 46200,
@@ -434,11 +438,11 @@ namespace Route4MeSDKUnitTest.Tests
 
             var tsp1000sec = new TimeSpan(0, 0, 1000);
 
-            lsTimeWindowStart.Add((int) R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
             dtCurDate += tsp1000sec;
-            lsTimeWindowStart.Add((int) R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
             dtCurDate += tsp1000sec;
-            lsTimeWindowStart.Add((int) R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
+            lsTimeWindowStart.Add((int)R4MeUtils.ConvertToUnixTimestamp(dtCurDate));
 
             #region Addresses
 
@@ -590,7 +594,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             Assert.IsNotNull(order, "CreateOrderWithTrackingNumberTest failed. " + errorString);
 
-            route4Me.RemoveOrders(new[] {order.OrderId.ToString()}, out var errorString2);
+            route4Me.RemoveOrders(new[] { order.OrderId.ToString() }, out var errorString2);
         }
 
         [Test]
@@ -612,7 +616,7 @@ namespace Route4MeSDKUnitTest.Tests
             var result = route4Me.AddOrder(orderParams, out var errorString);
 
             if ((result?.OrderId ?? null) != null)
-                route4Me.RemoveOrders(new[] {result.OrderId.ToString()}, out var errorString2);
+                route4Me.RemoveOrders(new[] { result.OrderId.ToString() }, out var errorString2);
 
             Assert.IsNotNull(result);
             Assert.IsNull(result.Address1);
@@ -684,7 +688,7 @@ namespace Route4MeSDKUnitTest.Tests
             var orderParams = new Order
             {
                 Address1 = "201 LAVACA ST APT 746, AUSTIN, TX, 78701, US",
-                ExtFieldCustomData = new Dictionary<string, string>(){ { "Assigned_Inspector", "12345" } },
+                ExtFieldCustomData = new Dictionary<string, string>() { { "Assigned_Inspector", "12345" } },
                 Priority = 255
             };
             var order = route4Me.AddOrder(orderParams, out var errorString1);
@@ -698,7 +702,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var secondsIn10mins = 10 * 60;
             var lastKnownTs = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - secondsIn10mins;
-            var orders = route4Me.GetOrdersUpdates(new OrderUpdatesParameters(){ LastKnownTs = lastKnownTs }, out var errorString4);
+            var orders = route4Me.GetOrdersUpdates(new OrderUpdatesParameters() { LastKnownTs = lastKnownTs }, out var errorString4);
 
             Assert.That(orders.Data.Where(x => x.OrderId == order.OrderId && x.Data != null && x.Data.TryGetValue("Assigned_Inspector", out var assignedInspector) && assignedInspector == newAssignedInspector).Any);
         }

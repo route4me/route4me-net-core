@@ -1,5 +1,7 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
@@ -38,7 +40,7 @@ namespace Route4MeSDK.Examples
             };
 
             var createdFacility = route4Me.FacilityManager.CreateFacility(
-                createRequest, 
+                createRequest,
                 out ResultResponse createResponse
             );
 
@@ -66,7 +68,7 @@ namespace Route4MeSDK.Examples
             };
 
             var facilitiesBefore = route4Me.FacilityManager.GetFacilities(
-                beforeParameters, 
+                beforeParameters,
                 out ResultResponse beforeResponse
             );
 
@@ -76,7 +78,7 @@ namespace Route4MeSDK.Examples
             // Now delete the facility
             Console.WriteLine($"\nDeleting facility {createdFacility.FacilityId}...");
             var deleteResult = route4Me.FacilityManager.DeleteFacility(
-                createdFacility.FacilityId, 
+                createdFacility.FacilityId,
                 out ResultResponse deleteResponse
             );
 
@@ -103,7 +105,7 @@ namespace Route4MeSDK.Examples
             System.Threading.Thread.Sleep(500); // Brief pause for API sync
 
             var verifyFacility = route4Me.FacilityManager.GetFacility(
-                createdFacility.FacilityId, 
+                createdFacility.FacilityId,
                 out ResultResponse verifyResponse
             );
 
@@ -127,7 +129,7 @@ namespace Route4MeSDK.Examples
             };
 
             var facilitiesAfter = route4Me.FacilityManager.GetFacilities(
-                afterParameters, 
+                afterParameters,
                 out ResultResponse afterResponse
             );
 
@@ -145,5 +147,3 @@ namespace Route4MeSDK.Examples
         }
     }
 }
-
-

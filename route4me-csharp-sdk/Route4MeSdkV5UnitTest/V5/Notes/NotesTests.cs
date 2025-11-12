@@ -1,9 +1,12 @@
 using System;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
+
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.Notes;
 using Route4MeSDK.QueryTypes.V5.Notes;
+
 using Route4MeSDKLibrary.Managers;
 
 namespace Route4MeSdkV5UnitTest.V5.Notes
@@ -1166,4 +1169,3 @@ namespace Route4MeSdkV5UnitTest.V5.Notes
         #endregion
     }
 }
-

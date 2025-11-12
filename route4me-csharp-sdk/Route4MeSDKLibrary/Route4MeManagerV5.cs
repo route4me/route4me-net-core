@@ -1,6 +1,10 @@
-﻿using Route4MeSDK.DataTypes.V5;
+﻿using System;
+using System.Threading.Tasks;
+
+using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
 using Route4MeSDKLibrary.DataTypes.V5.Customers;
@@ -11,8 +15,7 @@ using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Customers;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
-using System;
-using System.Threading.Tasks;
+
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
 using OptimizationParameters = Route4MeSDK.QueryTypes.V5.OptimizationParameters;
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
@@ -584,11 +587,13 @@ namespace Route4MeSDK
             return _accountProfileManager.GetAccountProfileAsync();
         }
 
+        [Obsolete]
         public string GetAccountPreferredUnit(out ResultResponse failResponse)
         {
             return _accountProfileManager.GetAccountPreferredUnit(out failResponse);
         }
 
+        [Obsolete]
         public Task<Tuple<string, ResultResponse>> GetAccountPreferredUnitAsync()
         {
             return _accountProfileManager.GetAccountPreferredUnitAsync();
@@ -751,7 +756,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="parameters">An object of the type MemberParametersV4 containg the parameter UserId</param>
         /// <returns>Removed team member</returns>
-        public Task<Tuple<TeamResponse, ResultResponse>>  RemoveTeamMemberAsync(MemberQueryParameters parameters)
+        public Task<Tuple<TeamResponse, ResultResponse>> RemoveTeamMemberAsync(MemberQueryParameters parameters)
         {
             return _teamManagementManager.RemoveTeamMemberAsync(parameters);
         }
@@ -1075,7 +1080,7 @@ namespace Route4MeSDK
         /// <param name="resultResponse">Failing response</param>
         /// <returns>An array of the found routes with predicted time and distance parameters</returns>
         public DynamicInsertMatchedRoute[] DynamicInsertRouteAddresses(
-                                                DynamicInsertRequest dynamicInsertRequest, 
+                                                DynamicInsertRequest dynamicInsertRequest,
                                                 out ResultResponse resultResponse)
         {
             return _routeManager.DynamicInsertRouteAddresses(dynamicInsertRequest, out resultResponse);
@@ -2124,7 +2129,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="parameters">Query parameters</param>
         /// <returns></returns>
-        public Task <Tuple<RouteStatusHistoryResponse, ResultResponse>> GetRouteStatusHistoryAsync(RouteStatusHistoryParameters parameters)
+        public Task<Tuple<RouteStatusHistoryResponse, ResultResponse>> GetRouteStatusHistoryAsync(RouteStatusHistoryParameters parameters)
         {
             return _routeStatusManager.GetRouteStatusHistoryAsync(parameters);
         }

@@ -1,7 +1,8 @@
-﻿using Route4MeSDKLibrary.DataTypes.V5.Customers;
+﻿using System;
+
+using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Customers;
-using System;
 
 namespace Route4MeSDK.Examples
 {

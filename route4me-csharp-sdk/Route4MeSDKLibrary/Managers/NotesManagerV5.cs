@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.Notes;
@@ -685,7 +686,7 @@ namespace Route4MeSDKLibrary.Managers
             }
 
             // Validate note_custom_field_type (should be 1, 2, 3, or 4)
-            if (request.NoteCustomFieldType.HasValue && 
+            if (request.NoteCustomFieldType.HasValue &&
                 (request.NoteCustomFieldType.Value < 1 || request.NoteCustomFieldType.Value > 4))
             {
                 resultResponse = new ResultResponse
@@ -816,7 +817,7 @@ namespace Route4MeSDKLibrary.Managers
             for (int i = 0; i < request.Notes.Length; i++)
             {
                 var note = request.Notes[i];
-                
+
                 if (string.IsNullOrWhiteSpace(note.RouteId))
                 {
                     resultResponse = new ResultResponse
@@ -834,7 +835,7 @@ namespace Route4MeSDKLibrary.Managers
                 {
                     resultResponse = new ResultResponse
                     {
-                    Status = false,
+                        Status = false,
                         Messages = new Dictionary<string, string[]>
                         {
                             {"Error", new[] {$"The note contents (strNoteContents) is required for note at index {i}"}}
@@ -885,7 +886,7 @@ namespace Route4MeSDKLibrary.Managers
             for (int i = 0; i < request.Notes.Length; i++)
             {
                 var note = request.Notes[i];
-                
+
                 if (string.IsNullOrWhiteSpace(note.RouteId))
                 {
                     return new Tuple<BulkNotesResponse, ResultResponse>(null, new ResultResponse
@@ -922,4 +923,3 @@ namespace Route4MeSDKLibrary.Managers
         #endregion
     }
 }
-

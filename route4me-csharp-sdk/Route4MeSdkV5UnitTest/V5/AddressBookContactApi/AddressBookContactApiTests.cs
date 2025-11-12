@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5;
 using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
+
 using AddressBookContact = Route4MeSDK.DataTypes.V5.AddressBookContact;
 using AddressBookContactsResponse = Route4MeSDK.DataTypes.V5.AddressBookContactsResponse;
 using AddressBookParameters = Route4MeSDK.QueryTypes.V5.AddressBookParameters;
@@ -200,7 +204,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
 
             var addressBookParametersPaginated = new AddressBookParametersClusteringBodyRequest()
             {
-                Clustering = new Clustering(){ Precision = 5}
+                Clustering = new Clustering() { Precision = 5 }
             };
 
             // Run the query
@@ -329,9 +333,9 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
                 Address1 = "Test Address1 " + new Random().Next(0, 1000),
                 CachedLat = 38.024654,
                 CachedLng = -77.338814,
-                ScheduleBlacklist = new string[] {"2022-06-28"},
+                ScheduleBlacklist = new string[] { "2022-06-28" },
                 AddressStopType = AddressStopType.PickUp.Description(),
-                AddressCustomData = new Dictionary<string, string>(){  {  "key1", "value1"} }
+                AddressCustomData = new Dictionary<string, string>() { { "key1", "value1" } }
             };
 
             var contact = route4Me.AddAddressBookContact(contactParams, out ResultResponse resultResponse);
@@ -412,7 +416,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
 
             var result = route4Me.UpdateAddressBookContact(contact.AddressId.Value, contact, out _);
 
-            var updated = route4Me.GetAddressBookContactsByIds(new []{result.AddressId.Value}, out _);
+            var updated = route4Me.GetAddressBookContactsByIds(new[] { result.AddressId.Value }, out _);
 
             Assert.That(updated.Results[0].AddressEmail, Is.EqualTo(email));
         }
@@ -449,8 +453,10 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
             route4Me.BatchUpdateAddressBookContact(new AddressBookContactMultiple()
             {
                 AddressIds = new[] { contact1.AddressId.Value, contact2.AddressId.Value, },
-                FirstName = "Test FirstName 3 " + new Random().Next(0, 1000), Address1 = contactParams1.Address1,
-                CachedLat = contact1.CachedLat, CachedLng = contact1.CachedLng,
+                FirstName = "Test FirstName 3 " + new Random().Next(0, 1000),
+                Address1 = contactParams1.Address1,
+                CachedLat = contact1.CachedLat,
+                CachedLng = contact1.CachedLng,
                 AddressStopType = contact1.AddressStopType
             }, out var err3);
 
@@ -508,7 +514,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
                         Longitude = -77.2222
                     }
                 }
-               
+
             }, out var err3);
 
             Assert.That(err3, Is.Null);
@@ -544,7 +550,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
                     }
                 }
             }, out var err);
-            
+
             Assert.That(result.IsSuccessStatusCode);
         }
 

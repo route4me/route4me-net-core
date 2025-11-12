@@ -1,5 +1,7 @@
 ﻿using System.Runtime.Serialization;
+
 using Newtonsoft.Json.Linq;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.QueryTypes.V5.Schedules

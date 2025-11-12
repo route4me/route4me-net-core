@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
+
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
 using VehicleParameters = Route4MeSDK.QueryTypes.V5.VehicleParameters;
 

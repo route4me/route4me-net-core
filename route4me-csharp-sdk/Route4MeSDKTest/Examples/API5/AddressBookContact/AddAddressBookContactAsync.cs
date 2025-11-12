@@ -1,6 +1,7 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.Examples
 {
@@ -9,6 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Add address book contact asynchronously.
         /// </summary>
+        [Obsolete]
         public async void AddAddressBookContactAsync()
         {
             var route4Me = new Route4MeManagerV5(ActualApiKey);
