@@ -1,6 +1,7 @@
-﻿using Route4MeSDK.DataTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -9,6 +10,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Add address book contact
         /// </summary>
+        [Obsolete]
         public void AddAddressBookContact()
         {
             // Create the manager with the api key

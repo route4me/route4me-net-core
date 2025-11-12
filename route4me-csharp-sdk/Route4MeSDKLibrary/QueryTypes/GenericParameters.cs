@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web;
+
 using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK.QueryTypes
@@ -86,7 +87,7 @@ namespace Route4MeSDK.QueryTypes
                     if (ConvertBooleansToInteger &&
                         valueObj != null &&
                         (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?)))
-                        value = (bool) valueObj ? "1" : "0";
+                        value = (bool)valueObj ? "1" : "0";
 
                     var name = attribute.Name ?? property.Name;
                     var emit = valueObj != attribute.DefaultValue ||

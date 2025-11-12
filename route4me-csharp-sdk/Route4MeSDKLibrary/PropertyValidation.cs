@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using Route4MeSDK.DataTypes;
 
 namespace Route4MeSDK
@@ -52,7 +53,7 @@ namespace Route4MeSDK
 
         public static ValidationResult ValidateMonthlyNthN(int N)
         {
-            int[] nList = {1, 2, 3, 4, 5, -1};
+            int[] nList = { 1, 2, 3, 4, 5, -1 };
             // Perform validation logic here and set isValid to true or false.
 
             if (Array.IndexOf(nList, N) >= 0)
@@ -63,7 +64,7 @@ namespace Route4MeSDK
 
         public static ValidationResult ValidateScheduleMode(string sMode)
         {
-            string[] sList = {"daily", "weekly", "monthly", "annually"};
+            string[] sList = { "daily", "weekly", "monthly", "annually" };
             // Perform validation logic here and set isValid to true or false.
 
             if (Array.IndexOf(sList, sMode) >= 0)
@@ -74,7 +75,7 @@ namespace Route4MeSDK
 
         public static ValidationResult ValidateScheduleMonthlyMode(string sMode)
         {
-            string[] sList = {"dates", "nth"};
+            string[] sList = { "dates", "nth" };
             // Perform validation logic here and set isValid to true or false.
 
             if (Array.IndexOf(sList, sMode) >= 0)
@@ -97,7 +98,7 @@ namespace Route4MeSDK
         {
             try
             {
-                var oaddr = (OverrideAddresses) value;
+                var oaddr = (OverrideAddresses)value;
                 return ValidationResult.Success;
             }
             catch (Exception ex)

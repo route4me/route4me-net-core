@@ -16,7 +16,7 @@ namespace Route4MeSDK.Examples
                 PerPage = 20,
                 Filters = new RouteFilterParametersFilters()
                 {
-                    CreatedDate =new []{ "2024-07-23", "2024-07-24" }
+                    CreatedDate = new[] { "2024-07-23", "2024-07-24" }
                 }
             };
 

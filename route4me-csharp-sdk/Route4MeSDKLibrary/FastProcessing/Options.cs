@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+
 using Quobject.EngineIoClientDotNet.Client;
 
 namespace Route4MeSDK.FastProcessing

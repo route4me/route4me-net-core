@@ -1,4 +1,5 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.Examples
@@ -35,7 +36,7 @@ namespace Route4MeSDK.Examples
             };
 
             var createdFacility = route4Me.FacilityManager.CreateFacility(
-                createRequest, 
+                createRequest,
                 out ResultResponse createResponse
             );
 
@@ -57,7 +58,7 @@ namespace Route4MeSDK.Examples
             // Now retrieve the facility by ID
             Console.WriteLine("\nRetrieving facility by ID...");
             var retrievedFacility = route4Me.FacilityManager.GetFacility(
-                createdFacility.FacilityId, 
+                createdFacility.FacilityId,
                 out ResultResponse getResponse
             );
 
@@ -69,7 +70,7 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine($"  Address: {retrievedFacility.Address}");
                 Console.WriteLine($"  Status: {retrievedFacility.Status}");
                 Console.WriteLine($"  Coordinates: ({retrievedFacility.Coordinates?.Lat}, {retrievedFacility.Coordinates?.Lng})");
-                
+
                 if (retrievedFacility.FacilityTypes != null && retrievedFacility.FacilityTypes.Length > 0)
                 {
                     Console.WriteLine($"  Facility Types: {retrievedFacility.FacilityTypes.Length}");
@@ -102,5 +103,3 @@ namespace Route4MeSDK.Examples
         }
     }
 }
-
-

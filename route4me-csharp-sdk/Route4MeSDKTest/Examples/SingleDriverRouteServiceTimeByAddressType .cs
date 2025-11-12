@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
+        [Obsolete]
         public void SingleDriverRouteServiceTimeByAddressType()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
