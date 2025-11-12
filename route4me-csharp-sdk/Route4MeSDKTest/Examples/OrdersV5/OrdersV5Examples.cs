@@ -1,8 +1,10 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDKLibrary.Managers;
-using System;
+﻿using System;
 using System.Linq;
+
+using Route4MeSDK.DataTypes;
+
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
+using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Orders;
 
 namespace Route4MeSDK.Examples
@@ -26,7 +28,7 @@ namespace Route4MeSDK.Examples
             }, out _);
 
             // Read
-            var loadedOrder = route4Me.GetOrder(new GetOrderParameters(){ OrderUuid = createdOrder.OrderUuid}, out _);
+            var loadedOrder = route4Me.GetOrder(new GetOrderParameters() { OrderUuid = createdOrder.OrderUuid }, out _);
 
             // Update
             loadedOrder.AddressCity = "Madrid";

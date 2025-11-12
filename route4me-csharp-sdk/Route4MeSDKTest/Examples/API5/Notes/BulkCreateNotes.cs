@@ -1,6 +1,8 @@
 using System;
+
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5.Notes;
+
 using Route4MeSDKLibrary.Managers;
 
 namespace Route4MeSDK.Examples
@@ -17,7 +19,7 @@ namespace Route4MeSDK.Examples
 
             // First, create a test route to add notes to
             RunSingleDriverRoundTrip();
-            
+
             if (SDRT_route == null || SDRT_route.Addresses == null || SDRT_route.Addresses.Length < 2)
             {
                 Console.WriteLine("Failed to create test route");

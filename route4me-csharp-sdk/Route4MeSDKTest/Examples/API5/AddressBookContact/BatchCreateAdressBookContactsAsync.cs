@@ -1,8 +1,10 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using Route4MeSDK.QueryTypes.V5;
-using Route4MeSDKLibrary.DataTypes.V5;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes.V5;
+using Route4MeSDK.QueryTypes.V5;
+
+using Route4MeSDKLibrary.DataTypes.V5;
 
 namespace Route4MeSDK.Examples
 {

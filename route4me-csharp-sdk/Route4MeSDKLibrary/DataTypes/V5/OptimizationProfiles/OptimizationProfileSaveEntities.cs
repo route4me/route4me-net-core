@@ -1,6 +1,8 @@
-﻿using Route4MeSDK.QueryTypes;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+
 using Newtonsoft.Json.Linq;
+
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
 {

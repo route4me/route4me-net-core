@@ -1,10 +1,11 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
-using System;
+﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {

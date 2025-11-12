@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -47,6 +50,7 @@ namespace Route4MeSDKUnitTest.Tests
             GetVehiclesList();
         }
 
+        [System.Obsolete]
         public Vehicle[] GetVehiclesList()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
@@ -200,6 +204,7 @@ namespace Route4MeSDKUnitTest.Tests
                 _lsVehicleIDs.Add(class8Truck.VehicleGuid);
         }
 
+        [System.Obsolete]
         public VehicleV4CreateResponse CreateVehicle(VehicleV4Parameters vehicleParams)
         {
             var route4Me = new Route4MeManager(c_ApiKey);
@@ -213,6 +218,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [System.Obsolete]
         public void GetVehicleTest()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
@@ -229,6 +235,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [System.Obsolete]
         public void UpdateVehicleTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
@@ -269,6 +276,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [System.Obsolete]
         public void DeleteVehicleTest()
         {
             if (_lsVehicleIDs.Count < 1)
@@ -298,6 +306,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [OneTimeTearDown]
+        [System.Obsolete]
         public void VehiclesGroupCleanup()
         {
             var route4Me = new Route4MeManager(c_ApiKey);

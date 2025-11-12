@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -20,13 +23,14 @@ namespace Route4MeSDKUnitTest.Tests
         private AddressBookContact _scheduledContact2, _scheduledContact2Response;
         private AddressBookContact _scheduledContact3, _scheduledContact3Response;
         private AddressBookContact _scheduledContact4, _scheduledContact4Response;
-        private AddressBookContact _scheduledContact5, _scheduledContact5Response;        
+        private AddressBookContact _scheduledContact5, _scheduledContact5Response;
         private AddressBookContact _contactToRemove;
 
         private TestDataRepository _tdr;
         private List<string> _lsOptimizationIDs;
 
         [OneTimeSetUp]
+        [Obsolete]
         public void AddAddressBookContactsTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -136,13 +140,14 @@ namespace Route4MeSDKUnitTest.Tests
             };
 
             _tdr.SD10Stops_route = _tdr.AddAddressesToRoute(
-                new Address[] { addressToInsert1, addressToInsert2 }, 
+                new Address[] { addressToInsert1, addressToInsert2 },
                 _tdr.SD10Stops_route_id);
 
             #endregion
         }
 
         [Test]
+        [Obsolete]
         public void AddCustomDataToContactTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -171,6 +176,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void AddScheduledAddressBookContactsTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -201,7 +207,7 @@ namespace Route4MeSDKUnitTest.Tests
                     {"scheduled", "yes"},
                     {"service type", "publishing"}
                 },
-                Schedule = new List<Schedule> {sched1}
+                Schedule = new List<Schedule> { sched1 }
             };
 
             _scheduledContact1Response = route4Me.AddAddressBookContact(
@@ -225,7 +231,7 @@ namespace Route4MeSDKUnitTest.Tests
             var sched2 = new Schedule("weekly", false)
             {
                 Enabled = true,
-                Weekly = new ScheduleWeekly(1, new[] {1, 2, 3, 4, 5})
+                Weekly = new ScheduleWeekly(1, new[] { 1, 2, 3, 4, 5 })
             };
 
             _scheduledContact2 = new AddressBookContact
@@ -241,7 +247,7 @@ namespace Route4MeSDKUnitTest.Tests
                 CachedLng = -85.786514,
                 AddressCity = "Louisville",
                 ServiceTime = 600,
-                Schedule = new List<Schedule> {sched2}
+                Schedule = new List<Schedule> { sched2 }
             };
 
             _scheduledContact2Response = route4Me.AddAddressBookContact(_scheduledContact2, out errorString);
@@ -266,7 +272,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Monthly = new ScheduleMonthly(
                     1,
                     "dates",
-                    new[] {20, 22, 23, 24, 25})
+                    new[] { 20, 22, 23, 24, 25 })
             };
 
             _scheduledContact3 = new AddressBookContact
@@ -286,7 +292,7 @@ namespace Route4MeSDKUnitTest.Tests
                 AddressZip = "40215",
                 AddressCity = "Louisville",
                 ServiceTime = 750,
-                Schedule = new List<Schedule> {sched3},
+                Schedule = new List<Schedule> { sched3 },
                 Color = "red"
             };
 
@@ -314,7 +320,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Monthly = new ScheduleMonthly(
                     1,
                     "nth",
-                    _nth: new Dictionary<int, int> {{1, 4}})
+                    _nth: new Dictionary<int, int> { { 1, 4 } })
             };
 
             _scheduledContact4 = new AddressBookContact
@@ -335,7 +341,7 @@ namespace Route4MeSDKUnitTest.Tests
                     {"scheduled", "yes"},
                     {"service type", "library"}
                 },
-                Schedule = new List<Schedule> {sched4},
+                Schedule = new List<Schedule> { sched4 },
                 AddressIcon = "emoji/emoji-bus"
             };
 
@@ -381,8 +387,8 @@ namespace Route4MeSDKUnitTest.Tests
                     {"scheduled", "yes"},
                     {"service type", "appliance"}
                 },
-                Schedule = new List<Schedule> {sched5},
-                ScheduleBlacklist = new[] {"2017-12-22", "2017-12-23"},
+                Schedule = new List<Schedule> { sched5 },
+                ScheduleBlacklist = new[] { "2017-12-22", "2017-12-23" },
                 ServiceTime = 300
             };
 
@@ -404,6 +410,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void UpdateAddressBookContactTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -411,7 +418,7 @@ namespace Route4MeSDKUnitTest.Tests
             Assert.IsNotNull(_contact1, "contact1 is null.");
 
             _contact1.AddressGroup = "Updated";
-            _contact1.ScheduleBlacklist = new[] {"2020-03-14", "2020-03-15"};
+            _contact1.ScheduleBlacklist = new[] { "2020-03-14", "2020-03-15" };
             _contact1.AddressCustomData = new Dictionary<string, string>
             {
                 {"key1", "value1"}, {"key2", "value2"}
@@ -510,6 +517,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void UpdateWholeAddressBookContactTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -521,7 +529,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             // Modify the parameters of the contactClone
             contactClone.AddressGroup = "Updated";
-            contactClone.ScheduleBlacklist = new[] {"2020-03-14", "2020-03-15"};
+            contactClone.ScheduleBlacklist = new[] { "2020-03-14", "2020-03-15" };
             contactClone.AddressCustomData = new Dictionary<string, string>
             {
                 {"key1", "value1"}, {"key2", "value2"}
@@ -541,7 +549,7 @@ namespace Route4MeSDKUnitTest.Tests
                 Daily = new ScheduleDaily(1)
             };
 
-            contactClone.Schedule = new List<Schedule> {sched1};
+            contactClone.Schedule = new List<Schedule> { sched1 };
 
             _contact1 = route4Me.UpdateAddressBookContact(contactClone, _contact1, out var errorString);
 
@@ -666,6 +674,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void GetSpecifiedFieldsSearchTextTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -722,12 +731,13 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void RemoveAddressBookContactsTest()
         {
             var route4Me = new Route4MeManager(ApiKeys.ActualApiKey);
 
             var removed = route4Me.RemoveAddressBookContacts(
-                new[] {_contactToRemove.AddressId.ToString()},
+                new[] { _contactToRemove.AddressId.ToString() },
                 out var errorString);
 
             Assert.IsTrue(removed,
@@ -758,6 +768,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [OneTimeTearDown]
+        [Obsolete]
         public void AddressbookContactsGroupCleanup()
         {
             var route4Me = new Route4MeManager(CApiKey);

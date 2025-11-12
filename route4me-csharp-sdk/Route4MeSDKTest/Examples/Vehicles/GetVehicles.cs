@@ -8,6 +8,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Get Vehicles List
         /// </summary>
+        [System.Obsolete]
         public void GetVehicles()
         {
             // Create the manager with the api key

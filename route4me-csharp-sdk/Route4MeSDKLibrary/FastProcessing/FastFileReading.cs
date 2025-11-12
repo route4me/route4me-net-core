@@ -6,11 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using CsvHelper;
+
 using fastJSON;
+
 using Newtonsoft.Json;
+
 using Route4MeSDK.DataTypes;
+
 using Route4MeSDKLibrary;
+
 using AddressBookContact = Route4MeSDK.DataTypes.V5.AddressBookContact;
 
 namespace Route4MeSDK.FastProcessing
@@ -116,7 +122,7 @@ namespace Route4MeSDK.FastProcessing
                     OnJsonFileChunkIsReady(chunkIsReady);
                 }
 
-                var args = new JsonFileReadingIsDoneArgs {IsDone = true};
+                var args = new JsonFileReadingIsDoneArgs { IsDone = true };
                 OnJsonFileReadingIsDone(args);
             }
         }
@@ -267,7 +273,7 @@ namespace Route4MeSDK.FastProcessing
 
                                         var secValue = R4MeUtils.DDHHMM2Seconds(hmValue, out var errorString2);
 
-                                        long? seconds = secValue != null ? (long) secValue : default;
+                                        long? seconds = secValue != null ? (long)secValue : default;
 
                                         if (seconds != null)
                                             abContact
@@ -464,7 +470,7 @@ namespace Route4MeSDK.FastProcessing
                 TotalResult = totalResult;
             }
 
-            public string AddressesChunk { get;  }
+            public string AddressesChunk { get; }
             public List<AddressBookContact> CurrentChunk { get; }
             public List<List<AddressBookContact>> TotalResult { get; }
         }

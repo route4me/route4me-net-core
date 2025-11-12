@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
@@ -638,6 +639,7 @@ namespace Route4MeSDKUnitTest.Types
             }
         }
 
+        [Obsolete]
         public bool RemoveAddressBookContacts(List<string> lsRemLocations, string ApiKey)
         {
             var route4Me = new Route4MeManager(ApiKey);
@@ -683,7 +685,7 @@ namespace Route4MeSDKUnitTest.Types
             };
 
             // Run the query
-            var result = route4Me.DynamicInsertRouteAddresses(dynamicInsertParams, 
+            var result = route4Me.DynamicInsertRouteAddresses(dynamicInsertParams,
                                         out Route4MeSDK.DataTypes.V5.ResultResponse resultResponse);
 
             if (result == null)

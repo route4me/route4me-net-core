@@ -1,7 +1,10 @@
 using System;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
@@ -206,7 +209,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             Assert.IsNotNull(facilities, "Facilities should not be null");
             Assert.IsNull(error, "Get facilities should not return error");
-            
+
             Assert.IsNotNull(facilities.Data, "Facilities data should not be null");
             Assert.That(facilities.Data.Length, Is.LessThanOrEqualTo(5), "Should return at most 5 facilities per page");
             Assert.That(facilities.Total, Is.GreaterThanOrEqualTo(facilities.Data.Length), "Total should be >= data length");
@@ -315,7 +318,7 @@ namespace Route4MeSdkV5UnitTest.V5
             // First get all types to get a valid ID
             var allTypes = route4Me.FacilityManager.GetFacilityTypes(out var typesError);
             Assert.IsNotNull(allTypes, "Should be able to get facility types");
-            
+
             if (allTypes.Data == null || allTypes.Data.Length == 0)
             {
                 Assert.Ignore("No facility types found in the account. This test requires facility types to be configured.");
@@ -349,4 +352,3 @@ namespace Route4MeSdkV5UnitTest.V5
 
     }
 }
-

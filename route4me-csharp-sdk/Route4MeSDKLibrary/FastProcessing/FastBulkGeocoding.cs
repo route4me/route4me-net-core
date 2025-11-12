@@ -7,15 +7,20 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using Quobject.EngineIoClientDotNet.Client;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.SocketIoClientDotNet.Client;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5;
+
 using AddressBookContact = Route4MeSDK.DataTypes.V5.AddressBookContact;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using Socket = Quobject.SocketIoClientDotNet.Client.Socket;
@@ -112,7 +117,7 @@ namespace Route4MeSDK.FastProcessing
             {
                 _largeJsonFileProcessingIsDone = true;
                 if (_geocodedAddressesDownloadingIsDone)
-                    OnGeocodingIsFinished(new GeocodingIsFinishedArgs {isFinished = true});
+                    OnGeocodingIsFinished(new GeocodingIsFinishedArgs { isFinished = true });
                 // fire here event for external (test) code
             }
         }
@@ -132,7 +137,7 @@ namespace Route4MeSDK.FastProcessing
             if (uploadAddressesResponse != null)
             {
                 var tempAddressesStorageID = uploadAddressesResponse.OptimizationProblemId;
-                var addressesInChunk = (int) uploadAddressesResponse.AddressCount;
+                var addressesInChunk = (int)uploadAddressesResponse.AddressCount;
 
                 if (addressesInChunk < _fileReading.jsonObjectsChunkSize)
                     _requestedAddresses = addressesInChunk; // last chunk
@@ -191,7 +196,7 @@ namespace Route4MeSDK.FastProcessing
             if (isDone)
             {
                 Parallel.ForEach(e.Packages,
-                    new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, CsvFileChunkIsReady);
+                    new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, CsvFileChunkIsReady);
             }
         }
 
@@ -200,7 +205,7 @@ namespace Route4MeSDK.FastProcessing
             if (e.TotalResult.Count > 15)
             {
                 Parallel.ForEach(e.TotalResult,
-                    new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, CsvFileChunkIsReady);
+                    new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, CsvFileChunkIsReady);
 
                 e.TotalResult.Clear();
             }
@@ -373,7 +378,7 @@ namespace Route4MeSDK.FastProcessing
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                                                    | SecurityProtocolType.Tls11
                                                    | SecurityProtocolType.Tls12
-                                                   | (SecurityProtocolType) 12288;
+                                                   | (SecurityProtocolType)12288;
 
             _geocodedAddressesDownloadingIsDone = false;
 
@@ -494,7 +499,7 @@ namespace Route4MeSDK.FastProcessing
                     if (progressMessage.total == progressMessage.done)
                     {
                         if (_requestedAddresses == default) _requestedAddresses = progressMessage.total;
-                            Download(0, temporaryAddressesStorageID);
+                        Download(0, temporaryAddressesStorageID);
                     }
                 });
 
@@ -526,8 +531,8 @@ namespace Route4MeSDK.FastProcessing
         public void Download(int start, string temporaryAddressesStorageId)
         {
             var bufferFailSafeMaxAddresses = 100;
-            var chunkSize = (int) Math.Round((decimal) Math.Min(200, Math.Max(10, _requestedAddresses / 100)));
-            var chunksLimit = (int) Math.Ceiling((decimal) (bufferFailSafeMaxAddresses / chunkSize));
+            var chunkSize = (int)Math.Round((decimal)Math.Min(200, Math.Max(10, _requestedAddresses / 100)));
+            var chunksLimit = (int)Math.Ceiling((decimal)(bufferFailSafeMaxAddresses / chunkSize));
 
             var maxAddressesToBeDownloaded = chunkSize * chunksLimit;
             _nextDownloadStage = _loadedAddressesCount + maxAddressesToBeDownloaded;

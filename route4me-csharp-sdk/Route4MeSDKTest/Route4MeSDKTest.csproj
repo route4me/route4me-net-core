@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <StartupObject>Route4MeSDKTest.Program</StartupObject>
+    <WarningsNotAsErrors>CS0612</WarningsNotAsErrors>
+
   </PropertyGroup>
 
   <ItemGroup>

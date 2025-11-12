@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 
@@ -9,6 +10,7 @@ namespace Route4MeSDK.Examples
     /// </summary>
     public sealed partial class Route4MeExamples
     {
+        [System.Obsolete]
         public void UpdateRouteDriver()
         {
             // Create the manager with the api key

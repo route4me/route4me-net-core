@@ -27,4 +27,3 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Facilities
         public bool IsDefault { get; set; }
     }
 }
-

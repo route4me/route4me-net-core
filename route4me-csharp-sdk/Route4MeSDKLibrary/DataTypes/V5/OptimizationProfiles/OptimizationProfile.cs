@@ -409,20 +409,20 @@ namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
         /// Optimization profile ID (legacy property)
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
-        public string Id 
-        { 
-            get => OptimizationProfileId; 
-            set => OptimizationProfileId = value; 
+        public string Id
+        {
+            get => OptimizationProfileId;
+            set => OptimizationProfileId = value;
         }
 
         /// <summary>
         /// Profile name (legacy property)
         /// </summary>
         [DataMember(Name = "name", EmitDefaultValue = false)]
-        public string Name 
-        { 
-            get => ProfileName; 
-            set => ProfileName = value; 
+        public string Name
+        {
+            get => ProfileName;
+            set => ProfileName = value;
         }
     }
 }

@@ -15,4 +15,3 @@ namespace Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles
         public OptimizationProfile Data { get; set; }
     }
 }
-

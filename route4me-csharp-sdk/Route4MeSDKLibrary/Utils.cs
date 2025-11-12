@@ -10,12 +10,17 @@ using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
+
 using ReadOnlyAttribute = Route4MeSDK.DataTypes.ReadOnlyAttribute;
 
 namespace Route4MeSDK
@@ -45,7 +50,7 @@ namespace Route4MeSDK
             };
             var parser = new DataContractJsonSerializer(typeof(T), settings);
 
-            return (T) parser.ReadObject(stream);
+            return (T)parser.ReadObject(stream);
         }
 
         public static T ReadObjectNew<T>(this Stream stream)
@@ -204,7 +209,7 @@ namespace Route4MeSDK
 
             if (text == "true")
             {
-                text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse(){ Status = true });
+                text = JsonConvert.SerializeObject(new DataTypes.V5.StatusResponse() { Status = true });
             }
             else if (text == "false")
             {
@@ -346,7 +351,7 @@ namespace Route4MeSDK
             var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             if (date < origin) date = new DateTime(1970, 1, 1, date.Hour, date.Minute, date.Second);
             var diff = date - origin;
-            return (long) Math.Floor(diff.TotalSeconds);
+            return (long)Math.Floor(diff.TotalSeconds);
         }
 
         /// <summary>
@@ -615,7 +620,7 @@ namespace Route4MeSDK
 
             attributes.TryGetValue("ReadOnlyAttribute", out var isReadOnly);
 
-            var isReadOnlyValue = isReadOnly != null ? ((ReadOnlyAttribute) isReadOnly).IsReadOnly : false;
+            var isReadOnlyValue = isReadOnly != null ? ((ReadOnlyAttribute)isReadOnly).IsReadOnly : false;
 
             return isReadOnlyValue;
         }
@@ -741,36 +746,36 @@ namespace Route4MeSDK
                 try
                 {
                     if (destinationType == typeof(bool))
-                        result = (T) (object) ((IConvertible) value).ToBoolean(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToBoolean(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(byte))
-                        result = (T) (object) ((IConvertible) value).ToByte(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToByte(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(char))
-                        result = (T) (object) ((IConvertible) value).ToChar(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToChar(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(DateTime))
-                        result = (T) (object) ((IConvertible) value).ToDateTime(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToDateTime(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(decimal))
-                        result = (T) (object) ((IConvertible) value).ToDecimal(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToDecimal(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(double))
-                        result = (T) (object) ((IConvertible) value).ToDouble(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToDouble(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(short))
-                        result = (T) (object) ((IConvertible) value).ToInt16(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToInt16(CultureInfo.CurrentCulture);
                     //return true;
                     else if (destinationType == typeof(int))
-                        result = (T) (object) ((IConvertible) value).ToInt32(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToInt32(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(long))
-                        result = (T) (object) ((IConvertible) value).ToInt64(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToInt64(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(sbyte))
-                        result = (T) (object) ((IConvertible) value).ToSByte(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToSByte(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(float))
-                        result = (T) (object) ((IConvertible) value).ToSingle(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToSingle(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(ushort))
-                        result = (T) (object) ((IConvertible) value).ToUInt16(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToUInt16(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(uint))
-                        result = (T) (object) ((IConvertible) value).ToUInt32(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToUInt32(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(ulong))
-                        result = (T) (object) ((IConvertible) value).ToUInt64(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToUInt64(CultureInfo.CurrentCulture);
                     else if (destinationType == typeof(string))
-                        result = (T) (object) ((IConvertible) value).ToString(CultureInfo.CurrentCulture);
+                        result = (T)(object)((IConvertible)value).ToString(CultureInfo.CurrentCulture);
                 }
                 catch
                 {
@@ -805,7 +810,7 @@ namespace Route4MeSDK
             {
                 if (IsPropertyDictionary(value))
                 {
-                    value = (Dictionary<string, string>) value;
+                    value = (Dictionary<string, string>)value;
                     return value;
                 }
 
@@ -821,64 +826,64 @@ namespace Route4MeSDK
                 {
                     if (destinationType == typeof(bool))
                     {
-                        result = ((IConvertible) value).ToBoolean(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToBoolean(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(byte))
                     {
-                        result = ((IConvertible) value).ToByte(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToByte(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(char))
                     {
-                        result = ((IConvertible) value).ToChar(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToChar(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(DateTime))
                     {
-                        result = ((IConvertible) value).ToDateTime(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToDateTime(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(decimal))
                     {
-                        result = ((IConvertible) value).ToDecimal(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToDecimal(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(double))
                     {
-                        result = ((IConvertible) value).ToDouble(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToDouble(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(short))
                     {
-                        result = ((IConvertible) value).ToInt16(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToInt16(CultureInfo.CurrentCulture);
                         return true;
                     }
                     else if (destinationType == typeof(int))
                     {
-                        result = ((IConvertible) value).ToInt32(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToInt32(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(long))
                     {
-                        result = ((IConvertible) value).ToInt64(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToInt64(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(sbyte))
                     {
-                        result = ((IConvertible) value).ToSByte(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToSByte(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(float))
                     {
-                        result = ((IConvertible) value).ToSingle(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToSingle(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(ushort))
                     {
-                        result = ((IConvertible) value).ToUInt16(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToUInt16(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(uint))
                     {
-                        result = ((IConvertible) value).ToUInt32(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToUInt32(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(ulong))
                     {
-                        result = ((IConvertible) value).ToUInt64(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToUInt64(CultureInfo.CurrentCulture);
                     }
                     else if (destinationType == typeof(string))
                     {
-                        result = ((IConvertible) value).ToString(CultureInfo.CurrentCulture);
+                        result = ((IConvertible)value).ToString(CultureInfo.CurrentCulture);
                     }
                 }
                 catch
@@ -909,7 +914,7 @@ namespace Route4MeSDK
         /// <returns>Timezone in seconds</returns>
         public static int GetLocalTimeZone()
         {
-            var seconds = (int) TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalSeconds;
+            var seconds = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalSeconds;
 
             return seconds;
         }
@@ -936,7 +941,7 @@ namespace Route4MeSDK
         public static string GenerateTestEmail(string emailTemplate)
         {
             string[] emailParts = emailTemplate.Split('@');
-            return emailParts[0] + "+" + ConvertToUnixTimestamp(DateTime.Now)+GenerateRandomString(4) + "@" + emailParts[1];
+            return emailParts[0] + "+" + ConvertToUnixTimestamp(DateTime.Now) + GenerateRandomString(4) + "@" + emailParts[1];
         }
 
         public static bool IsV5(string url)

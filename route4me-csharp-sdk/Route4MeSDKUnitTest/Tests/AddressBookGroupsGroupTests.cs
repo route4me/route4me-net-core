@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -97,7 +100,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var addressBookGroupParameters = new AddressBookGroupParameters
             {
-                Fields = new[] {"address_id", "address_1", "address_group"},
+                Fields = new[] { "address_id", "address_1", "address_group" },
                 Offset = 0,
                 Limit = 10,
                 Filter = filterParam
@@ -127,7 +130,7 @@ namespace Route4MeSDKUnitTest.Tests
             var addressBookGroupFilter = new AddressBookGroupFilter
             {
                 Condition = "AND",
-                Rules = new[] {addressBookGroupRule}
+                Rules = new[] { addressBookGroupRule }
             };
 
             var addressBookGroupParameters = new AddressBookGroup
@@ -172,7 +175,7 @@ namespace Route4MeSDKUnitTest.Tests
             var addressBookGroupFilter = new AddressBookGroupFilter
             {
                 Condition = "AND",
-                Rules = new[] {addressBookGroupRule}
+                Rules = new[] { addressBookGroupRule }
             };
 
             var addressBookGroupParameters = new AddressBookGroup

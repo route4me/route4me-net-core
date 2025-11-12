@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
+
 using Route4MeSDK.DataTypes.V5;
+
 using Route4MeSDKLibrary.DataTypes.V5.Schedules;
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Schedules;
@@ -143,7 +146,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             schedule = scheduleList.Data.Single();
 
-            scheduleList = route4Me.DeleteSchedule(new DeleteScheduleParameters(){ ScheduleUid = schedule.ScheduleUid, WithRoutes = false }, out resultResponse);
+            scheduleList = route4Me.DeleteSchedule(new DeleteScheduleParameters() { ScheduleUid = schedule.ScheduleUid, WithRoutes = false }, out resultResponse);
 
             Assert.That(scheduleList.Data.Length, Is.EqualTo(1));
         }
@@ -190,7 +193,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
                 out resultResponse);
 
             Assert.That(createRouteScheduleResponse.Data.Length, Is.GreaterThan(0));
@@ -211,7 +214,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
                 out resultResponse);
 
             var response = route4Me.GetRouteSchedule(tdr.SD10Stops_route_id, out resultResponse);
@@ -242,7 +245,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse1.Data.Single().ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse1.Data.Single().ScheduleUid },
                 out resultResponse);
 
 
@@ -272,7 +275,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
                 out resultResponse);
 
             var response = route4Me.GetRouteSchedule(tdr.SD10Stops_route_id, out resultResponse);
@@ -303,7 +306,7 @@ namespace Route4MeSdkV5UnitTest.V5
 
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = scheduleResponse.Data.Single().ScheduleUid },
                 out resultResponse);
 
             var response = route4Me.GetRouteSchedulePreview(tdr.SD10Stops_route_id, new RouteSchedulePreviewParameters() { Start = "2020-09-20", End = "2023-09-20" }, out resultResponse);
@@ -327,7 +330,7 @@ namespace Route4MeSdkV5UnitTest.V5
             var createdSchedule = scheduleResponse.Data.Single();
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = createdSchedule.ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = createdSchedule.ScheduleUid },
                 out resultResponse);
 
 
@@ -395,11 +398,11 @@ namespace Route4MeSdkV5UnitTest.V5
             var createdSchedule = scheduleResponse.Data.Single();
             var createRouteScheduleResponse = route4Me.CreateRouteSchedule(
                 new RouteSchedule()
-                    { RouteId = tdr.SD10Stops_route_id, ScheduleUid = createdSchedule.ScheduleUid },
+                { RouteId = tdr.SD10Stops_route_id, ScheduleUid = createdSchedule.ScheduleUid },
                 out resultResponse);
 
 
-            var response = route4Me.GetRouteScheduleCopies(new GetRouteScheduleCopiesRequest(){ RouteId = tdr.SD10Stops_route_id, ScheduleId = createdSchedule.ScheduleUid }, out resultResponse);
+            var response = route4Me.GetRouteScheduleCopies(new GetRouteScheduleCopiesRequest() { RouteId = tdr.SD10Stops_route_id, ScheduleId = createdSchedule.ScheduleUid }, out resultResponse);
             Assert.That(response.ScheduledRoutes.Length, Is.EqualTo(0));
         }
 

@@ -1,5 +1,6 @@
-﻿using Route4MeSDK.QueryTypes;
-using System;
+﻿using System;
+
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -15,7 +16,7 @@ namespace Route4MeSDK.Examples
 
             var conParams = new TelematicsConnectionParameters
             {
-                VendorID = Convert.ToUInt32(tomtomVendor.ID),
+                VendorID = Convert.ToUInt32(_tomtomVendor.ID),
                 AccountId = "12345",
                 UserName = "John Doe",
                 Password = "password",

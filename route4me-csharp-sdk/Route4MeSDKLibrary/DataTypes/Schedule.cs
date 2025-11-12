@@ -131,7 +131,7 @@ namespace Route4MeSDK.DataTypes
         {
             return ScheduleMode == null
                 ? false
-                : Array.IndexOf(new[] {"daily", "weekly", "monthly", "annually"}, ScheduleMode.ToString()) >= 0
+                : Array.IndexOf(new[] { "daily", "weekly", "monthly", "annually" }, ScheduleMode.ToString()) >= 0
                     ? true
                     : false;
         }
@@ -292,7 +292,7 @@ namespace Route4MeSDK.DataTypes
         {
             return ScheduleMonthlyMode == null
                 ? false
-                : Array.IndexOf(new[] {"dates", "nth"}, ScheduleMonthlyMode.ToString()) >= 0
+                : Array.IndexOf(new[] { "dates", "nth" }, ScheduleMonthlyMode.ToString()) >= 0
                     ? true
                     : false;
         }
@@ -309,7 +309,7 @@ namespace Route4MeSDK.DataTypes
 
             iN = Convert.ToInt32(ScheduleNthN);
 
-            return Array.IndexOf(new[] {1, 2, 3, 4, 5, -1}, iN) < 0 ? false : true;
+            return Array.IndexOf(new[] { 1, 2, 3, 4, 5, -1 }, iN) < 0 ? false : true;
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace Route4MeSDK.DataTypes
 
             iN = Convert.ToInt32(ScheduleNthWhat);
 
-            return Array.IndexOf(new[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, iN) < 0 ? false : true;
+            return Array.IndexOf(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, iN) < 0 ? false : true;
         }
     }
 

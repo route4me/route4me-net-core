@@ -1,20 +1,18 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
-using Route4MeSDKLibrary.DataTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
+
+using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDK.Examples
 {
     public sealed partial class Route4MeExamples
     {
-        private string firstMemberId;
+        private List<TelematicsConnection> _lsCreatedConnections;
 
-        private string apiToken;
-
-        private List<TelematicsConnection> lsCreatedConnections;
-
-        private TelematicsVendors tomtomVendor;
+        private TelematicsVendors _tomtomVendor;
 
         /// <summary>
         /// The example refers to the process of getting all the telematics connections.
@@ -27,14 +25,14 @@ namespace Route4MeSDK.Examples
 
             var vendors = route4Me.SearchTelematicsVendors(vendParams, out var errorString2);
 
-            tomtomVendor = vendors.Vendors[0];
+            _tomtomVendor = vendors.Vendors[0];
 
-            lsCreatedConnections = new List<TelematicsConnection>();
+            _lsCreatedConnections = new List<TelematicsConnection>();
 
             var conParams = new TelematicsConnectionParameters
             {
-                VendorID = Convert.ToUInt32(tomtomVendor.ID),
-                Vendor = tomtomVendor.Slug,
+                VendorID = Convert.ToUInt32(_tomtomVendor.ID),
+                Vendor = _tomtomVendor.Slug,
                 AccountId = "12345",
                 UserName = "John Doe",
                 Password = "password",
@@ -43,16 +41,16 @@ namespace Route4MeSDK.Examples
                 ValidateRemoteCredentials = false
             };
 
-            var result = route4Me.CreateTelematicsConnection(apiToken, conParams, out var errorString);
+            var result = route4Me.CreateTelematicsConnection(ActualApiKey, conParams, out var errorString);
 
             PrintExampleTelematicsVendor(result, errorString);
 
-            if (result != null && result.GetType() == typeof(TelematicsConnection)) lsCreatedConnections.Add(result);
+            if (result != null) _lsCreatedConnections.Add(result);
 
             if (removeAfterComplete)
             {
                 DeleteTelematicsConnection();
-                lsCreatedConnections.Clear();
+                _lsCreatedConnections.Clear();
             }
         }
     }

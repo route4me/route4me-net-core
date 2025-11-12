@@ -1,4 +1,5 @@
 ﻿using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
 
 namespace Route4MeSDK.Examples
@@ -12,7 +13,7 @@ namespace Route4MeSDK.Examples
         {
             CreateVendorConnection(false);
 
-            if (lsCreatedConnections.Count < 1)
+            if (_lsCreatedConnections.Count < 1)
             {
                 System.Console.WriteLine("Cannot create a test telematics connection to delete");
                 return;
@@ -21,8 +22,8 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManager(ActualApiKey);
 
             var result = route4Me.DeleteTelematicsConnection(
-                apiToken,
-                lsCreatedConnections[lsCreatedConnections.Count - 1].ConnectionToken,
+                ActualApiKey,
+                _lsCreatedConnections[_lsCreatedConnections.Count - 1].ConnectionToken,
                 out var errorString);
 
             if (result != null && result.GetType() == typeof(TelematicsConnection))

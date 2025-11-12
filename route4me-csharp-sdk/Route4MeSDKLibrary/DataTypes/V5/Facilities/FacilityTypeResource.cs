@@ -21,4 +21,3 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Facilities
         public string FacilityTypeAlias { get; set; }
     }
 }
-

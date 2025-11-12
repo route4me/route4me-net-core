@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CsvHelper;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
+
 using Address = Route4MeSDK.DataTypes.Address;
 using AlgorithmType = Route4MeSDK.DataTypes.AlgorithmType;
 using DeviceType = Route4MeSDK.DataTypes.DeviceType;
@@ -18,6 +23,7 @@ using Optimize = Route4MeSDK.DataTypes.Optimize;
 using RouteParameters = Route4MeSDK.DataTypes.RouteParameters;
 using TravelMode = Route4MeSDK.DataTypes.TravelMode;
 
+#pragma warning disable CS0162 // Unreachable code detected
 namespace Route4MeSDKUnitTest.Tests
 {
     [TestFixture]
@@ -36,6 +42,7 @@ namespace Route4MeSDKUnitTest.Tests
         private List<int> _driverIDs;
 
         [OneTimeSetUp]
+        [Obsolete]
         public void AdvancedConstraintsGroupInitialize()
         {
             skip = c_ApiKey_1 == c_ApiKey ? "yes" : "no";
@@ -65,6 +72,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Tags and Different Time Windows Fleets
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample1()
         {
             if (skip == "yes") return;
@@ -224,6 +232,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Some addresses without Tags
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample2()
         {
             if (skip == "yes") return;
@@ -380,6 +389,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Driver's Shift
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample3()
         {
             if (skip == "yes") return;
@@ -554,6 +564,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Driver's Skills
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample4()
         {
             if (skip == "yes") return;
@@ -725,6 +736,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Drivers Schedules with Territories
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample5()
         {
             if (skip == "yes") return;
@@ -1703,6 +1715,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE:  Drivers Schedules with Territories
         /// </summary>
         [Test]
+        [Obsolete]
         public async Task AdvancedConstraintsExample6()
         {
             // Route generation with more than 1000 addresses needs special permission.
@@ -1769,7 +1782,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var sAddressFile = AppDomain.CurrentDomain.BaseDirectory + @"Data/CSV/locations_1999.csv";
 
-             var addresses = new List<Address>();
+            var addresses = new List<Address>();
 
             using (TextReader reader = File.OpenText(sAddressFile))
             {
@@ -1794,7 +1807,7 @@ namespace Route4MeSDKUnitTest.Tests
                             Group = group
                         };
 
-                        if (igroup > -1) curAddress.Tags = new string[] { "ZONE 0"+(igroup+1) };
+                        if (igroup > -1) curAddress.Tags = new string[] { "ZONE 0" + (igroup + 1) };
 
                         addresses.Add(curAddress);
                     }
@@ -1835,6 +1848,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Drivers Schedules with Territories
         /// </summary>
         [Test]
+        [Obsolete]
         public async Task AdvancedConstraintsExample7()
         {
             // Route generation with more than 1000 addresses needs special permission.
@@ -1980,17 +1994,20 @@ namespace Route4MeSDKUnitTest.Tests
                 $"UserErrors: {response.Item1.UserErrors}");
 
             _createdOptimizationIDs.Add(response.Item1.OptimizationProblemId);
+#pragma warning restore CS0162 // Unreachable code detected
         }
 
         /// <summary>
         /// TEST CASE: Drivers Schedules with Territories
         /// </summary>
         [Test]
+        [Obsolete]
         public async Task AdvancedConstraintsExample8()
         {
             // Route generation with more than 1000 addresses needs special permission.
             if (2 > 1) return;
 
+#pragma warning disable CS0162 // Unreachable code detected
             var route4Me = new Route4MeManager(c_ApiKey);
 
             var routeParameters = new RouteParameters()
@@ -2108,12 +2125,14 @@ namespace Route4MeSDKUnitTest.Tests
                 $"UserErrors: {response.Item1.UserErrors}");
 
             _createdOptimizationIDs.Add(response.Item1.OptimizationProblemId);
+#pragma warning restore CS0162 // Unreachable code detected
         }
 
         /// <summary>
         /// TEST CASE: Retail Location based of address position id
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample9()
         {
             if (skip == "yes") return;
@@ -2286,6 +2305,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Retail Location based of address position id
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample10()
         {
             if (skip == "yes") return;
@@ -2444,6 +2464,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Retail Location - setting the address in the advanced constraints
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample11()
         {
             if (skip == "yes") return;
@@ -2607,6 +2628,7 @@ namespace Route4MeSDKUnitTest.Tests
         /// TEST CASE: Drivers Schedules with Territories and Retail Location
         /// </summary>
         [Test]
+        [Obsolete]
         public void AdvancedConstraintsExample12()
         {
             if (skip == "yes") return;

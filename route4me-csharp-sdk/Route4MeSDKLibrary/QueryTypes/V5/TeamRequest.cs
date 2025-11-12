@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.QueryTypes.V5
@@ -309,8 +310,8 @@ namespace Route4MeSDK.QueryTypes.V5
         public MemberTypes? GetMemberType(string memberType)
         {
             foreach (int i in Enum.GetValues(typeof(MemberTypes)))
-                if (((MemberTypes) i).Description().Equals(memberType))
-                    return (MemberTypes) i;
+                if (((MemberTypes)i).Description().Equals(memberType))
+                    return (MemberTypes)i;
 
             return null;
         }

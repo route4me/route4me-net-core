@@ -1,8 +1,10 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using Route4MeSDK;
+﻿using System;
 using System.Threading.Tasks;
-using System;
+
+using Route4MeSDK;
+using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes.V5.OptimizationProfiles;
 
 namespace Route4MeSDKLibrary.Managers
