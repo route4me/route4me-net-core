@@ -5,11 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -45,6 +49,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [OneTimeTearDown]
+        [Obsolete]
         public void RoutesGroupCleanup()
         {
             var result = _tdr.RemoveOptimization(_lsOptimizationIDs.ToArray());
@@ -600,6 +605,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void AssignVehicleToRouteTest()
         {
             var route4Me = new Route4MeManager(CApiKey);
@@ -642,6 +648,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void AssignMemberToRouteTest()
         {
             var route4Me = new Route4MeManager(CApiKey);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5

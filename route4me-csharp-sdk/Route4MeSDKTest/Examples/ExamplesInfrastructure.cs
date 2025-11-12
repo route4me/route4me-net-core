@@ -1,14 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Route4MeSDK.DataTypes;
-using R4mActivity = Route4MeSDK.DataTypes.Activity;
-using Route4MeSDK.QueryTypes;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using static Route4MeSDK.Route4MeManager;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.DataTypes;
+
+using static Route4MeSDK.Route4MeManager;
+
+using R4mActivity = Route4MeSDK.DataTypes.Activity;
 
 
 namespace Route4MeSDK.Examples
@@ -643,6 +648,7 @@ namespace Route4MeSDK.Examples
 
         #region Address Book Contacts
 
+        [Obsolete]
         public void CreateTestContacts()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -706,6 +712,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Remove the contacts created in an example.
         /// </summary>
+        [Obsolete]
         private void RemoveTestContacts()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -1686,6 +1693,7 @@ namespace Route4MeSDK.Examples
 
         #region Users
 
+        [Obsolete]
         public void CreateTestUser()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -1782,6 +1790,7 @@ namespace Route4MeSDK.Examples
             }
         }
 
+        [Obsolete]
         private void RemoveTestUsers()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -1803,6 +1812,7 @@ namespace Route4MeSDK.Examples
             }
         }
 
+        [Obsolete]
         private long? GetOwnerUserId()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -1830,6 +1840,7 @@ namespace Route4MeSDK.Examples
 
         #region Vehicles
 
+        [Obsolete]
         private void CreateTestVehcile()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -1935,6 +1946,7 @@ namespace Route4MeSDK.Examples
             }
         }
 
+        [Obsolete]
         private void RemoveTestVehicles()
         {
             var route4Me = new Route4MeManager(ActualApiKey);
@@ -1991,9 +2003,9 @@ namespace Route4MeSDK.Examples
 
             // Sort the territories by the number of covered orders.
             var orderedResult = from territory in territories
-                orderby territory.Orders.Length
-                    descending
-                select territory;
+                                orderby territory.Orders.Length
+                                    descending
+                                select territory;
 
             // Return a list of the territory IDs.
             return orderedResult.Count() < requestedTerritoriesNumber
@@ -2029,9 +2041,9 @@ namespace Route4MeSDK.Examples
 
             // Sort the territories by the number of covered contacts.
             var orderedResult = from territory in territories
-                orderby territory.Addresses.Length
-                    descending
-                select territory;
+                                orderby territory.Addresses.Length
+                                    descending
+                                select territory;
 
             // Return a list of the territory IDs.
             return orderedResult.Count() < requestedTerritoriesNumber

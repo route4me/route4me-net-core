@@ -63,4 +63,3 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Facilities
         public int? To { get; set; }
     }
 }
-

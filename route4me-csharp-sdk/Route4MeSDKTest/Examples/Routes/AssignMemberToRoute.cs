@@ -1,7 +1,8 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -10,6 +11,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// Assign a team member to a route.
         /// </summary>
+        [Obsolete]
         public void AssignMemberToRoute()
         {
             var route4Me = new Route4MeManager(ActualApiKey);

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 
@@ -26,8 +27,8 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Internal.Requests
 
     public enum Conflicts
     {
-        [Description("fail")]  Fail,
-        [Description("overwrite")]  Overwrite,
-        [Description("skip")]  Skip
+        [Description("fail")] Fail,
+        [Description("overwrite")] Overwrite,
+        [Description("skip")] Skip
     }
 }

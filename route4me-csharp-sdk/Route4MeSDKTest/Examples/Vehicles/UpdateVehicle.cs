@@ -7,6 +7,7 @@ namespace Route4MeSDK.Examples
         /// <summary>
         /// The example refers to the process of updating a vehicle.
         /// </summary>
+        [System.Obsolete]
         public void UpdateVehicle()
         {
             // Create the manager with the api key

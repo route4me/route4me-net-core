@@ -1,10 +1,12 @@
-﻿using Route4MeSDK.Examples;
-using System;
+﻿using System;
+
+using Route4MeSDK.Examples;
 
 namespace Route4MeSDKTest
 {
     internal sealed class Program
     {
+        [Obsolete]
         static void Main(string[] args)
         {
             var examples = new Route4MeExamples();
@@ -19,7 +21,7 @@ namespace Route4MeSDKTest
                                     .GetMethod(executeOption)
                                     ?.GetParameters()?.Length ?? 0) > 0;
 
-            object[] executeParams = methodHasParams 
+            object[] executeParams = methodHasParams
                 ? new object[] { null } // Uncomment if null or object array is sent as a parameter
                 : null; // Uncomment if nothing is sent
 

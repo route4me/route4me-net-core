@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 
@@ -601,7 +602,7 @@ namespace Route4MeSDK.DataTypes
 
         public bool ShouldSerializeCustomFields()
         {
-            return (CustomFields!=null && CustomFields.GetType()!=typeof(Dictionary<string, string>) ? false : true);
+            return (CustomFields != null && CustomFields.GetType() != typeof(Dictionary<string, string>) ? false : true);
         }
     }
 }

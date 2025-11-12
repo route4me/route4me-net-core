@@ -1,6 +1,7 @@
-﻿using Route4MeSDK.DataTypes;
+﻿using System;
+
+using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
-using System;
 
 namespace Route4MeSDK.Examples
 {
@@ -15,7 +16,7 @@ namespace Route4MeSDK.Examples
             var route4Me = new Route4MeManager(ActualApiKey);
 
             var avoidanceZoneQuery = new AvoidanceZoneQuery()
-                { };
+            { };
 
             // Run the query
             AvoidanceZone[] avoidanceZones = route4Me.GetAvoidanceZones(

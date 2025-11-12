@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -101,6 +104,7 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
+        [Obsolete]
         public void GetActivitiesByMemberTest()
         {
             if (c_ApiKey == ApiKeys.DemoApiKey) return;
@@ -144,7 +148,7 @@ namespace Route4MeSDKUnitTest.Tests
                 activitiesAfterTime.Day,
                 0, 0, 0);
 
-            var uiActivitiesAfterTime = (uint) R4MeUtils
+            var uiActivitiesAfterTime = (uint)R4MeUtils
                 .ConvertToUnixTimestamp(activitiesAfterTime);
 
             var activityParameters = new ActivityParameters
@@ -162,7 +166,7 @@ namespace Route4MeSDKUnitTest.Tests
             foreach (var activity in activities)
             {
                 var activityTime = activity.ActivityTimestamp != null
-                    ? (uint) activity.ActivityTimestamp
+                    ? (uint)activity.ActivityTimestamp
                     : 0;
                 Assert.IsTrue(
                     activityTime >= uiActivitiesAfterTime,
@@ -175,7 +179,7 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters {ActivityType = "area-updated"};
+            var activityParameters = new ActivityParameters { ActivityType = "area-updated" };
 
             // Run the query
             var activities = route4Me.GetActivities(
@@ -190,7 +194,7 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters {ActivityType = "area-added"};
+            var activityParameters = new ActivityParameters { ActivityType = "area-added" };
 
             // Run the query
             var activities = route4Me.GetActivities(
@@ -205,7 +209,7 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var activityParameters = new ActivityParameters {ActivityType = "area-removed"};
+            var activityParameters = new ActivityParameters { ActivityType = "area-removed" };
 
             // Run the query
             var activities = route4Me.GetActivities(

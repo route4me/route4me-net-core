@@ -1,6 +1,7 @@
-﻿using Route4MeSDK.QueryTypes.V5;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+
+using Route4MeSDK.QueryTypes.V5;
 
 namespace Route4MeSDK.Examples
 {

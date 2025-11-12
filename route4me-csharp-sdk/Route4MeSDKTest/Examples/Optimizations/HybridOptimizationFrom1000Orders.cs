@@ -1,10 +1,12 @@
-﻿using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
-using System;
-using System.Threading;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+
 using CsvHelper;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {

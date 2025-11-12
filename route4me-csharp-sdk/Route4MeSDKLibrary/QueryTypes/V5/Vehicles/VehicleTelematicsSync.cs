@@ -1,9 +1,10 @@
-﻿using Route4MeSDK.DataTypes.V5;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+
+using Route4MeSDK.DataTypes.V5;
 
 namespace Route4MeSDK.QueryTypes.V5
 {
-    public sealed class VehicleTelematicsSync : Vehicle 
+    public sealed class VehicleTelematicsSync : Vehicle
     {
         /// <summary>
         ///     Telematics gateway connection ID

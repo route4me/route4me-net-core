@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using Newtonsoft.Json.Linq;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5
@@ -180,7 +182,7 @@ namespace Route4MeSDK.DataTypes.V5
                     else
                     {
                         if (value.GetType() == typeof(JObject))
-                            _address_custom_data = ((JObject) value).ToObject<Dictionary<string, string>>();
+                            _address_custom_data = ((JObject)value).ToObject<Dictionary<string, string>>();
                         else if (value.GetType() == typeof(Dictionary<string, string>))
                             if (value == null || value.GetType() != typeof(Array))
                                 _address_custom_data = value;

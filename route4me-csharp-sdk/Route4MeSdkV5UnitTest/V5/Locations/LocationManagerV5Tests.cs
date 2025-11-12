@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
+
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Locations;
 
