@@ -85,6 +85,114 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        public void GetAllRoutesWithPaginationTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Page = 1,
+                PerPage = 20
+            };
+
+            var dataObjects = route4Me.GetAllRoutesWithPagination(routeParameters, out _);
+
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+        }
+
+        [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        public void GetPaginatedRouteListWithoutElasticSearchTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Page = 1,
+                PerPage = 20
+            };
+
+            var dataObjects =
+                route4Me.GetPaginatedRouteListWithoutElasticSearch(routeParameters, out _);
+
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+        }
+
+        [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        public void GetRouteDataTableWithoutElasticSearchTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteFilterParameters
+            {
+                Page = 1,
+                PerPage = 20,
+                Filters = new RouteFilterParametersFilters
+                {
+                    ScheduleDate = new[] { "2021-02-01", "2021-02-01" }
+                },
+                OrderBy = new List<string[]>
+                {
+                    new[] {"route_created_unix", "desc"}
+                },
+                Timezone = "UTC"
+            };
+
+            var dataObjects = route4Me.GetRouteDataTableWithElasticSearch(
+                routeParameters,
+                out _);
+
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+        }
+
+        [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        public void GetRouteDatatableWithElasticSearchTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteFilterParameters
+            {
+                Page = 1,
+                PerPage = 20,
+                Filters = new RouteFilterParametersFilters
+                {
+                    ScheduleDate = new[] { "2021-02-01", "2021-02-01" }
+                },
+                OrderBy = new List<string[]>
+                {
+                    new[] {"route_created_unix", "desc"}
+                },
+                Timezone = "UTC"
+            };
+
+            var dataObjects = route4Me.GetRouteDataTableWithElasticSearch(
+                routeParameters,
+                out _);
+
+            Assert.That(dataObjects.Data.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+        }
+
+        [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        public void GetRouteListWithoutElasticSearchTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeParameters = new RouteParametersQuery
+            {
+                Offset = 0,
+                Limit = 10
+            };
+
+            var dataObjects = route4Me.GetRouteListWithoutElasticSearch(routeParameters, out _);
+
+            Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+        }
+
+        [Test]
         public void DuplicateRoutesTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
