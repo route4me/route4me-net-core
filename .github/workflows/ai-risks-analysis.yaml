@@ -133,10 +133,10 @@ jobs:
           
           # Pass prompt file to Gemini (read from stdin or file if supported)
           # If Gemini CLI doesn't support file input, we'll use the file content
-          set +e
+          
           gemini "$(cat gemini_prompt.txt)" > gemini_output.txt 2>&1
           GEMINI_EXIT_CODE=$?
-          set -e
+          
           
           echo "Gemini CLI exit code: $GEMINI_EXIT_CODE"
           
