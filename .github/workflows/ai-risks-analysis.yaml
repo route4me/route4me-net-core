@@ -30,6 +30,7 @@ jobs:
 
       # 4. Run Gemini AI
       - name: Run Gemini Analysis
+        id: gemini
         if: steps.changed.outputs.changed_files != ''
         run: |
           gemini run \
@@ -44,20 +45,42 @@ jobs:
                 * Data contract changes
                 * Removal/renaming of public members
                 * Behavior changes affecting clients
-              Provide severity (Low/Medium/High) and improvement suggestions."
+              Provide severity (Low/Medium/High) and improvement suggestions." \
+            > gemini_output.txt 2>&1 || echo "Gemini analysis completed with warnings/errors" > gemini_output.txt
+          echo "output_file=gemini_output.txt" >> $GITHUB_OUTPUT
 
       # 5. Post results to PR comment
       - name: Comment on PR with Gemini Findings
+        if: steps.changed.outputs.changed_files != '' && steps.gemini.outputs.output_file != ''
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const body = `
-            ## 🤖 Gemini AI Code Risk & Compatibility Analysis
+            const fs = require('fs');
+            const path = require('path');
+            const outputFile = '${{ steps.gemini.outputs.output_file }}';
+            
+            let analysisOutput = '';
+            if (fs.existsSync(outputFile)) {
+              analysisOutput = fs.readFileSync(outputFile, 'utf8');
+              if (!analysisOutput.trim()) {
+                analysisOutput = 'No analysis output was generated.';
+              }
+            } else {
+              analysisOutput = 'Analysis output file was not found.';
+            }
+            
+            const body = `## 🤖 Gemini AI Code Risk & Compatibility Analysis
+            
             Files analyzed: \`${{ steps.changed.outputs.changed_files }}\`
-
-            ${require('fs').readFileSync('gemini_output.txt', 'utf8')}
+            
+            ### Analysis Results
+            
+            \`\`\`
+            ${analysisOutput}
+            \`\`\`
             `;
+            
             github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
               owner: context.repo.owner,
