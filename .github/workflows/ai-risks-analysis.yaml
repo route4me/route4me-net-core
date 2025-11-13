@@ -17,8 +17,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Get changed C# files from diff
-      - name: Get changed files
+      # 2. Get changed C# files and generate diff
+      - name: Get changed files and diff
         id: changed
         run: |
           BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
@@ -41,12 +41,28 @@ jobs:
           if [ -z "$CHANGED_FILES" ]; then
             echo "No C# files changed in this PR"
             echo "changed_files=" >> $GITHUB_OUTPUT
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changed C# files:"
             echo "$CHANGED_FILES"
             # Convert newlines to spaces for GitHub Actions output (multiline values cause issues)
             CHANGED_FILES_SPACE=$(echo "$CHANGED_FILES" | tr '\n' ' ' | xargs)
             echo "changed_files=$CHANGED_FILES_SPACE" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            
+            # Generate unified diff for all changed C# files
+            # Use the same fallback logic for diff generation
+            git diff "$BASE_SHA"..."$HEAD_SHA" -- "$CHANGED_FILES" > code_diff.txt 2>/dev/null || \
+            git diff "origin/$BASE_BRANCH"...HEAD -- "$CHANGED_FILES" > code_diff.txt 2>/dev/null || \
+            git diff "$BASE_BRANCH"...HEAD -- "$CHANGED_FILES" > code_diff.txt 2>/dev/null || true
+            
+            if [ -s code_diff.txt ]; then
+              echo "Generated diff file with $(wc -l < code_diff.txt) lines"
+              echo "diff_file=code_diff.txt" >> $GITHUB_OUTPUT
+            else
+              echo "WARNING: Could not generate diff file"
+              echo "diff_file=" >> $GITHUB_OUTPUT
+            fi
           fi
 
       # 3. Install Gemini CLI
@@ -56,41 +72,38 @@ jobs:
       # 4. Run Gemini AI
       - name: Run Gemini Analysis
         id: gemini
-        if: steps.changed.outputs.changed_files != ''
+        if: steps.changed.outputs.has_changes == 'true' && steps.changed.outputs.diff_file != ''
         run: |
-          # Convert space-separated files back to proper format
+          DIFF_FILE="${{ steps.changed.outputs.diff_file }}"
           CHANGED_FILES="${{ steps.changed.outputs.changed_files }}"
           
-          # Filter only existing files (exclude deleted files)
-          EXISTING_FILES=""
-          for file in $CHANGED_FILES; do
-            if [ -f "$file" ]; then
-              EXISTING_FILES="$EXISTING_FILES $file"
-              echo "  [OK] $file exists"
-            else
-              echo "  [SKIP] $file NOT FOUND (likely deleted)"
-            fi
-          done
-          
-          # Trim leading/trailing spaces
-          EXISTING_FILES=$(echo "$EXISTING_FILES" | xargs)
-          
-          if [ -z "$EXISTING_FILES" ]; then
-            echo "No existing files to analyze"
+          if [ ! -f "$DIFF_FILE" ] || [ ! -s "$DIFF_FILE" ]; then
+            echo "ERROR: Diff file not found or empty"
             echo "output_file=" >> $GITHUB_OUTPUT
-            echo "exit_code=0" >> $GITHUB_OUTPUT
-            exit 0
+            echo "exit_code=1" >> $GITHUB_OUTPUT
+            exit 1
           fi
           
-          echo "Running Gemini analysis on: $EXISTING_FILES"
+          echo "Analyzing diff for files: $CHANGED_FILES"
+          echo "Diff file size: $(wc -l < "$DIFF_FILE") lines"
+          
+          # Create prompt file with diff content to avoid command line length issues
+          cat > gemini_prompt.txt << 'PROMPT_EOF'
+Analyze the following code changes (unified diff) in C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Focus only on the changed lines (lines starting with + or -), not the entire files. Always provide severity (Low/Medium/High) and improvement suggestions as summary. Do not use tables for rendering - use plain text, bullet points, or code blocks instead.
+
+Code changes (diff):
+```diff
+PROMPT_EOF
+          cat "$DIFF_FILE" >> gemini_prompt.txt
+          echo '```' >> gemini_prompt.txt
           
           # Set Gemini API key as environment variable
           export GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
           
-          # Run Gemini CLI with positional argument (--prompt is deprecated)
+          # Pass prompt file to Gemini (read from stdin or file if supported)
+          # If Gemini CLI doesn't support file input, we'll use the file content
           set +e
-          gemini "files: $EXISTING_FILES; Analyze these changed C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Always Provide severity (Low/Medium/High) and improvement suggestions as summary. Do not use tables for rendering - use plain text, bullet points, or code blocks instead." \
-            > gemini_output.txt 2>&1
+          gemini "$(cat gemini_prompt.txt)" > gemini_output.txt 2>&1
           GEMINI_EXIT_CODE=$?
           set -e
           
@@ -101,7 +114,7 @@ jobs:
             echo "" >> gemini_output.txt
             echo "--- Error Details ---" >> gemini_output.txt
             echo "Exit code: $GEMINI_EXIT_CODE" >> gemini_output.txt
-            echo "Command: gemini \"files: $EXISTING_FILES; ...\"" >> gemini_output.txt
+            echo "Diff file: $DIFF_FILE ($(wc -l < "$DIFF_FILE") lines)" >> gemini_output.txt
           fi
           
           echo "output_file=gemini_output.txt" >> $GITHUB_OUTPUT
