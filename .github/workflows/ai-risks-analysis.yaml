@@ -63,6 +63,18 @@ jobs:
           # Trim leading/trailing spaces and ensure proper formatting
           CHANGED_FILES=$(echo "$CHANGED_FILES" | xargs)
           
+          echo "Running Gemini analysis on files: $CHANGED_FILES"
+          echo "Checking if files exist..."
+          for file in $CHANGED_FILES; do
+            if [ -f "$file" ]; then
+              echo "  [OK] $file exists"
+            else
+              echo "  [ERROR] $file NOT FOUND"
+            fi
+          done
+          
+          # Run Gemini CLI and capture both stdout and stderr
+          set +e  # Don't exit on error
           gemini run \
             --api-key "${{ secrets.GEMINI_API_KEY }}" \
             --files $CHANGED_FILES \
@@ -76,8 +88,20 @@ jobs:
                 * Removal/renaming of public members
                 * Behavior changes affecting clients
               Provide severity (Low/Medium/High) and improvement suggestions." \
-            > gemini_output.txt 2>&1 || echo "Gemini analysis completed with warnings/errors" > gemini_output.txt
+            > gemini_output.txt 2>&1
+          GEMINI_EXIT_CODE=$?
+          set -e  # Re-enable exit on error
+          
+          if [ $GEMINI_EXIT_CODE -ne 0 ]; then
+            echo "WARNING: Gemini CLI exited with code $GEMINI_EXIT_CODE"
+            echo "" >> gemini_output.txt
+            echo "--- Error Details ---" >> gemini_output.txt
+            echo "Exit code: $GEMINI_EXIT_CODE" >> gemini_output.txt
+            echo "Command: gemini run --files $CHANGED_FILES" >> gemini_output.txt
+          fi
+          
           echo "output_file=gemini_output.txt" >> $GITHUB_OUTPUT
+          echo "exit_code=$GEMINI_EXIT_CODE" >> $GITHUB_OUTPUT
 
       # 5. Post results to PR comment
       - name: Comment on PR with Gemini Findings
@@ -87,22 +111,34 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const path = require('path');
             const outputFile = '${{ steps.gemini.outputs.output_file }}';
+            const exitCode = '${{ steps.gemini.outputs.exit_code }}';
             
             let analysisOutput = '';
+            let statusIcon = '[OK]';
+            let statusText = 'Analysis completed successfully';
+            
             if (fs.existsSync(outputFile)) {
               analysisOutput = fs.readFileSync(outputFile, 'utf8');
               if (!analysisOutput.trim()) {
                 analysisOutput = 'No analysis output was generated.';
+                statusIcon = '[WARNING]';
+                statusText = 'No output generated';
+              } else if (exitCode && exitCode !== '0') {
+                statusIcon = '[ERROR]';
+                statusText = `Analysis failed with exit code ${exitCode}`;
               }
             } else {
               analysisOutput = 'Analysis output file was not found.';
+              statusIcon = '[ERROR]';
+              statusText = 'Output file not found';
             }
             
-            const body = `## 🤖 Gemini AI Code Risk & Compatibility Analysis
+            const body = `## Gemini AI Code Risk & Compatibility Analysis
             
-            Files analyzed: \`${{ steps.changed.outputs.changed_files }}\`
+            **Status:** ${statusIcon} ${statusText}
+            
+            **Files analyzed:** \`${{ steps.changed.outputs.changed_files }}\`
             
             ### Analysis Results
             
