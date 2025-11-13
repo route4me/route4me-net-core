@@ -88,14 +88,14 @@ jobs:
           echo "Diff file size: $(wc -l < "$DIFF_FILE") lines"
           
           # Create prompt file with diff content to avoid command line length issues
-          cat > gemini_prompt.txt << 'PROMPT_EOF'
-Analyze the following code changes (unified diff) in C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Focus only on the changed lines (lines starting with + or -), not the entire files. Always provide severity (Low/Medium/High) and improvement suggestions as summary. Do not use tables for rendering - use plain text, bullet points, or code blocks instead.
-
-Code changes (diff):
-```diff
-PROMPT_EOF
-          cat "$DIFF_FILE" >> gemini_prompt.txt
-          echo '```' >> gemini_prompt.txt
+          {
+            echo "Analyze the following code changes (unified diff) in C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Focus only on the changed lines (lines starting with + or -), not the entire files. Always provide severity (Low/Medium/High) and improvement suggestions as summary. Do not use tables for rendering - use plain text, bullet points, or code blocks instead."
+            echo ""
+            echo "Code changes (diff):"
+            echo "\`\`\`diff"
+            cat "$DIFF_FILE"
+            echo "\`\`\`"
+          } > gemini_prompt.txt
           
           # Set Gemini API key as environment variable
           export GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
