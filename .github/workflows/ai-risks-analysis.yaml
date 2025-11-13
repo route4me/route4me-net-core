@@ -40,12 +40,14 @@ jobs:
           
           if [ -z "$CHANGED_FILES" ]; then
             echo "No C# files changed in this PR"
+            echo "changed_files=" >> $GITHUB_OUTPUT
           else
             echo "Changed C# files:"
             echo "$CHANGED_FILES"
+            # Convert newlines to spaces for GitHub Actions output (multiline values cause issues)
+            CHANGED_FILES_SPACE=$(echo "$CHANGED_FILES" | tr '\n' ' ' | xargs)
+            echo "changed_files=$CHANGED_FILES_SPACE" >> $GITHUB_OUTPUT
           fi
-          
-          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
       # 3. Install Gemini CLI
       - name: Install Gemini CLI
@@ -56,9 +58,14 @@ jobs:
         id: gemini
         if: steps.changed.outputs.changed_files != ''
         run: |
+          # Convert space-separated files back to proper format for Gemini CLI
+          CHANGED_FILES="${{ steps.changed.outputs.changed_files }}"
+          # Trim leading/trailing spaces and ensure proper formatting
+          CHANGED_FILES=$(echo "$CHANGED_FILES" | xargs)
+          
           gemini run \
             --api-key "${{ secrets.GEMINI_API_KEY }}" \
-            --files "$(echo '${{ steps.changed.outputs.changed_files }}')" \
+            --files $CHANGED_FILES \
             --task "Analyze these changed C# files for:
               - Security and performance risks
               - Deprecated API usage
