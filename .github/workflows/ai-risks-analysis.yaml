@@ -58,46 +58,50 @@ jobs:
         id: gemini
         if: steps.changed.outputs.changed_files != ''
         run: |
-          # Convert space-separated files back to proper format for Gemini CLI
+          # Convert space-separated files back to proper format
           CHANGED_FILES="${{ steps.changed.outputs.changed_files }}"
-          # Trim leading/trailing spaces and ensure proper formatting
-          CHANGED_FILES=$(echo "$CHANGED_FILES" | xargs)
           
-          echo "Running Gemini analysis on files: $CHANGED_FILES"
-          echo "Checking if files exist..."
+          # Filter only existing files (exclude deleted files)
+          EXISTING_FILES=""
           for file in $CHANGED_FILES; do
             if [ -f "$file" ]; then
+              EXISTING_FILES="$EXISTING_FILES $file"
               echo "  [OK] $file exists"
             else
-              echo "  [ERROR] $file NOT FOUND"
+              echo "  [SKIP] $file NOT FOUND (likely deleted)"
             fi
           done
           
-          # Run Gemini CLI and capture both stdout and stderr
-          set +e  # Don't exit on error
+          # Trim leading/trailing spaces
+          EXISTING_FILES=$(echo "$EXISTING_FILES" | xargs)
+          
+          if [ -z "$EXISTING_FILES" ]; then
+            echo "No existing files to analyze"
+            echo "output_file=" >> $GITHUB_OUTPUT
+            echo "exit_code=0" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "Running Gemini analysis on: $EXISTING_FILES"
+          
+          # Run Gemini CLI
+          set +e
           gemini run \
             --api-key "${{ secrets.GEMINI_API_KEY }}" \
-            --files $CHANGED_FILES \
-            --task "Analyze these changed C# files for:
-              - Security and performance risks
-              - Deprecated API usage
-              - Coding standard violations
-              - Potential backward compatibility risks:
-                * API signature changes
-                * Data contract changes
-                * Removal/renaming of public members
-                * Behavior changes affecting clients
-              Provide severity (Low/Medium/High) and improvement suggestions." \
+            --files "$EXISTING_FILES" \
+            --task "Analyze these changed C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Provide severity (Low/Medium/High) and improvement suggestions." \
             > gemini_output.txt 2>&1
           GEMINI_EXIT_CODE=$?
-          set -e  # Re-enable exit on error
+          set -e
+          
+          echo "Gemini CLI exit code: $GEMINI_EXIT_CODE"
           
           if [ $GEMINI_EXIT_CODE -ne 0 ]; then
-            echo "WARNING: Gemini CLI exited with code $GEMINI_EXIT_CODE"
+            echo "WARNING: Gemini CLI failed"
             echo "" >> gemini_output.txt
             echo "--- Error Details ---" >> gemini_output.txt
             echo "Exit code: $GEMINI_EXIT_CODE" >> gemini_output.txt
-            echo "Command: gemini run --files $CHANGED_FILES" >> gemini_output.txt
+            echo "Command: gemini run --files \"$EXISTING_FILES\"" >> gemini_output.txt
           fi
           
           echo "output_file=gemini_output.txt" >> $GITHUB_OUTPUT
