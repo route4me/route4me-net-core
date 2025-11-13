@@ -97,12 +97,22 @@ jobs:
       - name: Run Gemini Analysis
         id: gemini
         if: steps.changed.outputs.has_changes == 'true' && steps.changed.outputs.diff_file != ''
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           DIFF_FILE="${{ steps.changed.outputs.diff_file }}"
           CHANGED_FILES="${{ steps.changed.outputs.changed_files }}"
           
           if [ ! -f "$DIFF_FILE" ] || [ ! -s "$DIFF_FILE" ]; then
             echo "ERROR: Diff file not found or empty"
+            echo "output_file=" >> $GITHUB_OUTPUT
+            echo "exit_code=1" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Validate API key is set
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "ERROR: GEMINI_API_KEY is not set"
             echo "output_file=" >> $GITHUB_OUTPUT
             echo "exit_code=1" >> $GITHUB_OUTPUT
             exit 1
@@ -121,9 +131,6 @@ jobs:
             echo "\`\`\`"
           } > gemini_prompt.txt
           
-          # Set Gemini API key as environment variable
-          export GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
-          
           # Pass prompt file to Gemini (read from stdin or file if supported)
           # If Gemini CLI doesn't support file input, we'll use the file content
           set +e
@@ -132,6 +139,14 @@ jobs:
           set -e
           
           echo "Gemini CLI exit code: $GEMINI_EXIT_CODE"
+          
+          # Filter out potential API key exposure from output (security measure)
+          if [ -f gemini_output.txt ]; then
+            # Remove lines that might contain exposed API keys in error messages
+            # Match patterns like: "api-key: xxx", "GEMINI_API_KEY=xxx", or long alphanumeric strings that look like keys
+            sed -i.bak -E '/api[_-]?key[=:]\s*[a-zA-Z0-9_-]{20,}|GEMINI_API_KEY[=:]\s*[a-zA-Z0-9_-]{20,}/Id' gemini_output.txt 2>/dev/null || true
+            rm -f gemini_output.txt.bak 2>/dev/null || true
+          fi
           
           if [ $GEMINI_EXIT_CODE -ne 0 ]; then
             echo "WARNING: Gemini CLI failed"
