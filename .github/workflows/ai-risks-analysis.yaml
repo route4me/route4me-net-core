@@ -87,9 +87,9 @@ jobs:
           # Set Gemini API key as environment variable
           export GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
           
-          # Run Gemini CLI with correct syntax
+          # Run Gemini CLI with positional argument (--prompt is deprecated)
           set +e
-          gemini --prompt "files: $EXISTING_FILES; Analyze these changed C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Provide severity (Low/Medium/High) and improvement suggestions." \
+          gemini "files: $EXISTING_FILES; Analyze these changed C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Provide severity (Low/Medium/High) and improvement suggestions." \
             > gemini_output.txt 2>&1
           GEMINI_EXIT_CODE=$?
           set -e
@@ -101,7 +101,7 @@ jobs:
             echo "" >> gemini_output.txt
             echo "--- Error Details ---" >> gemini_output.txt
             echo "Exit code: $GEMINI_EXIT_CODE" >> gemini_output.txt
-            echo "Command: gemini --prompt \"files: $EXISTING_FILES; ...\"" >> gemini_output.txt
+            echo "Command: gemini \"files: $EXISTING_FILES; ...\"" >> gemini_output.txt
           fi
           
           echo "output_file=gemini_output.txt" >> $GITHUB_OUTPUT
