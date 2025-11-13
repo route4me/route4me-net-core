@@ -16,7 +16,6 @@ using Route4MeSDKLibrary.QueryTypes.V5.Orders;
 
 using Order = Route4MeSDK.DataTypes.Order;
 
-
 namespace Route4MeSdkV5UnitTest.V5.Orders
 {
     [TestFixture]
