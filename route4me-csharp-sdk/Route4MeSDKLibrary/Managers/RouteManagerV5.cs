@@ -109,7 +109,7 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRouteDatatableWithElasticSearchAsync instead.")]
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public async Task<Tuple<RoutesResponse, ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
         {
             var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(routeParameters,
