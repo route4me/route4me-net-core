@@ -1,0 +1,66 @@
+name: AI Code Risk & Compatibility Analysis (Gemini)
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  gemini-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout PR code
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Get changed C# files from diff
+      - name: Get changed files
+        id: changed
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD | grep '\.cs$' || true)
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      # 3. Install Gemini CLI
+      - name: Install Gemini CLI
+        run: npm install -g @google/gemini-cli
+
+      # 4. Run Gemini AI
+      - name: Run Gemini Analysis
+        if: steps.changed.outputs.changed_files != ''
+        run: |
+          gemini run \
+            --api-key "${{ secrets.GEMINI_API_KEY }}" \
+            --files "$(echo '${{ steps.changed.outputs.changed_files }}')" \
+            --task "Analyze these changed C# files for:
+              - Security and performance risks
+              - Deprecated API usage
+              - Coding standard violations
+              - Potential backward compatibility risks:
+                * API signature changes
+                * Data contract changes
+                * Removal/renaming of public members
+                * Behavior changes affecting clients
+              Provide severity (Low/Medium/High) and improvement suggestions."
+
+      # 5. Post results to PR comment
+      - name: Comment on PR with Gemini Findings
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `
+            ## 🤖 Gemini AI Code Risk & Compatibility Analysis
+            Files analyzed: \`${{ steps.changed.outputs.changed_files }}\`
+
+            ${require('fs').readFileSync('gemini_output.txt', 'utf8')}
+            `;
+            github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
