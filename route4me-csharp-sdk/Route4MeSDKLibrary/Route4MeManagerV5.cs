@@ -931,49 +931,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Retrieves a paginated list of the routes.
-        /// </summary>
-        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
-        /// <param name="resultResponse">Failure response</param>
-        /// <returns>An array of the routes</returns>
-        public RoutesResponse GetAllRoutesWithPagination(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
-        {
-            return _routeManager.GetAllRoutesWithPagination(routeParameters, out resultResponse);
-        }
-
-        /// <summary>
-        /// Retrieves a paginated list of the routes asynchronously.
-        /// </summary>
-        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
-        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public Task<Tuple<RoutesResponse, ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
-        {
-            return _routeManager.GetAllRoutesWithPaginationAsync(routeParameters);
-        }
-
-        /// <summary>
-        /// Retrieves a paginated list of the routes without elastic search.
-        /// </summary>
-        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
-        /// <param name="resultResponse">Failure response</param>
-        /// <returns>An array of the routes</returns>
-        public RoutesResponse GetPaginatedRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
-            out ResultResponse resultResponse)
-        {
-            return _routeManager.GetPaginatedRouteListWithoutElasticSearch(routeParameters, out resultResponse);
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a paginated list of the routes without elastic search.
-        /// </summary>
-        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
-        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
-        public Task<Tuple<RoutesResponse, ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
-        {
-            return _routeManager.GetPaginatedRouteListWithoutElasticSearchAsync(routeParameters);
-        }
-
-        /// <summary>
         /// Get a route list by filtering.
         /// </summary>
         /// <param name="routeFilterParameters">Query parameters <see cref="RouteParametersQuery"/></param>
@@ -995,18 +952,6 @@ namespace Route4MeSDK
             return _routeManager.GetRoutesByFilterAsync(routeFilterParameters);
         }
 
-        public RoutesResponse GetRouteDataTableWithElasticSearch(
-            RouteFilterParameters routeFilterParameters,
-            out ResultResponse resultResponse)
-        {
-            return _routeManager.GetRouteDataTableWithElasticSearch(routeFilterParameters, out resultResponse);
-        }
-
-        public Task<Tuple<RoutesResponse, ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
-        {
-            return _routeManager.GetRouteDataTableWithElasticSearchAsync(routeFilterParameters);
-        }
-
         public DataObjectRoute[] GetRouteDatatableWithElasticSearch(
             RouteFilterParameters routeFilterParameters,
             out ResultResponse resultResponse)
@@ -1018,17 +963,6 @@ namespace Route4MeSDK
             RouteFilterParameters routeFilterParameters)
         {
             return _routeManager.GetRouteDatatableWithElasticSearchAsync(routeFilterParameters);
-        }
-
-        public DataObjectRoute[] GetRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
-            out ResultResponse resultResponse)
-        {
-            return _routeManager.GetRouteListWithoutElasticSearch(routeParameters, out resultResponse);
-        }
-
-        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
-        {
-            return _routeManager.GetRouteListWithoutElasticSearchAsync(routeParameters);
         }
 
         /// <summary>
