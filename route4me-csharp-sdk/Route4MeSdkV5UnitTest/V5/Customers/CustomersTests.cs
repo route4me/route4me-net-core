@@ -13,7 +13,6 @@ using Route4MeSDKLibrary.QueryTypes.V5.Customers;
 
 using Route4MeSdkV5UnitTest.V5;
 
-
 namespace Route4MeSDKUnitTest.V5
 {
     [TestFixture]
