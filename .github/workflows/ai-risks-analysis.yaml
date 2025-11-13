@@ -21,7 +21,30 @@ jobs:
       - name: Get changed files
         id: changed
         run: |
-          CHANGED_FILES=$(git diff --name-only origin/main...HEAD | grep '\.cs$' || true)
+          BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          
+          echo "Base branch: $BASE_BRANCH"
+          echo "Base SHA: $BASE_SHA"
+          echo "Head SHA: $HEAD_SHA"
+          
+          # Fetch the base branch explicitly to ensure it's available
+          git fetch origin "$BASE_BRANCH" || true
+          
+          # Get changed C# files comparing base SHA to head SHA
+          # Fallback to branch comparison if SHA comparison fails
+          CHANGED_FILES=$(git diff --name-only "$BASE_SHA"..."$HEAD_SHA" 2>/dev/null | grep '\.cs$' || \
+                         git diff --name-only "origin/$BASE_BRANCH"...HEAD 2>/dev/null | grep '\.cs$' || \
+                         git diff --name-only "$BASE_BRANCH"...HEAD 2>/dev/null | grep '\.cs$' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No C# files changed in this PR"
+          else
+            echo "Changed C# files:"
+            echo "$CHANGED_FILES"
+          fi
+          
           echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
       # 3. Install Gemini CLI
