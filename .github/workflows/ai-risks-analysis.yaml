@@ -51,17 +51,41 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             
             # Generate unified diff for all changed C# files
+            
             # Use the same fallback logic for diff generation
-            git diff "$BASE_SHA"..."$HEAD_SHA" -- "$CHANGED_FILES" > code_diff.txt 2>/dev/null || \
-            git diff "origin/$BASE_BRANCH"...HEAD -- "$CHANGED_FILES" > code_diff.txt 2>/dev/null || \
-            git diff "$BASE_BRANCH"...HEAD -- "$CHANGED_FILES" > code_diff.txt 2>/dev/null || true
+            # Try three-dot syntax first, then two-dot syntax
+            git diff "$BASE_SHA"..."$HEAD_SHA" -- $CHANGED_FILES_SPACE > code_diff.txt 2>/dev/null || \
+            git diff "$BASE_SHA..$HEAD_SHA" -- $CHANGED_FILES_SPACE > code_diff.txt 2>/dev/null || \
+            git diff "origin/$BASE_BRANCH"...HEAD -- $CHANGED_FILES_SPACE > code_diff.txt 2>/dev/null || \
+            git diff "origin/$BASE_BRANCH..HEAD" -- $CHANGED_FILES_SPACE > code_diff.txt 2>/dev/null || \
+            git diff "$BASE_BRANCH"...HEAD -- $CHANGED_FILES_SPACE > code_diff.txt 2>/dev/null || \
+            git diff "$BASE_BRANCH..HEAD" -- $CHANGED_FILES_SPACE > code_diff.txt 2>/dev/null || true
             
             if [ -s code_diff.txt ]; then
               echo "Generated diff file with $(wc -l < code_diff.txt) lines"
               echo "diff_file=code_diff.txt" >> $GITHUB_OUTPUT
             else
               echo "WARNING: Could not generate diff file"
-              echo "diff_file=" >> $GITHUB_OUTPUT
+              echo "Attempting alternative diff method..."
+              # Try diffing each file individually and concatenating
+              > code_diff.txt
+              for file in $CHANGED_FILES_SPACE; do
+                if [ -f "$file" ]; then
+                  echo "=== $file ===" >> code_diff.txt
+                  git diff "$BASE_SHA" "$HEAD_SHA" -- "$file" >> code_diff.txt 2>/dev/null || \
+                  git diff "origin/$BASE_BRANCH" HEAD -- "$file" >> code_diff.txt 2>/dev/null || \
+                  git diff "$BASE_BRANCH" HEAD -- "$file" >> code_diff.txt 2>/dev/null || true
+                  echo "" >> code_diff.txt
+                fi
+              done
+              
+              if [ -s code_diff.txt ]; then
+                echo "Generated diff file with $(wc -l < code_diff.txt) lines (alternative method)"
+                echo "diff_file=code_diff.txt" >> $GITHUB_OUTPUT
+              else
+                echo "ERROR: Still could not generate diff file"
+                echo "diff_file=" >> $GITHUB_OUTPUT
+              fi
             fi
           fi
 
