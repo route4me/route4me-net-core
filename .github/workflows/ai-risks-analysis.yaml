@@ -138,11 +138,20 @@ jobs:
               statusText = 'Output file not found';
             }
             
+            // Format files as bullet point list
+            const changedFiles = '${{ steps.changed.outputs.changed_files }}';
+            const filesList = changedFiles
+              .split(' ')
+              .filter(file => file.trim())
+              .map(file => `- \`${file.trim()}\``)
+              .join('\n');
+            
             const body = `## Gemini AI Code Risk & Compatibility Analysis
             
             **Status:** ${statusIcon} ${statusText}
             
-            **Files analyzed:** \`${{ steps.changed.outputs.changed_files }}\`
+            **Files analyzed:**
+            ${filesList}
             
             ### Analysis Results
             
