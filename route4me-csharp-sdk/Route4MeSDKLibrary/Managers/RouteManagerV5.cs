@@ -55,6 +55,71 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
+        /// Retrieves a paginated list of the routes.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of the routes</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutes or GetRoutesByFilter instead.")]
+        public RoutesResponse GetAllRoutesWithPagination(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<RoutesResponse>(routeParameters,
+                R4MEInfrastructureSettingsV5.RoutesPaginate,
+                HttpMethodType.Get, null, false, true,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of the routes asynchronously.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutesAsync or GetRoutesByFilterAsync instead.")]
+        public async Task<Tuple<RoutesResponse, ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
+        {
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(routeParameters,
+                R4MEInfrastructureSettingsV5.RoutesPaginate,
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<RoutesResponse, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of the routes without elastic search.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of the routes</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutes or GetRoutesByFilter instead.")]
+        public RoutesResponse GetPaginatedRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
+            out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<RoutesResponse>(routeParameters,
+                R4MEInfrastructureSettingsV5.RoutesFallbackPaginate,
+                HttpMethodType.Get, null, false, true,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a paginated list of the routes without elastic search.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutesAsync or GetRoutesByFilterAsync instead.")]
+        public async Task<Tuple<RoutesResponse, ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        {
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(routeParameters,
+                R4MEInfrastructureSettingsV5.RoutesFallbackPaginate,
+                HttpMethodType.Get, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<RoutesResponse, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
         /// Get a route list by filtering.
         /// </summary>
         /// <param name="routeFilterParameters">Query parameters <see cref="RouteParametersQuery"/></param>
@@ -108,6 +173,75 @@ namespace Route4MeSDKLibrary.Managers
                 routeFilterParameters,
                 R4MEInfrastructureSettingsV5.RoutesDatatable,
                 HttpMethodType.Post, null, true, false).ConfigureAwait(false);
+
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Get route datatable without elastic search.
+        /// </summary>
+        /// <param name="routeFilterParameters">Route filter parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>A RoutesResponse type object</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRouteDatatableWithElasticSearch instead.")]
+        public RoutesResponse GetRouteDataTableWithElasticSearch(
+            RouteFilterParameters routeFilterParameters,
+            out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<RoutesResponse>(
+                routeFilterParameters,
+                R4MEInfrastructureSettingsV5.RoutesFallbackDatatable,
+                HttpMethodType.Post, null, false, true,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get route datatable without elastic search asynchronously.
+        /// </summary>
+        /// <param name="routeFilterParameters">Route filter parameters</param>
+        /// <returns>A Tuple type object containing a RoutesResponse or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRouteDatatableWithElasticSearchAsync instead.")]
+        public async Task<Tuple<RoutesResponse, ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
+        {
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(
+                routeFilterParameters,
+                R4MEInfrastructureSettingsV5.RoutesFallbackDatatable,
+                HttpMethodType.Post).ConfigureAwait(false);
+
+            return new Tuple<RoutesResponse, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Get route list without elastic search.
+        /// </summary>
+        /// <param name="routeParameters">Route query parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of DataObjectRoute</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutes instead.")]
+        public DataObjectRoute[] GetRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
+            out ResultResponse resultResponse)
+        {
+            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
+                R4MEInfrastructureSettingsV5.RoutesFallback,
+                HttpMethodType.Get, null, false, true,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get route list without elastic search asynchronously.
+        /// </summary>
+        /// <param name="routeParameters">Route query parameters</param>
+        /// <returns>A Tuple type object containing an array of DataObjectRoute or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutesAsync instead.")]
+        public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        {
+            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+                R4MEInfrastructureSettingsV5.RoutesFallback,
+                HttpMethodType.Get).ConfigureAwait(false);
 
             return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
         }

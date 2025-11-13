@@ -931,6 +931,53 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Retrieves a paginated list of the routes.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of the routes</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutes or GetRoutesByFilter instead.")]
+        public RoutesResponse GetAllRoutesWithPagination(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetAllRoutesWithPagination(routeParameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of the routes asynchronously.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutesAsync or GetRoutesByFilterAsync instead.")]
+        public Task<Tuple<RoutesResponse, ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
+        {
+            return _routeManager.GetAllRoutesWithPaginationAsync(routeParameters);
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of the routes without elastic search.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of the routes</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutes or GetRoutesByFilter instead.")]
+        public RoutesResponse GetPaginatedRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
+            out ResultResponse resultResponse)
+        {
+            return _routeManager.GetPaginatedRouteListWithoutElasticSearch(routeParameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a paginated list of the routes without elastic search.
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutesAsync or GetRoutesByFilterAsync instead.")]
+        public Task<Tuple<RoutesResponse, ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        {
+            return _routeManager.GetPaginatedRouteListWithoutElasticSearchAsync(routeParameters);
+        }
+
+        /// <summary>
         /// Get a route list by filtering.
         /// </summary>
         /// <param name="routeFilterParameters">Query parameters <see cref="RouteParametersQuery"/></param>
@@ -963,6 +1010,55 @@ namespace Route4MeSDK
             RouteFilterParameters routeFilterParameters)
         {
             return _routeManager.GetRouteDatatableWithElasticSearchAsync(routeFilterParameters);
+        }
+
+        /// <summary>
+        /// Get route datatable without elastic search.
+        /// </summary>
+        /// <param name="routeFilterParameters">Route filter parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>A RoutesResponse type object</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRouteDatatableWithElasticSearch instead.")]
+        public RoutesResponse GetRouteDataTableWithElasticSearch(
+            RouteFilterParameters routeFilterParameters,
+            out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRouteDataTableWithElasticSearch(routeFilterParameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get route datatable without elastic search asynchronously.
+        /// </summary>
+        /// <param name="routeFilterParameters">Route filter parameters</param>
+        /// <returns>A Tuple type object containing a RoutesResponse or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRouteDatatableWithElasticSearchAsync instead.")]
+        public Task<Tuple<RoutesResponse, ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
+        {
+            return _routeManager.GetRouteDataTableWithElasticSearchAsync(routeFilterParameters);
+        }
+
+        /// <summary>
+        /// Get route list without elastic search.
+        /// </summary>
+        /// <param name="routeParameters">Route query parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of DataObjectRoute</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutes instead.")]
+        public DataObjectRoute[] GetRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
+            out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRouteListWithoutElasticSearch(routeParameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get route list without elastic search asynchronously.
+        /// </summary>
+        /// <param name="routeParameters">Route query parameters</param>
+        /// <returns>A Tuple type object containing an array of DataObjectRoute or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version. Use GetRoutesAsync instead.")]
+        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
+        {
+            return _routeManager.GetRouteListWithoutElasticSearchAsync(routeParameters);
         }
 
         /// <summary>
