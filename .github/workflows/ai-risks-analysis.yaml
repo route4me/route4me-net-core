@@ -89,7 +89,7 @@ jobs:
           
           # Run Gemini CLI with positional argument (--prompt is deprecated)
           set +e
-          gemini "files: $EXISTING_FILES; Analyze these changed C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Provide severity (Low/Medium/High) and improvement suggestions. Do not use tables for rendering - use plain text, bullet points, or code blocks instead." \
+          gemini "files: $EXISTING_FILES; Analyze these changed C# files for: Security and performance risks, Deprecated API usage, Coding standard violations, Potential backward compatibility risks (API signature changes, Data contract changes, Removal/renaming of public members, Behavior changes affecting clients). Always Provide severity (Low/Medium/High) and improvement suggestions as summary. Do not use tables for rendering - use plain text, bullet points, or code blocks instead." \
             > gemini_output.txt 2>&1
           GEMINI_EXIT_CODE=$?
           set -e
@@ -155,9 +155,7 @@ jobs:
             
             ### Analysis Results
             
-            \`\`\`
             ${analysisOutput}
-            \`\`\`
             `;
             
             github.rest.issues.createComment({
