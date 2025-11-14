@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [7.13.1.0] - 2025-11-11
+## [7.13.1] - 2025-11-11
 ### Deprecated
 Marked deprecated V5 route endpoint methods and constants with `[Obsolete]` attribute for backward compatibility:
 - Marked endpoint constants in `Consts.cs` as obsolete:
