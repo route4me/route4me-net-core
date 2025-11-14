@@ -936,6 +936,7 @@ namespace Route4MeSDK
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of the routes</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public RoutesResponse GetAllRoutesWithPagination(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
         {
             return _routeManager.GetAllRoutesWithPagination(routeParameters, out resultResponse);
@@ -946,6 +947,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public Task<Tuple<RoutesResponse, ResultResponse>> GetAllRoutesWithPaginationAsync(RouteParametersQuery routeParameters)
         {
             return _routeManager.GetAllRoutesWithPaginationAsync(routeParameters);
@@ -957,6 +959,7 @@ namespace Route4MeSDK
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of the routes</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public RoutesResponse GetPaginatedRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
             out ResultResponse resultResponse)
         {
@@ -968,6 +971,7 @@ namespace Route4MeSDK
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public Task<Tuple<RoutesResponse, ResultResponse>> GetPaginatedRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
         {
             return _routeManager.GetPaginatedRouteListWithoutElasticSearchAsync(routeParameters);
@@ -995,6 +999,7 @@ namespace Route4MeSDK
             return _routeManager.GetRoutesByFilterAsync(routeFilterParameters);
         }
 
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public RoutesResponse GetRouteDataTableWithElasticSearch(
             RouteFilterParameters routeFilterParameters,
             out ResultResponse resultResponse)
@@ -1002,6 +1007,7 @@ namespace Route4MeSDK
             return _routeManager.GetRouteDataTableWithElasticSearch(routeFilterParameters, out resultResponse);
         }
 
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public Task<Tuple<RoutesResponse, ResultResponse>> GetRouteDataTableWithElasticSearchAsync(RouteFilterParameters routeFilterParameters)
         {
             return _routeManager.GetRouteDataTableWithElasticSearchAsync(routeFilterParameters);
@@ -1020,12 +1026,14 @@ namespace Route4MeSDK
             return _routeManager.GetRouteDatatableWithElasticSearchAsync(routeFilterParameters);
         }
 
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public DataObjectRoute[] GetRouteListWithoutElasticSearch(RouteParametersQuery routeParameters,
             out ResultResponse resultResponse)
         {
             return _routeManager.GetRouteListWithoutElasticSearch(routeParameters, out resultResponse);
         }
 
+        [Obsolete("This method is deprecated and will be removed in a future version.")]
         public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRouteListWithoutElasticSearchAsync(RouteParametersQuery routeParameters)
         {
             return _routeManager.GetRouteListWithoutElasticSearchAsync(routeParameters);
