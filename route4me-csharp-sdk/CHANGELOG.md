@@ -1,6 +1,24 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.13.1.0] - 2025-11-11
+### Deprecated
+Marked deprecated V5 route endpoint methods and constants with `[Obsolete]` attribute for backward compatibility:
+- Marked endpoint constants in `Consts.cs` as obsolete:
+  - `RoutesPaginate`
+  - `RoutesFallbackPaginate`
+  - `RoutesFallbackDatatable`
+  - `RoutesFallback`
+- Marked methods in `RouteManagerV5` as obsolete:
+  - `GetAllRoutesWithPagination` / `GetAllRoutesWithPaginationAsync`
+  - `GetPaginatedRouteListWithoutElasticSearch` / `GetPaginatedRouteListWithoutElasticSearchAsync`
+  - `GetRouteDataTableWithElasticSearch` / `GetRouteDataTableWithElasticSearchAsync`
+  - `GetRouteListWithoutElasticSearch` / `GetRouteListWithoutElasticSearchAsync`
+- Marked corresponding proxy methods in `Route4MeManagerV5` as obsolete
+- Marked unit tests for deprecated methods in `AddOnRoutesApiTests` as obsolete
+
+**Note:** These methods are deprecated and will be removed in a future version. Users should migrate to `GetRoutes`, `GetRoutesAsync`, `GetRoutesByFilter`, or `GetRoutesByFilterAsync` instead.
+
 ## [7.13.0.0] - 2025-10-24
 Added Location API V5 support (LocationManagerV5) with full CRUD operations for address book locations.
 Implemented location clustering, heatmap, territories, export functionality, and location types management.

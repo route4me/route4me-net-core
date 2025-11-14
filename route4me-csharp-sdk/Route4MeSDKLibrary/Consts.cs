@@ -1,4 +1,6 @@
-﻿namespace Route4MeSDK
+﻿using System;
+
+namespace Route4MeSDK
 {
     /// <summary>
     ///     Route4Me infrastructure settings
@@ -104,10 +106,19 @@
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
         public const string RoutesDelete = MainHost + "/routes/delete";
         public const string RoutesMerge = MainHost + "/routes/merge";
+
+        [Obsolete("This endpoint is deprecated and will be removed in a future version.")]
         public const string RoutesPaginate = MainHost + "/routes/paginate";
+
+        [Obsolete("This endpoint is deprecated and will be removed in a future version.")]
         public const string RoutesFallbackPaginate = MainHost + "/routes/fallback/paginate";
+
+        [Obsolete("This endpoint is deprecated and will be removed in a future version.")]
         public const string RoutesFallbackDatatable = MainHost + "/routes/fallback/datatable";
+
+        [Obsolete("This endpoint is deprecated and will be removed in a future version.")]
         public const string RoutesFallback = MainHost + "/routes/fallback";
+
         public const string RoutesReindexCallback = MainHost + "/routes/reindex-callback";
         public const string RoutesDatatable = MainHost + "/routes/datatable";
         public const string RoutesDatatableConfig = MainHost + "/routes/datatable/config";

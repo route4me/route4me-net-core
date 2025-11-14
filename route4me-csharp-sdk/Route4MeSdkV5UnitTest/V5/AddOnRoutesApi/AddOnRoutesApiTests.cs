@@ -85,6 +85,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
         public void GetAllRoutesWithPaginationTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -101,6 +102,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
         public void GetPaginatedRouteListWithoutElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -118,6 +120,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
         public void GetRouteDataTableWithoutElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -145,6 +148,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
         public void GetRouteDatatableWithElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -172,6 +176,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
         public void GetRouteListWithoutElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
