@@ -1,0 +1,98 @@
+name: NuGet Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish'
+        required: false
+        type: string
+
+jobs:
+  build-and-publish:
+    name: Build and Publish NuGet Package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: tag_version
+        run: |
+          if [ "${{ github.event_name }}" == "push" ] && [ -n "${{ github.ref }}" ]; then
+            # Extract version from tag (remove refs/tags/ prefix and 'v' prefix if present)
+            TAG_VERSION="${{ github.ref }}"
+            TAG_VERSION=${TAG_VERSION#refs/tags/}
+            TAG_VERSION=${TAG_VERSION#v}
+            echo "version=$TAG_VERSION" >> $GITHUB_OUTPUT
+            echo "Tag version: $TAG_VERSION"
+          elif [ "${{ github.event_name }}" == "release" ]; then
+            TAG_VERSION="${{ github.event.release.tag_name }}"
+            TAG_VERSION=${TAG_VERSION#v}
+            echo "version=$TAG_VERSION" >> $GITHUB_OUTPUT
+            echo "Release tag version: $TAG_VERSION"
+          elif [ -n "${{ github.event.inputs.version }}" ]; then
+            TAG_VERSION="${{ github.event.inputs.version }}"
+            echo "version=$TAG_VERSION" >> $GITHUB_OUTPUT
+            echo "Manual version: $TAG_VERSION"
+          else
+            # Fallback to .csproj version
+            TAG_VERSION=$(grep -oP '<Version>\K[^<]+' ./route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeSDKLibrary.csproj | head -1)
+            echo "version=$TAG_VERSION" >> $GITHUB_OUTPUT
+            echo "CSProj version: $TAG_VERSION"
+          fi
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./route4me-csharp-sdk/Route4MeSDK.sln
+
+      - name: Build the project
+        run: dotnet build ./route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeSDKLibrary.csproj --configuration Release --no-restore /p:Version=${{ steps.tag_version.outputs.version }}
+
+      - name: Pack NuGet package
+        run: dotnet pack ./route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeSDKLibrary.csproj --configuration Release --no-build /p:Version=${{ steps.tag_version.outputs.version }} --output ./artifacts
+        id: pack
+
+      - name: List artifacts
+        run: ls -la ./artifacts
+        continue-on-error: true
+
+      - name: Display package info
+        run: |
+          echo "Publishing version: ${{ steps.tag_version.outputs.version }}"
+          if [ -f ./artifacts/*.nupkg ]; then
+            echo "Package file found:"
+            ls -lh ./artifacts/*.nupkg
+          fi
+
+      - name: Publish to NuGet.org
+        run: |
+          dotnet nuget push ./artifacts/*.nupkg \
+            --api-key "${NUGET_API_KEY}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: ./artifacts/*.nupkg
+          retention-days: 30
+
