@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 using CsvHelper;
@@ -46,9 +47,9 @@ namespace Route4MeSDK.Examples
 
             var sScheduleFile = AppDomain.CurrentDomain.BaseDirectory + @"/Data/CSV/schedules.csv";
 
-            using (TextReader reader = File.OpenText(sScheduleFile))
+            using (var reader = File.OpenText(sScheduleFile))
             {
-                using (var csv = new CsvReader(reader))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     while (csv.Read())
                     {
@@ -106,9 +107,9 @@ namespace Route4MeSDK.Examples
 
             int count = 0;
 
-            using (TextReader reader = File.OpenText(sAddressFile))
+            using (var reader = File.OpenText(sAddressFile))
             {
-                using (var csv = new CsvReader(reader))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     while (csv.Read())
                     {
