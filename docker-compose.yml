@@ -49,7 +49,7 @@ services:
       sh -c "
         echo 'Running Route4Me SDK Tests...' &&
         echo '==============================' &&
-        dotnet test -v n -p:ParallelizeTestCollections=false -f netcoreapp2.1 --filter Category!=Beacon ./route4me-csharp-sdk/Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj &&
+        dotnet test -v n -p:ParallelizeTestCollections=false -c Release --filter Category!=Beacon ./Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj &&
         echo 'All tests completed!'
       "
 
