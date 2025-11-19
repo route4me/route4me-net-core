@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 
@@ -21,9 +22,9 @@ namespace Route4MeSDK.Examples
 
             string sAddressFile = @"Data/orders_1000.csv";
 
-            using (TextReader reader = File.OpenText(sAddressFile))
+            using (var reader = File.OpenText(sAddressFile))
             {
-                var csv = new CsvReader(reader);
+                var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                 //int iCount = 0;
                 while (csv.Read())
                 {

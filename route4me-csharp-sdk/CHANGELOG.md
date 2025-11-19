@@ -1,6 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.13.2] - 2025-01-17
+### Changed
+Migrated project to .NET 10.0:
+- **Test Projects**: Upgraded target framework from `net6.0` to `net10.0`
+  - `Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj`
+  - `Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj`
+  - `Route4MeSDKTest/Route4MeSDKTest.csproj`
+- **Docker Infrastructure**: Updated to use .NET 10.0 SDK
+  - `Dockerfile`: Updated base image from .NET 6.0 to .NET 10.0
+  - `docker-compose.yml`: Removed obsolete `netcoreapp2.1` framework flag
+- **CI/CD Configuration**:
+  - `appveyor.yml`: Updated from Visual Studio 2017 to Visual Studio 2022
+  - `.github/workflows/code-quality.yml`: Updated to .NET 10.0.x
+- **Library**: `Route4MeSDKLibrary` continues to target `netstandard2.0` for maximum compatibility
+
+**Note**: The SDK library (`Route4MeSDKLibrary`) remains on `netstandard2.0`, ensuring compatibility with both .NET Framework and .NET 10.0+ applications.
+
 ## [7.13.1] - 2025-11-11
 ### Deprecated
 Marked deprecated V5 route endpoint methods and constants with `[Obsolete]` attribute for backward compatibility:

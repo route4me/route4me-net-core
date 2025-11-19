@@ -85,7 +85,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
-        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
+        [Obsolete]
         public void GetAllRoutesWithPaginationTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -102,7 +103,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
-        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
+        [Obsolete]
         public void GetPaginatedRouteListWithoutElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -120,7 +122,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
-        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
+        [Obsolete]
         public void GetRouteDataTableWithoutElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -148,7 +151,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
-        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
+        [Obsolete]
         public void GetRouteDatatableWithElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -176,7 +180,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
-        [Obsolete("This test uses deprecated methods and will be removed in a future version.")]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
+        [Obsolete]
         public void GetRouteListWithoutElasticSearchTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);

@@ -11,10 +11,10 @@
 #
 # =============================================================================
 
-# Use the official .NET 6.0 SDK image as base
-# This provides both build and runtime capabilities for .NET 6.0 projects
+# Use the official .NET 10.0 SDK image as base
+# This provides both build and runtime capabilities for .NET 10.0 projects
 # Specify platform to avoid QEMU emulation issues on Apple Silicon
-FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:6.0 AS base
+FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:10.0 AS base
 
 # Set environment variables for non-interactive installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -52,7 +52,7 @@ RUN dotnet restore ./route4me-csharp-sdk/Route4MeSDK.sln
 RUN dotnet build -v q -c Release ./route4me-csharp-sdk/Route4MeSDKLibrary/Route4MeSDKLibrary.csproj
 
 # Build the unit test projects
-# Note: Test projects target net6.0, so no framework override needed
+# Note: Test projects target net10.0, so no framework override needed
 RUN dotnet build -v q -c Release ./route4me-csharp-sdk/Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj
 RUN dotnet build -v q -c Release ./route4me-csharp-sdk/Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj
 
@@ -65,7 +65,7 @@ FROM build AS test
 WORKDIR /app/route4me-csharp-sdk
 
 # Run the unit tests
-# Note: Test projects target net6.0, so no framework override needed
+# Note: Test projects target net10.0, so no framework override needed
 RUN dotnet test -v n -p:ParallelizeTestCollections=false -c Release --filter Category!=Beacon ./Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj
 
 # Run the V5 unit tests as well
