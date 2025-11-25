@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -637,6 +637,22 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "is_dynamic_start_time", EmitDefaultValue = false)]
         [DefaultValue(false)]
         public bool is_dynamic_start_time { get; set; }
+
+        /// <summary>
+        ///     Enable flexible start time for the route.
+        ///     When enabled, the optimization engine will determine the optimal departure time
+        ///     within the time window specified by <see cref="FlexibleStartTime"/>.
+        /// </summary>
+        [DataMember(Name = "is_flexible_start_time", EmitDefaultValue = false)]
+        public bool? IsFlexibleStartTime { get; set; }
+
+        /// <summary>
+        ///     Flexible start time window configuration.
+        ///     Specifies the earliest and latest allowed start times for the route.
+        ///     Only used when <see cref="IsFlexibleStartTime"/> is true.
+        /// </summary>
+        [DataMember(Name = "flexible_start_time", EmitDefaultValue = false)]
+        public FlexibleStartTime FlexibleStartTime { get; set; }
 
         /// <summary>
         ///     Address bundling rules
