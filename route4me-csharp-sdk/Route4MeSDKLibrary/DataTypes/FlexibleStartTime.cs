@@ -29,4 +29,3 @@ namespace Route4MeSDK.DataTypes
         public int? LatestStart { get; set; }
     }
 }
-
