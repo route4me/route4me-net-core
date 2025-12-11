@@ -24,12 +24,15 @@ namespace Route4MeSDKLibrary
             new SequentialTimer(OnTimerCallback, TimeSpan.FromHours(2));
         }
 
-        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null)
+        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null, TimeSpan? timeout = null)
         {
             lock (SyncRoot)
             {
+                var effectiveTimeout = timeout ?? TimeSpan.FromMinutes(5);
+                var key = $"{baseAddress}|{apiKey}|{effectiveTimeout.TotalMilliseconds}";
+
                 HttpClientWrapper wrapper;
-                if (HttpClientWrappers.TryGetValue(baseAddress, out var prev))
+                if (HttpClientWrappers.TryGetValue(key, out var prev))
                 {
                     prev.RefCount++;
                     prev.LastAccess = DateTime.Now;
@@ -37,19 +40,19 @@ namespace Route4MeSDKLibrary
                 }
                 else
                 {
-                    wrapper = new HttpClientWrapper(CreateHttpClient(baseAddress, apiKey));
-                    HttpClientWrappers.Add(baseAddress, wrapper);
+                    wrapper = new HttpClientWrapper(CreateHttpClient(baseAddress, apiKey, effectiveTimeout));
+                    HttpClientWrappers.Add(key, wrapper);
                 }
 
-                return new HttpClientHolder(wrapper.HttpClient, baseAddress);
+                return new HttpClientHolder(wrapper.HttpClient, key);
             }
         }
 
-        public static void ReleaseHttpClientHolder(string baseAddress)
+        public static void ReleaseHttpClientHolder(string key)
         {
             lock (SyncRoot)
             {
-                if (HttpClientWrappers.TryGetValue(baseAddress, out var wrapper))
+                if (HttpClientWrappers.TryGetValue(key, out var wrapper))
                 {
                     if (wrapper.RefCount > 0) wrapper.RefCount--;
                     wrapper.LastAccess = DateTime.Now;
@@ -57,9 +60,9 @@ namespace Route4MeSDKLibrary
             }
         }
 
-        private static HttpClient CreateHttpClient(string baseAddress, string apiKey = null)
+        private static HttpClient CreateHttpClient(string baseAddress, string apiKey = null, TimeSpan? timeout = null)
         {
-            var result = new HttpClient { BaseAddress = new Uri(baseAddress), Timeout = TimeSpan.FromMinutes(30) };
+            var result = new HttpClient {BaseAddress = new Uri(baseAddress), Timeout = timeout ?? TimeSpan.FromMinutes(5)};
 
             result.DefaultRequestHeaders.Accept.Clear();
             result.DefaultRequestHeaders.ConnectionClose = false;

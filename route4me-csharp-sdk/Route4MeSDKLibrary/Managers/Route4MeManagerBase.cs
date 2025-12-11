@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
+using Microsoft.Extensions.Logging;
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.Managers
@@ -19,10 +20,14 @@ namespace Route4MeSDKLibrary.Managers
     public abstract class Route4MeManagerBase
     {
         protected readonly string ApiKey;
+        protected readonly TimeSpan? DefaultTimeout;
+        protected readonly ILogger Logger;
 
-        protected Route4MeManagerBase(string apiKey)
+        protected Route4MeManagerBase(string apiKey, TimeSpan? defaultTimeout = null, ILogger logger = null)
         {
             ApiKey = apiKey;
+            DefaultTimeout = defaultTimeout;
+            Logger = logger;
         }
 
         public string GetStringResponseFromAPI(GenericParameters optimizationParameters,

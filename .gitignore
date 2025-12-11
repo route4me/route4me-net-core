@@ -93,3 +93,6 @@ coverage*.info
 # Nuget personal access tokens and Credentials
 nuget.config
 
+
+# Secrets
+**/appsettings.json

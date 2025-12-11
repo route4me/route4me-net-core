@@ -5,19 +5,19 @@ namespace Route4MeSDKLibrary
 {
     internal class HttpClientHolder : IDisposable
     {
-        private readonly string _baseAddress;
+        private readonly string _key;
 
-        public HttpClientHolder(HttpClient httpClient, string baseAddress)
+        public HttpClientHolder(HttpClient httpClient, string key)
         {
             HttpClient = httpClient;
-            _baseAddress = baseAddress;
+            _key = key;
         }
 
         public HttpClient HttpClient { get; }
 
         public void Dispose()
         {
-            HttpClientHolderManager.ReleaseHttpClientHolder(_baseAddress);
+            HttpClientHolderManager.ReleaseHttpClientHolder(_key);
         }
     }
 }
