@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+
 using Microsoft.Extensions.Logging;
+
 using NUnit.Framework;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
@@ -58,12 +61,12 @@ namespace Route4MeSDKUnitTest.Tests
             // Assert
             Assert.IsNull(result, "Result should be null on failure.");
             Assert.IsNotNull(failureResponse, "Failure response should not be null.");
-            
+
             // Verify logs
             // We expect at least one "attempt failed" log and one "all attempts failed" log
             Assert.IsTrue(logger.Logs.Exists(l => l.Contains("Attempt 1 failed")), "Should log attempt 1 failure.");
             Assert.IsTrue(logger.Logs.Exists(l => l.Contains("All attempts to run optimization failed")), "Should log final failure.");
-            
+
             // Verify specific timeout message
             Assert.IsTrue(logger.Logs.Exists(l => l.Contains("API request timed out")), "Should log timeout specific message.");
         }
@@ -113,7 +116,7 @@ namespace Route4MeSDKUnitTest.Tests
             var logger = new TestLogger();
             // Use dummy key, we want to fail connection anyway
             var manager = new Route4MeManager("11111111111111111111111111111111", TimeSpan.FromSeconds(1), logger);
-            
+
             // Set invalid base URL to force DNS/Connection error (simulate network issue)
             manager.BaseUrlOverride = "https://non-existent-domain-12345.com/api";
 
@@ -129,7 +132,7 @@ namespace Route4MeSDKUnitTest.Tests
             // Assert
             Assert.IsNull(result, "Result should be null on network failure.");
             Assert.IsNotNull(failureResponse, "Failure response should be present.");
-            
+
             // Verify logs show network issue
             Assert.IsTrue(logger.Logs.Exists(l => l.Contains("API request failed due to network issue")), "Should log network failure.");
             Assert.IsTrue(logger.Logs.Exists(l => l.Contains("Attempt 1 failed")), "Should log retry attempt.");
@@ -155,7 +158,7 @@ namespace Route4MeSDKUnitTest.Tests
                     // Invalid address data intended to provoke a validation error e.g. High Confidence Geocoding error
                     // or minimum requirements. 
                     // Providing an address with Alias but NO address string and NO lat/lng might trigger 400 Bad Request
-                    new Address { Alias = "Invalid Entry", Time = 0 } 
+                    new Address { Alias = "Invalid Entry", Time = 0 }
                 }
             };
 
@@ -168,15 +171,15 @@ namespace Route4MeSDKUnitTest.Tests
             // Assert
             // If the key is dummy/invalid (403), this will also fail but with Auth error.
             // If key is valid, it should fail with content validation error.
-            
+
             Assert.IsNull(result, "Result should be null for invalid input.");
             Assert.IsNotNull(failureResponse, "Should have failure response.");
-            
+
             if (failureResponse != null && failureResponse.Messages != null)
             {
-                foreach(var kvp in failureResponse.Messages)
+                foreach (var kvp in failureResponse.Messages)
                 {
-                     Console.WriteLine($"Error Key: {kvp.Key}, Value: {string.Join(",", kvp.Value)}");
+                    Console.WriteLine($"Error Key: {kvp.Key}, Value: {string.Join(",", kvp.Value)}");
                 }
             }
         }

@@ -1,10 +1,11 @@
-using Route4MeSDK.DataTypes;
-using Route4MeSDK.QueryTypes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+
+using Route4MeSDK.DataTypes;
+using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.Examples
 {
@@ -84,10 +85,10 @@ namespace Route4MeSDK.Examples
             {
                 Console.WriteLine("\nPolling for completion...");
                 stopwatch.Restart();
-                
+
                 bool isOptimized = false;
                 int maxPolls = 60; // Wait up to 60 seconds (usually takes <10s for 100 stops)
-                
+
                 for (int i = 0; i < maxPolls; i++)
                 {
                     Thread.Sleep(1000); // Poll every second
@@ -106,7 +107,7 @@ namespace Route4MeSDK.Examples
                             dataObject = result;
                             isOptimized = true;
                             break;
-                            
+
                         }
                         else if (result.State == OptimizationState.Error) // State 5
                         {
@@ -142,7 +143,7 @@ namespace Route4MeSDK.Examples
                 {
                     double dist = route.TripDistance ?? 0;
                     long dur = route.PlannedTotalRouteDuration ?? 0;
-                    
+
                     Console.WriteLine($"{route.RouteId,-36} | {route.Addresses.Length,-6} | {dist:F2}mi    | {FormatDuration(dur),-10}");
                 }
                 Console.WriteLine(new string('-', 80));

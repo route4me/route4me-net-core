@@ -62,7 +62,7 @@ namespace Route4MeSDKLibrary
 
         private static HttpClient CreateHttpClient(string baseAddress, string apiKey = null, TimeSpan? timeout = null)
         {
-            var result = new HttpClient {BaseAddress = new Uri(baseAddress), Timeout = timeout ?? TimeSpan.FromMinutes(5)};
+            var result = new HttpClient { BaseAddress = new Uri(baseAddress), Timeout = timeout ?? TimeSpan.FromMinutes(5) };
 
             result.DefaultRequestHeaders.Accept.Clear();
             result.DefaultRequestHeaders.ConnectionClose = false;

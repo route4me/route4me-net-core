@@ -5,12 +5,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 using fastJSON;
+
+using Microsoft.Extensions.Logging;
 
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
@@ -133,37 +134,37 @@ namespace Route4MeSDK
                     if (i == maxRetries - 1)
                     {
                         _logger?.LogError(ex, "All attempts to run optimization failed.");
-                        
+
                         // Construct a ResultResponse from the exception/error string
-                         resultResponse = new ResultResponse
-                         {
-                             Status = false,
-                             Messages = new Dictionary<string, string[]>
+                        resultResponse = new ResultResponse
+                        {
+                            Status = false,
+                            Messages = new Dictionary<string, string[]>
                              {
                                  { "Error", new[] { ex.Message } },
                                  { "Details", new[] { lastErrorString } }
                              }
-                         };
-                         return null;
+                        };
+                        return null;
                     }
-                    
+
                     // Wait before retry (exponential backoff could be added here, but simple wait for now)
                     Thread.Sleep(1000 * (i + 1));
                 }
             }
-            
+
             // If we fall through loop without exception but result is null (shouldn't happen with throwExceptions=true usually)
             if (result == null && !string.IsNullOrEmpty(lastErrorString))
-             {
-                 resultResponse = new ResultResponse
-                 {
-                     Status = false,
-                     Messages = new Dictionary<string, string[]>
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
                      {
                          { "Error", new[] { lastErrorString } }
                      }
-                 };
-             }
+                };
+            }
 
             return result;
         }
@@ -6862,60 +6863,60 @@ namespace Route4MeSDK
                         case HttpMethodType.Post:
                         case HttpMethodType.Put:
                         case HttpMethodType.Delete:
-                        {
-                            var isPut = httpMethod == HttpMethodType.Put;
-                            var isDelete = httpMethod == HttpMethodType.Delete;
-                            HttpContent content;
-                            if (httpContent != null)
                             {
-                                content = httpContent;
-                            }
-                            else
-                            {
-                                var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
-                                content = new StringContent(jsonString);
-                                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                            }
-
-                            Task<HttpResponseMessage> response;
-
-                            if (isPut)
-                            {
-                                response = acquireHttpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
-                            }
-                            else if (isDelete)
-                            {
-                                var request = new HttpRequestMessage
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
                                 {
-                                    Content = content,
-                                    Method = HttpMethod.Delete,
-                                    RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                };
-                                response = acquireHttpClientHolder.HttpClient.SendAsync(request);
-                            }
-                            else
-                            {
-                                using (var cts = new CancellationTokenSource())
-                                {
-                                    if (_defaultTimeout.HasValue)
-                                    {
-                                         cts.CancelAfter(_defaultTimeout.Value);
-                                    }
-                                    else
-                                    {
-                                         cts.CancelAfter(TimeSpan.FromMinutes(5)); // Fallback if no default (though manager has one)
-                                    }
-
-                                    // Note: HttpClient timeout is set in AcquireHttpClientHolder, but cts is extra safety or for specific operation
-                                    // Actually AcquireHttpClientHolder sets Timeout property on HttpClient. Use that.
-                                    // But here we use PostAsync with cancellation token... 
-                                    // Let's use the CancellationToken from CTS.
-                                    response = acquireHttpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
+                                    content = httpContent;
                                 }
-                            }
+                                else
+                                {
+                                    var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                                }
 
-                            // Wait for response
-                            response.Wait();
+                                Task<HttpResponseMessage> response;
+
+                                if (isPut)
+                                {
+                                    response = acquireHttpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
+                                    {
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = acquireHttpClientHolder.HttpClient.SendAsync(request);
+                                }
+                                else
+                                {
+                                    using (var cts = new CancellationTokenSource())
+                                    {
+                                        if (_defaultTimeout.HasValue)
+                                        {
+                                            cts.CancelAfter(_defaultTimeout.Value);
+                                        }
+                                        else
+                                        {
+                                            cts.CancelAfter(TimeSpan.FromMinutes(5)); // Fallback if no default (though manager has one)
+                                        }
+
+                                        // Note: HttpClient timeout is set in AcquireHttpClientHolder, but cts is extra safety or for specific operation
+                                        // Actually AcquireHttpClientHolder sets Timeout property on HttpClient. Use that.
+                                        // But here we use PostAsync with cancellation token... 
+                                        // Let's use the CancellationToken from CTS.
+                                        response = acquireHttpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
+                                    }
+                                }
+
+                                // Wait for response
+                                response.Wait();
 
                                 // Check if successful
                                 if (response.IsCompleted &&
@@ -7034,47 +7035,47 @@ namespace Route4MeSDK
                     {
                         var msg = "API request timed out (Task Canceled)";
                         errorMessage = msg;
-                         _logger?.LogError(ex, msg);
+                        _logger?.LogError(ex, msg);
                         if (throwExceptions) throw ex;
                     }
                     else if (ex is HttpRequestException)
                     {
-                         var msg = "API request failed due to network issue";
-                         errorMessage = msg + ": " + ex.Message;
-                         _logger?.LogError(ex, msg);
-                         if (throwExceptions) throw ex;
+                        var msg = "API request failed due to network issue";
+                        errorMessage = msg + ": " + ex.Message;
+                        _logger?.LogError(ex, msg);
+                        if (throwExceptions) throw ex;
                     }
                     else
                     {
                         errorMessage = ex.Message;
-                         _logger?.LogError(ex, "API Request Exception");
-                         if (throwExceptions) throw;
+                        _logger?.LogError(ex, "API Request Exception");
+                        if (throwExceptions) throw;
                     }
                 }
-                 result = null;
+                result = null;
             }
             catch (HttpListenerException e)
             {
                 errorMessage = e.Message + " --- " + errorMessage;
-                 _logger?.LogError(e, "HttpListenerException");
-                 if (throwExceptions) throw;
+                _logger?.LogError(e, "HttpListenerException");
+                if (throwExceptions) throw;
                 result = null;
             }
             catch (Exception e)
             {
-                 if (e is TaskCanceledException)
-                 {
-                      var msg = "API request timed out";
-                      errorMessage = msg;
-                      _logger?.LogError(e, msg);
-                      if (throwExceptions) throw;
-                 }
-                 else
-                 {
+                if (e is TaskCanceledException)
+                {
+                    var msg = "API request timed out";
+                    errorMessage = msg;
+                    _logger?.LogError(e, msg);
+                    if (throwExceptions) throw;
+                }
+                else
+                {
                     errorMessage = e is AggregateException ? e.InnerException.Message : e.Message;
                     _logger?.LogError(e, "General API Exception");
-                     if (throwExceptions) throw;
-                 }
+                    if (throwExceptions) throw;
+                }
 
                 result = default;
             }
