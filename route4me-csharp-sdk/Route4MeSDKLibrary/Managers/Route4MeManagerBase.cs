@@ -8,11 +8,12 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
-using Microsoft.Extensions.Logging;
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDKLibrary.Managers
