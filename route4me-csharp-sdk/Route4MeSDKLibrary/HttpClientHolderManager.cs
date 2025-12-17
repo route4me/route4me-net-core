@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
+using Microsoft.Extensions.Logging;
+
 namespace Route4MeSDKLibrary
 {
     /// <summary>
@@ -23,6 +25,12 @@ namespace Route4MeSDKLibrary
         ///     Change this value to configure the timeout for all HTTP requests made by the SDK.
         /// </summary>
         public static TimeSpan RequestsTimeout { get; set; } = TimeSpan.FromSeconds(30);
+
+        /// <summary>
+        ///     Static logger for HTTP client connection pooling operations.
+        ///     Thread-safe via SyncRoot lock in all access points.
+        /// </summary>
+        public static ILogger Logger { get; set; }
 
         static HttpClientHolderManager()
         {
