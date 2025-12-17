@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [7.13.3] - 2025-12-17
+### Changed
+- Reduced default HTTP request timeout from 30 minutes to 30 seconds
+- Added configurable HTTP timeout via `Route4MeConfig.HttpTimeout` property
+- Users can now customize timeout globally before making API calls
+
 ## [7.13.2] - 2025-01-17
 ### Changed
 Migrated project to .NET 10.0:
