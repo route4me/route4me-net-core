@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -20,6 +22,10 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="apiKey">Route4Me API key</param>
         public FacilityManagerV5(string apiKey) : base(apiKey)
+        {
+        }
+
+        public FacilityManagerV5(string apiKey, ILogger logger) : base(apiKey, logger)
         {
         }
 

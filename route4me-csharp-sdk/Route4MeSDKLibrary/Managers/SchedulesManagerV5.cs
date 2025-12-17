@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -13,6 +15,10 @@ namespace Route4MeSDKLibrary.Managers
     public class SchedulesManagerV5 : Route4MeManagerBase
     {
         public SchedulesManagerV5(string apiKey) : base(apiKey)
+        {
+        }
+
+        public SchedulesManagerV5(string apiKey, ILogger logger) : base(apiKey, logger)
         {
         }
 
