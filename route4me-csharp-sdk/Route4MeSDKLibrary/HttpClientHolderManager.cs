@@ -18,6 +18,12 @@ namespace Route4MeSDKLibrary
 
         private static readonly object SyncRoot = new object();
 
+        /// <summary>
+        ///     Gets or sets the HTTP request timeout. Default is 30 seconds.
+        ///     Change this value to configure the timeout for all HTTP requests made by the SDK.
+        /// </summary>
+        public static TimeSpan RequestsTimeout { get; set; } = TimeSpan.FromSeconds(30);
+
         static HttpClientHolderManager()
         {
             // ReSharper disable once ObjectCreationAsStatement
@@ -59,7 +65,7 @@ namespace Route4MeSDKLibrary
 
         private static HttpClient CreateHttpClient(string baseAddress, string apiKey = null)
         {
-            var result = new HttpClient { BaseAddress = new Uri(baseAddress), Timeout = TimeSpan.FromMinutes(30) };
+            var result = new HttpClient { BaseAddress = new Uri(baseAddress), Timeout = RequestsTimeout };
 
             result.DefaultRequestHeaders.Accept.Clear();
             result.DefaultRequestHeaders.ConnectionClose = false;
