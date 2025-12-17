@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.Notes;
@@ -16,6 +18,10 @@ namespace Route4MeSDKLibrary.Managers
     public class NotesManagerV5 : Route4MeManagerBase
     {
         public NotesManagerV5(string apiKey) : base(apiKey)
+        {
+        }
+
+        public NotesManagerV5(string apiKey, ILogger logger) : base(apiKey, logger)
         {
         }
 
