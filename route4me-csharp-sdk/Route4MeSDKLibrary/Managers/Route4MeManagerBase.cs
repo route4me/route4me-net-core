@@ -9,11 +9,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
+
 using Polly.CircuitBreaker;
 
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary.Resilience;
 
 namespace Route4MeSDKLibrary.Managers
