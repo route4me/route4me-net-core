@@ -26,19 +26,13 @@ namespace Route4MeSDKLibrary
         /// </summary>
         public static TimeSpan RequestsTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
-        /// <summary>
-        ///     Static logger for HTTP client connection pooling operations.
-        ///     Thread-safe via SyncRoot lock in all access points.
-        /// </summary>
-        public static ILogger Logger { get; set; }
-
         static HttpClientHolderManager()
         {
             // ReSharper disable once ObjectCreationAsStatement
             new SequentialTimer(OnTimerCallback, TimeSpan.FromHours(2));
         }
 
-        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null)
+        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null, ILogger logger = null)
         {
             lock (SyncRoot)
             {
@@ -55,7 +49,7 @@ namespace Route4MeSDKLibrary
                     HttpClientWrappers.Add(baseAddress, wrapper);
                 }
 
-                return new HttpClientHolder(wrapper.HttpClient, baseAddress);
+                return new HttpClientHolder(wrapper.HttpClient, baseAddress, logger);
             }
         }
 

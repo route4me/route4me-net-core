@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Logging;
-
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.DataTypes.V5.TelematicsPlatform;
 using Route4MeSDK.QueryTypes.V5;
@@ -56,26 +54,6 @@ namespace Route4MeSDK
             _locationManager = new LocationManagerV5(apiKey);
             _customerManager = new CustomerManagerV5(apiKey);
             _facilityManager = new FacilityManagerV5(apiKey);
-            _logger = null;
-        }
-
-        public Route4MeManagerV5(string apiKey, ILogger logger)
-        {
-            _logger = logger;
-            _addressBookContactsManager = new AddressBookContactsManagerV5(apiKey, logger);
-            _accountProfileManager = new AccountProfileManagerV5(apiKey, logger);
-            _addressBarcodeManager = new AddressBarcodeManagerV5(apiKey, logger);
-            _teamManagementManager = new TeamManagementManagerV5(apiKey, logger);
-            _driveReviewManager = new DriveReviewManagerV5(apiKey, logger);
-            _routeManager = new RouteManagerV5(apiKey, logger);
-            _optimizationManager = new OptimizationManagerV5(apiKey, logger);
-            _vehicleManager = new VehicleManagerV5(apiKey, logger);
-            _telematicsManager = new TelematicsManagerV5(apiKey, logger);
-            _orderManager = new OrderManagerV5(apiKey, logger);
-            _routeStatusManager = new RouteStatusManagerV5(apiKey, logger);
-            _locationManager = new LocationManagerV5(apiKey, logger);
-            _customerManager = new CustomerManagerV5(apiKey, logger);
-            _facilityManager = new FacilityManagerV5(apiKey, logger);
         }
 
         #endregion
@@ -96,7 +74,6 @@ namespace Route4MeSDK
         private readonly LocationManagerV5 _locationManager;
         private readonly CustomerManagerV5 _customerManager;
         private readonly FacilityManagerV5 _facilityManager;
-        private readonly ILogger _logger;
 
         #endregion
 
