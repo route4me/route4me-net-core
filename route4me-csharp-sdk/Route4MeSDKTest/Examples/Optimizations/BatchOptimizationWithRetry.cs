@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
+
 using Route4MeSDKLibrary;
 
 namespace Route4MeSDK.Examples
@@ -235,21 +237,21 @@ namespace Route4MeSDK.Examples
         private static OptimizationParameters CreateOptimizationParameters(Address[] addresses, int index)
         {
             return new OptimizationParameters
+            {
+                Addresses = addresses,
+                Parameters = new RouteParameters
                 {
-                    Addresses = addresses,
-                    Parameters = new RouteParameters
-                    {
-                        AlgorithmType = AlgorithmType.CVRP_TW_SD,
-                        RouteName = $"Retry Demo Batch {index + 1} - {DateTime.Now:HHmmss}",
-                        RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
-                        RouteTime = 60 * 60 * 7, // 7 AM
-                        RT = true,
-                        Optimize = Optimize.Distance.Description(),
-                        DistanceUnit = DistanceUnit.MI.Description(),
-                        DeviceType = DeviceType.Web.Description(),
-                        TravelMode = TravelMode.Driving.Description()
-                    }
-                };
+                    AlgorithmType = AlgorithmType.CVRP_TW_SD,
+                    RouteName = $"Retry Demo Batch {index + 1} - {DateTime.Now:HHmmss}",
+                    RouteDate = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow.Date.AddDays(1)),
+                    RouteTime = 60 * 60 * 7, // 7 AM
+                    RT = true,
+                    Optimize = Optimize.Distance.Description(),
+                    DistanceUnit = DistanceUnit.MI.Description(),
+                    DeviceType = DeviceType.Web.Description(),
+                    TravelMode = TravelMode.Driving.Description()
+                }
+            };
         }
 
         /// <summary>
