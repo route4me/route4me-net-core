@@ -161,13 +161,8 @@ namespace Route4MeSDKLibrary.Managers
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null, Logger))
                 {
-                    if (Logger != null)
-                    {
-                        HttpClientHolderManager.Logger = Logger;
-                    }
-
                     switch (httpMethod)
                     {
                         case HttpMethodType.Get:
@@ -408,13 +403,8 @@ namespace Route4MeSDKLibrary.Managers
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null, Logger))
                 {
-                    if (Logger != null)
-                    {
-                        HttpClientHolderManager.Logger = Logger;
-                    }
-
                     switch (httpMethod)
                     {
                         case HttpMethodType.Get:
