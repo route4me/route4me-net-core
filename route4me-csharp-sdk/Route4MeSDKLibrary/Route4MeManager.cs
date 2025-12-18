@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using fastJSON;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -49,6 +51,7 @@ namespace Route4MeSDK
         #region Fields
 
         private readonly string _mApiKey;
+        private readonly ILogger _mLogger;
 
         #endregion
 
@@ -59,6 +62,13 @@ namespace Route4MeSDK
         public Route4MeManager(string apiKey)
         {
             _mApiKey = apiKey;
+            _mLogger = null;
+        }
+
+        public Route4MeManager(string apiKey, ILogger logger)
+        {
+            _mApiKey = apiKey;
+            _mLogger = logger;
         }
 
         #endregion
