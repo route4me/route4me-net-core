@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -18,6 +20,10 @@ namespace Route4MeSDKLibrary.Managers
     public sealed class AddressBookContactsManagerV5 : Route4MeManagerBase
     {
         public AddressBookContactsManagerV5(string apiKey) : base(apiKey)
+        {
+        }
+
+        public AddressBookContactsManagerV5(string apiKey, ILogger logger) : base(apiKey, logger)
         {
         }
 

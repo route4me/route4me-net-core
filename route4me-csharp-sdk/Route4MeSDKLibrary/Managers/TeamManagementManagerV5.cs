@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes.V5;
@@ -16,6 +18,10 @@ namespace Route4MeSDKLibrary.Managers
     public class TeamManagementManagerV5 : Route4MeManagerBase
     {
         public TeamManagementManagerV5(string apiKey) : base(apiKey)
+        {
+        }
+
+        public TeamManagementManagerV5(string apiKey, ILogger logger) : base(apiKey, logger)
         {
         }
 
