@@ -3,13 +3,13 @@ name: NuGet Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   release:
     types: [published]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish'
+        description: "Version to publish"
         required: false
         type: string
 
@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -56,7 +56,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore dependencies
         run: dotnet restore ./route4me-csharp-sdk/Route4MeSDK.sln
@@ -95,4 +95,3 @@ jobs:
           name: nuget-package
           path: ./artifacts/*.nupkg
           retention-days: 30
-
