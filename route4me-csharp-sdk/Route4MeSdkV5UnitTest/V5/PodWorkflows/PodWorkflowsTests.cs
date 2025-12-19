@@ -27,7 +27,7 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
             };
 
             var workflows = route4Me.GetPodWorkflows(parameters, out var err);
-            
+
             Assert.IsNotNull(workflows, V5TestHelper.GetAllErrorMessagesFormatted(err));
 
             Assert.That(workflows.GetType(), Is.EqualTo(typeof(PodWorkflowsResponse)));
@@ -70,7 +70,7 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
             workflow.IsDefault = false;
 
             var createdWorkflow = route4Me.CreatePodWorkflow(workflow, out var err);
-            
+
             Assert.IsNotNull(createdWorkflow?.Data, V5TestHelper.GetAllErrorMessagesFormatted(err));
 
             var loadedWorkflow = route4Me.GetPodWorkflow(createdWorkflow.Data.WorkflowGuid, out _);
