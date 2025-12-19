@@ -10,9 +10,13 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
+using Polly.CircuitBreaker;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
+
+using Route4MeSDKLibrary.Resilience;
 
 namespace Route4MeSDKLibrary.Managers
 {
@@ -157,7 +161,14 @@ namespace Route4MeSDKLibrary.Managers
                     {
                         case HttpMethodType.Get:
                             {
-                                var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
+                                var httpResponse = await HttpResiliencePolicy.GetAsyncPolicy()
+                                    .ExecuteAsync(async () =>
+                                        await httpClientHolder.HttpClient.GetAsync(uri.PathAndQuery)
+                                            .ConfigureAwait(false))
+                                    .ConfigureAwait(false);
+
+                                httpResponse.EnsureSuccessStatusCode();
+                                var response = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                                 if (isString)
                                 {
@@ -193,31 +204,35 @@ namespace Route4MeSDKLibrary.Managers
                                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                                 }
 
-                                HttpResponseMessage response;
-                                if (isPut)
-                                {
-                                    response = await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
-                                }
-                                else if (isPatch)
-                                {
-                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-                                    response = await httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content).ConfigureAwait(false);
-                                }
-                                else if (isDelete)
-                                {
-                                    var request = new HttpRequestMessage
+                                HttpResponseMessage response = await HttpResiliencePolicy.GetAsyncPolicy()
+                                    .ExecuteAsync(async () =>
                                     {
-                                        Content = content,
-                                        Method = HttpMethod.Delete,
-                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                    };
-                                    response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
-                                }
-                                else
-                                {
-                                    response = await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
-                                        .ConfigureAwait(false);
-                                }
+                                        if (isPut)
+                                        {
+                                            return await httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                        }
+                                        else if (isPatch)
+                                        {
+                                            content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
+                                            return await httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                        }
+                                        else if (isDelete)
+                                        {
+                                            var request = new HttpRequestMessage
+                                            {
+                                                Content = content,
+                                                Method = HttpMethod.Delete,
+                                                RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                            };
+                                            return await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
+                                        }
+                                        else
+                                        {
+                                            return await httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content)
+                                                .ConfigureAwait(false);
+                                        }
+                                    })
+                                    .ConfigureAwait(false);
 
                                 // Check if successful
                                 if (response.Content is StreamContent)
@@ -309,6 +324,35 @@ namespace Route4MeSDKLibrary.Managers
                     }
                 }
             }
+            catch (BrokenCircuitException)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"CircuitBreakerError", new[] {
+                            "Circuit breaker is open due to consecutive failures. " +
+                            "Requests are temporarily blocked. Please try again later."
+                        }}
+                    }
+                };
+                result = null;
+            }
+            catch (HttpRequestException hre) when (Route4MeConfig.RetryCount > 0)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"RetryExhausted", new[] {
+                            $"Request failed after {Route4MeConfig.RetryCount} retry attempts: {hre.Message}"
+                        }}
+                    }
+                };
+                result = null;
+            }
             catch (HttpListenerException e)
             {
                 resultResponse = new ResultResponse
@@ -399,18 +443,28 @@ namespace Route4MeSDKLibrary.Managers
                     {
                         case HttpMethodType.Get:
                             {
-                                var response = httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
-                                response.Wait();
+                                var httpResponse = HttpResiliencePolicy.GetSyncPolicy()
+                                    .Execute(() =>
+                                    {
+                                        var task = httpClientHolder.HttpClient.GetAsync(uri.PathAndQuery);
+                                        task.Wait();
+                                        return task.Result;
+                                    });
+
+                                httpResponse.EnsureSuccessStatusCode();
+                                var streamTask = httpResponse.Content.ReadAsStreamAsync();
+                                streamTask.Wait();
+                                var response = streamTask.Result;
 
                                 if (isString)
                                 {
-                                    result = response.Result.ReadString() as T;
+                                    result = response.ReadString() as T;
                                 }
                                 else
                                 {
                                     result = parseWithNewtonJson
-                                        ? response.Result.ReadObjectNew<T>()
-                                        : response.Result.ReadObject<T>();
+                                        ? response.ReadObjectNew<T>()
+                                        : response.ReadObject<T>();
                                 }
                                 break;
                             }
@@ -436,43 +490,45 @@ namespace Route4MeSDKLibrary.Managers
                                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                                 }
 
-                                Task<HttpResponseMessage> response;
-                                if (isPut)
-                                {
-                                    response = httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
-                                }
-                                else if (isPatch)
-                                {
-                                    //content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-                                    response = httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content);
-                                }
-                                else if (isDelete)
-                                {
-                                    var request = new HttpRequestMessage
+                                var response = HttpResiliencePolicy.GetSyncPolicy()
+                                    .Execute(() =>
                                     {
-                                        Content = content,
-                                        Method = HttpMethod.Delete,
-                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
-                                    };
-                                    response = httpClientHolder.HttpClient.SendAsync(request);
-                                }
-                                else
-                                {
-                                    var cts = new CancellationTokenSource();
-                                    cts.CancelAfter(1000 * 60 * 5); // 3 seconds
+                                        Task<HttpResponseMessage> task;
+                                        if (isPut)
+                                        {
+                                            task = httpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
+                                        }
+                                        else if (isPatch)
+                                        {
+                                            //content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
+                                            task = httpClientHolder.HttpClient.PatchAsync(uri.PathAndQuery, content);
+                                        }
+                                        else if (isDelete)
+                                        {
+                                            var request = new HttpRequestMessage
+                                            {
+                                                Content = content,
+                                                Method = HttpMethod.Delete,
+                                                RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                            };
+                                            task = httpClientHolder.HttpClient.SendAsync(request);
+                                        }
+                                        else
+                                        {
+                                            var cts = new CancellationTokenSource();
+                                            cts.CancelAfter(1000 * 60 * 5); // 3 seconds
+                                            task = httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
+                                        }
 
-                                    response = httpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content, cts.Token);
-                                }
-
-                                // Wait for response
-                                response.Wait();
+                                        task.Wait();
+                                        return task.Result;
+                                    });
 
                                 // Check if successful
-                                if (response.IsCompleted &&
-                                    response.Result.IsSuccessStatusCode &&
-                                    response.Result.Content is StreamContent)
+                                if (response.IsSuccessStatusCode &&
+                                    response.Content is StreamContent)
                                 {
-                                    var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                    var streamTask = ((StreamContent)response.Content).ReadAsStreamAsync();
                                     streamTask.Wait();
 
                                     if (isString)
@@ -486,18 +542,17 @@ namespace Route4MeSDKLibrary.Managers
                                             : streamTask.Result.ReadObject<T>();
                                     }
                                 }
-                                else if (response.IsCompleted &&
-                                         response.Result.IsSuccessStatusCode &&
-                                         response.Result.Content
+                                else if (response.IsSuccessStatusCode &&
+                                         response.Content
                                              .GetType().ToString().ToLower()
                                              .Contains("httpconnectionresponsecontent"))
                                 {
-                                    var streamTask2 = response.Result.Content.ReadAsStreamAsync();
+                                    var streamTask2 = response.Content.ReadAsStreamAsync();
                                     streamTask2.Wait();
 
                                     if (streamTask2.IsCompleted)
                                     {
-                                        var content2 = response.Result.Content;
+                                        var content2 = response.Content;
 
                                         if (isString)
                                         {
@@ -518,13 +573,13 @@ namespace Route4MeSDKLibrary.Managers
                                             result = JsonConvert.DeserializeObject<T>("{}");
                                         }
                                         result.GetType().GetProperty("StatusCode")
-                                            ?.SetValue(result, (int)response.Result.StatusCode);
+                                            ?.SetValue(result, (int)response.StatusCode);
 
                                         result.GetType().GetProperty("IsSuccessStatusCode")
-                                            ?.SetValue(result, response.Result.IsSuccessStatusCode);
+                                            ?.SetValue(result, response.IsSuccessStatusCode);
 
                                         result.GetType().GetProperty("Status")
-                                            ?.SetValue(result, response.Result.IsSuccessStatusCode);
+                                            ?.SetValue(result, response.IsSuccessStatusCode);
                                     }
 
                                 }
@@ -533,10 +588,10 @@ namespace Route4MeSDKLibrary.Managers
                                     Task<Stream> streamTask = null;
                                     Task<string> errorMessageContent = null;
 
-                                    if (response.Result.Content.GetType() == typeof(StreamContent))
-                                        streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                    if (response.Content.GetType() == typeof(StreamContent))
+                                        streamTask = ((StreamContent)response.Content).ReadAsStreamAsync();
                                     else
-                                        errorMessageContent = response.Result.Content.ReadAsStringAsync();
+                                        errorMessageContent = response.Content.ReadAsStringAsync();
 
                                     streamTask?.Wait();
                                     errorMessageContent?.Wait();
@@ -564,7 +619,7 @@ namespace Route4MeSDKLibrary.Managers
                                     }
                                     else
                                     {
-                                        var responseStream = response.Result.Content.ReadAsStringAsync();
+                                        var responseStream = response.Content.ReadAsStringAsync();
                                         responseStream.Wait();
                                         var responseString = responseStream.Result;
 
@@ -583,6 +638,35 @@ namespace Route4MeSDKLibrary.Managers
                             }
                     }
                 }
+            }
+            catch (BrokenCircuitException)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"CircuitBreakerError", new[] {
+                            "Circuit breaker is open due to consecutive failures. " +
+                            "Requests are temporarily blocked. Please try again later."
+                        }}
+                    }
+                };
+                result = null;
+            }
+            catch (HttpRequestException hre) when (Route4MeConfig.RetryCount > 0)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        {"RetryExhausted", new[] {
+                            $"Request failed after {Route4MeConfig.RetryCount} retry attempts: {hre.Message}"
+                        }}
+                    }
+                };
+                result = null;
             }
             catch (HttpListenerException e)
             {
