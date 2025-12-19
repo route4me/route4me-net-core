@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
+using Microsoft.Extensions.Logging;
+
 namespace Route4MeSDKLibrary
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace Route4MeSDKLibrary
             new SequentialTimer(OnTimerCallback, TimeSpan.FromHours(2));
         }
 
-        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null)
+        public static HttpClientHolder AcquireHttpClientHolder(string baseAddress, string apiKey = null, ILogger logger = null)
         {
             lock (SyncRoot)
             {
@@ -47,7 +49,7 @@ namespace Route4MeSDKLibrary
                     HttpClientWrappers.Add(baseAddress, wrapper);
                 }
 
-                return new HttpClientHolder(wrapper.HttpClient, baseAddress);
+                return new HttpClientHolder(wrapper.HttpClient, baseAddress, logger);
             }
         }
 
