@@ -26,7 +26,9 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
                 PerPage = 10
             };
 
-            var workflows = route4Me.GetPodWorkflows(parameters, out _);
+            var workflows = route4Me.GetPodWorkflows(parameters, out var err);
+            
+            Assert.IsNotNull(workflows, V5TestHelper.GetAllErrorMessagesFormatted(err));
 
             Assert.That(workflows.GetType(), Is.EqualTo(typeof(PodWorkflowsResponse)));
         }
@@ -41,7 +43,8 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
                 PerPage = 10
             };
 
-            var workflows = route4Me.GetPodWorkflows(parameters, out _);
+            var workflows = route4Me.GetPodWorkflows(parameters, out var err);
+            Assert.IsNotNull(workflows?.Data, V5TestHelper.GetAllErrorMessagesFormatted(err));
             var workflow = workflows.Data.FirstOrDefault();
 
             if (workflow != null)
@@ -67,6 +70,8 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
             workflow.IsDefault = false;
 
             var createdWorkflow = route4Me.CreatePodWorkflow(workflow, out var err);
+            
+            Assert.IsNotNull(createdWorkflow?.Data, V5TestHelper.GetAllErrorMessagesFormatted(err));
 
             var loadedWorkflow = route4Me.GetPodWorkflow(createdWorkflow.Data.WorkflowGuid, out _);
 
@@ -90,6 +95,7 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
             workflow.IsDefault = false;
 
             var createdWorkflow = route4Me.CreatePodWorkflow(workflow, out var err);
+            Assert.IsNotNull(createdWorkflow?.Data, V5TestHelper.GetAllErrorMessagesFormatted(err));
 
             createdWorkflow.Data.Title = $"test_id_{Guid.NewGuid()}";
             var updatedWorkflow = route4Me.UpdatePodWorkflow(createdWorkflow.Data.WorkflowGuid, createdWorkflow.Data, out _);
@@ -114,8 +120,9 @@ namespace Route4MeSdkV5UnitTest.V5.PodWorkflows
             workflow.FailedActions = JArray.Parse("[\r\n{\r\n\"title\": \"Take a picture\",\r\n\"type\": \"photo\",\r\n\"required\": true\r\n},\r\n{\r\n\"title\": \"Reason\",\r\n\"type\": \"questionnaire\",\r\n\"required\": false,\r\n\"options\": {\r\n\"question_content\": \"123\",\r\n\"input_type\": \"multi-choice\",\r\n\"answers\": [\r\n{\r\n\"value\": \"123\"\r\n},\r\n{\r\n\"value\": \"456\"\r\n}\r\n]\r\n}\r\n}\r\n]");
             workflow.IsDefault = false;
 
-            var createdWorkflow = route4Me.CreatePodWorkflow(workflow, out var _);
+            var createdWorkflow = route4Me.CreatePodWorkflow(workflow, out var err);
 
+            Assert.IsNotNull(createdWorkflow?.Data, V5TestHelper.GetAllErrorMessagesFormatted(err));
             route4Me.DeletePodWorkflow(createdWorkflow.Data.WorkflowGuid, out _);
 
             var loadedWorkflow = route4Me.GetPodWorkflow(createdWorkflow.Data.WorkflowGuid, out _);
