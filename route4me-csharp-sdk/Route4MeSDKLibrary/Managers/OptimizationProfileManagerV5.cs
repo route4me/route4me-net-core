@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Route4MeSDK;
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
@@ -19,6 +21,10 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="apiKey">The Route4Me API key for authentication.</param>
         public OptimizationProfileManagerV5(string apiKey) : base(apiKey)
+        {
+        }
+
+        public OptimizationProfileManagerV5(string apiKey, ILogger logger) : base(apiKey, logger)
         {
         }
 
