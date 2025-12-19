@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 
 using Polly.CircuitBreaker;
@@ -23,10 +25,18 @@ namespace Route4MeSDKLibrary.Managers
     public abstract class Route4MeManagerBase
     {
         protected readonly string ApiKey;
+        protected readonly ILogger Logger;
 
         protected Route4MeManagerBase(string apiKey)
         {
             ApiKey = apiKey;
+            Logger = null;
+        }
+
+        protected Route4MeManagerBase(string apiKey, ILogger logger)
+        {
+            ApiKey = apiKey;
+            Logger = logger;
         }
 
         public string GetStringResponseFromAPI(GenericParameters optimizationParameters,
@@ -155,7 +165,7 @@ namespace Route4MeSDKLibrary.Managers
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null, Logger))
                 {
                     switch (httpMethod)
                     {
@@ -437,7 +447,7 @@ namespace Route4MeSDKLibrary.Managers
             try
             {
                 using (var httpClientHolder =
-                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null))
+                       HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority), v5 ? ApiKey : null, Logger))
                 {
                     switch (httpMethod)
                     {
