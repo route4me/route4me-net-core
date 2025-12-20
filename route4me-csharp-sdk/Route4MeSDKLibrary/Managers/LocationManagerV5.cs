@@ -509,13 +509,13 @@ namespace Route4MeSDKLibrary.Managers
 
             var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
 
-            var result = GetJsonObjectFromAPI<LocationTypeResource>(
+            var result = GetJsonObjectFromAPI<LocationTypeResponse>(
                 new GenericParameters(),
                 url,
                 HttpMethodType.Get,
                 out resultResponse);
 
-            return result;
+            return result.Data;
         }
 
         /// <summary>
@@ -540,12 +540,12 @@ namespace Route4MeSDKLibrary.Managers
 
             var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
 
-            var result = await GetJsonObjectFromAPIAsync<LocationTypeResource>(
+            var result = await GetJsonObjectFromAPIAsync<LocationTypeResponse>(
                 new GenericParameters(),
                 url,
                 HttpMethodType.Get).ConfigureAwait(false);
 
-            return result;
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1.Data, result.Item2);
         }
 
         /// <summary>
@@ -582,13 +582,13 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
-            var result = GetJsonObjectFromAPI<LocationTypeResource>(
+            var result = GetJsonObjectFromAPI<LocationTypeResponse>(
                 request,
                 R4MEInfrastructureSettingsV5.LocationTypes,
                 HttpMethodType.Post,
                 out resultResponse);
 
-            return result;
+            return result.Data;
         }
 
         /// <summary>
@@ -624,12 +624,12 @@ namespace Route4MeSDKLibrary.Managers
                 return new Tuple<LocationTypeResource, ResultResponse>(null, errorResponse);
             }
 
-            var result = await GetJsonObjectFromAPIAsync<LocationTypeResource>(
+            var result = await GetJsonObjectFromAPIAsync<LocationTypeResponse>(
                 request,
                 R4MEInfrastructureSettingsV5.LocationTypes,
                 HttpMethodType.Post).ConfigureAwait(false);
 
-            return result;
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1.Data, result.Item2);
         }
 
         /// <summary>
@@ -682,13 +682,13 @@ namespace Route4MeSDKLibrary.Managers
 
             var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
 
-            var result = GetJsonObjectFromAPI<LocationTypeResource>(
+            var result = GetJsonObjectFromAPI<LocationTypeResponse>(
                 request,
                 url,
                 HttpMethodType.Put,
                 out resultResponse);
 
-            return result;
+            return result.Data;
         }
 
         /// <summary>
@@ -740,12 +740,12 @@ namespace Route4MeSDKLibrary.Managers
 
             var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
 
-            var result = await GetJsonObjectFromAPIAsync<LocationTypeResource>(
+            var result = await GetJsonObjectFromAPIAsync<LocationTypeResponse>(
                 request,
                 url,
                 HttpMethodType.Put).ConfigureAwait(false);
 
-            return result;
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1.Data, result.Item2);
         }
 
         /// <summary>
