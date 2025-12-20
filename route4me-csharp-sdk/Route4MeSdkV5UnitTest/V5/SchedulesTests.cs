@@ -416,6 +416,7 @@ namespace Route4MeSdkV5UnitTest.V5
             request.RouteId = tdr.SD10Stops_route_id;
             var response = route4Me.CreateMasterRoute(request, out ResultResponse resultResponse);
 
+            Assert.IsNotNull(response, V5TestHelper.GetAllErrorMessagesFormatted(resultResponse));
             Assert.That(response.Status);
             Assert.That(response.Data, Is.Null);
         }
