@@ -515,7 +515,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Get,
                 out resultResponse);
 
-            return result.Data;
+            return result?.Data;
         }
 
         /// <summary>
@@ -545,7 +545,7 @@ namespace Route4MeSDKLibrary.Managers
                 url,
                 HttpMethodType.Get).ConfigureAwait(false);
 
-            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1.Data, result.Item2);
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1?.Data, result.Item2);
         }
 
         /// <summary>
@@ -588,7 +588,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Post,
                 out resultResponse);
 
-            return result.Data;
+            return result?.Data;
         }
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace Route4MeSDKLibrary.Managers
                 R4MEInfrastructureSettingsV5.LocationTypes,
                 HttpMethodType.Post).ConfigureAwait(false);
 
-            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1.Data, result.Item2);
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1?.Data, result.Item2);
         }
 
         /// <summary>
@@ -688,7 +688,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Put,
                 out resultResponse);
 
-            return result.Data;
+            return result?.Data;
         }
 
         /// <summary>
@@ -745,7 +745,7 @@ namespace Route4MeSDKLibrary.Managers
                 url,
                 HttpMethodType.Put).ConfigureAwait(false);
 
-            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1.Data, result.Item2);
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1?.Data, result.Item2);
         }
 
         /// <summary>
