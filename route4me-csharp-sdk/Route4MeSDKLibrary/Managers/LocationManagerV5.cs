@@ -492,7 +492,40 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="locationTypeId">Location type ID</param>
         /// <param name="resultResponse">Result response with error information if request fails</param>
         /// <returns>Location type resource</returns>
+        [Obsolete("Use new GetLocationTypeByIdResponse due to problem with serialization")]
         public LocationTypeResource GetLocationTypeById(string locationTypeId, out ResultResponse resultResponse)
+        {
+            if (string.IsNullOrWhiteSpace(locationTypeId))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type ID is required" } }
+                    }
+                };
+                return null;
+            }
+
+            var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
+
+            var result = GetJsonObjectFromAPI<LocationTypeResource>(
+                new GenericParameters(),
+                url,
+                HttpMethodType.Get,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get location type by ID (uses correct response wrapper deserialization)
+        /// </summary>
+        /// <param name="locationTypeId">Location type ID</param>
+        /// <param name="resultResponse">Result response with error information if request fails</param>
+        /// <returns>Location type resource</returns>
+        public LocationTypeResponse GetLocationTypeByIdResponse(string locationTypeId, out ResultResponse resultResponse)
         {
             if (string.IsNullOrWhiteSpace(locationTypeId))
             {
@@ -515,7 +548,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Get,
                 out resultResponse);
 
-            return result?.Data;
+            return result;
         }
 
         /// <summary>
@@ -523,6 +556,7 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="locationTypeId">Location type ID</param>
         /// <returns>Tuple with location type resource and result response</returns>
+        [Obsolete("Use GetLocationTypeByIdResponseAsync instead due to incorrect response deserialization")]
         public async Task<Tuple<LocationTypeResource, ResultResponse>> GetLocationTypeByIdAsync(string locationTypeId)
         {
             if (string.IsNullOrWhiteSpace(locationTypeId))
@@ -540,12 +574,42 @@ namespace Route4MeSDKLibrary.Managers
 
             var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
 
+            var result = await GetJsonObjectFromAPIAsync<LocationTypeResource>(
+                new GenericParameters(),
+                url,
+                HttpMethodType.Get).ConfigureAwait(false);
+
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Get location type by ID (async, uses correct response wrapper deserialization)
+        /// </summary>
+        /// <param name="locationTypeId">Location type ID</param>
+        /// <returns>Tuple with location type resource and result response</returns>
+        public async Task<Tuple<LocationTypeResponse, ResultResponse>> GetLocationTypeByIdResponseAsync(string locationTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(locationTypeId))
+            {
+                var errorResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type ID is required" } }
+                    }
+                };
+                return new Tuple<LocationTypeResponse, ResultResponse>(null, errorResponse);
+            }
+
+            var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
+
             var result = await GetJsonObjectFromAPIAsync<LocationTypeResponse>(
                 new GenericParameters(),
                 url,
                 HttpMethodType.Get).ConfigureAwait(false);
 
-            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1?.Data, result.Item2);
+            return new Tuple<LocationTypeResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -554,7 +618,51 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="request">Store location type request with name, description, and type flags</param>
         /// <param name="resultResponse">Result response with error information if request fails</param>
         /// <returns>Created location type resource</returns>
+        [Obsolete("Use CreateLocationTypeResponse instead due to incorrect response deserialization")]
         public LocationTypeResource CreateLocationType(StoreLocationTypeRequest request, out ResultResponse resultResponse)
+        {
+            if (request == null)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Request cannot be null" } }
+                    }
+                };
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type name is required" } }
+                    }
+                };
+                return null;
+            }
+
+            var result = GetJsonObjectFromAPI<LocationTypeResource>(
+                request,
+                R4MEInfrastructureSettingsV5.LocationTypes,
+                HttpMethodType.Post,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Create location type (uses correct response wrapper deserialization)
+        /// </summary>
+        /// <param name="request">Store location type request with name, description, and type flags</param>
+        /// <param name="resultResponse">Result response with error information if request fails</param>
+        /// <returns>Created location type resource</returns>
+        public LocationTypeResponse CreateLocationTypeResponse(StoreLocationTypeRequest request, out ResultResponse resultResponse)
         {
             if (request == null)
             {
@@ -588,7 +696,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Post,
                 out resultResponse);
 
-            return result?.Data;
+            return result;
         }
 
         /// <summary>
@@ -596,6 +704,7 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="request">Store location type request with name, description, and type flags</param>
         /// <returns>Tuple with created location type resource and result response</returns>
+        [Obsolete("Use CreateLocationTypeResponseAsync instead due to incorrect response deserialization")]
         public async Task<Tuple<LocationTypeResource, ResultResponse>> CreateLocationTypeAsync(StoreLocationTypeRequest request)
         {
             if (request == null)
@@ -624,12 +733,53 @@ namespace Route4MeSDKLibrary.Managers
                 return new Tuple<LocationTypeResource, ResultResponse>(null, errorResponse);
             }
 
+            var result = await GetJsonObjectFromAPIAsync<LocationTypeResource>(
+                request,
+                R4MEInfrastructureSettingsV5.LocationTypes,
+                HttpMethodType.Post).ConfigureAwait(false);
+
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Create location type (async, uses correct response wrapper deserialization)
+        /// </summary>
+        /// <param name="request">Store location type request with name, description, and type flags</param>
+        /// <returns>Tuple with created location type resource and result response</returns>
+        public async Task<Tuple<LocationTypeResponse, ResultResponse>> CreateLocationTypeResponseAsync(StoreLocationTypeRequest request)
+        {
+            if (request == null)
+            {
+                var errorResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Request cannot be null" } }
+                    }
+                };
+                return new Tuple<LocationTypeResponse, ResultResponse>(null, errorResponse);
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                var errorResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type name is required" } }
+                    }
+                };
+                return new Tuple<LocationTypeResponse, ResultResponse>(null, errorResponse);
+            }
+
             var result = await GetJsonObjectFromAPIAsync<LocationTypeResponse>(
                 request,
                 R4MEInfrastructureSettingsV5.LocationTypes,
                 HttpMethodType.Post).ConfigureAwait(false);
 
-            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1?.Data, result.Item2);
+            return new Tuple<LocationTypeResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
@@ -639,7 +789,67 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="request">Store location type request with updated data</param>
         /// <param name="resultResponse">Result response with error information if request fails</param>
         /// <returns>Updated location type resource</returns>
+        [Obsolete("Use UpdateLocationTypeResponse instead due to incorrect response deserialization")]
         public LocationTypeResource UpdateLocationType(string locationTypeId, StoreLocationTypeRequest request, out ResultResponse resultResponse)
+        {
+            if (string.IsNullOrWhiteSpace(locationTypeId))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type ID is required" } }
+                    }
+                };
+                return null;
+            }
+
+            if (request == null)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Request cannot be null" } }
+                    }
+                };
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type name is required" } }
+                    }
+                };
+                return null;
+            }
+
+            var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
+
+            var result = GetJsonObjectFromAPI<LocationTypeResource>(
+                request,
+                url,
+                HttpMethodType.Put,
+                out resultResponse);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Update location type (uses correct response wrapper deserialization)
+        /// </summary>
+        /// <param name="locationTypeId">Location type ID to update</param>
+        /// <param name="request">Store location type request with updated data</param>
+        /// <param name="resultResponse">Result response with error information if request fails</param>
+        /// <returns>Updated location type resource</returns>
+        public LocationTypeResponse UpdateLocationTypeResponse(string locationTypeId, StoreLocationTypeRequest request, out ResultResponse resultResponse)
         {
             if (string.IsNullOrWhiteSpace(locationTypeId))
             {
@@ -688,7 +898,7 @@ namespace Route4MeSDKLibrary.Managers
                 HttpMethodType.Put,
                 out resultResponse);
 
-            return result?.Data;
+            return result;
         }
 
         /// <summary>
@@ -697,6 +907,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="locationTypeId">Location type ID to update</param>
         /// <param name="request">Store location type request with updated data</param>
         /// <returns>Tuple with updated location type resource and result response</returns>
+        [Obsolete("Use UpdateLocationTypeResponseAsync instead due to incorrect response deserialization")]
         public async Task<Tuple<LocationTypeResource, ResultResponse>> UpdateLocationTypeAsync(string locationTypeId, StoreLocationTypeRequest request)
         {
             if (string.IsNullOrWhiteSpace(locationTypeId))
@@ -740,12 +951,69 @@ namespace Route4MeSDKLibrary.Managers
 
             var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
 
+            var result = await GetJsonObjectFromAPIAsync<LocationTypeResource>(
+                request,
+                url,
+                HttpMethodType.Put).ConfigureAwait(false);
+
+            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Update location type (async, uses correct response wrapper deserialization)
+        /// </summary>
+        /// <param name="locationTypeId">Location type ID to update</param>
+        /// <param name="request">Store location type request with updated data</param>
+        /// <returns>Tuple with updated location type resource and result response</returns>
+        public async Task<Tuple<LocationTypeResponse, ResultResponse>> UpdateLocationTypeResponseAsync(string locationTypeId, StoreLocationTypeRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(locationTypeId))
+            {
+                var errorResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type ID is required" } }
+                    }
+                };
+                return new Tuple<LocationTypeResponse, ResultResponse>(null, errorResponse);
+            }
+
+            if (request == null)
+            {
+                var errorResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Request cannot be null" } }
+                    }
+                };
+                return new Tuple<LocationTypeResponse, ResultResponse>(null, errorResponse);
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                var errorResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "Location type name is required" } }
+                    }
+                };
+                return new Tuple<LocationTypeResponse, ResultResponse>(null, errorResponse);
+            }
+
+            var url = R4MEInfrastructureSettingsV5.LocationTypeById.Replace("{location_type_id}", locationTypeId);
+
             var result = await GetJsonObjectFromAPIAsync<LocationTypeResponse>(
                 request,
                 url,
                 HttpMethodType.Put).ConfigureAwait(false);
 
-            return new Tuple<LocationTypeResource, ResultResponse>(result.Item1?.Data, result.Item2);
+            return new Tuple<LocationTypeResponse, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
