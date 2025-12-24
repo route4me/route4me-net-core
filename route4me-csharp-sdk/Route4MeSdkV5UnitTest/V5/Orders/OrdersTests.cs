@@ -22,6 +22,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
     public class OrdersTests
     {
         [Test]
+        [Ignore("Test data haven't prepared for archived orders")]
         public void OrdersArchiveTest()
         {
             var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
@@ -35,6 +36,7 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
         }
 
         [Test]
+        [Ignore("Test data haven't prepared for archived orders")]
         public async Task OrdersArchiveAsyncTest()
         {
             var route4me = new Route4MeManagerV5(ApiKeys.ActualApiKey);
@@ -62,16 +64,17 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
                 CachedLng = -34.6
             };
 
-            Order createdOrder = route4me.AddOrder(order, out _);
+            Order createdOrder = route4me.AddOrder(order, out string errorString);
+            Assert.NotNull(createdOrder, $"Failed to create order: {errorString}");
+            Assert.That(createdOrder.OrderId, Is.GreaterThan(0), "Order ID should be greater than 0");
 
             var parameters = new OrderHistoryParameters()
             {
                 OrderId = createdOrder.OrderId,
-                TrackingNumber = createdOrder.TrackingNumber
             };
 
-            var result = route4meV5.GetOrderHistory(parameters, out _);
-
+            var result = route4meV5.GetOrderHistory(parameters, out var resultResponse);
+            Assert.NotNull(result, V5TestHelper.GetAllErrorMessagesFormatted(resultResponse));
             Assert.That(result.Results, Is.Not.Empty);
         }
 
@@ -94,7 +97,6 @@ namespace Route4MeSdkV5UnitTest.V5.Orders
             var parameters = new OrderHistoryParameters()
             {
                 OrderId = createdOrder.Item1.OrderId,
-                TrackingNumber = createdOrder.Item1.TrackingNumber
             };
 
             var result = await route4meV5.GetOrderHistoryAsync(parameters);
