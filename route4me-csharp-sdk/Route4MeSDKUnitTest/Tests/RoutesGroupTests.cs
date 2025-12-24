@@ -471,6 +471,7 @@ namespace Route4MeSDKUnitTest.Tests
             #endregion
 
             _tdr2.SD10Stops_route.ApprovedForExecution = true;
+            _tdr2.SD10Stops_route.DispatchedTimestamp = R4MeUtils.ConvertToUnixTimestamp(DateTime.UtcNow);
             _tdr2.SD10Stops_route.Parameters.RouteName += " Edited";
             _tdr2.SD10Stops_route.Parameters.Metric = Metric.Manhattan;
 
@@ -506,6 +507,12 @@ namespace Route4MeSDKUnitTest.Tests
                 _tdr2.SD10Stops_route.ApprovedForExecution,
                 "UpdateRouteTest failed, ApprovedForExecution cannot set to true");
             Assert.IsNotNull(
+                dataObject.DispatchedTimestamp,
+                "UpdateRouteTest failed, DispatchedTimestamp cannot set to a value");
+            Assert.IsTrue(
+                dataObject.DispatchedTimestamp > 0,
+                "UpdateRouteTest failed, DispatchedTimestamp should be a positive Unix timestamp");
+            Assert.IsNotNull(
                 dataObject,
                 "UpdateRouteTest failed. " + errorString);
             Assert.IsTrue(
@@ -534,6 +541,7 @@ namespace Route4MeSDKUnitTest.Tests
             initialRoute = R4MeUtils.ObjectDeepClone(_tdr2.SD10Stops_route);
 
             _tdr2.SD10Stops_route.ApprovedForExecution = false;
+            _tdr2.SD10Stops_route.DispatchedTimestamp = null;
             _tdr2.SD10Stops_route.Addresses[1].Group = null;
             _tdr2.SD10Stops_route.Addresses[1].CustomerPo = null;
             _tdr2.SD10Stops_route.Addresses[1].InvoiceNo = null;
@@ -545,6 +553,12 @@ namespace Route4MeSDKUnitTest.Tests
             Assert.IsFalse(
                 _tdr2.SD10Stops_route.ApprovedForExecution,
                 "UpdateRouteTest failed, ApprovedForExecution cannot set to false");
+            Assert.IsNotNull(
+                dataObject.DispatchedTimestamp,
+                "UpdateRouteTest failed, DispatchedTimestamp cannot set to a value");
+            Assert.IsTrue(
+                dataObject.DispatchedTimestamp > 0,
+                "UpdateRouteTest failed, DispatchedTimestamp should be a positive Unix timestamp");
             Assert.IsNull(
                 dataObject.Addresses[1].Group,
                 "UpdateWholeRouteTest failed.");
