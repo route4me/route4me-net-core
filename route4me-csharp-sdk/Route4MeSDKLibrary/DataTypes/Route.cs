@@ -76,6 +76,12 @@ namespace Route4MeSDK.DataTypes
         public bool ApprovedForExecution { get; set; }
 
         /// <summary>
+        ///     Unix timestamp when the route was dispatched for execution
+        /// </summary>
+        [DataMember(Name = "dispatched_timestamp", EmitDefaultValue = false)]
+        public long? DispatchedTimestamp { get; set; }
+
+        /// <summary>
         ///     Counter of the approved revisions
         /// </summary>
         [DataMember(Name = "approved_revisions_counter", EmitDefaultValue = false)]
