@@ -27,7 +27,7 @@ namespace Route4MeSDK.Examples
                 IsChildType = false   // Cannot be a child
             };
 
-            var created = route4Me.CreateLocationType(createRequest, out var createResponse);
+            var created = route4Me.CreateLocationTypeResponse(createRequest, out var createResponse);
 
             if (createResponse != null && !createResponse.Status)
             {
@@ -35,10 +35,10 @@ namespace Route4MeSDK.Examples
                 return;
             }
 
-            Console.WriteLine($"  Created location type: {created.Name}");
-            Console.WriteLine($"  ID: {created.LocationTypeId}");
-            Console.WriteLine($"  Is Parent Type: {created.IsParentType}");
-            Console.WriteLine($"  Is Child Type: {created.IsChildType}");
+            Console.WriteLine($"  Created location type: {created.Data.Name}");
+            Console.WriteLine($"  ID: {created.Data.LocationTypeId}");
+            Console.WriteLine($"  Is Parent Type: {created.Data.IsParentType}");
+            Console.WriteLine($"  Is Child Type: {created.Data.IsChildType}");
             Console.WriteLine();
 
             // 2. READ - Get all location types
@@ -70,7 +70,7 @@ namespace Route4MeSDK.Examples
 
             // 3. READ BY ID - Get specific location type
             Console.WriteLine("3. Getting location type by ID...");
-            var retrieved = route4Me.GetLocationTypeById(created.LocationTypeId, out var getByIdResponse);
+            var retrieved = route4Me.GetLocationTypeByIdResponse(created.Data.LocationTypeId, out var getByIdResponse);
 
             if (getByIdResponse != null && !getByIdResponse.Status)
             {
@@ -78,8 +78,8 @@ namespace Route4MeSDK.Examples
             }
             else
             {
-                Console.WriteLine($"  Retrieved: {retrieved.Name}");
-                Console.WriteLine($"  Description: {retrieved.Description}");
+                Console.WriteLine($"  Retrieved: {retrieved.Data.Name}");
+                Console.WriteLine($"  Description: {retrieved.Data.Description}");
             }
             Console.WriteLine();
 
@@ -93,7 +93,7 @@ namespace Route4MeSDK.Examples
                 IsChildType = true    // Changed from false
             };
 
-            var updated = route4Me.UpdateLocationType(created.LocationTypeId, updateRequest, out var updateResponse);
+            var updated = route4Me.UpdateLocationTypeResponse(created.Data.LocationTypeId, updateRequest, out var updateResponse);
 
             if (updateResponse != null && !updateResponse.Status)
             {
@@ -101,16 +101,16 @@ namespace Route4MeSDK.Examples
             }
             else
             {
-                Console.WriteLine($"  Updated name: {updated.Name}");
-                Console.WriteLine($"  Updated description: {updated.Description}");
-                Console.WriteLine($"  Is Parent Type: {updated.IsParentType} (was {created.IsParentType})");
-                Console.WriteLine($"  Is Child Type: {updated.IsChildType} (was {created.IsChildType})");
+                Console.WriteLine($"  Updated name: {updated.Data.Name}");
+                Console.WriteLine($"  Updated description: {updated.Data.Description}");
+                Console.WriteLine($"  Is Parent Type: {updated.Data.IsParentType} (was {created.Data.IsParentType})");
+                Console.WriteLine($"  Is Child Type: {updated.Data.IsChildType} (was {created.Data.IsChildType})");
             }
             Console.WriteLine();
 
             // 5. DELETE - Remove the location type
             Console.WriteLine("5. Deleting the location type...");
-            var deleted = route4Me.DeleteLocationType(created.LocationTypeId, out var deleteResponse);
+            var deleted = route4Me.DeleteLocationType(created.Data.LocationTypeId, out var deleteResponse);
 
             if (deleteResponse != null && !deleteResponse.Status)
             {
@@ -124,7 +124,7 @@ namespace Route4MeSDK.Examples
 
             // 6. VERIFY DELETION - Try to get the deleted type
             Console.WriteLine("6. Verifying deletion...");
-            var notFound = route4Me.GetLocationTypeById(created.LocationTypeId, out var verifyResponse);
+            var notFound = route4Me.GetLocationTypeByIdResponse(created.Data.LocationTypeId, out var verifyResponse);
 
             if (verifyResponse != null && !verifyResponse.Status)
             {
