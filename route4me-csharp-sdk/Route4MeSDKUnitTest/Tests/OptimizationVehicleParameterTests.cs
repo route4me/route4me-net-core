@@ -39,11 +39,33 @@ namespace Route4MeSDKUnitTest.Tests
                 }
             };
 
+            optimizationParameters.PrepareVehicleId();
+
             var json = R4MeUtils.SerializeObjectToJson(optimizationParameters, true);
 
             // Swagger for /optimization_problem.php defines parameters.vehicle_id (not parameters.vehicle)
             Assert.That(json, Does.Not.Contain("\"vehicle\":"));
             Assert.That(json, Does.Contain("\"vehicle_id\":\"FAKE_VEHICLE_ID\""));
+        }
+
+        [Test]
+        public void PrepareVehicleId_WhenVehicleIdAlreadySet_DoesNotOverwrite()
+        {
+            var optimizationParameters = new OptimizationParameters
+            {
+                Parameters = new RouteParameters
+                {
+                    VehicleId = "EXISTING_ID",
+                    Vehicle = new VehicleV4Parameters
+                    {
+                        VehicleId = "NEW_ID"
+                    }
+                }
+            };
+
+            optimizationParameters.PrepareVehicleId();
+
+            Assert.That(optimizationParameters.Parameters.VehicleId, Is.EqualTo("EXISTING_ID"));
         }
     }
 }
