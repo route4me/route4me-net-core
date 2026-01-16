@@ -57,5 +57,11 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "total_addresses", EmitDefaultValue = false)]
         public int? TotalAddresses { get; set; }
+
+        /// <summary>
+        ///     Vehicle object.
+        /// </summary>
+        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        public VehicleV4Response Vehicle { get; set; }
     }
 }

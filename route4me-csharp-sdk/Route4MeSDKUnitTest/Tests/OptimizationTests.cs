@@ -130,5 +130,68 @@ namespace Route4MeSDKUnitTest.Tests
             route4Me.RemoveOptimization(new[] { dataObject.OptimizationProblemId }, out errorString);
         }
 
+        [Test]
+        public void RunOptimizationWithVehicleTest()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+
+            var addresses = new List<Address>()
+            {
+                new()
+                {
+                    AddressString = "754 5th Ave New York, NY 10019",
+                    Alias = "Bergdorf Goodman",
+                    IsDepot = true,
+                    Latitude = 40.7636197,
+                    Longitude = -73.9744388,
+                    Time = 0
+                },
+                new()
+                {
+                    AddressString = "717 5th Ave New York, NY 10022",
+                    Alias = "Giorgio Armani",
+                    Latitude = 40.7669692,
+                    Longitude = -73.9693864,
+                    Time = 0
+                }
+            };
+
+            var parameters = new RouteParameters()
+            {
+                AlgorithmType = AlgorithmType.TSP,
+                RouteName = "Test Optimization with Vehicle",
+                RouteDate = 1721088000,
+                RouteTime = 60 * 60 * 7,
+                Optimize = Optimize.Distance.Description(),
+                DistanceUnit = DistanceUnit.MI.Description(),
+                DeviceType = DeviceType.Web.Description()
+            };
+
+            var vehicle = new VehicleV4Response()
+            {
+                VehicleAlias = "Test Vehicle",
+                VehicleTypeID = "sedan"
+            };
+
+            var optimizationParameters = new OptimizationParameters()
+            {
+                Addresses = addresses.ToArray(),
+                Parameters = parameters,
+                Vehicle = vehicle
+            };
+
+            var dataObject = route4Me.RunOptimization(
+                optimizationParameters,
+                out var errorString);
+
+            Assert.That(dataObject, Is.Not.Null, "RunOptimization failed: " + errorString);
+            Assert.That(dataObject.Vehicle, Is.Not.Null, "Vehicle should be present in the response");
+            Assert.That(dataObject.Vehicle.VehicleAlias, Is.EqualTo(vehicle.VehicleAlias));
+
+            if (dataObject.OptimizationProblemId != null)
+            {
+                route4Me.RemoveOptimization(new[] { dataObject.OptimizationProblemId }, out _);
+            }
+        }
     }
 }
