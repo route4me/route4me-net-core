@@ -306,6 +306,16 @@ namespace Route4MeSDK.DataTypes
         [DataMember(Name = "vehicle", EmitDefaultValue = false)]
         public VehicleV4Response Vehilce { get; set; }
 
+        /// <summary>
+        ///     A vehicle assigned to the route.
+        /// </summary>
+        [IgnoreDataMember]
+        public VehicleV4Response Vehicle
+        {
+            get => Vehilce;
+            set => Vehilce = value;
+        }
+
         [JsonProperty("member_config_storage")]
         private Dictionary<string, JToken> MemberConfigStorageInternal { get; set; }
 
