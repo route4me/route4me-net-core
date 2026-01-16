@@ -12,6 +12,7 @@ namespace Route4MeSDK.DataTypes.V5
     ///     Route parameters
     /// </summary>
     [DataContract]
+    [KnownType(typeof(VehicleV4Parameters))]
     public class RouteParameters
     {
         /// <summary>
