@@ -173,6 +173,18 @@ namespace Route4MeSDK.DataTypes
         public string VehicleId { get; set; }
 
         /// <summary>
+        ///     Vehicle object to use for route/optimization generation.
+        ///     <remarks>
+        ///         <para>
+        ///             This is used to apply commercial/trucking restrictions (dimensions, hazmat, etc.)
+        ///             when creating an optimization (POST /api.v4/optimization_problem.php).
+        ///         </para>
+        ///     </remarks>
+        /// </summary>
+        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        public VehicleV4Parameters Vehicle { get; set; }
+
+        /// <summary>
         ///     The vehicle ID, to be assigned to the route.
         /// </summary>
         [Obsolete("All new routes should be assigned to a member_id")]
