@@ -30,6 +30,7 @@ namespace Route4MeSDKUnitTest.Tests
                     TravelMode = "Trucking",
                     Vehicle = new VehicleV4Parameters
                     {
+                        VehicleId = "FAKE_VEHICLE_ID",
                         HeightInches = 120,
                         WeightLb = 26000,
                         HazmatType = "NONE",
@@ -40,12 +41,9 @@ namespace Route4MeSDKUnitTest.Tests
 
             var json = R4MeUtils.SerializeObjectToJson(optimizationParameters, true);
 
-            Assert.That(json, Does.Contain("\"vehicle\""));
-            // VehicleV4Parameters uses DataMember names (e.g. "height_inches", "weight_lb", etc.)
-            Assert.That(json, Does.Contain("\"height_inches\""));
-            Assert.That(json, Does.Contain("\"weight_lb\""));
-            Assert.That(json, Does.Contain("\"HazmatType\""));
-            Assert.That(json, Does.Contain("\"UseTruckRestrictions\""));
+            // Swagger for /optimization_problem.php defines parameters.vehicle_id (not parameters.vehicle)
+            Assert.That(json, Does.Not.Contain("\"vehicle\":"));
+            Assert.That(json, Does.Contain("\"vehicle_id\":\"FAKE_VEHICLE_ID\""));
         }
     }
 }
