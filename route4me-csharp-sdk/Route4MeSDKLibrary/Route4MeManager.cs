@@ -88,6 +88,13 @@ namespace Route4MeSDK
         /// <returns>Generated optimization problem object</returns>
         public DataObject RunOptimization(OptimizationParameters optimizationParameters, out string errorString)
         {
+            // Swagger for /optimization_problem.php uses parameters.vehicle_id (not parameters.vehicle).
+            if (optimizationParameters?.Parameters?.VehicleId == null &&
+                optimizationParameters?.Parameters?.Vehicle?.VehicleId != null)
+            {
+                optimizationParameters.Parameters.VehicleId = optimizationParameters.Parameters.Vehicle.VehicleId;
+            }
+
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
@@ -108,6 +115,13 @@ namespace Route4MeSDK
         /// <returns>Generated optimization problem object</returns>
         public Task<Tuple<DataObject, string>> RunOptimizationAsync(OptimizationParameters optimizationParameters)
         {
+            // Swagger for /optimization_problem.php uses parameters.vehicle_id (not parameters.vehicle).
+            if (optimizationParameters?.Parameters?.VehicleId == null &&
+                optimizationParameters?.Parameters?.Vehicle?.VehicleId != null)
+            {
+                optimizationParameters.Parameters.VehicleId = optimizationParameters.Parameters.Vehicle.VehicleId;
+            }
+
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post, null, false, true);
@@ -255,6 +269,13 @@ namespace Route4MeSDK
         /// <returns>Updated optimization</returns>
         public DataObject UpdateOptimization(OptimizationParameters optimizationParameters, out string errorString)
         {
+            // Swagger for /optimization_problem.php uses parameters.vehicle_id (not parameters.vehicle).
+            if (optimizationParameters?.Parameters?.VehicleId == null &&
+                optimizationParameters?.Parameters?.Vehicle?.VehicleId != null)
+            {
+                optimizationParameters.Parameters.VehicleId = optimizationParameters.Parameters.Vehicle.VehicleId;
+            }
+
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put,
@@ -272,6 +293,13 @@ namespace Route4MeSDK
         /// <returns>Updated optimization</returns>
         public Task<Tuple<DataObject, string>> UpdateOptimizationAsync(OptimizationParameters optimizationParameters)
         {
+            // Swagger for /optimization_problem.php uses parameters.vehicle_id (not parameters.vehicle).
+            if (optimizationParameters?.Parameters?.VehicleId == null &&
+                optimizationParameters?.Parameters?.Vehicle?.VehicleId != null)
+            {
+                optimizationParameters.Parameters.VehicleId = optimizationParameters.Parameters.Vehicle.VehicleId;
+            }
+
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put, null, false, true);

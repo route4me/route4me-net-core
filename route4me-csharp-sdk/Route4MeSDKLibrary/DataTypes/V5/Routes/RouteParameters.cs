@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 using Route4MeSDK.QueryTypes;
 
 namespace Route4MeSDK.DataTypes.V5
@@ -167,15 +169,15 @@ namespace Route4MeSDK.DataTypes.V5
         public string VehicleId { get; set; }
 
         /// <summary>
-        ///     Vehicle object to use for route/optimization generation.
+        ///     Convenience property: when set, its <see cref="VehicleV4Parameters.VehicleId"/> can be copied into
+        ///     <see cref="VehicleId"/> for optimization creation.
         ///     <remarks>
-        ///         <para>
-        ///             This is used to apply commercial/trucking restrictions (dimensions, hazmat, etc.)
-        ///             when creating an optimization (POST /api.v4/optimization_problem.php).
-        ///         </para>
+        ///         Swagger for <c>/optimization_problem.php</c> defines <c>parameters.vehicle_id</c> (not <c>parameters.vehicle</c>).
+        ///         This property is intentionally not serialized.
         ///     </remarks>
         /// </summary>
-        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        [IgnoreDataMember]
+        [JsonIgnore]
         public VehicleV4Parameters Vehicle { get; set; }
 
         /// <summary>
