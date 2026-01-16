@@ -7,6 +7,7 @@ using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 
 using Route4MeSDKUnitTest.Types;
+using VehicleV5 = Route4MeSDK.DataTypes.V5.Vehicle;
 
 namespace Route4MeSDKUnitTest.Tests
 {
@@ -128,6 +129,72 @@ namespace Route4MeSDKUnitTest.Tests
             Assert.That(dataObject, Is.Not.Null);
 
             route4Me.RemoveOptimization(new[] { dataObject.OptimizationProblemId }, out errorString);
+        }
+
+        [Test]
+        public void SerializeOptimizationParameters_IncludesVehicle_WhenProvided()
+        {
+            var optimizationParameters = new OptimizationParameters
+            {
+                Parameters = new RouteParameters
+                {
+                    RouteName = "Vehicle serialization test"
+                },
+                Addresses = new[]
+                {
+                    new Address
+                    {
+                        AddressString = "754 5th Ave New York, NY 10019",
+                        Latitude = 40.7636197,
+                        Longitude = -73.9744388,
+                        IsDepot = true
+                    }
+                },
+                Vehicle = new VehicleV4Response
+                {
+                    VehicleId = "vehicle_123"
+                }
+            };
+
+            var json = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+
+            Assert.That(json, Is.Not.Null.And.Not.Empty);
+            Assert.That(json, Does.Contain("\"vehicle\""));
+            Assert.That(json, Does.Contain("\"vehicle_id\""));
+            Assert.That(json, Does.Contain("vehicle_123"));
+        }
+
+        [Test]
+        public void SerializeOptimizationParametersV5_IncludesVehicle_WhenProvided()
+        {
+            var optimizationParameters = new Route4MeSDK.QueryTypes.V5.OptimizationParameters
+            {
+                Parameters = new Route4MeSDK.DataTypes.V5.RouteParameters
+                {
+                    RouteName = "Vehicle serialization test (v5 types)"
+                },
+                Addresses = new[]
+                {
+                    new Route4MeSDK.DataTypes.V5.Address
+                    {
+                        AddressString = "754 5th Ave New York, NY 10019",
+                        Latitude = 40.7636197,
+                        Longitude = -73.9744388,
+                        IsDepot = true
+                    }
+                },
+                Vehicle = new VehicleV5
+                {
+                    VehicleId = "vehicle_456"
+                }
+            };
+
+            var json = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+
+            Assert.That(json, Is.Not.Null.And.Not.Empty);
+            Assert.That(json, Does.Contain("\"vehicle\""));
+            Assert.That(json, Does.Contain("\"vehicle_id\""));
+            Assert.That(json, Does.Contain("vehicle_456"));
         }
 
     }

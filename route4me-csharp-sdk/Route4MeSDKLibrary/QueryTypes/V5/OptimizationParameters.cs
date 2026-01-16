@@ -120,5 +120,17 @@ namespace Route4MeSDK.QueryTypes.V5
         /// </summary>
         [DataMember(Name = "optimization_profile_id", EmitDefaultValue = false)]
         public string OptimizationProfileId { get; set; }
+
+        /// <summary>
+        ///     Vehicle parameters for optimization creation.
+        ///     <remarks>
+        ///         <para>
+        ///             Some customers need to pass the full vehicle object (not only <c>vehicle_id</c>)
+        ///             to apply commercial vehicle restrictions during optimization creation.
+        ///         </para>
+        ///     </remarks>
+        /// </summary>
+        [DataMember(Name = "vehicle", EmitDefaultValue = false)]
+        public Vehicle Vehicle { get; set; }
     }
 }
