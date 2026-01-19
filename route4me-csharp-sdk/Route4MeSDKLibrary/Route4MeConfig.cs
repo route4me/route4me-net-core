@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 using Polly;
 
@@ -62,6 +63,7 @@ namespace Route4MeSDKLibrary
         ///     Gets or sets the number of consecutive failures before circuit breaker opens.
         ///     Default is 5. Only applies when EnableCircuitBreaker is true.
         /// </summary>
+        /// 
         public static int CircuitBreakerFailureThreshold { get; set; } = 5;
 
         /// <summary>
@@ -87,5 +89,12 @@ namespace Route4MeSDKLibrary
         ///     Useful for alerting and monitoring.
         /// </summary>
         public static Action<Exception, TimeSpan> OnCircuitBreakerOpen { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a custom <see cref="HttpMessageHandler"/> to be used when creating new HttpClient instances.
+        ///     When set, this handler will be passed to the HttpClient constructor.
+        ///     This allows injection of custom handlers for logging, payload capture, testing, or other middleware.
+        /// </summary>
+        public static HttpMessageHandler CustomHttpMessageHandler { get; set; } = null;
     }
 }
