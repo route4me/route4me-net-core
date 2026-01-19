@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 using Route4MeSDK;
