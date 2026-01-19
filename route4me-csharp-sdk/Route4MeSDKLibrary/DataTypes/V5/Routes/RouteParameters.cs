@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -670,6 +670,12 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "route_start_date_local", EmitDefaultValue = false)]
         public string RouteStartDateLocal { get; set; }
+
+        /// <summary>
+        /// Optimization breaks.
+        /// </summary>
+        [DataMember(Name = "breaks", EmitDefaultValue = false)]
+        public OptimizationBreak[] Breaks { get; set; }
     }
 
     /// <summary>
