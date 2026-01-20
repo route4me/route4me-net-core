@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -721,6 +721,12 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        /// Optimization breaks.
+        /// </summary>
+        [DataMember(Name = "breaks", EmitDefaultValue = false)]
+        public OptimizationBreak[] Breaks { get; set; }
     }
 
     /// <summary>
