@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 using Route4MeSDK.DataTypes.V5;
 
@@ -67,6 +67,30 @@ namespace Route4MeSDK.QueryTypes.V5
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "end_date", EmitDefaultValue = false)]
         public string EndDate { get; set; }
+
+        /// <summary>
+        ///     Boolean flag that tells API to use timezone column.
+        ///     <para>Available values: </para>
+        ///     <value>true/1 - use timezone parameter. false/0 - do not use timezone parameter.</value>
+        ///     <remarks>
+        ///         <para>Query parameter. When set to true, will be serialized as "1" in the query string.</para>
+        ///         <para>This parameter works together with the <see cref="Timezone"/> parameter.</para>
+        ///     </remarks>
+        /// </summary>
+        [IgnoreDataMember]
+        [HttpQueryMemberAttribute(Name = "use_timezone", EmitDefaultValue = false)]
+        public bool? UseTimezone { get; set; }
+
+        /// <summary>
+        ///     String which defines timezone (e.g., "Australia/Melbourne").
+        ///     <remarks>
+        ///         <para>Query parameter. Used when <see cref="UseTimezone"/> is set to true.</para>
+        ///         <para>Example values: "America/New_York", "Europe/London", "Australia/Melbourne"</para>
+        ///     </remarks>
+        /// </summary>
+        [IgnoreDataMember]
+        [HttpQueryMemberAttribute(Name = "timezone", EmitDefaultValue = false)]
+        public string Timezone { get; set; }
 
         /// <summary>
         ///     Output addresses and directions in the original optimization request sequence.
@@ -168,6 +192,16 @@ namespace Route4MeSDK.QueryTypes.V5
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "bundling_items", EmitDefaultValue = false)]
         public bool? BundlingItems { get; set; }
+
+        /// <summary>
+        ///     If equal to 1, path points are compressed in route response.
+        ///     <remarks>
+        ///         <para>Query parameter. When set to true, will be serialized as "1" in the query string.</para>
+        ///     </remarks>
+        /// </summary>
+        [IgnoreDataMember]
+        [HttpQueryMemberAttribute(Name = "compress_path_points", EmitDefaultValue = false)]
+        public bool? CompressPathPoints { get; set; }
 
         [IgnoreDataMember]
         [HttpQueryMemberAttribute(Name = "page", EmitDefaultValue = false)]
