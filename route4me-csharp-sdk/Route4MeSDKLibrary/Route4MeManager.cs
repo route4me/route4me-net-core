@@ -6607,54 +6607,14 @@ namespace Route4MeSDK
                                 if (response.IsSuccessStatusCode)
                                 {
                                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-                                    if (isString)
-                                    {
-                                        result = stream.ReadString() as T;
-                                    }
-                                    else
-                                    {
-                                        result = parseWithNewtonJson
-                                            ? stream.ReadObjectNew<T>()
-                                            : stream.ReadObject<T>();
-                                    }
+                                    result = isString
+                                        ? stream.ReadString() as T
+                                        : (parseWithNewtonJson ? stream.ReadObjectNew<T>() : stream.ReadObject<T>());
                                 }
                                 else
                                 {
-                                    // Read error response body
-                                    ErrorResponse errorResponse = null;
-
-                                    try
-                                    {
-                                        var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                                        errorResponse = stream.ReadObject<ErrorResponse>();
-                                    }
-                                    catch (Exception)
-                                    {
-                                        if (response.ReasonPhrase != null)
-                                        {
-                                            errorResponse = new ErrorResponse
-                                            {
-                                                Errors = new List<string> { $"{(int)response.StatusCode} ({response.ReasonPhrase})" }
-                                            };
-                                        }
-                                    }
-
-                                    if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
-                                    {
-                                        foreach (var error in errorResponse.Errors)
-                                        {
-                                            if (errorMessage.Length > 0)
-                                                errorMessage += "; ";
-                                            errorMessage += error;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        errorMessage = $"HTTP {(int)response.StatusCode} ({response.ReasonPhrase})";
-                                    }
+                                    errorMessage = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                                 }
-
                                 response.Dispose();
                                 break;
                             }
@@ -6820,65 +6780,20 @@ namespace Route4MeSDK
                     {
                         case HttpMethodType.Get:
                             {
-                                var response = acquireHttpClientHolder.HttpClient.GetAsync(uri.PathAndQuery);
-                                response.Wait();
+                                var response = acquireHttpClientHolder.HttpClient.GetAsync(uri.PathAndQuery).Result;
 
-                                if (response.Result.IsSuccessStatusCode)
+                                if (response.IsSuccessStatusCode)
                                 {
-                                    var streamTask = response.Result.Content.ReadAsStreamAsync();
-                                    streamTask.Wait();
-
-                                    if (isString)
-                                    {
-                                        result = streamTask.Result.ReadString() as T;
-                                    }
-                                    else
-                                    {
-                                        result = parseWithNewtonJson
-                                            ? streamTask.Result.ReadObjectNew<T>()
-                                            : streamTask.Result.ReadObject<T>();
-                                    }
+                                    var stream = response.Content.ReadAsStreamAsync().Result;
+                                    result = isString
+                                        ? stream.ReadString() as T
+                                        : (parseWithNewtonJson ? stream.ReadObjectNew<T>() : stream.ReadObject<T>());
                                 }
                                 else
                                 {
-                                    // Read error response body
-                                    ErrorResponse errorResponse = null;
-
-                                    try
-                                    {
-                                        var streamTask = response.Result.Content.ReadAsStreamAsync();
-                                        streamTask.Wait();
-
-                                        errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
-                                    }
-                                    catch (Exception)
-                                    {
-                                        // If cannot parse as ErrorResponse, use status code
-                                        if (response.Result?.ReasonPhrase != null)
-                                        {
-                                            errorResponse = new ErrorResponse
-                                            {
-                                                Errors = new List<string> { $"{(int)response.Result.StatusCode} ({response.Result.ReasonPhrase})" }
-                                            };
-                                        }
-                                    }
-
-                                    if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
-                                    {
-                                        foreach (var error in errorResponse.Errors)
-                                        {
-                                            if (errorMessage.Length > 0)
-                                                errorMessage += "; ";
-                                            errorMessage += error;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        errorMessage = $"HTTP {(int)response.Result.StatusCode} ({response.Result.ReasonPhrase})";
-                                    }
+                                    errorMessage = response.Content.ReadAsStringAsync().Result;
                                 }
-
-                                response.Result.Dispose();
+                                response.Dispose();
                                 break;
                             }
                         case HttpMethodType.Post:
