@@ -21,7 +21,7 @@ namespace Route4MeSDK.Examples
         public void CustomHttpHandlerConfigurationExample()
         {
             const string filePath = "http-log.json";
-            Route4MeConfig.CustomHttpMessageHandler = new JsonPayloadLoggingHandler(filePath)
+            Route4MeConfig.HttpMessageHandlerFactory = () => new JsonPayloadLoggingHandler(filePath)
             {
                 InnerHandler = new HttpClientHandler()
             };
