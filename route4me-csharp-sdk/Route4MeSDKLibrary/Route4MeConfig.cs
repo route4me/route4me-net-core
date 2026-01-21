@@ -91,10 +91,18 @@ namespace Route4MeSDKLibrary
         public static Action<Exception, TimeSpan> OnCircuitBreakerOpen { get; set; }
 
         /// <summary>
-        ///     Gets or sets a custom <see cref="HttpMessageHandler"/> to be used when creating new HttpClient instances.
-        ///     When set, this handler will be passed to the HttpClient constructor.
+        ///     Gets or sets a factory function that creates <see cref="HttpMessageHandler"/> instances for HttpClient.
+        ///     When set, this factory is invoked to create a new handler for each HttpClient instance.
+        ///     The HttpClient will own and dispose the handler when the client is disposed.
         ///     This allows injection of custom handlers for logging, payload capture, testing, or other middleware.
         /// </summary>
-        public static HttpMessageHandler CustomHttpMessageHandler { get; set; } = null;
+        /// <example>
+        ///     // Configure a logging handler factory
+        ///     Route4MeConfig.HttpMessageHandlerFactory = () => new CustomLoggingHandler
+        ///     {
+        ///         InnerHandler = new HttpClientHandler()
+        ///     };
+        /// </example>
+        public static Func<HttpMessageHandler> HttpMessageHandlerFactory { get; set; } = null;
     }
 }
