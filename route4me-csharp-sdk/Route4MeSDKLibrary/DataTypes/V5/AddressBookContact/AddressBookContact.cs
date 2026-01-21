@@ -313,27 +313,6 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "eligible_depot", EmitDefaultValue = false)]
         public bool? EligibleDepot { get; set; }
 
-        [OnSerializing]
-        internal void OnSerializingMethod(StreamingContext context)
-        {
-            if (AddressCustomDataRaw == null) return;
-
-            if (AddressCustomDataRaw.GetType() != typeof(Dictionary<string, string>)) AddressCustomDataRaw = null;
-        }
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            switch (AddressCustomDataRaw)
-            {
-                case null:
-                    return;
-                case Dictionary<string, string> dict:
-                    AddressCustomData = dict;
-                    break;
-            }
-        }
-
         private sealed class AddressCustomDataConverter
             : JsonConverter<Dictionary<string, string>>
         {
