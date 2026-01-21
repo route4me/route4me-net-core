@@ -67,8 +67,8 @@ namespace Route4MeSDKLibrary
 
         private static HttpClient CreateHttpClient(string baseAddress, string apiKey = null)
         {
-            HttpClient result = Route4MeConfig.CustomHttpMessageHandler != null
-                ? new HttpClient(Route4MeConfig.CustomHttpMessageHandler, disposeHandler: false)
+            HttpClient result = Route4MeConfig.HttpMessageHandlerFactory != null
+                ? new HttpClient(Route4MeConfig.HttpMessageHandlerFactory())
                 {
                     BaseAddress = new Uri(baseAddress),
                     Timeout = RequestsTimeout
