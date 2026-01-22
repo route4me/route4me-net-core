@@ -93,6 +93,20 @@ namespace Route4MeSDK.QueryTypes.V5
         public string Timezone { get; set; }
 
         /// <summary>
+        ///     Boolean flag that controls which date filtering method is used for route queries.
+        ///     <para>Available values: </para>
+        ///     <value>true/1 - use combined timestamp method. false/0 - use standard date filtering method.</value>
+        ///     <remarks>
+        ///         <para>Query parameter. When set to true, will be serialized as "1" in the query string.</para>
+        ///         <para>When set to false, will be serialized as "0" in the query string.</para>
+        ///         <para>When null, the parameter is not included in the query string (default behavior).</para>
+        ///     </remarks>
+        /// </summary>
+        [IgnoreDataMember]
+        [HttpQueryMemberAttribute(Name = "use_combined_timestamp", EmitDefaultValue = false)]
+        public bool? UseCombinedTimestamp { get; set; }
+
+        /// <summary>
         ///     Output addresses and directions in the original optimization request sequence.
         ///     This is to allow us to compare routes before & after optimization.
         /// </summary>
