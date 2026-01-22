@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v8.9.0] - 2026-01-22
+### Added
+- Route API: add `use_combined_timestamp` query parameter support for V4 and V5 APIs
+  - Controls which date filtering method is used when querying routes via GET /route.php endpoint
+  - Boolean values serialize to '1'/'0' in query string
+  - Optional parameter with default behavior (null = not included)
+
 ## [v8.8.1] - 2026-01-21
 ### Fixed
 - Fix `AddressCustomData` serialization issue
