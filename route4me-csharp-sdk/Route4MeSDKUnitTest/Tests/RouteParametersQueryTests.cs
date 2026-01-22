@@ -1,4 +1,5 @@
 using System;
+
 using NUnit.Framework;
 
 using Route4MeSDK;
@@ -7,6 +8,7 @@ using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 
 using Route4MeSDKLibrary.DataTypes;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
