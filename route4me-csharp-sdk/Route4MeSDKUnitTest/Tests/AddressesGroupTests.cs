@@ -8,6 +8,8 @@ using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 
+using Route4MeSDKLibrary;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -451,9 +453,10 @@ namespace Route4MeSDKUnitTest.Tests
         }
 
         [Test]
-        public void MarkAddressDepartedWithoutVisitingReturnsError()
+        public void MarkAddressDepartedWithoutVisitingReturnsErrorWithEnabledErrorHandling()
         {
             var route4Me = new Route4MeManager(c_ApiKey);
+            Route4MeConfig.UseImprovedErrorHandling = true;
 
             var addressId = _tdr.SDRT_route.Addresses[2].RouteDestinationId != null
                 ? Convert.ToInt32(_tdr.SDRT_route.Addresses[2].RouteDestinationId)
@@ -473,6 +476,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             // Log the error for debugging
             Console.WriteLine($"Error message received: {departedError}");
+            Route4MeConfig.UseImprovedErrorHandling = false;
         }
 
         [OneTimeTearDown]

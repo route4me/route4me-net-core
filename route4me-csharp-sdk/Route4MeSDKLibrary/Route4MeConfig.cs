@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 using Polly;
 
@@ -62,6 +63,7 @@ namespace Route4MeSDKLibrary
         ///     Gets or sets the number of consecutive failures before circuit breaker opens.
         ///     Default is 5. Only applies when EnableCircuitBreaker is true.
         /// </summary>
+        /// 
         public static int CircuitBreakerFailureThreshold { get; set; } = 5;
 
         /// <summary>
@@ -87,5 +89,37 @@ namespace Route4MeSDKLibrary
         ///     Useful for alerting and monitoring.
         /// </summary>
         public static Action<Exception, TimeSpan> OnCircuitBreakerOpen { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a factory function that creates <see cref="HttpMessageHandler"/> instances for HttpClient.
+        ///     When set, this factory is invoked to create a new handler for each HttpClient instance.
+        ///     The HttpClient will own and dispose the handler when the client is disposed.
+        ///     This allows injection of custom handlers for logging, payload capture, testing, or other middleware.
+        /// </summary>
+        /// <example>
+        ///     // Configure a logging handler factory
+        ///     Route4MeConfig.HttpMessageHandlerFactory = () => new CustomLoggingHandler
+        ///     {
+        ///         InnerHandler = new HttpClientHandler()
+        ///     };
+        /// </example>
+        public static Func<HttpMessageHandler> HttpMessageHandlerFactory { get; set; } = null;
+
+        /// <summary>
+        ///     Gets or sets whether to use improved error handling for API requests.
+        ///     Default is false (uses legacy behavior for backward compatibility).
+        ///     When enabled, GET requests will check HTTP status codes and provide more detailed error messages.
+        /// </summary>
+        /// <remarks>
+        ///     The improved error handling provides:
+        ///     - Proper HTTP status code checking
+        ///     - Error message extraction from failed responses
+        ///     - Better resource disposal for HTTP responses
+        /// </remarks>
+        /// <example>
+        ///     // Enable improved error handling
+        ///     Route4MeConfig.UseImprovedErrorHandling = true;
+        /// </example>
+        public static bool UseImprovedErrorHandling { get; set; } = false;
     }
 }
