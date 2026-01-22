@@ -21,7 +21,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseTimezoneTrue_IncludesUseTimezoneAsOne()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = true
             };
@@ -35,7 +35,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseTimezoneFalse_IncludesUseTimezoneAsZero()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = false
             };
@@ -48,7 +48,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseTimezoneNull_DoesNotIncludeUseTimezone()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = null
             };
@@ -61,7 +61,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithTimezone_IncludesTimezone()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 Timezone = "Australia/Melbourne"
             };
@@ -74,7 +74,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithTimezoneNull_DoesNotIncludeTimezone()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 Timezone = null
             };
@@ -87,7 +87,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseTimezoneAndTimezone_IncludesBoth()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = true,
                 Timezone = "America/New_York"
@@ -102,7 +102,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseCombinedTimestampTrue_IncludesUseCombinedTimestampAsOne()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseCombinedTimestamp = true
             };
@@ -116,7 +116,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseCombinedTimestampFalse_IncludesUseCombinedTimestampAsZero()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseCombinedTimestamp = false
             };
@@ -129,7 +129,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithUseCombinedTimestampNull_DoesNotIncludeUseCombinedTimestamp()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseCombinedTimestamp = null
             };
@@ -142,7 +142,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithCompressPathPointsTrue_IncludesCompressPathPointsAsOne()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 CompressPathPoints = true
             };
@@ -155,7 +155,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithCompressPathPointsFalse_IncludesCompressPathPointsAsZero()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 CompressPathPoints = false
             };
@@ -168,7 +168,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithCompressPathPointsNull_DoesNotIncludeCompressPathPoints()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 CompressPathPoints = null
             };
@@ -181,7 +181,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithAllTimezoneParameters_IncludesAll()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = true,
                 Timezone = "Europe/London",
@@ -202,7 +202,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithAllDateFilteringParameters_IncludesAll()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = true,
                 Timezone = "Europe/London",
@@ -223,7 +223,7 @@ namespace Route4MeSDKUnitTest.Tests
         [Test]
         public void Serialize_WithoutApiKey_DoesNotIncludeApiKey()
         {
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = true,
                 Timezone = "Australia/Melbourne"
@@ -359,7 +359,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var route4Me = new Route4MeManager(CApiKey);
 
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseTimezone = true,
                 Timezone = "America/New_York",
@@ -381,7 +381,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var route4Me = new Route4MeManager(CApiKey);
 
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 CompressPathPoints = true,
                 StartDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd"),
@@ -403,7 +403,7 @@ namespace Route4MeSDKUnitTest.Tests
             var route4Me = new Route4MeManager(CApiKey);
 
             // First, get a route ID
-            var allRoutesParameters = new RouteParametersQuery
+            var allRoutesParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 Limit = 1
             };
@@ -418,7 +418,7 @@ namespace Route4MeSDKUnitTest.Tests
             var routeId = routes[0].RouteId;
 
             // Now test with timezone parameters
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 RouteId = routeId,
                 UseTimezone = true,
@@ -438,7 +438,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var route4Me = new Route4MeManager(CApiKey);
 
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseCombinedTimestamp = true,
                 StartDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd"),
@@ -459,7 +459,7 @@ namespace Route4MeSDKUnitTest.Tests
 
             var route4Me = new Route4MeManager(CApiKey);
 
-            var routeParameters = new RouteParametersQuery
+            var routeParameters = new Route4MeSDK.QueryTypes.RouteParametersQuery
             {
                 UseCombinedTimestamp = false,
                 StartDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd"),
