@@ -6539,13 +6539,21 @@ namespace Route4MeSDK
             out string errorMessage)
             where T : class
         {
-            var result = GetJsonObjectFromAPI<T>(optimizationParameters,
-                url,
-                httpMethod,
-                null,
-                isString,
-                parseWithNewtonJson,
-                out errorMessage);
+            var result = Route4MeConfig.UseImprovedErrorHandling
+                ? GetJsonObjectFromAPIWithImprovedErrorHandling<T>(optimizationParameters,
+                    url,
+                    httpMethod,
+                    null,
+                    isString,
+                    parseWithNewtonJson,
+                    out errorMessage)
+                : GetJsonObjectFromAPI<T>(optimizationParameters,
+                    url,
+                    httpMethod,
+                    null,
+                    isString,
+                    parseWithNewtonJson,
+                    out errorMessage);
 
             return result;
         }
@@ -6555,12 +6563,19 @@ namespace Route4MeSDK
             HttpMethodType httpMethod)
             where T : class
         {
-            var result = GetJsonObjectFromAPIAsync<T>(optimizationParameters,
-                url,
-                httpMethod,
-                null,
-                false,
-                false);
+            var result = Route4MeConfig.UseImprovedErrorHandling
+                ? GetJsonObjectFromAPIWithImprovedErrorHandlingAsync<T>(optimizationParameters,
+                    url,
+                    httpMethod,
+                    null,
+                    false,
+                    false)
+                : GetJsonObjectFromAPIAsync<T>(optimizationParameters,
+                    url,
+                    httpMethod,
+                    null,
+                    false,
+                    false);
             return result;
         }
 
@@ -6570,12 +6585,19 @@ namespace Route4MeSDK
             bool isString)
             where T : class
         {
-            var result = GetJsonObjectFromAPIAsync<T>(optimizationParameters,
-                url,
-                httpMethod,
-                null,
-                isString,
-                false);
+            var result = Route4MeConfig.UseImprovedErrorHandling
+                ? GetJsonObjectFromAPIWithImprovedErrorHandlingAsync<T>(optimizationParameters,
+                    url,
+                    httpMethod,
+                    null,
+                    isString,
+                    false)
+                : GetJsonObjectFromAPIAsync<T>(optimizationParameters,
+                    url,
+                    httpMethod,
+                    null,
+                    isString,
+                    false);
             return result;
         }
 
@@ -6602,20 +6624,18 @@ namespace Route4MeSDK
                     {
                         case HttpMethodType.Get:
                             {
-                                var response = await httpClientHolder.HttpClient.GetAsync(uri.PathAndQuery).ConfigureAwait(false);
+                                var response = await httpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery).ConfigureAwait(false);
 
-                                if (response.IsSuccessStatusCode)
+                                if (isString)
                                 {
-                                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                                    result = isString
-                                        ? stream.ReadString() as T
-                                        : (parseWithNewtonJson ? stream.ReadObjectNew<T>() : stream.ReadObject<T>());
+                                    result = response.ReadString() as T;
                                 }
                                 else
                                 {
-                                    errorMessage = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                    result = parseWithNewtonJson
+                                        ? response.ReadObjectNew<T>()
+                                        : response.ReadObject<T>();
                                 }
-                                response.Dispose();
                                 break;
                             }
                         case HttpMethodType.Post:
@@ -6746,6 +6766,120 @@ namespace Route4MeSDK
             return new Tuple<T, string>(result, errorMessage);
         }
 
+        private async Task<Tuple<T, string>> GetJsonObjectFromAPIWithImprovedErrorHandlingAsync<T>(
+            GenericParameters optimizationParameters,
+            string url,
+            HttpMethodType httpMethod,
+            HttpContent httpContent,
+            bool isString,
+            bool parseWithNewtonJson)
+            where T : class
+        {
+            T result = default;
+            var errorMessage = string.Empty;
+
+            var parametersUri = optimizationParameters.Serialize(_mApiKey);
+            var uri = new Uri($"{url}{parametersUri}");
+
+            try
+            {
+                using (var httpClientHolder =
+                    HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
+                {
+                    switch (httpMethod)
+                    {
+                        case HttpMethodType.Get:
+                            {
+                                var response = await httpClientHolder.HttpClient.GetAsync(uri.PathAndQuery).ConfigureAwait(false);
+
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                                    result = isString
+                                        ? stream.ReadString() as T
+                                        : (parseWithNewtonJson ? stream.ReadObjectNew<T>() : stream.ReadObject<T>());
+                                }
+                                else
+                                {
+                                    errorMessage = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                }
+                                response.Dispose();
+                                break;
+                            }
+                        case HttpMethodType.Post:
+                        case HttpMethodType.Put:
+                        case HttpMethodType.Delete:
+                            {
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
+                                {
+                                    content = httpContent;
+                                }
+                                else
+                                {
+                                    var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                                }
+
+                                HttpResponseMessage response;
+
+                                if (isPut)
+                                {
+                                    response = await httpClientHolder.HttpClient
+                                        .PutAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
+                                    {
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = await httpClientHolder.HttpClient.SendAsync(request).ConfigureAwait(false);
+                                }
+                                else
+                                {
+                                    response = await httpClientHolder.HttpClient
+                                        .PostAsync(uri.PathAndQuery, content).ConfigureAwait(false);
+                                }
+
+                                var streamTask = response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+                                if (isString)
+                                {
+                                    result = (await streamTask).ReadString() as T;
+                                }
+                                else
+                                {
+                                    result = parseWithNewtonJson
+                                        ? (await streamTask).ReadObjectNew<T>()
+                                        : (await streamTask).ReadObject<T>();
+                                }
+
+                                response.Dispose();
+                                break;
+                            }
+                    }
+                }
+            }
+            catch (HttpListenerException e)
+            {
+                errorMessage = e.Message + " --- " + errorMessage;
+                result = null;
+            }
+            catch (Exception e)
+            {
+                errorMessage = e is AggregateException ? e.InnerException.Message : e.Message;
+                result = default;
+            }
+
+            return new Tuple<T, string>(result, errorMessage);
+        }
+
 
         private T GetJsonObjectFromAPI<T>(GenericParameters optimizationParameters,
             string url,
@@ -6780,20 +6914,19 @@ namespace Route4MeSDK
                     {
                         case HttpMethodType.Get:
                             {
-                                var response = acquireHttpClientHolder.HttpClient.GetAsync(uri.PathAndQuery).Result;
+                                var response = acquireHttpClientHolder.HttpClient.GetStreamAsync(uri.PathAndQuery);
+                                response.Wait();
 
-                                if (response.IsSuccessStatusCode)
+                                if (isString)
                                 {
-                                    var stream = response.Content.ReadAsStreamAsync().Result;
-                                    result = isString
-                                        ? stream.ReadString() as T
-                                        : (parseWithNewtonJson ? stream.ReadObjectNew<T>() : stream.ReadObject<T>());
+                                    result = response.Result.ReadString() as T;
                                 }
                                 else
                                 {
-                                    errorMessage = response.Content.ReadAsStringAsync().Result;
+                                    result = parseWithNewtonJson
+                                        ? response.Result.ReadObjectNew<T>()
+                                        : response.Result.ReadObject<T>();
                                 }
-                                response.Dispose();
                                 break;
                             }
                         case HttpMethodType.Post:
@@ -6902,6 +7035,228 @@ namespace Route4MeSDK
                                             errorResponse.Errors.Add($"Status code: {response.Result.StatusCode}");
                                             if ((response?.Exception?.Message ?? null) != null) errorResponse.Errors.Add($"Message: {response.Exception.Message}");
 
+                                        }
+                                    }
+                                    catch (Exception) // If cannot read ErrorResponse from the stream, try another way
+                                    {
+                                        if ((response.Result?.ReasonPhrase) != null)
+                                        {
+                                            errorResponse = new ErrorResponse
+                                            {
+                                                Errors = new List<string> { response.Result.ReasonPhrase }
+                                            };
+
+                                            var reqMessage = response.Result?.RequestMessage?.Content?.ReadAsStringAsync()
+                                                .Result ?? "";
+
+                                            if (reqMessage != "")
+                                                errorResponse.Errors.Add(
+                                                    $"Request content: {Environment.NewLine} {reqMessage}");
+                                        }
+                                        else
+                                        {
+                                            errorResponse = default;
+                                        }
+                                    }
+
+                                    if (errorResponse?.Errors != null && errorResponse.Errors.Count > 0)
+                                    {
+                                        foreach (var error in errorResponse.Errors)
+                                        {
+                                            if (errorMessage.Length > 0)
+                                                errorMessage += "; ";
+                                            errorMessage += error;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (response.Result != null)
+                                        {
+                                            var responseStream = response.Result.Content.ReadAsStringAsync();
+                                            responseStream.Wait();
+                                            var responseString = responseStream.Result;
+                                            if (responseString != null)
+                                                errorMessage = "Response: " + responseString;
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+                    }
+                }
+            }
+            catch (HttpListenerException e)
+            {
+                errorMessage = e.Message + " --- " + errorMessage;
+                result = null;
+            }
+            catch (Exception e)
+            {
+                errorMessage = e is AggregateException ? e.InnerException.Message : e.Message;
+                result = default;
+            }
+
+            return result;
+        }
+
+        private T GetJsonObjectFromAPIWithImprovedErrorHandling<T>(
+            GenericParameters optimizationParameters,
+            string url,
+            HttpMethodType httpMethod,
+            HttpContent httpContent,
+            bool isString,
+            bool parseWithNewtonJson,
+            out string errorMessage)
+            where T : class
+        {
+            T result = default;
+            errorMessage = string.Empty;
+
+            var hasApiKey = optimizationParameters
+                .GetType()
+                .GetProperties()
+                .FirstOrDefault(x => x.Name == "ApiKey" || x.Name == "api_key")
+                ?.GetValue(optimizationParameters) != null;
+            var parametersUri = hasApiKey
+                ? optimizationParameters.Serialize(string.Empty)
+                : optimizationParameters.Serialize(_mApiKey);
+            parametersUri = parametersUri.Replace("?&", "?");
+            var uri = new Uri($"{url}{parametersUri}");
+
+            try
+            {
+                using (var acquireHttpClientHolder =
+                    HttpClientHolderManager.AcquireHttpClientHolder(uri.GetLeftPart(UriPartial.Authority)))
+                {
+                    switch (httpMethod)
+                    {
+                        case HttpMethodType.Get:
+                            {
+                                var response = acquireHttpClientHolder.HttpClient.GetAsync(uri.PathAndQuery).Result;
+
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    var stream = response.Content.ReadAsStreamAsync().Result;
+                                    result = isString
+                                        ? stream.ReadString() as T
+                                        : (parseWithNewtonJson ? stream.ReadObjectNew<T>() : stream.ReadObject<T>());
+                                }
+                                else
+                                {
+                                    errorMessage = response.Content.ReadAsStringAsync().Result;
+                                }
+                                response.Dispose();
+                                break;
+                            }
+                        case HttpMethodType.Post:
+                        case HttpMethodType.Put:
+                        case HttpMethodType.Delete:
+                            {
+                                var isPut = httpMethod == HttpMethodType.Put;
+                                var isDelete = httpMethod == HttpMethodType.Delete;
+                                HttpContent content;
+                                if (httpContent != null)
+                                {
+                                    content = httpContent;
+                                }
+                                else
+                                {
+                                    var jsonString = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+                                    content = new StringContent(jsonString);
+                                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                                }
+
+                                Task<HttpResponseMessage> response;
+
+                                if (isPut)
+                                {
+                                    response = acquireHttpClientHolder.HttpClient.PutAsync(uri.PathAndQuery, content);
+                                }
+                                else if (isDelete)
+                                {
+                                    var request = new HttpRequestMessage
+                                    {
+                                        Content = content,
+                                        Method = HttpMethod.Delete,
+                                        RequestUri = new Uri(uri.PathAndQuery, UriKind.Relative)
+                                    };
+                                    response = acquireHttpClientHolder.HttpClient.SendAsync(request);
+                                }
+                                else
+                                {
+                                    response = acquireHttpClientHolder.HttpClient.PostAsync(uri.PathAndQuery, content);
+                                }
+
+                                response.Wait();
+
+                                if (response.Result != null &&
+                                    response.Result.IsSuccessStatusCode &&
+                                    response.Result.StatusCode == HttpStatusCode.OK)
+                                {
+                                    var streamTask = response.Result.Content.ReadAsStreamAsync();
+                                    streamTask.Wait();
+
+                                    if (streamTask.IsCompleted)
+                                    {
+                                        if (isString)
+                                        {
+                                            result = streamTask.Result.ReadString() as T;
+                                        }
+                                        else
+                                        {
+                                            result = parseWithNewtonJson
+                                                ? streamTask.Result.ReadObjectNew<T>()
+                                                : streamTask.Result.ReadObject<T>();
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    ErrorResponse errorResponse;
+
+                                    try
+                                    {
+                                        errorResponse = default;
+
+                                        if (response.Result.Content is StreamContent)
+                                        {
+                                            var streamTask = ((StreamContent)response.Result.Content).ReadAsStreamAsync();
+                                            streamTask.Wait();
+
+                                            errorResponse = streamTask.Result.ReadObject<ErrorResponse>();
+                                        }
+                                        else if (response.Result.Content.GetType().ToString().ToLower().Contains("httpconnectionresponsecontent"))
+                                        {
+                                            var content2 = response.Result.Content;
+
+                                            if (isString)
+                                            {
+                                                var respString = content2.ReadAsStringAsync();
+                                                respString.Wait();
+                                                var strResp = respString.Result;
+
+                                                if (strResp != null && strResp.Length > 0)
+                                                {
+                                                    errorResponse = new ErrorResponse { Errors = new List<string>() };
+                                                    errorResponse.Errors.Add(strResp);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                errorResponse = content2
+                                                    .ReadAsStreamAsync().Result
+                                                    .ReadObject<ErrorResponse>();
+                                            }
+
+                                            var reqMessage = response.Result?.RequestMessage?.Content?.ReadAsStringAsync().Result ?? "";
+                                            if (reqMessage != "")
+                                                errorResponse.Errors.Add(
+                                                    $"Request content: {Environment.NewLine} {reqMessage}");
+                                        }
+                                        else
+                                        {
+                                            errorResponse = default;
                                         }
                                     }
                                     catch (Exception) // If cannot read ErrorResponse from the stream, try another way
