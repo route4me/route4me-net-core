@@ -87,5 +87,22 @@ namespace Route4MeSDKLibrary
         ///     Useful for alerting and monitoring.
         /// </summary>
         public static Action<Exception, TimeSpan> OnCircuitBreakerOpen { get; set; }
+
+        /// <summary>
+        ///     Gets or sets whether to use improved error handling for API requests.
+        ///     Default is false (uses legacy behavior for backward compatibility).
+        ///     When enabled, GET requests will check HTTP status codes and provide more detailed error messages.
+        /// </summary>
+        /// <remarks>
+        ///     The improved error handling provides:
+        ///     - Proper HTTP status code checking
+        ///     - Error message extraction from failed responses
+        ///     - Better resource disposal for HTTP responses
+        /// </remarks>
+        /// <example>
+        ///     // Enable improved error handling
+        ///     Route4MeConfig.UseImprovedErrorHandling = true;
+        /// </example>
+        public static bool UseImprovedErrorHandling { get; set; } = false;
     }
 }
