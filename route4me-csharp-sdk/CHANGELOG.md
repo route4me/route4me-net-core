@@ -1,26 +1,83 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [7.13.3] - 2025-12-17
+## [v8.8.1] - 2026-01-21
+### Fixed
+- Fix `AddressCustomData` serialization issue
 ### Changed
-- Reduced default HTTP request timeout from 30 minutes to 30 seconds
-- Added configurable HTTP timeout via `Route4MeConfig.HttpTimeout` property
+- Remove redundant methods (internal cleanup)
+
+## [v8.8.0] - 2026-01-21
+### Added
+- Support injecting custom HTTP message handler
+### Fixed
+- Improve handler disposal via `HandlerFactory` to avoid disposal issues
+
+## [v8.7.0] - 2026-01-20
+### Added
+- Route API: add `timezone` and `compress_path_points` query parameters
+
+## [v8.6.0] - 2026-01-20
+### Added
+- Optimization API: support multiple breaks in optimization requests
+### Changed
+- Align formatting/encoding in test files
+- Suppress NetAnalyzers upgrade warning in Directory.Build.props
+
+## [v8.5.0] - 2026-01-19
+### Added
+- Optimization create: support `Vehicle` object parameter
+### Fixed
+- Map vehicle object to `vehicle_id` in optimization requests
+- Register vehicle type for `RouteParameters` serialization
+### Changed
+- Test file newline/formatting fixes
+
+## [v8.4.0] - 2025-12-25
+### Added
+- Dynamic insert endpoint: extend request with `route_ids` field
+
+## [v8.3.0] - 2025-12-25
+### Added
+- V4 endpoint: add `dispatched_timestamp` field
+
+## [v8.2.0] - 2025-12-19
+### Added
+- HTTP resilience: Polly retry and circuit breaker support
+### Changed
+- Update Microsoft.Extensions.Logging package dependencies
+- Fix package version conflicts
+
+## [v8.1.0] - 2025-12-19
+### Added
+- Microsoft.Extensions.Logging support for the SDK
+### Fixed
+- Fix logger concurrency race condition in `HttpClientHolderManager`
+
+## [v8.0.0] - 2025-12-17
+### Changed (BREAKING)
+- Add configurable HTTP client timeout via `Route4MeConfig.HttpTimeout` property
+- Reduce default HTTP request timeout from 30 minutes to 30 seconds
 - Users can now customize timeout globally before making API calls
 
-## [7.13.2] - 2025-01-17
+## [v7.15.0] - 2025-11-25
+### Added
+- Flexible Route Start Time support
+
+## [v7.14.0] - 2025-11-19
 ### Changed
-Migrated project to .NET 10.0:
-- **Test Projects**: Upgraded target framework from `net6.0` to `net10.0`
-  - `Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj`
-  - `Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj`
-  - `Route4MeSDKTest/Route4MeSDKTest.csproj`
-- **Docker Infrastructure**: Updated to use .NET 10.0 SDK
-  - `Dockerfile`: Updated base image from .NET 6.0 to .NET 10.0
-  - `docker-compose.yml`: Removed obsolete `netcoreapp2.1` framework flag
-- **CI/CD Configuration**:
-  - `appveyor.yml`: Updated from Visual Studio 2017 to Visual Studio 2022
-  - `.github/workflows/code-quality.yml`: Updated to .NET 10.0.x
-- **Library**: `Route4MeSDKLibrary` continues to target `netstandard2.0` for maximum compatibility
+- Migrate test projects to .NET 10.0:
+  - **Test Projects**: Upgraded target framework from `net6.0` to `net10.0`
+    - `Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj`
+    - `Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj`
+    - `Route4MeSDKTest/Route4MeSDKTest.csproj`
+  - **Docker Infrastructure**: Updated to use .NET 10.0 SDK
+    - `Dockerfile`: Updated base image from .NET 6.0 to .NET 10.0
+    - `docker-compose.yml`: Removed obsolete `netcoreapp2.1` framework flag
+  - **CI/CD Configuration**:
+    - `appveyor.yml`: Updated from Visual Studio 2017 to Visual Studio 2022
+    - `.github/workflows/code-quality.yml`: Updated to .NET 10.0.x
+  - **Library**: `Route4MeSDKLibrary` continues to target `netstandard2.0` for maximum compatibility
 
 **Note**: The SDK library (`Route4MeSDKLibrary`) remains on `netstandard2.0`, ensuring compatibility with both .NET Framework and .NET 10.0+ applications.
 
