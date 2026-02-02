@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -319,8 +319,10 @@ namespace Route4MeSDK.DataTypes.V5
         {
             get
             {
+                if (MemberConfigStorageInternal == null)
+                    return new Dictionary<string, string>();
                 return MemberConfigStorageInternal.ToDictionary(x => x.Key,
-                    pair => pair.Value.ToString(Formatting.Indented));
+                    pair => pair.Value?.ToString(Formatting.Indented) ?? string.Empty);
             }
         }
 
