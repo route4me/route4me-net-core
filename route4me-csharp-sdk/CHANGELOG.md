@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+git ## [v8.10.0] - 2026-02-02
+### Added
+- Routes API V5: Routes List endpoint (POST /api/v5.0/routes/list)
+  - New constant `R4MEInfrastructureSettingsV5.RoutesList`
+  - `RouteManagerV5.GetRoutesList` / `GetRoutesListAsync`
+  - `Route4MeManagerV5.GetRoutesList` / `GetRoutesListAsync`
+- Routes API V5: additional route list data items on `DataObjectRoute` for list responses (RouteScoutResource alignment)
+  - `RouteScheduledStartUnix`, `ActualStartTimestamp`, `ActualRouteDuration`
+  - `PlannedTotalServiceTime`, `GeofenceActualTotalServiceTime`, `ManualRegisteredActualTotalServiceTime`
+  - `PlannedTotalTravelTime`, `TelematicsActualTravelTimestamp`, `MobileActualTravelTimestamp`
+  - `TelematicsActualTravelDistance`, `MobileActualTravelDistance`
+
 ## [v8.9.0] - 2026-01-22
 ### Added
 - Route API: add `use_combined_timestamp` query parameter support for V4 and V5 APIs
