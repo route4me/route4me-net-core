@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Route4MeSDK
 {
@@ -101,6 +101,7 @@ namespace Route4MeSDK
         public const string MainHostWeb = "https://wh.route4me.com/modules/webapi/v5.0";
 
         public const string Routes = MainHost + "/routes";
+        public const string RoutesList = MainHost + "/routes/list";
         public const string Routes51 = MainHost51 + "/routes";
 
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
