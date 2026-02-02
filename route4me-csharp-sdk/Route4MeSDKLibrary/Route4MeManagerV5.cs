@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 using Route4MeSDK.DataTypes.V5;
@@ -928,6 +928,27 @@ namespace Route4MeSDK
         public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesAsync(RouteParametersQuery routeParameters)
         {
             return _routeManager.GetRoutesAsync(routeParameters);
+        }
+
+        /// <summary>
+        /// Retrieves a list of the routes via the routes/list endpoint (POST /api/v5.0/routes/list).
+        /// </summary>
+        /// <param name="routeParameters">Query parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of the routes</returns>
+        public DataObjectRoute[] GetRoutesList(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRoutesList(routeParameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Retrieves a list of the routes via the routes/list endpoint asynchronously (POST /api/v5.0/routes/list).
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesListAsync(RouteParametersQuery routeParameters)
+        {
+            return _routeManager.GetRoutesListAsync(routeParameters);
         }
 
         /// <summary>
