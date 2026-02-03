@@ -28,6 +28,49 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
+        /// Retrieves a single route by ID with full details including addresses and parameters.
+        /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>The route response with data property containing route details</returns>
+        public GetRouteResponse GetRoute(string routeId, out ResultResponse resultResponse)
+        {
+            var genericParameters = new GenericParameters();
+
+            var response = GetJsonObjectFromAPI<GetRouteResponse>(
+                genericParameters,
+                R4MEInfrastructureSettingsV5.Routes + "/" + routeId,
+                HttpMethodType.Get,
+                false,
+                true,
+                out resultResponse);
+
+            return response;
+        }
+
+        /// <summary>
+        /// Retrieves a single route by ID with full details including addresses and parameters asynchronously.
+        /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <returns>A Tuple type object containing the route response or/and failure response</returns>
+        public async Task<Tuple<GetRouteResponse, ResultResponse>> GetRouteAsync(string routeId)
+        {
+            var genericParameters = new GenericParameters();
+
+            var result = await GetJsonObjectFromAPIAsync<GetRouteResponse>(
+                genericParameters,
+                R4MEInfrastructureSettingsV5.Routes + "/" + routeId,
+                HttpMethodType.Get,
+                null,
+                true,
+                false).ConfigureAwait(false);
+
+            return new Tuple<GetRouteResponse, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
         /// Retrieves a list of the routes.
         /// </summary>
         /// <param name="routeParameters">Query parameters</param>
