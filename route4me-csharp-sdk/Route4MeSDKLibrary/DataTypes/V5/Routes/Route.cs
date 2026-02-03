@@ -11,7 +11,7 @@ namespace Route4MeSDK.DataTypes.V5
     ///     The route data structure
     /// </summary>
     [DataContract]
-    public sealed class DataObjectRoute : DataObjectBase
+    public class DataObjectRoute : DataObjectBase
     {
         /// <summary>
         ///     The route ID
@@ -290,14 +290,14 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "telematics_actual_travel_distance", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public double? TelematicsActualTravelDistance { get; set; }
+        public string TelematicsActualTravelDistance { get; set; }
 
         /// <summary>
         ///     Mobile actual travel distance.
         /// </summary>
         [DataMember(Name = "mobile_actual_travel_distance", EmitDefaultValue = false)]
         [ReadOnly(true)]
-        public double? MobileActualTravelDistance { get; set; }
+        public string MobileActualTravelDistance { get; set; }
 
         /// <summary>
         ///     Actual footsteps.
