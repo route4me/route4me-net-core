@@ -931,6 +931,29 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Retrieves a single route by ID with full details including addresses and parameters.
+        /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>The route with full details</returns>
+        public GetRouteResponse GetRoute(string routeId, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRoute(routeId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Retrieves a single route by ID with full details including addresses and parameters asynchronously.
+        /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <returns>A Tuple type object containing the route response or/and failure response</returns>
+        public Task<Tuple<GetRouteResponse, ResultResponse>> GetRouteAsync(string routeId)
+        {
+            return _routeManager.GetRouteAsync(routeId);
+        }
+
+        /// <summary>
         /// Retrieves a list of the routes via the routes/list endpoint (POST /api/v5.0/routes/list).
         /// </summary>
         /// <param name="routeParameters">Query parameters</param>
