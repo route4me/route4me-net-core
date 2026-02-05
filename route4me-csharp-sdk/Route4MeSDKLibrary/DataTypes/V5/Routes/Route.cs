@@ -11,7 +11,7 @@ namespace Route4MeSDK.DataTypes.V5
     ///     The route data structure
     /// </summary>
     [DataContract]
-    public sealed class DataObjectRoute : DataObjectBase
+    public class DataObjectRoute : DataObjectBase
     {
         /// <summary>
         ///     The route ID
