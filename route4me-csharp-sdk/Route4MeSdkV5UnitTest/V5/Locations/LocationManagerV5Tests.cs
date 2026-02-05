@@ -324,6 +324,7 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        [Obsolete("Use GetLocationTypeByIdResponseTest instead - this test uses obsolete methods")]
         public void GetLocationTypeByIdTest()
         {
             // First, create a location type to test retrieval
@@ -351,6 +352,36 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public void GetLocationTypeByIdResponseTest()
+        {
+            // First, create a location type to test retrieval
+            var createRequest = new StoreLocationTypeRequest
+            {
+                Name = "Test Location Type " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Test Description",
+                IsParentType = true,
+                IsChildType = false
+            };
+
+            var created = _locationManager.CreateLocationTypeResponse(createRequest, out var createResponse);
+            Assert.IsTrue(createResponse == null || createResponse.Status, "Create failed");
+            Assert.IsNotNull(created, "Created location type should not be null");
+            Assert.IsNotNull(created.Data, "Created location type data should not be null");
+
+            // Now test GetById
+            var result = _locationManager.GetLocationTypeByIdResponse(created.Data.LocationTypeId, out var resultResponse);
+
+            Assert.IsTrue(resultResponse == null || resultResponse.Status, "GetLocationTypeByIdResponse failed");
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.IsNotNull(result.Data, "Result data should not be null");
+            Assert.AreEqual(created.Data.LocationTypeId, result.Data.LocationTypeId, "Location type IDs should match");
+
+            // Cleanup
+            _locationManager.DeleteLocationType(created.Data.LocationTypeId, out _);
+        }
+
+        [Test]
+        [Obsolete("Use GetLocationTypeByIdResponseAsyncTest instead - this test uses obsolete methods")]
         public async Task GetLocationTypeByIdAsyncTest()
         {
             // First, create a location type to test retrieval
@@ -378,6 +409,36 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public async Task GetLocationTypeByIdResponseAsyncTest()
+        {
+            // First, create a location type to test retrieval
+            var createRequest = new StoreLocationTypeRequest
+            {
+                Name = "Test Location Type Async " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Test Description Async",
+                IsParentType = true,
+                IsChildType = false
+            };
+
+            var (created, createResponse) = await _locationManager.CreateLocationTypeResponseAsync(createRequest);
+            Assert.IsTrue(createResponse == null || createResponse.Status, "Create failed");
+            Assert.IsNotNull(created, "Created location type should not be null");
+            Assert.IsNotNull(created.Data, "Created location type data should not be null");
+
+            // Now test GetByIdAsync
+            var (result, resultResponse) = await _locationManager.GetLocationTypeByIdResponseAsync(created.Data.LocationTypeId);
+
+            Assert.IsTrue(resultResponse == null || resultResponse.Status, "GetLocationTypeByIdResponseAsync failed");
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.IsNotNull(result.Data, "Result data should not be null");
+            Assert.AreEqual(created.Data.LocationTypeId, result.Data.LocationTypeId, "Location type IDs should match");
+
+            // Cleanup
+            await _locationManager.DeleteLocationTypeAsync(created.Data.LocationTypeId);
+        }
+
+        [Test]
+        [Obsolete("Use CreateLocationTypeResponseTest instead - this test uses obsolete methods")]
         public void CreateLocationTypeTest()
         {
             var request = new StoreLocationTypeRequest
@@ -400,6 +461,30 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public void CreateLocationTypeResponseTest()
+        {
+            var request = new StoreLocationTypeRequest
+            {
+                Name = "Test Location Type " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Test Description for Create",
+                IsParentType = true,
+                IsChildType = false
+            };
+
+            var result = _locationManager.CreateLocationTypeResponse(request, out var resultResponse);
+
+            Assert.IsTrue(resultResponse == null || resultResponse.Status, "CreateLocationTypeResponse failed");
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.IsNotNull(result.Data, "Result data should not be null");
+            Assert.IsNotNull(result.Data.LocationTypeId, "LocationTypeId should not be null");
+            Assert.AreEqual(request.Name, result.Data.Name, "Names should match");
+
+            // Cleanup
+            _locationManager.DeleteLocationType(result.Data.LocationTypeId, out _);
+        }
+
+        [Test]
+        [Obsolete("Use CreateLocationTypeResponseAsyncTest instead - this test uses obsolete methods")]
         public async Task CreateLocationTypeAsyncTest()
         {
             var request = new StoreLocationTypeRequest
@@ -422,6 +507,30 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public async Task CreateLocationTypeResponseAsyncTest()
+        {
+            var request = new StoreLocationTypeRequest
+            {
+                Name = "Test Location Type Async " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Test Description for Create Async",
+                IsParentType = false,
+                IsChildType = true
+            };
+
+            var (result, resultResponse) = await _locationManager.CreateLocationTypeResponseAsync(request);
+
+            Assert.IsTrue(resultResponse == null || resultResponse.Status, "CreateLocationTypeResponseAsync failed");
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.IsNotNull(result.Data, "Result data should not be null");
+            Assert.IsNotNull(result.Data.LocationTypeId, "LocationTypeId should not be null");
+            Assert.AreEqual(request.Name, result.Data.Name, "Names should match");
+
+            // Cleanup
+            await _locationManager.DeleteLocationTypeAsync(result.Data.LocationTypeId);
+        }
+
+        [Test]
+        [Obsolete("Use UpdateLocationTypeResponseTest instead - this test uses obsolete methods")]
         public void UpdateLocationTypeTest()
         {
             // First, create a location type
@@ -457,6 +566,44 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public void UpdateLocationTypeResponseTest()
+        {
+            // First, create a location type
+            var createRequest = new StoreLocationTypeRequest
+            {
+                Name = "Original Name " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Original Description",
+                IsParentType = true,
+                IsChildType = false
+            };
+
+            var created = _locationManager.CreateLocationTypeResponse(createRequest, out var createResponse);
+            Assert.IsTrue(createResponse == null || createResponse.Status, "Create failed");
+            Assert.IsNotNull(created.Data, "Created data should not be null");
+
+            // Now update it
+            var updateRequest = new StoreLocationTypeRequest
+            {
+                Name = "Updated Name " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Updated Description",
+                IsParentType = false,
+                IsChildType = true
+            };
+
+            var result = _locationManager.UpdateLocationTypeResponse(created.Data.LocationTypeId, updateRequest, out var resultResponse);
+
+            Assert.IsTrue(resultResponse == null || resultResponse.Status, "UpdateLocationTypeResponse failed");
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.IsNotNull(result.Data, "Result data should not be null");
+            Assert.AreEqual(created.Data.LocationTypeId, result.Data.LocationTypeId, "Location type IDs should match");
+            Assert.AreEqual(updateRequest.Name, result.Data.Name, "Name should be updated");
+
+            // Cleanup
+            _locationManager.DeleteLocationType(created.Data.LocationTypeId, out _);
+        }
+
+        [Test]
+        [Obsolete("Use UpdateLocationTypeResponseAsyncTest instead - this test uses obsolete methods")]
         public async Task UpdateLocationTypeAsyncTest()
         {
             // First, create a location type
@@ -492,6 +639,43 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public async Task UpdateLocationTypeResponseAsyncTest()
+        {
+            // First, create a location type
+            var createRequest = new StoreLocationTypeRequest
+            {
+                Name = "Original Name Async " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Original Description Async",
+                IsParentType = true,
+                IsChildType = false
+            };
+
+            var (created, createResponse) = await _locationManager.CreateLocationTypeResponseAsync(createRequest);
+            Assert.IsTrue(createResponse == null || createResponse.Status, "Create failed");
+            Assert.IsNotNull(created.Data, "Created data should not be null");
+
+            // Now update it
+            var updateRequest = new StoreLocationTypeRequest
+            {
+                Name = "Updated Name Async " + Guid.NewGuid().ToString().Substring(0, 8),
+                Description = "Updated Description Async",
+                IsParentType = false,
+                IsChildType = true
+            };
+
+            var (result, resultResponse) = await _locationManager.UpdateLocationTypeResponseAsync(created.Data.LocationTypeId, updateRequest);
+
+            Assert.IsTrue(resultResponse == null || resultResponse.Status, "UpdateLocationTypeResponseAsync failed");
+            Assert.IsNotNull(result, "Result should not be null");
+            Assert.IsNotNull(result.Data, "Result data should not be null");
+            Assert.AreEqual(created.Data.LocationTypeId, result.Data.LocationTypeId, "Location type IDs should match");
+            Assert.AreEqual(updateRequest.Name, result.Data.Name, "Name should be updated");
+
+            // Cleanup
+            await _locationManager.DeleteLocationTypeAsync(created.Data.LocationTypeId);
+        }
+
+        [Test]
         public void DeleteLocationTypeTest()
         {
             // First, create a location type
@@ -503,11 +687,11 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
                 IsChildType = false
             };
 
-            var created = _locationManager.CreateLocationType(createRequest, out var createResponse);
+            var created = _locationManager.CreateLocationTypeResponse(createRequest, out var createResponse);
             Assert.IsTrue(createResponse == null || createResponse.Status, "Create failed");
 
             // Now delete it
-            var result = _locationManager.DeleteLocationType(created.LocationTypeId, out var resultResponse);
+            var result = _locationManager.DeleteLocationType(created.Data.LocationTypeId, out var resultResponse);
 
             Assert.IsTrue(resultResponse == null || resultResponse.Status, "DeleteLocationType failed");
             Assert.IsNotNull(result, "Result should not be null");
@@ -526,11 +710,11 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
                 IsChildType = false
             };
 
-            var (created, createResponse) = await _locationManager.CreateLocationTypeAsync(createRequest);
+            var (created, createResponse) = await _locationManager.CreateLocationTypeResponseAsync(createRequest);
             Assert.IsTrue(createResponse == null || createResponse.Status, "Create failed");
 
             // Now delete it
-            var (result, resultResponse) = await _locationManager.DeleteLocationTypeAsync(created.LocationTypeId);
+            var (result, resultResponse) = await _locationManager.DeleteLocationTypeAsync(created.Data.LocationTypeId);
 
             Assert.IsTrue(resultResponse == null || resultResponse.Status, "DeleteLocationTypeAsync failed");
             Assert.IsNotNull(result, "Result should not be null");
@@ -538,6 +722,7 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        [Obsolete("Use CreateLocationTypeResponseValidationTest instead - this test uses obsolete methods")]
         public void CreateLocationTypeValidationTest()
         {
             // Null request
@@ -558,6 +743,27 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public void CreateLocationTypeResponseValidationTest()
+        {
+            // Null request
+            var result1 = _locationManager.CreateLocationTypeResponse(null, out var response1);
+            Assert.IsFalse(response1.Status, "Should fail with null request");
+            Assert.IsNull(result1, "Result should be null");
+
+            // Missing name
+            var request = new StoreLocationTypeRequest
+            {
+                Name = "",
+                IsParentType = true,
+                IsChildType = false
+            };
+            var result2 = _locationManager.CreateLocationTypeResponse(request, out var response2);
+            Assert.IsFalse(response2.Status, "Should fail with empty name");
+            Assert.IsNull(result2, "Result should be null");
+        }
+
+        [Test]
+        [Obsolete("Use GetLocationTypeByIdResponseValidationTest instead - this test uses obsolete methods")]
         public void GetLocationTypeByIdValidationTest()
         {
             var result = _locationManager.GetLocationTypeById(null, out var resultResponse);
@@ -566,6 +772,15 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public void GetLocationTypeByIdResponseValidationTest()
+        {
+            var result = _locationManager.GetLocationTypeByIdResponse(null, out var resultResponse);
+            Assert.IsFalse(resultResponse.Status, "Should fail with null ID");
+            Assert.IsNull(result, "Result should be null");
+        }
+
+        [Test]
+        [Obsolete("Use UpdateLocationTypeResponseValidationTest instead - this test uses obsolete methods")]
         public void UpdateLocationTypeValidationTest()
         {
             // Null ID
@@ -581,6 +796,26 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
 
             // Null request
             var result2 = _locationManager.UpdateLocationType("test-id", null, out var response2);
+            Assert.IsFalse(response2.Status, "Should fail with null request");
+            Assert.IsNull(result2, "Result should be null");
+        }
+
+        [Test]
+        public void UpdateLocationTypeResponseValidationTest()
+        {
+            // Null ID
+            var request = new StoreLocationTypeRequest
+            {
+                Name = "Test",
+                IsParentType = true,
+                IsChildType = false
+            };
+            var result1 = _locationManager.UpdateLocationTypeResponse(null, request, out var response1);
+            Assert.IsFalse(response1.Status, "Should fail with null ID");
+            Assert.IsNull(result1, "Result should be null");
+
+            // Null request
+            var result2 = _locationManager.UpdateLocationTypeResponse("test-id", null, out var response2);
             Assert.IsFalse(response2.Status, "Should fail with null request");
             Assert.IsNull(result2, "Result should be null");
         }
@@ -720,6 +955,7 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        [Obsolete("Use GetLocationTypeByIdResponseValidationAsyncTest instead - this test uses obsolete methods")]
         public async Task GetLocationTypeByIdValidationAsyncTest()
         {
             var (result, resultResponse) = await _locationManager.GetLocationTypeByIdAsync(null);
@@ -730,6 +966,17 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public async Task GetLocationTypeByIdResponseValidationAsyncTest()
+        {
+            var (result, resultResponse) = await _locationManager.GetLocationTypeByIdResponseAsync(null);
+
+            Assert.IsFalse(resultResponse.Status, "Should fail with null ID");
+            Assert.IsNull(result, "Result should be null");
+            Assert.IsTrue(resultResponse.Messages.ContainsKey("Error"), "Should contain error message");
+        }
+
+        [Test]
+        [Obsolete("Use CreateLocationTypeResponseValidationAsyncTest instead - this test uses obsolete methods")]
         public async Task CreateLocationTypeValidationAsyncTest()
         {
             // Null request
@@ -750,6 +997,27 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
         }
 
         [Test]
+        public async Task CreateLocationTypeResponseValidationAsyncTest()
+        {
+            // Null request
+            var response1 = await _locationManager.CreateLocationTypeResponseAsync(null);
+            Assert.IsFalse(response1.Item2.Status, "Should fail with null request");
+            Assert.IsNull(response1.Item1, "Result should be null");
+
+            // Missing name
+            var request = new StoreLocationTypeRequest
+            {
+                Name = "",
+                IsParentType = true,
+                IsChildType = false
+            };
+            var response2 = await _locationManager.CreateLocationTypeResponseAsync(request);
+            Assert.IsFalse(response2.Item2.Status, "Should fail with empty name");
+            Assert.IsNull(response2.Item1, "Result should be null");
+        }
+
+        [Test]
+        [Obsolete("Use UpdateLocationTypeResponseValidationAsyncTest instead - this test uses obsolete methods")]
         public async Task UpdateLocationTypeValidationAsyncTest()
         {
             var request = new StoreLocationTypeRequest
@@ -766,6 +1034,27 @@ namespace Route4MeSdkV5UnitTest.V5.Locations
 
             // Null request
             var response2 = await _locationManager.UpdateLocationTypeAsync("test-id", null);
+            Assert.IsFalse(response2.Item2.Status, "Should fail with null request");
+            Assert.IsNull(response2.Item1, "Result should be null");
+        }
+
+        [Test]
+        public async Task UpdateLocationTypeResponseValidationAsyncTest()
+        {
+            var request = new StoreLocationTypeRequest
+            {
+                Name = "Test",
+                IsParentType = true,
+                IsChildType = false
+            };
+
+            // Null ID
+            var response1 = await _locationManager.UpdateLocationTypeResponseAsync(null, request);
+            Assert.IsFalse(response1.Item2.Status, "Should fail with null ID");
+            Assert.IsNull(response1.Item1, "Result should be null");
+
+            // Null request
+            var response2 = await _locationManager.UpdateLocationTypeResponseAsync("test-id", null);
             Assert.IsFalse(response2.Item2.Status, "Should fail with null request");
             Assert.IsNull(response2.Item1, "Result should be null");
         }
