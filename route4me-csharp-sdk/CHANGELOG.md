@@ -1,7 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-git ## [v8.10.0] - 2026-02-02
+## [v8.11.0] - 2026-02-05
+### Added
+- Routes API V5: Get Route endpoint (GET /api/v5.0/routes/{route_id})
+  - New type `GetRouteResponse` and `DataObjectRouteExtended` for single-route response with full details
+  - `DataObjectRouteExtended` fields: `RouteCost`, `RouteWeight`, `RouteCube`, `RoutePieces`, `RouteRevenue`, `NetRevenuePerDistanceUnit`, `TrackingHistory`
+  - `RouteManagerV5.GetRoute` / `GetRouteAsync`
+  - `Route4MeManagerV5.GetRoute` / `GetRouteAsync`
+### Changed
+- Route model V5: `DataObjectRoute` is no longer sealed to allow `DataObjectRouteExtended` inheritance
+### Fixed
+- Route model V5: change `TelematicsActualTravelDistance` and `MobileActualTravelDistance` from `string` to `double?`
+
+## [v8.10.0] - 2026-02-02
 ### Added
 - Routes API V5: Routes List endpoint (POST /api/v5.0/routes/list)
   - New constant `R4MEInfrastructureSettingsV5.RoutesList`
