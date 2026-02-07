@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 
 using Route4MeSDK.DataTypes.V5.StrategicPlanner;
+
 using Route4MeSDKLibrary.QueryTypes.V5.StrategicPlanner;
 
 namespace Route4MeSDK.Examples
@@ -35,7 +36,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("ERROR: Failed to upload file: " + 
+                Console.WriteLine("ERROR: Failed to upload file: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -61,7 +62,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("ERROR: Failed to get preview: " + 
+                Console.WriteLine("ERROR: Failed to get preview: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -79,7 +80,7 @@ namespace Route4MeSDK.Examples
             // Step 3: Create strategic optimization with 4-week cycle parameters
             // ====================================================================
             Console.WriteLine("\nStep 3: Creating 4-week strategic optimization...");
-            
+
             var startDate = DateTime.Today.AddDays(7).ToString("yyyy-MM-dd"); // Start next week
 
             var createRequest = new CreateOptimizationRequest
@@ -165,7 +166,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("ERROR: Failed to create optimization: " + 
+                Console.WriteLine("ERROR: Failed to create optimization: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -181,7 +182,7 @@ namespace Route4MeSDK.Examples
             // Step 4: Wait for scenarios to be generated and compare them
             // ====================================================================
             Console.WriteLine("\nStep 4: Waiting for scenarios to be generated...");
-            
+
             ScenarioCombinedCollection scenarios = null;
             var maxWaitAttempts = 30;
             var waitAttempt = 0;
@@ -255,7 +256,7 @@ namespace Route4MeSDK.Examples
 
                 // Simple scoring: prefer fewer routes and shorter distance
                 var score = (scenario.TotalRoutes ?? 0) * 100 + (scenario.TotalDistance ?? 0);
-                
+
                 if (scenario.RoutedLocationsPercent > 95 && score < bestScore)
                 {
                     bestScore = score;
@@ -290,7 +291,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("ERROR: Failed to accept scenario: " + 
+                Console.WriteLine("ERROR: Failed to accept scenario: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -343,7 +344,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("ERROR: Failed to submit export: " + 
+                Console.WriteLine("ERROR: Failed to submit export: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -532,7 +533,7 @@ namespace Route4MeSDK.Examples
             if (routes?.Data?.Items != null)
             {
                 var currentWeek = 0;
-                
+
                 foreach (var route in routes.Data.Items)
                 {
                     if (route.NumberWeek != currentWeek)

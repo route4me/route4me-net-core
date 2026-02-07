@@ -1,0 +1,5 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# C# source files: use CRLF so dotnet format and Windows CI match
+*.cs text eol=crlf

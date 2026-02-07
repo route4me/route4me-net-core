@@ -48,7 +48,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to submit export: " + 
+                Console.WriteLine("Failed to submit export: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -73,7 +73,7 @@ namespace Route4MeSDK.Examples
                     if (status.Status == "finished")
                     {
                         Console.WriteLine("Export completed successfully!");
-                        
+
                         // 4. Download the file
                         Console.WriteLine("\nDownloading export file...");
                         var fileContent = route4Me.StrategicPlanner.DownloadExport(exportJob.JobId.Value, out resultResponse);
@@ -84,7 +84,7 @@ namespace Route4MeSDK.Examples
                             System.IO.File.WriteAllBytes(fileName, fileContent);
                             Console.WriteLine($"File downloaded: {fileName} ({fileContent.Length} bytes)");
                         }
-                        
+
                         break;
                     }
                     else if (status.Status == "failed")
@@ -154,7 +154,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to submit export: " + 
+                Console.WriteLine("Failed to submit export: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
