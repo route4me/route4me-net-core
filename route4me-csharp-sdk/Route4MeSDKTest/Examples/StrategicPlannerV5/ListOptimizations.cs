@@ -33,7 +33,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to get optimizations: " + 
+                Console.WriteLine("Failed to get optimizations: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -76,7 +76,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to get optimizations: " + 
+                Console.WriteLine("Failed to get optimizations: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }

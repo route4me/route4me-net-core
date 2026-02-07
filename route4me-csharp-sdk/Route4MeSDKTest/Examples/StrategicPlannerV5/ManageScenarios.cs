@@ -35,7 +35,7 @@ namespace Route4MeSDK.Examples
             if (resultResponse == null)
             {
                 Console.WriteLine($"Found {scenarios.Data.TotalItemsCount} scenarios");
-                
+
                 if (scenarios.Data.Items != null)
                 {
                     foreach (var scenario in scenarios.Data.Items)
@@ -96,7 +96,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to generate scenario: " + 
+                Console.WriteLine("Failed to generate scenario: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -151,7 +151,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to add scenarios: " + 
+                Console.WriteLine("Failed to add scenarios: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }

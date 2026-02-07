@@ -103,7 +103,7 @@ namespace Route4MeSDK.Examples
             }
             else
             {
-                Console.WriteLine("Failed to update locations: " + 
+                Console.WriteLine("Failed to update locations: " +
                     string.Join(", ", resultResponse?.Messages?.Values ?? Array.Empty<string[]>()));
             }
         }
@@ -128,7 +128,7 @@ namespace Route4MeSDK.Examples
             }
             else
             {
-                Console.WriteLine("Failed to delete locations: " + 
+                Console.WriteLine("Failed to delete locations: " +
                     string.Join(", ", resultResponse?.Messages?.Values ?? Array.Empty<string[]>()));
             }
         }

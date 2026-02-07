@@ -917,7 +917,7 @@ namespace Route4MeSdkV5UnitTest.V5.StrategicPlanner
         public void ManagerAccessViaFacadeTest()
         {
             var route4Me = new Route4MeSDK.Route4MeManagerV5(_apiKey);
-            
+
             Assert.IsNotNull(route4Me.StrategicPlanner, "StrategicPlanner should be accessible via facade");
         }
 

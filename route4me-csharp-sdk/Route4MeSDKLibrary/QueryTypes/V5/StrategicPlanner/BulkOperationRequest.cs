@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+
 using Route4MeSDKLibrary.QueryTypes;
 
 namespace Route4MeSDKLibrary.QueryTypes.V5.StrategicPlanner

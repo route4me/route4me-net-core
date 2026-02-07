@@ -1524,7 +1524,7 @@ namespace Route4MeSDKLibrary.Managers
         public ColumnMetadata[] GetExportColumns(string exportType, string viewMode, out ResultResponse resultResponse)
         {
             var genericParameters = new GenericParameters();
-            
+
             var url = R4MEInfrastructureSettingsV5.StrategicExportColumns.Replace("{export_type}", exportType);
             if (!string.IsNullOrEmpty(viewMode))
             {
@@ -1551,7 +1551,7 @@ namespace Route4MeSDKLibrary.Managers
         public async Task<Tuple<ColumnMetadata[], ResultResponse>> GetExportColumnsAsync(string exportType, string viewMode)
         {
             var genericParameters = new GenericParameters();
-            
+
             var url = R4MEInfrastructureSettingsV5.StrategicExportColumns.Replace("{export_type}", exportType);
             if (!string.IsNullOrEmpty(viewMode))
             {

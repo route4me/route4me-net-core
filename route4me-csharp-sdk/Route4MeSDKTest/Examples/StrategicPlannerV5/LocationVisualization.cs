@@ -30,7 +30,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to get clustering: " + 
+                Console.WriteLine("Failed to get clustering: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -72,7 +72,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to get heatmap: " + 
+                Console.WriteLine("Failed to get heatmap: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
@@ -85,7 +85,7 @@ namespace Route4MeSDK.Examples
             {
                 Console.WriteLine("\nSample data points:");
                 var samplesToShow = Math.Min(5, heatmap.Data.Length);
-                
+
                 for (int i = 0; i < samplesToShow; i++)
                 {
                     var point = heatmap.Data[i];
@@ -121,7 +121,7 @@ namespace Route4MeSDK.Examples
 
             if (resultResponse != null && !resultResponse.Status)
             {
-                Console.WriteLine("Failed to get routes: " + 
+                Console.WriteLine("Failed to get routes: " +
                     string.Join(", ", resultResponse.Messages?.Values ?? Array.Empty<string[]>()));
                 return;
             }
