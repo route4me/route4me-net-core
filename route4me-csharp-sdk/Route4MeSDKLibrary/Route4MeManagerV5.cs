@@ -54,6 +54,7 @@ namespace Route4MeSDK
             _locationManager = new LocationManagerV5(apiKey);
             _customerManager = new CustomerManagerV5(apiKey);
             _facilityManager = new FacilityManagerV5(apiKey);
+            _strategicPlannerManager = new StrategicPlannerManagerV5(apiKey);
         }
 
         #endregion
@@ -74,6 +75,18 @@ namespace Route4MeSDK
         private readonly LocationManagerV5 _locationManager;
         private readonly CustomerManagerV5 _customerManager;
         private readonly FacilityManagerV5 _facilityManager;
+        private readonly StrategicPlannerManagerV5 _strategicPlannerManager;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Strategic Planner manager for optimization, scenario, and location management.
+        /// Provides access to strategic planning operations including upload, optimization creation,
+        /// scenario generation, location management, and export functionality.
+        /// </summary>
+        public StrategicPlannerManagerV5 StrategicPlanner => _strategicPlannerManager;
 
         #endregion
 

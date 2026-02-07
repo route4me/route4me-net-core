@@ -1,6 +1,22 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v8.12.0] - 2026-02-07
+### Added
+- Strategic Planner API V5.0: `StrategicPlannerManagerV5` via `Route4MeManagerV5.StrategicPlanner`
+  - Upload: CSV/XLS/XLSX upload, preview, create optimizations from uploads
+  - Strategic optimizations: CRUD, list with filters, bulk delete, draft creation
+  - Strategic scenarios: get/list, AI generation, accept for route creation, import completion
+  - Strategic locations (draft): CRUD, clustering, heatmap, bulk update/delete
+  - Strategic routes, visits, destinations: list with filtering and export
+  - Export: columns, submit jobs, status, download; nested exports for scenarios/routes/visits/locations
+  - Pattern analysis: upload, preview, analysis jobs
+  - Sync/async for all operations; 25+ endpoint constants in `R4MEInfrastructureSettingsV5`
+- Data types in `Route4MeSDK.DataTypes.V5.StrategicPlanner`: optimization/scenario/draft resources, combined collections, `SchedulerConfiguration`, `OptimizationParameters`, `GenerateScenarioResource`, export and visualization types
+- Query types in `Route4MeSDKLibrary.QueryTypes.V5.StrategicPlanner`: list/operation/upload/export/clustering/heatmap requests
+- Examples: `StrategicPlannerV5/` (CreateStrategicOptimization, ListOptimizations, ManageLocations, ManageScenarios, ExportData, LocationVisualization, UploadAndCreateOptimization, Complete4WeekOptimizationCycle)
+- Unit tests: `StrategicPlannerManagerV5Tests.cs` in `Route4MeSdkV5UnitTest/V5/StrategicPlanner/`
+
 ## [v8.11.0] - 2026-02-05
 ### Added
 - Routes API V5: Get Route endpoint (GET /api/v5.0/routes/{route_id})

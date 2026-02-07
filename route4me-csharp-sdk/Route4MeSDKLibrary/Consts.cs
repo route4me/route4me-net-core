@@ -363,6 +363,66 @@ namespace Route4MeSDK
 
         #endregion
 
+        #region Strategic Planner
+
+        public const string StrategicOptimizations = MainHost + "/strategic-optimizations";
+
+        // Upload endpoints
+        public const string StrategicUploadsFile = StrategicOptimizations + "/uploads/file";
+        public const string StrategicUploadsPreview = StrategicOptimizations + "/uploads/preview";
+        public const string StrategicUploadsPlanner = StrategicOptimizations + "/uploads/planner";
+        public const string StrategicCreateOptimization = StrategicOptimizations + "/create-optimization/planner";
+
+        // Export endpoints
+        public const string StrategicExportColumns = StrategicOptimizations + "/{export_type}/export/columns";
+        public const string StrategicExportStatus = StrategicOptimizations + "/export/status/{id}";
+        public const string StrategicExportResult = StrategicOptimizations + "/export/result/{id}";
+        public const string StrategicExportDownload = StrategicOptimizations + "/export/download/{id}";
+
+        // Optimization endpoints
+        public const string StrategicOptimizationsCombined = StrategicOptimizations + "/optimizations/combined";
+        public const string StrategicOptimizationsById = StrategicOptimizations + "/optimizations/{id}";
+        public const string StrategicOptimizationsExport = StrategicOptimizations + "/optimizations/export";
+        public const string StrategicOptimizationsExportNested = StrategicOptimizations + "/optimizations/export/nested";
+        public const string StrategicOptimizationsExportNestedTotals = StrategicOptimizations + "/optimizations/export/nested/totals";
+        public const string StrategicOptimizationsDraft = StrategicOptimizations + "/optimizations/{optimization_id}/draft";
+        public const string StrategicOptimizationsParameters = StrategicOptimizations + "/optimizations/{optimization_id}/parameters";
+        public const string StrategicOptimizationsAddScenarios = StrategicOptimizations + "/optimizations/{optimization_id}/add-scenarios";
+        public const string StrategicOptimizationsBulkDelete = StrategicOptimizations + "/optimizations/bulk/delete";
+
+        // Location endpoints
+        public const string StrategicLocationsCombined = StrategicOptimizations + "/locations/combined";
+        public const string StrategicLocationsClustering = StrategicOptimizations + "/locations/clustering";
+        public const string StrategicLocationsHeatmap = StrategicOptimizations + "/locations/heatmap";
+        public const string StrategicLocationsById = StrategicOptimizations + "/locations/{location_id}";
+        public const string StrategicLocationsBulkUpdate = StrategicOptimizations + "/locations/bulk-update";
+        public const string StrategicLocationsBulkDelete = StrategicOptimizations + "/locations/bulk-delete";
+        public const string StrategicLocationsExport = StrategicOptimizations + "/locations/export";
+
+        // Scenario endpoints
+        public const string StrategicScenariosCombined = StrategicOptimizations + "/scenarios/combined";
+        public const string StrategicScenariosById = StrategicOptimizations + "/scenarios/{id}";
+        public const string StrategicScenariosAccept = StrategicOptimizations + "/scenarios/{id}/accept";
+        public const string StrategicScenariosImportComplete = StrategicOptimizations + "/scenarios/{id}/import/complete";
+        public const string StrategicScenariosExport = StrategicOptimizations + "/scenarios/export";
+        public const string StrategicScenariosExportNested = StrategicOptimizations + "/scenarios/export/nested";
+        public const string StrategicScenariosExportNestedTotals = StrategicOptimizations + "/scenarios/export/nested/totals";
+        public const string StrategicScenariosGenerate = StrategicOptimizations + "/generate/strategic-scenario";
+
+        // Route/Visit/Destination endpoints
+        public const string StrategicRoutesCombined = StrategicOptimizations + "/routes/combined";
+        public const string StrategicRoutesExport = StrategicOptimizations + "/routes/export";
+        public const string StrategicVisitsCombined = StrategicOptimizations + "/visits/combined";
+        public const string StrategicVisitsExport = StrategicOptimizations + "/visits/export";
+        public const string StrategicDestinationsCombined = StrategicOptimizations + "/destinations/combined";
+
+        // Pattern Analysis
+        public const string StrategicPatternAnalysisFile = StrategicOptimizations + "/pattern-analysis/file";
+        public const string StrategicPatternAnalysisPreview = StrategicOptimizations + "/pattern-analysis/preview";
+        public const string StrategicPatternAnalysis = StrategicOptimizations + "/pattern-analysis";
+
+        #endregion
+
         #endregion
     }
 }
