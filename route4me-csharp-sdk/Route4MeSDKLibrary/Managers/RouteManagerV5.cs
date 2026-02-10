@@ -78,14 +78,14 @@ namespace Route4MeSDKLibrary.Managers
         /// <returns>An array of the routes</returns>
         public DataObjectRoute[] GetRoutes(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
+            var result = GetJsonObjectFromAPI<RoutesResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
                 HttpMethodType.Post,
                 false,
                 true,
                 out resultResponse);
 
-            return result;
+            return result?.Data ?? Array.Empty<DataObjectRoute>();
         }
 
         /// <summary>
@@ -95,12 +95,13 @@ namespace Route4MeSDKLibrary.Managers
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
         public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesAsync(RouteParametersQuery routeParameters)
         {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<RoutesResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
                 HttpMethodType.Post,
                 null, true, false).ConfigureAwait(false);
 
-            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+            var routes = result.Item1?.Data ?? Array.Empty<DataObjectRoute>();
+            return new Tuple<DataObjectRoute[], ResultResponse>(routes, result.Item2);
         }
 
         /// <summary>
@@ -465,14 +466,14 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         /// <summary>
-        /// Updates a route by sending route query parameters containg Route Parameters and Addresses.
+        /// Updates a route by sending route query parameters containing Route Parameters and Addresses.
         /// </summary>
         /// <param name="routeQuery">Route query parameters</param>
-        /// <param name="resultResponse"></param>
+        /// <param name="resultResponse">Failure response</param>
         /// <returns>Updated route</returns>
         public DataObjectRoute UpdateRoute(RouteParametersQuery routeQuery, out ResultResponse resultResponse)
         {
-            var response = GetJsonObjectFromAPI<DataObjectRoute>(
+            var response = GetJsonObjectFromAPI<RouteResponse>(
                 routeQuery,
                 R4MEInfrastructureSettingsV5.Routes,
                 HttpMethodType.Put,
@@ -480,26 +481,26 @@ namespace Route4MeSDKLibrary.Managers
                 true,
                 out resultResponse);
 
-            return response;
+            return response?.Data;
         }
 
         /// <summary>
-        ///     Updates asynchronously a route by sending route query parameters  
-        /// containg Route Parameters and Addresses.
+        ///     Updates asynchronously a route by sending route query parameters
+        ///     containing Route Parameters and Addresses.
         /// </summary>
         /// <param name="routeQuery">Route query parameters</param>
         /// <returns>A Tuple type object containing updated route or/and failure response</returns>
-        public Task<Tuple<DataObjectRoute, ResultResponse, string>> UpdateRouteAsync(RouteParametersQuery routeQuery)
+        public async Task<Tuple<DataObjectRoute, ResultResponse, string>> UpdateRouteAsync(RouteParametersQuery routeQuery)
         {
-            var response = GetJsonObjectFromAPIAsync<DataObjectRoute>(
+            var response = await GetJsonObjectFromAPIAsync<RouteResponse>(
                 routeQuery,
                 R4MEInfrastructureSettingsV5.Routes,
                 HttpMethodType.Put,
                 null,
                 true,
-                false);
+                false).ConfigureAwait(false);
 
-            return response;
+            return new Tuple<DataObjectRoute, ResultResponse, string>(response.Item1?.Data, response.Item2, response.Item3);
         }
 
         /// <summary>
