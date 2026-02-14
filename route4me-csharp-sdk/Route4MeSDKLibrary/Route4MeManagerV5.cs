@@ -2593,6 +2593,7 @@ namespace Route4MeSDK
         /// <summary>
         /// Get location type by ID
         /// </summary>
+        [Obsolete("Use GetLocationTypeByIdResponse instead")]
         public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource GetLocationTypeById(
             string locationTypeId,
             out ResultResponse resultResponse)
@@ -2601,8 +2602,19 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Get location type by ID (uses correct response wrapper deserialization)
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResponse GetLocationTypeByIdResponse(
+            string locationTypeId,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.GetLocationTypeByIdResponse(locationTypeId, out resultResponse);
+        }
+
+        /// <summary>
         /// Get location type by ID (async)
         /// </summary>
+        [Obsolete("Use GetLocationTypeByIdResponseAsync instead")]
         public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource, ResultResponse>>
             GetLocationTypeByIdAsync(string locationTypeId)
         {
@@ -2610,8 +2622,18 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Get location type by ID (async, uses correct response wrapper deserialization)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResponse, ResultResponse>>
+            GetLocationTypeByIdResponseAsync(string locationTypeId)
+        {
+            return _locationManager.GetLocationTypeByIdResponseAsync(locationTypeId);
+        }
+
+        /// <summary>
         /// Create a new location type
         /// </summary>
+        [Obsolete("Use CreateLocationTypeResponse instead")]
         public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource CreateLocationType(
             Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request,
             out ResultResponse resultResponse)
@@ -2620,8 +2642,19 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Create a new location type (uses correct response wrapper deserialization)
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResponse CreateLocationTypeResponse(
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.CreateLocationTypeResponse(request, out resultResponse);
+        }
+
+        /// <summary>
         /// Create a new location type (async)
         /// </summary>
+        [Obsolete("Use CreateLocationTypeResponseAsync instead")]
         public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource, ResultResponse>>
             CreateLocationTypeAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request)
         {
@@ -2629,8 +2662,18 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Create a new location type (async, uses correct response wrapper deserialization)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResponse, ResultResponse>>
+            CreateLocationTypeResponseAsync(Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request)
+        {
+            return _locationManager.CreateLocationTypeResponseAsync(request);
+        }
+
+        /// <summary>
         /// Update an existing location type
         /// </summary>
+        [Obsolete("Use UpdateLocationTypeResponse instead")]
         public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource UpdateLocationType(
             string locationTypeId,
             Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request,
@@ -2640,14 +2683,37 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Update an existing location type (uses correct response wrapper deserialization)
+        /// </summary>
+        public Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResponse UpdateLocationTypeResponse(
+            string locationTypeId,
+            Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _locationManager.UpdateLocationTypeResponse(locationTypeId, request, out resultResponse);
+        }
+
+        /// <summary>
         /// Update an existing location type (async)
         /// </summary>
+        [Obsolete("Use UpdateLocationTypeResponseAsync instead")]
         public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResource, ResultResponse>>
             UpdateLocationTypeAsync(
                 string locationTypeId,
                 Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request)
         {
             return _locationManager.UpdateLocationTypeAsync(locationTypeId, request);
+        }
+
+        /// <summary>
+        /// Update an existing location type (async, uses correct response wrapper deserialization)
+        /// </summary>
+        public Task<Tuple<Route4MeSDKLibrary.DataTypes.V5.Locations.LocationTypeResponse, ResultResponse>>
+            UpdateLocationTypeResponseAsync(
+                string locationTypeId,
+                Route4MeSDKLibrary.QueryTypes.V5.Locations.StoreLocationTypeRequest request)
+        {
+            return _locationManager.UpdateLocationTypeResponseAsync(locationTypeId, request);
         }
 
         /// <summary>
