@@ -8,6 +8,8 @@ using Route4MeSDK;
 using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 
+using Route4MeSDKLibrary;
+
 using Route4MeSDKUnitTest.Types;
 
 namespace Route4MeSDKUnitTest.Tests
@@ -397,19 +399,37 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var route4Me = new Route4MeManager(c_ApiKey);
 
-            var aParams = new AddressParameters
+            var addressId = _tdr.SDRT_route.Addresses[1].RouteDestinationId != null
+                ? Convert.ToInt32(_tdr.SDRT_route.Addresses[1].RouteDestinationId)
+                : -1;
+
+            var visitedParams = new AddressParameters
             {
                 RouteId = _tdr.SDRT_route_id,
-                AddressId = _tdr.SDRT_route.Addresses[0].RouteDestinationId != null
-                    ? Convert.ToInt32(_tdr.SDRT_route.Addresses[0].RouteDestinationId)
-                    : -1,
+                AddressId = addressId,
+                IsVisited = true
+            };
+
+            var visitedResult = route4Me.MarkAddressVisited(visitedParams, out var visitedError);
+
+            Assert.That(
+                visitedResult,
+                Is.GreaterThan(0),
+                "Failed to mark address as visited before departure. " + visitedError);
+
+            var departedParams = new AddressParameters
+            {
+                RouteId = _tdr.SDRT_route_id,
+                AddressId = addressId,
                 IsDeparted = true
             };
 
-            // Run the query
-            var result = route4Me.MarkAddressVisited(aParams, out var errorString);
+            var departedResult = route4Me.MarkAddressDeparted(departedParams, out var departedError);
 
-            Assert.IsNotNull(result, "MarkAddressDepartedTest. " + errorString);
+            Assert.That(
+                departedResult,
+                Is.GreaterThan(0),
+                "MarkAddressDepartedTest failed. " + departedError);
         }
 
         [Test]
@@ -430,6 +450,33 @@ namespace Route4MeSDKUnitTest.Tests
             object oResult = route4Me.MarkAddressVisited(aParams, out var errorString);
 
             Assert.IsNotNull(oResult, "MarkAddressVisitedTest. " + errorString);
+        }
+
+        [Test]
+        public void MarkAddressDepartedWithoutVisitingReturnsErrorWithEnabledErrorHandling()
+        {
+            var route4Me = new Route4MeManager(c_ApiKey);
+            Route4MeConfig.UseImprovedErrorHandling = true;
+
+            var addressId = _tdr.SDRT_route.Addresses[2].RouteDestinationId != null
+                ? Convert.ToInt32(_tdr.SDRT_route.Addresses[2].RouteDestinationId)
+                : -1;
+
+            var departedParams = new AddressParameters
+            {
+                RouteId = _tdr.SDRT_route_id,
+                AddressId = addressId,
+                IsDeparted = true
+            };
+
+            var departedResult = route4Me.MarkAddressDeparted(departedParams, out var departedError);
+
+            Assert.That(departedResult, Is.EqualTo(0), "Expected failure when departing without visiting first");
+            Assert.That(departedError, Is.Not.Null.And.Not.Empty, "Error message should be provided on failure");
+
+            // Log the error for debugging
+            Console.WriteLine($"Error message received: {departedError}");
+            Route4MeConfig.UseImprovedErrorHandling = false;
         }
 
         [OneTimeTearDown]
