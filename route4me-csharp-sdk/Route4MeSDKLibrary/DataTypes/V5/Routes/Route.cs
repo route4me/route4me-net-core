@@ -431,5 +431,11 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        ///     Route-level custom data as an array of key-value dictionaries.
+        /// </summary>
+        [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
+        public Dictionary<string, string>[] RouteCustomData { get; set; }
     }
 }
