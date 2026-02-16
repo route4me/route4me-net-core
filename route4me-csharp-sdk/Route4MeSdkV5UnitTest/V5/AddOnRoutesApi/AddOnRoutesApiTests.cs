@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -537,6 +537,114 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 
 
             Assert.That(result.GetType(), Is.EqualTo(typeof(StatusResponse)));
+        }
+
+        [Test]
+        public void UpdateRouteCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            var customData = new[]
+            {
+                new Dictionary<string, string>
+                {
+                    { "priority", "high" },
+                    { "region", "west" }
+                },
+                new Dictionary<string, string>
+                {
+                    { "notes", "Handle with care" }
+                }
+            };
+
+            var updatedRoute = route4Me.UpdateRouteCustomData(routeId, customData, out ResultResponse resultResponse);
+
+            Assert.NotNull(updatedRoute, "UpdateRouteCustomData returned null. " +
+                                         (resultResponse?.Messages != null
+                                             ? string.Join("; ", resultResponse.Messages)
+                                             : ""));
+            Assert.That(updatedRoute.GetType(), Is.EqualTo(typeof(DataObjectRoute)));
+        }
+
+        [Test]
+        public async Task UpdateRouteCustomDataAsyncTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            var customData = new[]
+            {
+                new Dictionary<string, string>
+                {
+                    { "priority", "high" },
+                    { "region", "west" }
+                }
+            };
+
+            var result = await route4Me.UpdateRouteCustomDataAsync(routeId, customData);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Item1, "UpdateRouteCustomDataAsync returned null route.");
+            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(DataObjectRoute)));
+        }
+
+        [Test]
+        public void GetRouteCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            // First, set custom data on the route
+            var customData = new[]
+            {
+                new Dictionary<string, string>
+                {
+                    { "priority", "high" },
+                    { "region", "west" }
+                }
+            };
+
+            route4Me.UpdateRouteCustomData(routeId, customData, out _);
+
+            // Now, retrieve the custom data
+            var retrievedCustomData = route4Me.GetRouteCustomData(routeId, out ResultResponse resultResponse);
+
+            Assert.NotNull(retrievedCustomData, "GetRouteCustomData returned null. " +
+                                                (resultResponse?.Messages != null
+                                                    ? string.Join("; ", resultResponse.Messages)
+                                                    : ""));
+            Assert.That(retrievedCustomData.Length, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task GetRouteCustomDataAsyncTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            // First, set custom data on the route
+            var customData = new[]
+            {
+                new Dictionary<string, string>
+                {
+                    { "priority", "high" },
+                    { "region", "west" }
+                }
+            };
+
+            await route4Me.UpdateRouteCustomDataAsync(routeId, customData);
+
+            // Now, retrieve the custom data
+            var result = await route4Me.GetRouteCustomDataAsync(routeId);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Item1, "GetRouteCustomDataAsync returned null custom data.");
+            Assert.That(result.Item1.Length, Is.GreaterThan(0));
         }
     }
 }
