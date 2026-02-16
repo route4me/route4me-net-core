@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using Route4MeSDK.DataTypes.V5;
@@ -256,5 +257,12 @@ namespace Route4MeSDK.QueryTypes.V5
         /// </summary>
         [DataMember(Name = "unlink_from_master_optimization", EmitDefaultValue = false)]
         public bool UnlinkFromMasterOptimization { get; set; }
+
+        /// <summary>
+        ///     Route-level custom data as an array of key-value dictionaries.
+        ///     Used when updating a route to set or replace route custom data.
+        /// </summary>
+        [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
+        public Dictionary<string, string>[] RouteCustomData { get; set; }
     }
 }
