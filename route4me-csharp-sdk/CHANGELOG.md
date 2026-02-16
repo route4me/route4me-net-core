@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v8.12.0] - 2026-02-16
+### Added
+- Routes API V5: `route_custom_data` support for route-level custom key/value data
+  - New `RouteCustomData` property on `DataObjectRoute` (response model)
+  - New `RouteCustomData` property on `RouteFilterResponseData` (list/filter response model)
+  - New `RouteCustomData` property on `RouteParametersQuery` (V5) for route update requests
+  - `RouteManagerV5.GetRouteCustomData` / `GetRouteCustomDataAsync` — retrieve route custom data by route ID
+  - `RouteManagerV5.UpdateRouteCustomData` / `UpdateRouteCustomDataAsync` — update route custom data by route ID
+  - `Route4MeManagerV5.GetRouteCustomData` / `GetRouteCustomDataAsync`
+  - `Route4MeManagerV5.UpdateRouteCustomData` / `UpdateRouteCustomDataAsync`
+
 ## [v8.11.0] - 2026-02-05
 ### Added
 - Routes API V5: Get Route endpoint (GET /api/v5.0/routes/{route_id})

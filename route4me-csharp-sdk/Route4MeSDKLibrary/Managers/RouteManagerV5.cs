@@ -568,5 +568,76 @@ namespace Route4MeSDKLibrary.Managers
                 false,
                 false);
         }
+
+        /// <summary>
+        /// Gets the route-level custom data for the specified route.
+        /// Uses GET /api/v5.0/routes/{route_id} and extracts the route_custom_data field.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of dictionaries representing route custom data, or null if not set</returns>
+        public Dictionary<string, string>[] GetRouteCustomData(string routeId, out ResultResponse resultResponse)
+        {
+            var response = GetRoute(routeId, out resultResponse);
+
+            return response?.Data?.RouteCustomData;
+        }
+
+        /// <summary>
+        /// Gets the route-level custom data for the specified route asynchronously.
+        /// Uses GET /api/v5.0/routes/{route_id} and extracts the route_custom_data field.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <returns>A Tuple containing route custom data or/and failure response</returns>
+        public async Task<Tuple<Dictionary<string, string>[], ResultResponse>> GetRouteCustomDataAsync(string routeId)
+        {
+            var result = await GetRouteAsync(routeId).ConfigureAwait(false);
+
+            return new Tuple<Dictionary<string, string>[], ResultResponse>(
+                result.Item1?.Data?.RouteCustomData,
+                result.Item2);
+        }
+
+        /// <summary>
+        /// Updates route-level custom data for the specified route.
+        /// Uses PUT /api/v5.0/routes with route_custom_data in the request body.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="customData">The custom data to set on the route</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>The updated route object</returns>
+        public DataObjectRoute UpdateRouteCustomData(
+            string routeId,
+            Dictionary<string, string>[] customData,
+            out ResultResponse resultResponse)
+        {
+            var routeQuery = new RouteParametersQuery
+            {
+                RouteId = routeId,
+                RouteCustomData = customData
+            };
+
+            return UpdateRoute(routeQuery, out resultResponse);
+        }
+
+        /// <summary>
+        /// Updates route-level custom data for the specified route asynchronously.
+        /// Uses PUT /api/v5.0/routes with route_custom_data in the request body.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="customData">The custom data to set on the route</param>
+        /// <returns>A Tuple containing the updated route or/and failure response</returns>
+        public Task<Tuple<DataObjectRoute, ResultResponse, string>> UpdateRouteCustomDataAsync(
+            string routeId,
+            Dictionary<string, string>[] customData)
+        {
+            var routeQuery = new RouteParametersQuery
+            {
+                RouteId = routeId,
+                RouteCustomData = customData
+            };
+
+            return UpdateRouteAsync(routeQuery);
+        }
     }
 }
