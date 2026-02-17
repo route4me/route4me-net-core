@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 using Route4MeSDK.DataTypes.V5;
 using Route4MeSDK.QueryTypes;
 
@@ -13,6 +15,7 @@ namespace Route4MeSDK.DataTypes
     ///     Route parameters
     /// </summary>
     [DataContract]
+    [KnownType(typeof(VehicleV4Parameters))]
     public sealed class RouteParameters
     {
         /// <summary>
@@ -171,6 +174,18 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "vehicle_id", EmitDefaultValue = false)]
         public string VehicleId { get; set; }
+
+        /// <summary>
+        ///     Convenience property: when set, its <see cref="VehicleV4Parameters.VehicleId"/> can be copied into
+        ///     <see cref="VehicleId"/> for optimization creation.
+        ///     <remarks>
+        ///         Swagger for <c>/optimization_problem.php</c> defines <c>parameters.vehicle_id</c> (not <c>parameters.vehicle</c>).
+        ///         This property is intentionally not serialized.
+        ///     </remarks>
+        /// </summary>
+        [IgnoreDataMember]
+        [JsonIgnore]
+        public VehicleV4Parameters Vehicle { get; set; }
 
         /// <summary>
         ///     The vehicle ID, to be assigned to the route.
@@ -706,6 +721,12 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        /// Optimization breaks.
+        /// </summary>
+        [DataMember(Name = "breaks", EmitDefaultValue = false)]
+        public OptimizationBreak[] Breaks { get; set; }
     }
 
     /// <summary>

@@ -88,6 +88,8 @@ namespace Route4MeSDK
         /// <returns>Generated optimization problem object</returns>
         public DataObject RunOptimization(OptimizationParameters optimizationParameters, out string errorString)
         {
+            optimizationParameters?.PrepareVehicleId();
+
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post,
@@ -108,6 +110,8 @@ namespace Route4MeSDK
         /// <returns>Generated optimization problem object</returns>
         public Task<Tuple<DataObject, string>> RunOptimizationAsync(OptimizationParameters optimizationParameters)
         {
+            optimizationParameters?.PrepareVehicleId();
+
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Post, null, false, true);
@@ -255,6 +259,8 @@ namespace Route4MeSDK
         /// <returns>Updated optimization</returns>
         public DataObject UpdateOptimization(OptimizationParameters optimizationParameters, out string errorString)
         {
+            optimizationParameters?.PrepareVehicleId();
+
             var result = GetJsonObjectFromAPI<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put,
@@ -272,6 +278,8 @@ namespace Route4MeSDK
         /// <returns>Updated optimization</returns>
         public Task<Tuple<DataObject, string>> UpdateOptimizationAsync(OptimizationParameters optimizationParameters)
         {
+            optimizationParameters?.PrepareVehicleId();
+
             return GetJsonObjectFromAPIAsync<DataObject>(optimizationParameters,
                 R4MEInfrastructureSettings.ApiHost,
                 HttpMethodType.Put, null, false, true);
