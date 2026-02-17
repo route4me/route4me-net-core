@@ -20,10 +20,28 @@ namespace Route4MeSDK.DataTypes.V5
         public int? MaximumCapacity { get; set; }
 
         /// <summary>
+        /// Maximum cargo weight a vehicle can cary.
+        /// </summary>
+        [DataMember(Name = "max_cargo_weight", EmitDefaultValue = false)]
+        public int? MaximumCargoWeight { get; set; }
+
+        /// <summary>
+        /// Maximum allowed revenue from a subtour.
+        /// </summary>
+        [DataMember(Name = "max_revenue", EmitDefaultValue = false)]
+        public int? MaximumRevenue { get; set; }
+
+        /// <summary>
         ///     Legacy feature which permits a user to request an example number of optimized routes.
         /// </summary>
         [DataMember(Name = "members_count", EmitDefaultValue = false)]
         public int? MembersCount { get; set; }
+
+        /// <summary>
+        /// An array of the available vehicle IDs.
+        /// </summary>
+        [DataMember(Name = "vehicles_id", EmitDefaultValue = false)]
+        public string[] VehiclesId { get; set; }
 
         /// <summary>
         ///     An array of the available time windows (e.g. [ [25200, 75000 ] )

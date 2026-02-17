@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 using Polly;
 
@@ -62,6 +63,7 @@ namespace Route4MeSDKLibrary
         ///     Gets or sets the number of consecutive failures before circuit breaker opens.
         ///     Default is 5. Only applies when EnableCircuitBreaker is true.
         /// </summary>
+        /// 
         public static int CircuitBreakerFailureThreshold { get; set; } = 5;
 
         /// <summary>
@@ -87,5 +89,20 @@ namespace Route4MeSDKLibrary
         ///     Useful for alerting and monitoring.
         /// </summary>
         public static Action<Exception, TimeSpan> OnCircuitBreakerOpen { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a factory function that creates <see cref="HttpMessageHandler"/> instances for HttpClient.
+        ///     When set, this factory is invoked to create a new handler for each HttpClient instance.
+        ///     The HttpClient will own and dispose the handler when the client is disposed.
+        ///     This allows injection of custom handlers for logging, payload capture, testing, or other middleware.
+        /// </summary>
+        /// <example>
+        ///     // Configure a logging handler factory
+        ///     Route4MeConfig.HttpMessageHandlerFactory = () => new CustomLoggingHandler
+        ///     {
+        ///         InnerHandler = new HttpClientHandler()
+        ///     };
+        /// </example>
+        public static Func<HttpMessageHandler> HttpMessageHandlerFactory { get; set; } = null;
     }
 }

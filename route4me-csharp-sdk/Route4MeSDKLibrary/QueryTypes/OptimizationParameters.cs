@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 using Route4MeSDK.DataTypes;
 
@@ -164,5 +164,16 @@ namespace Route4MeSDK.QueryTypes
         /// </summary>
         [DataMember(Name = "optimization_profile_id", EmitDefaultValue = false)]
         public string OptimizationProfileId { get; set; }
+
+        /// <summary>
+        /// Prepare the optimization parameters for the API call.
+        /// </summary>
+        public void PrepareVehicleId()
+        {
+            if (Parameters?.VehicleId == null && Parameters?.Vehicle?.VehicleId != null)
+            {
+                Parameters.VehicleId = Parameters.Vehicle.VehicleId;
+            }
+        }
     }
 }
