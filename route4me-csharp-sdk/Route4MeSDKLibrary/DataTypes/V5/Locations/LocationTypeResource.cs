@@ -48,6 +48,17 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Locations
         public int? RootMemberId { get; set; }
     }
 
+    [DataContract]
+    public class LocationTypeResponse
+    {
+        /// <summary>
+        /// Location type resource
+        /// </summary>
+        [DataMember(Name = "data")]
+        public LocationTypeResource Data { get; set; }
+
+    }
+
     /// <summary>
     /// Collection of location types with pagination
     /// </summary>
