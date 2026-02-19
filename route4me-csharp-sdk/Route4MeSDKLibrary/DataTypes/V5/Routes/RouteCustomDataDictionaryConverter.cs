@@ -60,6 +60,9 @@ namespace Route4MeSDK.DataTypes.V5
                         }
                     }
                     break;
+                default:
+                    throw new JsonSerializationException(
+                        $"Unexpected token type '{token.Type}' when deserializing route custom data. JSON path: {token.Path}");
             }
 
             return result;

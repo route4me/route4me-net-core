@@ -49,6 +49,20 @@ namespace Route4MeSDKLibrary.Managers
         /// </returns>
         public Dictionary<string, string> GetRouteCustomData(string routeId, out ResultResponse resultResponse)
         {
+            if (string.IsNullOrEmpty(routeId))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
             return GetJsonObjectFromAPI<Dictionary<string, string>>(
                 new GenericParameters(),
                 R4MEInfrastructureSettingsV5.RouteCustomData + "/" + routeId,
@@ -69,6 +83,18 @@ namespace Route4MeSDKLibrary.Managers
         /// </returns>
         public async Task<Tuple<Dictionary<string, string>, ResultResponse>> GetRouteCustomDataAsync(string routeId)
         {
+            if (string.IsNullOrEmpty(routeId))
+            {
+                return new Tuple<Dictionary<string, string>, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                });
+            }
+
             var result = await GetJsonObjectFromAPIAsync<Dictionary<string, string>>(
                 new GenericParameters(),
                 R4MEInfrastructureSettingsV5.RouteCustomData + "/" + routeId,
@@ -97,6 +123,34 @@ namespace Route4MeSDKLibrary.Managers
             Dictionary<string, string> customData,
             out ResultResponse resultResponse)
         {
+            if (string.IsNullOrEmpty(routeId))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            if (customData == null)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The customData parameter is null" } }
+                    }
+                };
+
+                return null;
+            }
+
             var json = R4MeUtils.SerializeObjectToJson(customData, true);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -126,6 +180,30 @@ namespace Route4MeSDKLibrary.Managers
             string routeId,
             Dictionary<string, string> customData)
         {
+            if (string.IsNullOrEmpty(routeId))
+            {
+                return new Tuple<Dictionary<string, string>, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                });
+            }
+
+            if (customData == null)
+            {
+                return new Tuple<Dictionary<string, string>, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The customData parameter is null" } }
+                    }
+                });
+            }
+
             var json = R4MeUtils.SerializeObjectToJson(customData, true);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -154,6 +232,20 @@ namespace Route4MeSDKLibrary.Managers
             string[] routeIds,
             out ResultResponse resultResponse)
         {
+            if (routeIds == null || routeIds.Length == 0)
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeIds array is null or empty" } }
+                    }
+                };
+
+                return null;
+            }
+
             var requestBody = new Dictionary<string, string[]> { { "route_ids", routeIds } };
             var json = R4MeUtils.SerializeObjectToJson(requestBody, true);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -180,6 +272,18 @@ namespace Route4MeSDKLibrary.Managers
         public async Task<Tuple<RouteCustomDataCollection, ResultResponse>> GetBulkRouteCustomDataAsync(
             string[] routeIds)
         {
+            if (routeIds == null || routeIds.Length == 0)
+            {
+                return new Tuple<RouteCustomDataCollection, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeIds array is null or empty" } }
+                    }
+                });
+            }
+
             var requestBody = new Dictionary<string, string[]> { { "route_ids", routeIds } };
             var json = R4MeUtils.SerializeObjectToJson(requestBody, true);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
