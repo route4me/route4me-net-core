@@ -16,7 +16,7 @@ namespace Route4MeSDKLibrary.Managers
     /// Manager for the Route Custom Data API (V5).
     /// Provides dedicated CRUD operations for route-level custom data via the
     /// <c>/route-custom-data/</c> endpoints, distinct from the route-level
-    /// <c>route_custom_data</c> field in the Routes API.
+    /// <c>custom_data</c> field in the Routes API (formerly route_custom_data).
     /// </summary>
     public class RouteCustomDataManagerV5 : Route4MeManagerBase
     {

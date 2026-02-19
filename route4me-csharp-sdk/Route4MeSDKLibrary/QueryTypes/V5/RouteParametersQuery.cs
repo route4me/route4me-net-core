@@ -261,8 +261,9 @@ namespace Route4MeSDK.QueryTypes.V5
         /// <summary>
         ///     Route-level custom data as an array of key-value dictionaries.
         ///     Used when updating a route to set or replace route custom data.
+        ///     API field name: custom_data (was route_custom_data).
         /// </summary>
-        [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
         public Dictionary<string, string>[] RouteCustomData { get; set; }
     }
 }
