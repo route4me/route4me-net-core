@@ -576,7 +576,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of dictionaries representing route custom data, or null if not set</returns>
-        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicated")]
+        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicated instead")]
         public Dictionary<string, string>[] GetRouteCustomData(string routeId, out ResultResponse resultResponse)
         {
             var response = GetRoute(routeId, out resultResponse);
@@ -590,7 +590,7 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <returns>A Tuple containing route custom data or/and failure response</returns>
-        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicatedAsync")]
+        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicatedAsync instead")]
         public async Task<Tuple<Dictionary<string, string>[], ResultResponse>> GetRouteCustomDataAsync(string routeId)
         {
             var result = await GetRouteAsync(routeId).ConfigureAwait(false);
