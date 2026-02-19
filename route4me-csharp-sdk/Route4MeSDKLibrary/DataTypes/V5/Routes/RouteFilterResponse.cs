@@ -257,8 +257,9 @@ namespace Route4MeSDK.DataTypes.V5
 
         /// <summary>
         ///     Route-level custom data as an array of key-value dictionaries.
+        ///     API field name: custom_data (was route_custom_data).
         /// </summary>
-        [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
         public Dictionary<string, string>[] RouteCustomData { get; set; }
     }
 }
