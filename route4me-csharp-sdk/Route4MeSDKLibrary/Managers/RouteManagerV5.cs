@@ -571,7 +571,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Gets the route-level custom data for the specified route.
-        /// Uses GET /api/v5.0/routes/{route_id} and extracts the route_custom_data field.
+        /// Uses GET /api/v5.0/routes/{route_id} and extracts the custom_data field.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="resultResponse">Failure response</param>
@@ -586,7 +586,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Gets the route-level custom data for the specified route asynchronously.
-        /// Uses GET /api/v5.0/routes/{route_id} and extracts the route_custom_data field.
+        /// Uses GET /api/v5.0/routes/{route_id} and extracts the custom_data field.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <returns>A Tuple containing route custom data or/and failure response</returns>
@@ -602,7 +602,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Updates route-level custom data for the specified route.
-        /// Uses PUT /api/v5.0/routes with route_custom_data in the request body.
+        /// Uses PUT /api/v5.0/routes with custom_data in the request body.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="customData">The custom data to set on the route</param>
@@ -625,7 +625,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Updates route-level custom data for the specified route asynchronously.
-        /// Uses PUT /api/v5.0/routes with route_custom_data in the request body.
+        /// Uses PUT /api/v5.0/routes with custom_data in the request body.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="customData">The custom data to set on the route</param>
