@@ -576,6 +576,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of dictionaries representing route custom data, or null if not set</returns>
+        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicated instead")]
         public Dictionary<string, string>[] GetRouteCustomData(string routeId, out ResultResponse resultResponse)
         {
             var response = GetRoute(routeId, out resultResponse);
@@ -589,6 +590,7 @@ namespace Route4MeSDKLibrary.Managers
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <returns>A Tuple containing route custom data or/and failure response</returns>
+        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicatedAsync instead")]
         public async Task<Tuple<Dictionary<string, string>[], ResultResponse>> GetRouteCustomDataAsync(string routeId)
         {
             var result = await GetRouteAsync(routeId).ConfigureAwait(false);
@@ -606,6 +608,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="customData">The custom data to set on the route</param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>The updated route object</returns>
+        [Obsolete("Use RouteCustomDataManagerV5.UpdateRouteCustomData which calls the dedicated PUT /route-custom-data/{route_id} endpoint.")]
         public DataObjectRoute UpdateRouteCustomData(
             string routeId,
             Dictionary<string, string>[] customData,
@@ -627,6 +630,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="customData">The custom data to set on the route</param>
         /// <returns>A Tuple containing the updated route or/and failure response</returns>
+        [Obsolete("Use RouteCustomDataManagerV5.UpdateRouteCustomDataAsync which calls the dedicated PUT /route-custom-data/{route_id} endpoint.")]
         public Task<Tuple<DataObjectRoute, ResultResponse, string>> UpdateRouteCustomDataAsync(
             string routeId,
             Dictionary<string, string>[] customData)
