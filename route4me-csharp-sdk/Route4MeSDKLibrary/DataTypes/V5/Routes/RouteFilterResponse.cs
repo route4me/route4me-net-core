@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -258,7 +259,14 @@ namespace Route4MeSDK.DataTypes.V5
         /// <summary>
         ///     Route-level custom data as an array of key-value dictionaries.
         /// </summary>
+        [Obsolete("Use RouteFilterResponseData.CustomData instead")]
         [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
         public Dictionary<string, string>[] RouteCustomData { get; set; }
+
+        /// <summary>
+        ///     Route-level custom data as an array of key-value dictionaries.
+        /// </summary>
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
+        public Dictionary<string, string> CustomData { get; set; }
     }
 }

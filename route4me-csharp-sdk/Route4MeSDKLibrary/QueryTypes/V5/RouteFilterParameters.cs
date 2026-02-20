@@ -207,5 +207,13 @@ namespace Route4MeSDK.QueryTypes.V5
 
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        ///     Filter routes by custom data key-value pairs.
+        ///     Each item specifies a <c>key</c> (max 50 chars) and a <c>value</c>
+        ///     that is either a single string or an array of strings.
+        /// </summary>
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
+        public Dictionary<string, string> CustomData { get; set; }
     }
 }

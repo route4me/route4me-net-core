@@ -540,111 +540,125 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public void UpdateRouteCustomDataTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
             var routeId = _tdr.SD10Stops_route.RouteID;
 
-            var customData = new[]
+            var customData = new Dictionary<string, string>
             {
-                new Dictionary<string, string>
-                {
-                    { "priority", "high" },
-                    { "region", "west" }
-                },
-                new Dictionary<string, string>
-                {
-                    { "notes", "Handle with care" }
-                }
+                { "priority", "high" },
+                { "region", "west" },
+                { "notes", "Handle with care" }
             };
 
-            var updatedRoute = route4Me.UpdateRouteCustomData(routeId, customData, out ResultResponse resultResponse);
+            var result = route4Me.UpdateRouteCustomData(routeId, customData, out ResultResponse resultResponse);
 
-            Assert.NotNull(updatedRoute, "UpdateRouteCustomData returned null. " +
-                                         (resultResponse?.Messages != null
-                                             ? string.Join("; ", resultResponse.Messages)
-                                             : ""));
-            Assert.That(updatedRoute.GetType(), Is.EqualTo(typeof(DataObjectRoute)));
+            Assert.NotNull(result, "UpdateRouteCustomData returned null. " +
+                                   (resultResponse?.Messages != null
+                                       ? string.Join("; ", resultResponse.Messages)
+                                       : ""));
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Dictionary<string, string>)));
         }
 
         [Test]
+        [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public async Task UpdateRouteCustomDataAsyncTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
             var routeId = _tdr.SD10Stops_route.RouteID;
 
-            var customData = new[]
+            var customData = new Dictionary<string, string>
             {
-                new Dictionary<string, string>
-                {
-                    { "priority", "high" },
-                    { "region", "west" }
-                }
+                { "priority", "high" },
+                { "region", "west" }
             };
 
             var result = await route4Me.UpdateRouteCustomDataAsync(routeId, customData);
 
             Assert.NotNull(result);
-            Assert.NotNull(result.Item1, "UpdateRouteCustomDataAsync returned null route.");
-            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(DataObjectRoute)));
+            Assert.NotNull(result.Item1, "UpdateRouteCustomDataAsync returned null.");
+            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(Dictionary<string, string>)));
         }
 
         [Test]
+        [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public void GetRouteCustomDataTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
             var routeId = _tdr.SD10Stops_route.RouteID;
 
-            // First, set custom data on the route
-            var customData = new[]
+            // First, set custom data on the route using the dedicated endpoint
+            var customData = new Dictionary<string, string>
             {
-                new Dictionary<string, string>
-                {
-                    { "priority", "high" },
-                    { "region", "west" }
-                }
+                { "priority", "high" },
+                { "region", "west" }
             };
 
             route4Me.UpdateRouteCustomData(routeId, customData, out _);
 
-            // Now, retrieve the custom data
+            // Now, retrieve the custom data via the dedicated endpoint
             var retrievedCustomData = route4Me.GetRouteCustomData(routeId, out ResultResponse resultResponse);
 
             Assert.NotNull(retrievedCustomData, "GetRouteCustomData returned null. " +
                                                 (resultResponse?.Messages != null
                                                     ? string.Join("; ", resultResponse.Messages)
                                                     : ""));
-            Assert.That(retrievedCustomData.Length, Is.GreaterThan(0));
+            Assert.That(retrievedCustomData.Count, Is.GreaterThan(0));
         }
 
         [Test]
+        [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public async Task GetRouteCustomDataAsyncTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
             var routeId = _tdr.SD10Stops_route.RouteID;
 
-            // First, set custom data on the route
-            var customData = new[]
+            // First, set custom data on the route using the dedicated endpoint
+            var customData = new Dictionary<string, string>
             {
-                new Dictionary<string, string>
-                {
-                    { "priority", "high" },
-                    { "region", "west" }
-                }
+                { "priority", "high" },
+                { "region", "west" }
             };
 
             await route4Me.UpdateRouteCustomDataAsync(routeId, customData);
 
-            // Now, retrieve the custom data
+            // Now, retrieve the custom data via the dedicated endpoint
             var result = await route4Me.GetRouteCustomDataAsync(routeId);
 
             Assert.NotNull(result);
             Assert.NotNull(result.Item1, "GetRouteCustomDataAsync returned null custom data.");
-            Assert.That(result.Item1.Length, Is.GreaterThan(0));
+            Assert.That(result.Item1.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void GetRouteIncludesCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+            var routeId = _tdr.SD10Stops_route.RouteID;
+            const string dictKey = "priority";
+            const string dictValue = "high";
+
+            // Set custom data via dedicated endpoint
+            var customData = new Dictionary<string, string> { { dictKey, dictValue } };
+            route4Me.UpdateRouteCustomData(routeId, customData, out var err);
+            Assert.That(err, Is.Null);
+
+            // Retrieve via GetRoute and verify custom data is present
+            var response = route4Me.GetRoute(routeId, out ResultResponse resultResponse);
+
+            Assert.NotNull(response?.Data?.CustomData);
+            Assert.That(response.Data.CustomData.Keys.Count, Is.GreaterThan(0));
+            Assert.That(response.Data.CustomData[dictKey], Is.EqualTo(dictValue));
         }
     }
 }
