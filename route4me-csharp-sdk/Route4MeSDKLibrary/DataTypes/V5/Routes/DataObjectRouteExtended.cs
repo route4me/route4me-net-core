@@ -3,6 +3,23 @@ using System.Runtime.Serialization;
 namespace Route4MeSDK.DataTypes.V5
 {
     /// <summary>
+    ///     Response wrapper for POST /api/v5.0/routes/list (and list-style routes endpoints).
+    ///     The API returns { "data": [...], "links": {...}, "meta": {...} }; this type matches that shape.
+    /// </summary>
+    [DataContract]
+    public sealed class RoutesListResponse
+    {
+        [DataMember(Name = "data", EmitDefaultValue = false)]
+        public DataObjectRouteExtended[] Data { get; set; }
+
+        [DataMember(Name = "links", EmitDefaultValue = false)]
+        public PageLinks Links { get; set; }
+
+        [DataMember(Name = "meta", EmitDefaultValue = false)]
+        public PageMeta Meta { get; set; }
+    }
+
+    /// <summary>
     ///     Response wrapper for GET /api/v5.0/routes/{route_id} endpoint.
     ///     The API returns the route data wrapped in a "data" property.
     /// </summary>

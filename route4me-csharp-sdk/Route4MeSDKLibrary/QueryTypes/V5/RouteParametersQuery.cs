@@ -227,6 +227,13 @@ namespace Route4MeSDK.QueryTypes.V5
         public int? PerPage { get; set; }
 
         /// <summary>
+        ///     Filters for list endpoints (e.g. POST /routes/list).
+        ///     When set, included in the request body so the API can filter by route_id, etc.
+        /// </summary>
+        [DataMember(Name = "filters", EmitDefaultValue = false)]
+        public RouteFilterParametersFilters Filters { get; set; }
+
+        /// <summary>
         ///     Route Parameters to update.
         ///     (After a PUT there is no guarantee that the route_destination_id values are preserved!
         ///     It may create copies resulting in new destination IDs, especially when dealing with multiple depots.)

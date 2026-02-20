@@ -1227,7 +1227,7 @@ namespace Route4MeSDK
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of dictionaries representing route custom data, or null if not set</returns>
         [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicated instead")]
-        public Dictionary<string, string>[] GetRouteCustomData(string routeId, out ResultResponse resultResponse)
+        public Dictionary<string, string> GetRouteCustomData(string routeId, out ResultResponse resultResponse)
         {
             return _routeManager.GetRouteCustomData(routeId, out resultResponse);
         }
@@ -1239,7 +1239,7 @@ namespace Route4MeSDK
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <returns>A Tuple containing route custom data or/and failure response</returns>
         [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicatedAsync instead")]
-        public Task<Tuple<Dictionary<string, string>[], ResultResponse>> GetRouteCustomDataAsync(string routeId)
+        public Task<Tuple<Dictionary<string, string>, ResultResponse>> GetRouteCustomDataAsync(string routeId)
         {
             return _routeManager.GetRouteCustomDataAsync(routeId);
         }
