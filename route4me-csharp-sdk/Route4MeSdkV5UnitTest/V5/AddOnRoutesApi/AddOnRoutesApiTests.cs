@@ -529,20 +529,21 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
-            var routeParameters = new RouteParametersQuery
-            {
-                Limit = 1,
-                Offset = 15
-            };
+            var firstAddressWithDestinationId = _tdr.SD10Stops_route.Addresses
+                .FirstOrDefault(a => a.RouteDestinationId.HasValue);
+            Assert.That(firstAddressWithDestinationId, Is.Not.Null,
+                "Route has no address with RouteDestinationId set (e.g. optimization response may omit it for depot).");
+            var routeDestinationId = firstAddressWithDestinationId.RouteDestinationId!.Value;
 
-            var routeDestinationId = _tdr.SD10Stops_route.Addresses.First().RouteDestinationId;
             var result = route4Me.SetRouteStopStatus(new SetRouteStopStatusParameters()
             {
-                DestinationIds = new long[] { routeDestinationId.Value },
+                DestinationIds = new long[] { routeDestinationId },
                 Status = RouteStopStatus.Failed.Description()
             }, out var err3);
 
-
+            Assert.That(result, Is.Not.Null,
+                "SetRouteStopStatus returned null. " +
+                (err3?.Messages != null ? string.Join("; ", err3.Messages) : ""));
             Assert.That(result.GetType(), Is.EqualTo(typeof(StatusResponse)));
         }
 

@@ -105,35 +105,45 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Retrieves a list of the routes via the routes/list endpoint (POST /api/v5.0/routes/list).
+        /// The API returns { data, links, meta }; items in data are deserialized as <see cref="DataObjectRouteExtended"/>.
         /// </summary>
         /// <param name="routeParameters">Query parameters</param>
         /// <param name="resultResponse">Failure response</param>
-        /// <returns>An array of the routes</returns>
+        /// <returns>An array of the routes (from response.data)</returns>
         public DataObjectRoute[] GetRoutesList(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
+            // So that POST /routes/list filters by route_id: send it in the body (filters.route_id), not only in query.
+            if (!string.IsNullOrEmpty(routeParameters.RouteId) && routeParameters.Filters == null)
+                routeParameters.Filters = new RouteFilterParametersFilters { RouteId = routeParameters.RouteId };
+
+            var response = GetJsonObjectFromAPI<RoutesListResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesList,
                 HttpMethodType.Post,
                 false,
                 true,
                 out resultResponse);
 
-            return result;
+            return response?.Data;
         }
 
         /// <summary>
         /// Retrieves a list of the routes via the routes/list endpoint asynchronously (POST /api/v5.0/routes/list).
+        /// The API returns { data, links, meta }; items in data are deserialized as <see cref="DataObjectRouteExtended"/>.
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
-        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        /// <returns>A Tuple type object containing a route list (from response.data) or/and failure response</returns>
         public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesListAsync(RouteParametersQuery routeParameters)
         {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            // So that POST /routes/list filters by route_id: send it in the body (filters.route_id), not only in query.
+            if (!string.IsNullOrEmpty(routeParameters.RouteId) && routeParameters.Filters == null)
+                routeParameters.Filters = new RouteFilterParametersFilters { RouteId = routeParameters.RouteId };
+
+            var response = await GetJsonObjectFromAPIAsync<RoutesListResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.RoutesList,
                 HttpMethodType.Post,
                 null, true, false).ConfigureAwait(false);
 
-            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<DataObjectRoute[], ResultResponse>(response.Item1?.Data, response.Item2);
         }
 
         /// <summary>
@@ -577,7 +587,7 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of dictionaries representing route custom data, or null if not set</returns>
         [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicated instead")]
-        public Dictionary<string, string>[] GetRouteCustomData(string routeId, out ResultResponse resultResponse)
+        public Dictionary<string, string> GetRouteCustomData(string routeId, out ResultResponse resultResponse)
         {
             var response = GetRoute(routeId, out resultResponse);
 
@@ -591,11 +601,11 @@ namespace Route4MeSDKLibrary.Managers
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <returns>A Tuple containing route custom data or/and failure response</returns>
         [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicatedAsync instead")]
-        public async Task<Tuple<Dictionary<string, string>[], ResultResponse>> GetRouteCustomDataAsync(string routeId)
+        public async Task<Tuple<Dictionary<string, string>, ResultResponse>> GetRouteCustomDataAsync(string routeId)
         {
             var result = await GetRouteAsync(routeId).ConfigureAwait(false);
 
-            return new Tuple<Dictionary<string, string>[], ResultResponse>(
+            return new Tuple<Dictionary<string, string>, ResultResponse>(
                 result.Item1?.Data?.RouteCustomData,
                 result.Item2);
         }
