@@ -262,7 +262,7 @@ namespace Route4MeSDK.DataTypes.V5
         [Obsolete("Use RouteFilterResponseData.CustomData instead")]
         [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
         public Dictionary<string, string>[] RouteCustomData { get; set; }
-        
+
         /// <summary>
         ///     Route-level custom data as an array of key-value dictionaries.
         /// </summary>
