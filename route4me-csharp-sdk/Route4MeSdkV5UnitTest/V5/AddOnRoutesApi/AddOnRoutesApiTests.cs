@@ -540,6 +540,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public void UpdateRouteCustomDataTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -563,6 +565,8 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         }
 
         [Test]
+        [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public async Task UpdateRouteCustomDataAsyncTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -584,6 +588,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 
         [Test]
         [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public void GetRouteCustomDataTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -611,6 +616,7 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 
         [Test]
         [Obsolete]
+        [Ignore("This test uses deprecated methods and will be removed in a future version.")]
         public async Task GetRouteCustomDataAsyncTest()
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
@@ -632,6 +638,27 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
             Assert.NotNull(result);
             Assert.NotNull(result.Item1, "GetRouteCustomDataAsync returned null custom data.");
             Assert.That(result.Item1.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void GetRouteIncludesCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+            var routeId = _tdr.SD10Stops_route.RouteID;
+            const string dictKey = "priority";
+            const string dictValue = "high";
+
+            // Set custom data via dedicated endpoint
+            var customData = new Dictionary<string, string> { { dictKey, dictValue } };
+            route4Me.UpdateRouteCustomData(routeId, customData, out var err);
+            Assert.That(err, Is.Null);
+
+            // Retrieve via GetRoute and verify custom data is present
+            var response = route4Me.GetRoute(routeId, out ResultResponse resultResponse);
+
+            Assert.NotNull(response?.Data?.CustomData);
+            Assert.That(response.Data.CustomData.Keys.Count, Is.GreaterThan(0));
+            Assert.That(response.Data.CustomData[dictKey], Is.EqualTo(dictValue));
         }
     }
 }

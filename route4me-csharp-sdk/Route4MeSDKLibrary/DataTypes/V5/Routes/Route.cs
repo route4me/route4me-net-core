@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -379,6 +380,7 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "path")]
         [ReadOnly(true)]
+        [JsonConverter(typeof(EncodedPolylinePathConverter))]
         public DirectionPathPoint[] Path { get; set; }
 
         /// <summary>
@@ -435,7 +437,15 @@ namespace Route4MeSDK.DataTypes.V5
         /// <summary>
         ///     Route-level custom data as an array of key-value dictionaries.
         /// </summary>
+        [Obsolete("Use DataObjectRoute.CustomData instead")]
         [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
         public Dictionary<string, string>[] RouteCustomData { get; set; }
+
+        /// <summary>
+        ///     Route-level custom data as key-value pairs.
+        /// </summary>
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
+        [JsonConverter(typeof(RouteCustomDataConverter))]
+        public Dictionary<string, string> CustomData { get; set; }
     }
 }
