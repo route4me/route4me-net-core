@@ -127,6 +127,9 @@ namespace Route4MeSDK
         public const string RouteBreaks = MainHost + "/route-breaks";
         public const string RouteAddressDynamicInsert = MainHost + "/routes/lookup-for-new-destination";
 
+        public const string RouteCustomData = MainHost + "/route-custom-data";
+        public const string RouteCustomDataBulk = MainHost + "/route-custom-data/bulk";
+
         public const string TeamUsers = MainHost + "/team/users";
 
         public const string TeamUsersBulkCreate = MainHost + "/team/bulk-insert";
