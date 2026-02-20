@@ -20,6 +20,12 @@ namespace Route4MeSDK.DataTypes.V5
         public string RouteID { get; set; }
 
         /// <summary>
+        ///     The route name (e.g. from GET /api/v5.0/routes/{route_id}).
+        /// </summary>
+        [DataMember(Name = "route_name", EmitDefaultValue = false)]
+        public string RouteName { get; set; }
+
+        /// <summary>
         ///     Organization ID
         /// </summary>
         [DataMember(Name = "organization_id", EmitDefaultValue = false)]
@@ -375,11 +381,12 @@ namespace Route4MeSDK.DataTypes.V5
         public Direction[] Directions { get; set; }
 
         /// <summary>
-        ///     Edge-wise path to be drawn on the map See <see cref="DirectionPathPoint" />
+        ///     Edge-wise path as encoded polyline strings (e.g. Google polyline encoding per segment).
+        ///     GET /api/v5.0/routes/{route_id} returns path as string[].
         /// </summary>
         [DataMember(Name = "path")]
         [ReadOnly(true)]
-        public DirectionPathPoint[] Path { get; set; }
+        public string[] Path { get; set; }
 
         /// <summary>
         ///     A vehicle assigned to the route.
@@ -433,9 +440,11 @@ namespace Route4MeSDK.DataTypes.V5
         public string[] FacilityIds { get; set; }
 
         /// <summary>
-        ///     Route-level custom data as an array of key-value dictionaries.
+        ///     Route-level custom data (key-value dictionary).
+        ///     API may return a single object or an array; converter normalizes to a single dictionary (array → first element).
         /// </summary>
-        [DataMember(Name = "route_custom_data", EmitDefaultValue = false)]
-        public Dictionary<string, string>[] RouteCustomData { get; set; }
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
+        [JsonConverter(typeof(RouteCustomDataArrayConverter))]
+        public Dictionary<string, string> RouteCustomData { get; set; }
     }
 }
