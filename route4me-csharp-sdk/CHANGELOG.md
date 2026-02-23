@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v8.13.0] - 2026-01-20
+### Added
+- **Dedicated route custom data API (V5)** — GET/PUT `/route-custom-data/{route_id}`, POST `/route-custom-data/bulk`
+  - Constants: `R4MEInfrastructureSettingsV5.RouteCustomData`, `RouteCustomDataBulk`
+  - Manager: `RouteCustomDataManagerV5`
+  - `Route4MeManagerV5`: `GetRouteCustomDataDedicated` / `GetRouteCustomDataDedicatedAsync`, `UpdateRouteCustomData(routeId, customData)` / `UpdateRouteCustomDataAsync`, `GetBulkRouteCustomData` / `GetBulkRouteCustomDataAsync`
+  - Type: `RouteCustomDataCollection` for bulk responses
+- **Serialization**: `RouteCustomDataArrayConverter` and `RouteCustomDataDictionaryConverter` — accept API `custom_data` as object or array
+### Deprecated
+- `RouteManagerV5` / `Route4MeManagerV5`: `GetRouteCustomData`, `GetRouteCustomDataAsync` → use `GetRouteCustomDataDedicated` / `GetRouteCustomDataDedicatedAsync`
+- `UpdateRouteCustomData` / `UpdateRouteCustomDataAsync` (overload returning `DataObjectRoute`) → use overload with `(string routeId, Dictionary<string,string> customData, out ResultResponse)`
+
 ## [v8.12.0] - 2026-02-16
 ### Added
 - Routes API V5: `route_custom_data` support for route-level custom key/value data
