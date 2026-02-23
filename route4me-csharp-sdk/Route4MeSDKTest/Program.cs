@@ -436,6 +436,15 @@ namespace Route4MeSDKTest
 
                 #endregion
 
+                #region Routes (Route-level custom data V5)
+
+                examples.GetRouteCustomDataV5();
+                examples.UpdateRouteCustomDataV5();
+                examples.UpdateAndReadRouteCustomDataV5();
+                examples.GetBulkRouteCustomDataV5();
+
+                #endregion
+
                 #region Orders
 
                 examples.OrdersV5Examples();
