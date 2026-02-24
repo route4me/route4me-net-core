@@ -39,21 +39,17 @@ namespace Route4MeSDK.Examples
 
             var result = route4Me.GetDestinationSequence(request, out ResultResponse resultResponse);
 
-            if (resultResponse == null && result?.Items != null && result.Items.Length > 0)
+            if (resultResponse == null && result?.OptimizedSequence != null)
             {
                 Console.WriteLine("{0} executed successfully.", tag);
-                var sequence = result.Items[0].OptimizedSequence;
-                if (sequence != null)
+                Console.WriteLine("  Optimised visit order (0-based coordinate indices):");
+                for (int i = 0; i < result.OptimizedSequence.Length; i++)
                 {
-                    Console.WriteLine("  Optimised visit order (0-based coordinate indices):");
-                    for (int i = 0; i < sequence.Length; i++)
-                    {
-                        var idx = sequence[i];
-                        Console.WriteLine("    stop {0}: coordinate[{1}] (lat={2}, lng={3})",
-                            i + 1, idx,
-                            request.Coordinates[idx].Lat,
-                            request.Coordinates[idx].Lng);
-                    }
+                    var idx = result.OptimizedSequence[i];
+                    Console.WriteLine("    stop {0}: coordinate[{1}] (lat={2}, lng={3})",
+                        i + 1, idx,
+                        request.Coordinates[idx].Lat,
+                        request.Coordinates[idx].Lng);
                 }
             }
             else

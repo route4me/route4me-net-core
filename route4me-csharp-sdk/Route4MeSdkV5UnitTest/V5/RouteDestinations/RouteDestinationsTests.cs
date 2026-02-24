@@ -296,10 +296,8 @@ public class RouteDestinationsTests
         // Assert
         Assert.IsNull(resultResponse, "GetDestinationSequence should not return an error");
         Assert.IsNotNull(result, "GetDestinationSequence should return a result");
-        Assert.IsNotNull(result.Items, "Items should not be null");
-        Assert.Greater(result.Items.Length, 0, "Should return at least one sequence result");
-        Assert.IsNotNull(result.Items[0].OptimizedSequence, "OptimizedSequence should not be null");
-        Assert.AreEqual(4, result.Items[0].OptimizedSequence.Length, "Should return an index for each input coordinate");
+        Assert.IsNotNull(result.OptimizedSequence, "OptimizedSequence should not be null");
+        Assert.AreEqual(4, result.OptimizedSequence.Length, "Should return an index for each input coordinate");
     }
 
     [Test]
@@ -324,7 +322,8 @@ public class RouteDestinationsTests
         // Assert
         Assert.IsNull(response.Item2, "GetDestinationSequenceAsync should not return an error");
         Assert.IsNotNull(response.Item1, "GetDestinationSequenceAsync should return a result");
-        Assert.IsNotNull(response.Item1.Items, "Items should not be null");
+        Assert.IsNotNull(response.Item1.OptimizedSequence, "OptimizedSequence should not be null");
+        Assert.AreEqual(3, response.Item1.OptimizedSequence.Length, "Should return an index for each input coordinate");
     }
 
     [Test]
