@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+
 using Newtonsoft.Json;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations

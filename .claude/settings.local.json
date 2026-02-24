@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build:*)",
+      "Bash(git add:*)",
+      "Bash(dotnet test:*)",
+      "Bash(git commit:*)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core merge --ff-only claude/infallible-shaw)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log --oneline -4)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw status --short)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw diff --stat route4me-csharp-sdk/Route4MeSdkV5UnitTest/)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw ls-files route4me-csharp-sdk/Route4MeSdkV5UnitTest/V5/RouteDestinations/RouteDestinationsTests.cs)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw diff route4me-csharp-sdk/Route4MeSdkV5UnitTest/V5/RouteDestinations/RouteDestinationsTests.cs)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw log --oneline -5)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw show a3317a8 --stat)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw show HEAD:route4me-csharp-sdk/Route4MeSdkV5UnitTest/V5/RouteDestinations/RouteDestinationsTests.cs)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw diff route4me-csharp-sdk/Route4MeSdkV5UnitTest/appsettings.json route4me-csharp-sdk/Route4MeSDKTest/appsettings.json)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw show HEAD:route4me-csharp-sdk/Route4MeSDKLibrary/DataTypes/V5/RouteDestinations/GetDestinationsRequest.cs)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core/.claude/worktrees/infallible-shaw diff --stat)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log --oneline claude/infallible-shaw...origin/feat/add-destinations-enpoints)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core branch:*)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log --oneline -5 feat/add-destinations-enpoints)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core status --short)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core stash)",
+      "Bash(git merge:*)",
+      "Bash(git stash drop:*)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log --oneline -3)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log --oneline --graph --all)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log --oneline --graph --all --decorate)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core log -n 5 --oneline)",
+      "Bash(git -C /Users/semeyonsvetliy/Projects/Route4Me/route4me-net-core show:*)",
+      "Bash(ls:*)",
+      "Bash(dotnet format:*)"
+    ]
+  }
+}
