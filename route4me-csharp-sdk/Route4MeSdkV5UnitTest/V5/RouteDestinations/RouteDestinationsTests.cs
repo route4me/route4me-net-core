@@ -156,6 +156,7 @@ public class RouteDestinationsTests
         Assert.IsNotNull(result, "GetDestination should return a destination resource");
         Assert.AreEqual(listResult.Items[0].RouteDestinationId, result.RouteDestinationId,
             "Returned destination should match the requested ID");
+        Assert.IsNotNull(result.DestinationName, "DestinationName should be populated");
     }
 
     [Test]
@@ -183,6 +184,7 @@ public class RouteDestinationsTests
         // Assert
         Assert.IsNull(response.Item2, "GetDestinationAsync should not return an error");
         Assert.IsNotNull(response.Item1, "GetDestinationAsync should return a destination resource");
+        Assert.IsNotNull(response.Item1.DestinationName, "DestinationName should be populated");
     }
 
     [Test]
