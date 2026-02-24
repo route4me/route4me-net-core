@@ -526,7 +526,7 @@ namespace Route4MeSDKLibrary.Managers
         /// A <see cref="DestinationSequenceListResponse"/> with the optimised index sequence,
         /// or <c>null</c> on failure.
         /// </returns>
-        public DestinationSequenceListResponse GetDestinationSequence(
+        public DestinationSequenceResponse GetDestinationSequence(
             DestinationSequenceRequest request,
             out ResultResponse resultResponse)
         {
@@ -556,7 +556,7 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
-            return GetJsonObjectFromAPI<DestinationSequenceListResponse>(
+            return GetJsonObjectFromAPI<DestinationSequenceResponse>(
                 request,
                 R4MEInfrastructureSettingsV5.RouteDestinationsSequence,
                 HttpMethodType.Post,
@@ -573,12 +573,12 @@ namespace Route4MeSDKLibrary.Managers
         /// <returns>
         /// A <see cref="Tuple{T1,T2}"/> containing the sequence response and failure response (if any).
         /// </returns>
-        public async Task<Tuple<DestinationSequenceListResponse, ResultResponse>> GetDestinationSequenceAsync(
+        public async Task<Tuple<DestinationSequenceResponse, ResultResponse>> GetDestinationSequenceAsync(
             DestinationSequenceRequest request)
         {
             if (request == null)
             {
-                return new Tuple<DestinationSequenceListResponse, ResultResponse>(null, new ResultResponse
+                return new Tuple<DestinationSequenceResponse, ResultResponse>(null, new ResultResponse
                 {
                     Status = false,
                     Messages = new Dictionary<string, string[]>
@@ -590,7 +590,7 @@ namespace Route4MeSDKLibrary.Managers
 
             if (request.Coordinates == null || request.Coordinates.Length == 0)
             {
-                return new Tuple<DestinationSequenceListResponse, ResultResponse>(null, new ResultResponse
+                return new Tuple<DestinationSequenceResponse, ResultResponse>(null, new ResultResponse
                 {
                     Status = false,
                     Messages = new Dictionary<string, string[]>
@@ -600,7 +600,7 @@ namespace Route4MeSDKLibrary.Managers
                 });
             }
 
-            var result = await GetJsonObjectFromAPIAsync<DestinationSequenceListResponse>(
+            var result = await GetJsonObjectFromAPIAsync<DestinationSequenceResponse>(
                 request,
                 R4MEInfrastructureSettingsV5.RouteDestinationsSequence,
                 HttpMethodType.Post).ConfigureAwait(false);

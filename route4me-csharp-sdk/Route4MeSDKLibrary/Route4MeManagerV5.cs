@@ -2997,7 +2997,7 @@ namespace Route4MeSDK
         /// <param name="request">Coordinates to optimise.</param>
         /// <param name="resultResponse">Failure response if the request fails.</param>
         /// <returns>Sequence response with optimised index order.</returns>
-        public DestinationSequenceListResponse GetDestinationSequence(
+        public DestinationSequenceResponse GetDestinationSequence(
             DestinationSequenceRequest request,
             out ResultResponse resultResponse)
         {
@@ -3008,7 +3008,7 @@ namespace Route4MeSDK
         /// Computes the optimised visit sequence for a list of coordinates asynchronously.
         /// Uses POST /route-destinations/sequence.
         /// </summary>
-        public Task<Tuple<DestinationSequenceListResponse, ResultResponse>> GetDestinationSequenceAsync(
+        public Task<Tuple<DestinationSequenceResponse, ResultResponse>> GetDestinationSequenceAsync(
             DestinationSequenceRequest request)
         {
             return _routeDestinationsManager.GetDestinationSequenceAsync(request);
