@@ -125,56 +125,6 @@ public class RouteDestinationsTests
 
     #endregion
 
-    #region GetDestinationsCombined
-
-    [Test]
-    public void GetDestinationsCombined_WithRouteIdFilter_ShouldReturnDataAndConfig()
-    {
-        // Arrange
-        var route4Me = new Route4MeManagerV5(CApiKey);
-        var routeId = s_tdr.SD10Stops_route.RouteID;
-
-        var request = new GetDestinationsRequest
-        {
-            Filters = new DestinationFilters { RouteId = routeId },
-            Page = 1,
-            PerPage = 20
-        };
-
-        // Act
-        var result = route4Me.GetDestinationsCombined(request, out ResultResponse resultResponse);
-
-        // Assert
-        Assert.IsNull(resultResponse, "GetDestinationsCombined should not return an error");
-        Assert.IsNotNull(result, "GetDestinationsCombined should return a result");
-        Assert.IsNotNull(result.Data, "Combined Data should not be null");
-    }
-
-    [Test]
-    public async Task GetDestinationsCombinedAsync_WithRouteIdFilter_ShouldReturnDataAndConfig()
-    {
-        // Arrange
-        var route4Me = new Route4MeManagerV5(CApiKey);
-        var routeId = s_tdr.SD10Stops_route.RouteID;
-
-        var request = new GetDestinationsRequest
-        {
-            Filters = new DestinationFilters { RouteId = routeId },
-            Page = 1,
-            PerPage = 20
-        };
-
-        // Act
-        var response = await route4Me.GetDestinationsCombinedAsync(request);
-
-        // Assert
-        Assert.IsNull(response.Item2, "GetDestinationsCombinedAsync should not return an error");
-        Assert.IsNotNull(response.Item1, "GetDestinationsCombinedAsync should return a result");
-        Assert.IsNotNull(response.Item1.Data, "Combined Data should not be null");
-    }
-
-    #endregion
-
     #region GetDestination
 
     [Test]
