@@ -97,15 +97,13 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
             var response = route4Me.GetRoute(routeId, out ResultResponse resultResponse);
 
             Assert.NotNull(response);
-            Assert.That(response.GetType(), Is.EqualTo(typeof(GetRouteResponse)));
-            Assert.NotNull(response.Data);
-            Assert.That(response.Data.GetType(), Is.EqualTo(typeof(DataObjectRouteExtended)));
-            Assert.That(response.Data.RouteID, Is.EqualTo(routeId));
+            Assert.That(response.GetType(), Is.EqualTo(typeof(DataObjectRouteExtended)));
+            Assert.That(response.RouteID, Is.EqualTo(routeId));
 
             // Verify extended fields are populated
-            Assert.NotNull(response.Data.Addresses, "Addresses should not be null");
-            Assert.True(response.Data.Addresses.Length > 0, "Addresses array should not be empty");
-            Assert.NotNull(response.Data.Parameters, "Parameters should not be null");
+            Assert.NotNull(response.Addresses, "Addresses should not be null");
+            Assert.True(response.Addresses.Length > 0, "Addresses array should not be empty");
+            Assert.NotNull(response.Parameters, "Parameters should not be null");
         }
 
         [Test]
@@ -121,15 +119,13 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
 
             Assert.NotNull(result);
             Assert.NotNull(result.Item1);
-            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(GetRouteResponse)));
-            Assert.NotNull(result.Item1.Data);
-            Assert.That(result.Item1.Data.GetType(), Is.EqualTo(typeof(DataObjectRouteExtended)));
-            Assert.That(result.Item1.Data.RouteID, Is.EqualTo(routeId));
+            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(DataObjectRouteExtended)));
+            Assert.That(result.Item1.RouteID, Is.EqualTo(routeId));
 
             // Verify extended fields are populated
-            Assert.NotNull(result.Item1.Data.Addresses, "Addresses should not be null");
-            Assert.True(result.Item1.Data.Addresses.Length > 0, "Addresses array should not be empty");
-            Assert.NotNull(result.Item1.Data.Parameters, "Parameters should not be null");
+            Assert.NotNull(result.Item1.Addresses, "Addresses should not be null");
+            Assert.True(result.Item1.Addresses.Length > 0, "Addresses array should not be empty");
+            Assert.NotNull(result.Item1.Parameters, "Parameters should not be null");
         }
 
         [Test]

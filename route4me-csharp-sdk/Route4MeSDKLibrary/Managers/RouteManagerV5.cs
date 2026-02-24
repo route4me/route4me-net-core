@@ -30,11 +30,14 @@ namespace Route4MeSDKLibrary.Managers
         /// <summary>
         /// Retrieves a single route by ID with full details including addresses and parameters.
         /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// The API returns a <c>{ "data": { ... } }</c> envelope; this method unwraps it and
+        /// returns the route directly so that <c>route.Addresses</c> is accessible without
+        /// an extra <c>.Data</c> dereference.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="resultResponse">Failure response</param>
-        /// <returns>The route response with data property containing route details</returns>
-        public GetRouteResponse GetRoute(string routeId, out ResultResponse resultResponse)
+        /// <returns>The route object including its Addresses array</returns>
+        public DataObjectRouteExtended GetRoute(string routeId, out ResultResponse resultResponse)
         {
             var genericParameters = new GenericParameters();
 
@@ -46,16 +49,19 @@ namespace Route4MeSDKLibrary.Managers
                 true,
                 out resultResponse);
 
-            return response;
+            return response?.Data;
         }
 
         /// <summary>
         /// Retrieves a single route by ID with full details including addresses and parameters asynchronously.
         /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// The API returns a <c>{ "data": { ... } }</c> envelope; this method unwraps it and
+        /// returns the route directly so that <c>route.Addresses</c> is accessible without
+        /// an extra <c>.Data</c> dereference.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
-        /// <returns>A Tuple type object containing the route response or/and failure response</returns>
-        public async Task<Tuple<GetRouteResponse, ResultResponse>> GetRouteAsync(string routeId)
+        /// <returns>A Tuple type object containing the route or/and failure response</returns>
+        public async Task<Tuple<DataObjectRouteExtended, ResultResponse>> GetRouteAsync(string routeId)
         {
             var genericParameters = new GenericParameters();
 
@@ -67,40 +73,44 @@ namespace Route4MeSDKLibrary.Managers
                 true,
                 false).ConfigureAwait(false);
 
-            return new Tuple<GetRouteResponse, ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<DataObjectRouteExtended, ResultResponse>(result.Item1?.Data, result.Item2);
         }
 
         /// <summary>
         /// Retrieves a list of the routes.
+        /// The API returns a <c>{ "data": [...], "links": {...}, "meta": {...} }</c> envelope;
+        /// this method unwraps and returns only the <c>data</c> array.
         /// </summary>
         /// <param name="routeParameters">Query parameters</param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>An array of the routes</returns>
         public DataObjectRoute[] GetRoutes(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
         {
-            var result = GetJsonObjectFromAPI<DataObjectRoute[]>(routeParameters,
+            var result = GetJsonObjectFromAPI<RoutesListResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
                 HttpMethodType.Post,
                 false,
                 true,
                 out resultResponse);
 
-            return result;
+            return result?.Data;
         }
 
         /// <summary>
         /// Retrieves a list of the routes asynchronously.
+        /// The API returns a <c>{ "data": [...], "links": {...}, "meta": {...} }</c> envelope;
+        /// this method unwraps and returns only the <c>data</c> array.
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
         /// <returns>A Tuple type object containing a route list or/and failure response</returns>
         public async Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesAsync(RouteParametersQuery routeParameters)
         {
-            var result = await GetJsonObjectFromAPIAsync<DataObjectRoute[]>(routeParameters,
+            var result = await GetJsonObjectFromAPIAsync<RoutesListResponse>(routeParameters,
                 R4MEInfrastructureSettingsV5.Routes,
                 HttpMethodType.Post,
                 null, true, false).ConfigureAwait(false);
 
-            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1, result.Item2);
+            return new Tuple<DataObjectRoute[], ResultResponse>(result.Item1?.Data, result.Item2);
         }
 
         /// <summary>
@@ -591,7 +601,7 @@ namespace Route4MeSDKLibrary.Managers
         {
             var response = GetRoute(routeId, out resultResponse);
 
-            return response?.Data?.RouteCustomData;
+            return response?.RouteCustomData;
         }
 
         /// <summary>
@@ -606,7 +616,7 @@ namespace Route4MeSDKLibrary.Managers
             var result = await GetRouteAsync(routeId).ConfigureAwait(false);
 
             return new Tuple<Dictionary<string, string>, ResultResponse>(
-                result.Item1?.Data?.RouteCustomData,
+                result.Item1?.RouteCustomData,
                 result.Item2);
         }
 
