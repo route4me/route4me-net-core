@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
 {
     /// <summary>
     /// Full route destination resource returned by GET /route-destinations/{id}.
-    /// Extends <see cref="AbstractRouteDestinationResource"/> with the customer identifier.
+    /// Extends <see cref="AbstractRouteDestinationResource"/> with facilities and customer identifier.
     /// </summary>
     [DataContract]
     public class RouteDestinationResource : AbstractRouteDestinationResource
@@ -14,5 +15,11 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         /// </summary>
         [DataMember(Name = "customer_id")]
         public string CustomerId { get; set; }
+
+        /// <summary>
+        /// Facilities associated with this destination stop.
+        /// </summary>
+        [DataMember(Name = "facilities")]
+        public List<FacilityDataResource> Facilities { get; set; }
     }
 }

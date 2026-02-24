@@ -14,6 +14,10 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         [DataMember(Name = "route_destination_id")]
         public int? RouteDestinationId { get; set; }
 
+        /// <summary>Human-readable name of the destination.</summary>
+        [DataMember(Name = "destination_name")]
+        public string DestinationName { get; set; }
+
         /// <summary>Planned service time formatted as "HHh:MMm".</summary>
         [DataMember(Name = "service_time")]
         public string ServiceTime { get; set; }
@@ -129,6 +133,18 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         /// <summary>Human-readable label for the customer billing type.</summary>
         [DataMember(Name = "customer_billing_type_label")]
         public string CustomerBillingTypeLabel { get; set; }
+
+        /// <summary>Location sitemap URL for this destination.</summary>
+        [DataMember(Name = "location_sitemap")]
+        public string LocationSitemap { get; set; }
+
+        /// <summary>Service type identifier (32-character hex UUID). Null if not assigned.</summary>
+        [DataMember(Name = "service_type_id")]
+        public string ServiceTypeId { get; set; }
+
+        /// <summary>Human-readable label for the service type. Null if not assigned.</summary>
+        [DataMember(Name = "service_type_label")]
+        public string ServiceTypeLabel { get; set; }
 
         /// <summary>
         /// Destination-level custom key/value data pairs.
