@@ -48,14 +48,4 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         public int[] OptimizedSequence { get; set; }
     }
 
-    /// <summary>
-    /// Response wrapper for POST /route-destinations/sequence.
-    /// </summary>
-    [DataContract]
-    public class DestinationSequenceListResponse
-    {
-        /// <summary>Array of sequence result items.</summary>
-        [DataMember(Name = "items")]
-        public DestinationSequenceResponse[] Items { get; set; }
-    }
 }
