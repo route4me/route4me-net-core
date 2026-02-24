@@ -375,7 +375,6 @@ namespace Route4MeSDK
         public const string RouteDestinationsSorting = RouteDestinations + "/sorting";
         public const string RouteDestinationsListFields = RouteDestinations + "/list/fields";
         public const string RouteDestinationsList = RouteDestinations + "/list";
-        public const string RouteDestinationsListCombined = RouteDestinations + "/list/combined";
         public const string RouteDestinationsSequence = RouteDestinations + "/sequence";
 
         #endregion
