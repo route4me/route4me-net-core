@@ -12,6 +12,7 @@ using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
 using Route4MeSDKLibrary.DataTypes.V5.Routes;
+using Route4MeSDKLibrary.DataTypes.V5.RouteDestinations;
 using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 using Route4MeSDKLibrary.Managers;
 using Route4MeSDKLibrary.QueryTypes.V5.Customers;
@@ -56,6 +57,7 @@ namespace Route4MeSDK
             _customerManager = new CustomerManagerV5(apiKey);
             _facilityManager = new FacilityManagerV5(apiKey);
             _routeCustomDataManager = new RouteCustomDataManagerV5(apiKey);
+            _routeDestinationsManager = new RouteDestinationsManagerV5(apiKey);
         }
 
         #endregion
@@ -77,6 +79,7 @@ namespace Route4MeSDK
         private readonly CustomerManagerV5 _customerManager;
         private readonly FacilityManagerV5 _facilityManager;
         private readonly RouteCustomDataManagerV5 _routeCustomDataManager;
+        private readonly RouteDestinationsManagerV5 _routeDestinationsManager;
 
         #endregion
 
@@ -2815,6 +2818,224 @@ namespace Route4MeSDK
             DeleteLocationTypeAsync(string locationTypeId)
         {
             return _locationManager.DeleteLocationTypeAsync(locationTypeId);
+        }
+
+        #endregion
+
+        #region Route Destinations
+
+        /// <summary>
+        /// Gets the columns list and their saved display order.
+        /// Uses GET /route-destinations/columns.
+        /// </summary>
+        /// <param name="columnsConfiguratorKey">Configuration key identifying the saved column set.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Columns resource describing available columns and their order.</returns>
+        public RouteDestinationColumnsResource GetDestinationColumns(
+            string columnsConfiguratorKey,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationColumns(columnsConfiguratorKey, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the columns list and their saved display order asynchronously.
+        /// Uses GET /route-destinations/columns.
+        /// </summary>
+        public Task<Tuple<RouteDestinationColumnsResource, ResultResponse>> GetDestinationColumnsAsync(
+            string columnsConfiguratorKey)
+        {
+            return _routeDestinationsManager.GetDestinationColumnsAsync(columnsConfiguratorKey);
+        }
+
+        /// <summary>
+        /// Updates the display order of destination columns.
+        /// Uses PUT /route-destinations/columns.
+        /// </summary>
+        /// <param name="request">Request containing the configurator key and desired column order.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Response with the saved column order.</returns>
+        public EditDestinationColumnsResponse EditDestinationColumns(
+            EditDestinationColumnsRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.EditDestinationColumns(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Updates the display order of destination columns asynchronously.
+        /// Uses PUT /route-destinations/columns.
+        /// </summary>
+        public Task<Tuple<EditDestinationColumnsResponse, ResultResponse>> EditDestinationColumnsAsync(
+            EditDestinationColumnsRequest request)
+        {
+            return _routeDestinationsManager.EditDestinationColumnsAsync(request);
+        }
+
+        /// <summary>
+        /// Gets a single route destination by its integer ID or UUID.
+        /// The <see cref="RouteDestinationResource.CustomFields"/> property contains
+        /// destination-level custom key/value data.
+        /// Uses GET /route-destinations/{id}.
+        /// </summary>
+        /// <param name="id">Destination integer ID or 32-character hex UUID.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Full destination resource including custom fields.</returns>
+        public RouteDestinationResource GetDestination(string id, out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestination(id, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets a single route destination asynchronously.
+        /// Uses GET /route-destinations/{id}.
+        /// </summary>
+        public Task<Tuple<RouteDestinationResource, ResultResponse>> GetDestinationAsync(string id)
+        {
+            return _routeDestinationsManager.GetDestinationAsync(id);
+        }
+
+        /// <summary>
+        /// Gets a paginated list of route destinations matching the specified filters.
+        /// Each item includes <see cref="AbstractRouteDestinationResource.CustomFields"/>
+        /// with destination-level custom key/value data.
+        /// Uses POST /route-destinations/list.
+        /// </summary>
+        /// <param name="request">Filter, pagination and field-selection parameters.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>List response containing matching destination items.</returns>
+        public RouteDestinationsListResponse GetDestinationsList(
+            GetDestinationsRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationsList(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets a paginated list of route destinations asynchronously.
+        /// Uses POST /route-destinations/list.
+        /// </summary>
+        public Task<Tuple<RouteDestinationsListResponse, ResultResponse>> GetDestinationsListAsync(
+            GetDestinationsRequest request)
+        {
+            return _routeDestinationsManager.GetDestinationsListAsync(request);
+        }
+
+        /// <summary>
+        /// Gets a combined (data + config) paginated list of route destinations.
+        /// Includes column configuration for data-table views.
+        /// Uses POST /route-destinations/list/combined.
+        /// </summary>
+        /// <param name="request">Filter, pagination and field-selection parameters.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Combined resource with destination items, pagination and column config.</returns>
+        public RouteDestinationsCombinedResource GetDestinationsCombined(
+            GetDestinationsRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationsCombined(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets a combined paginated list of route destinations asynchronously.
+        /// Uses POST /route-destinations/list/combined.
+        /// </summary>
+        public Task<Tuple<RouteDestinationsCombinedResource, ResultResponse>> GetDestinationsCombinedAsync(
+            GetDestinationsRequest request)
+        {
+            return _routeDestinationsManager.GetDestinationsCombinedAsync(request);
+        }
+
+        /// <summary>
+        /// Gets the list of available destination fields for filtering and sorting.
+        /// Uses GET /route-destinations/list/fields.
+        /// </summary>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Fields response with field metadata.</returns>
+        public RouteDestinationFieldsResponse GetDestinationFields(out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationFields(out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the list of available destination fields asynchronously.
+        /// Uses GET /route-destinations/list/fields.
+        /// </summary>
+        public Task<Tuple<RouteDestinationFieldsResponse, ResultResponse>> GetDestinationFieldsAsync()
+        {
+            return _routeDestinationsManager.GetDestinationFieldsAsync();
+        }
+
+        /// <summary>
+        /// Looks up a destination by its label code and returns route/stop context.
+        /// Uses GET /route-destinations/sorting?label_code={labelCode}.
+        /// </summary>
+        /// <param name="labelCode">Label code assigned to the destination (e.g., "label_5").</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Sorting/filtering resource with destination context.</returns>
+        public SortingFilteringResource GetDestinationByLabelCode(
+            string labelCode,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationByLabelCode(labelCode, out resultResponse);
+        }
+
+        /// <summary>
+        /// Looks up a destination by its label code asynchronously.
+        /// Uses GET /route-destinations/sorting?label_code={labelCode}.
+        /// </summary>
+        public Task<Tuple<SortingFilteringResource, ResultResponse>> GetDestinationByLabelCodeAsync(
+            string labelCode)
+        {
+            return _routeDestinationsManager.GetDestinationByLabelCodeAsync(labelCode);
+        }
+
+        /// <summary>
+        /// Gets all route destinations linked to a specific order UUID.
+        /// Uses GET /route-destinations/order/{order_uuid}.
+        /// </summary>
+        /// <param name="orderUuid">32-character hex UUID of the order.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Response containing destinations for the specified order.</returns>
+        public RouteDestinationsByOrderResponse GetDestinationsByOrder(
+            string orderUuid,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationsByOrder(orderUuid, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets all route destinations linked to a specific order UUID asynchronously.
+        /// Uses GET /route-destinations/order/{order_uuid}.
+        /// </summary>
+        public Task<Tuple<RouteDestinationsByOrderResponse, ResultResponse>> GetDestinationsByOrderAsync(
+            string orderUuid)
+        {
+            return _routeDestinationsManager.GetDestinationsByOrderAsync(orderUuid);
+        }
+
+        /// <summary>
+        /// Computes the optimised visit sequence for a list of coordinates.
+        /// Uses POST /route-destinations/sequence.
+        /// </summary>
+        /// <param name="request">Coordinates to optimise.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Sequence response with optimised index order.</returns>
+        public DestinationSequenceListResponse GetDestinationSequence(
+            DestinationSequenceRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationSequence(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Computes the optimised visit sequence for a list of coordinates asynchronously.
+        /// Uses POST /route-destinations/sequence.
+        /// </summary>
+        public Task<Tuple<DestinationSequenceListResponse, ResultResponse>> GetDestinationSequenceAsync(
+            DestinationSequenceRequest request)
+        {
+            return _routeDestinationsManager.GetDestinationSequenceAsync(request);
         }
 
         #endregion
