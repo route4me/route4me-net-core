@@ -2922,30 +2922,6 @@ namespace Route4MeSDK
         }
 
         /// <summary>
-        /// Gets a combined (data + config) paginated list of route destinations.
-        /// Includes column configuration for data-table views.
-        /// Uses POST /route-destinations/list/combined.
-        /// </summary>
-        /// <param name="request">Filter, pagination and field-selection parameters.</param>
-        /// <param name="resultResponse">Failure response if the request fails.</param>
-        /// <returns>Combined resource with destination items, pagination and column config.</returns>
-        public RouteDestinationsCombinedResource GetDestinationsCombined(
-            GetDestinationsRequest request,
-            out ResultResponse resultResponse)
-        {
-            return _routeDestinationsManager.GetDestinationsCombined(request, out resultResponse);
-        }
-
-        /// <summary>
-        /// Gets a combined paginated list of route destinations asynchronously.
-        /// Uses POST /route-destinations/list/combined.
-        /// </summary>
-        public Task<Tuple<RouteDestinationsCombinedResource, ResultResponse>> GetDestinationsCombinedAsync(
-            GetDestinationsRequest request)
-        {
-            return _routeDestinationsManager.GetDestinationsCombinedAsync(request);
-        }
-
         /// <summary>
         /// Gets the list of available destination fields for filtering and sorting.
         /// Uses GET /route-destinations/list/fields.
