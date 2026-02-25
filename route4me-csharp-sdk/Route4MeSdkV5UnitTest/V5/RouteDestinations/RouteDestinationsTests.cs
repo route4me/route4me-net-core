@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -22,7 +24,7 @@ public class RouteDestinationsTests
     private static TestDataRepository s_tdr;
     private static List<string> s_lsOptimizationIDs;
 
-    [SetUp]
+    [OneTimeSetUp]
     public void Setup()
     {
         s_lsOptimizationIDs = new List<string>();
@@ -34,9 +36,31 @@ public class RouteDestinationsTests
         Assert.True(s_tdr.SD10Stops_route.Addresses.Length > 0, "The route has no addresses.");
 
         s_lsOptimizationIDs.Add(s_tdr.SD10Stops_optimization_problem_id);
+
+        // Poll until the V5 destination list indexes the new route (up to 30s).
+        // Newly-created routes are not immediately visible in the V5 list endpoint.
+        var route4Me = new Route4MeManagerV5(CApiKey);
+        var pollRequest = new GetDestinationsRequest
+        {
+            Filters = new DestinationFilters { RouteId = s_tdr.SD10Stops_route.RouteID },
+            Fields = new[] { "route_destination_id" },
+            Page = 1,
+            PerPage = 1
+        };
+
+        var deadline = DateTime.UtcNow.AddSeconds(30);
+        bool indexed = false;
+        while (DateTime.UtcNow < deadline)
+        {
+            var poll = route4Me.GetDestinationsList(pollRequest, out _);
+            if (poll?.Items?.Length > 0) { indexed = true; break; }
+            Thread.Sleep(2000);
+        }
+
+        Assert.True(indexed, "V5 destination list did not index the new route within 30s.");
     }
 
-    [TearDown]
+    [OneTimeTearDown]
     public void TearDown()
     {
         var optimizationResult = s_tdr.RemoveOptimization(s_lsOptimizationIDs.ToArray());
