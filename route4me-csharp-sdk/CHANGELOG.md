@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v8.14.0] - 2026-02-25
+### Added
+- **Route Destinations API (V5)** — `POST /route-destinations/list`, `GET /route-destinations/{destination_uuid}`, `GET /route-destinations/order/{order_uuid}`, `GET /route-destinations/list-fields`, `GET /route-destinations/columns`, `PUT /route-destinations/sequence`
+  - Constants: `R4MEInfrastructureSettingsV5.RouteDestinations`, `RouteDestinationListFields`, `RouteDestinationColumns`, `RouteDestinationByUuid`, `RouteDestinationsByOrder`, `RouteDestinationSequence`
+  - Manager: `RouteDestinationsManagerV5`
+  - `Route4MeManagerV5`: `GetDestinationFields` / `GetDestinationFieldsAsync`, `GetDestinationColumns` / `GetDestinationColumnsAsync`, `GetDestinationsList` / `GetDestinationsListAsync`, `GetDestination` / `GetDestinationAsync`, `GetDestinationsByOrder` / `GetDestinationsByOrderAsync`, `OptimizeDestinationSequence` / `OptimizeDestinationSequenceAsync`
+  - New types (`DataTypes/V5/RouteDestinations/`): `AbstractRouteDestinationResource`, `RouteDestinationResource`, `RouteDestinationListResource`, `RouteDestinationsListResponse`, `GetDestinationsRequest`, `DestinationFilters`, `FilterRoutesRequest`, `RouteDestinationNote`, `FacilityDataResource`, `RouteDestinationColumnsResource`, `RouteDestinationFieldItem`, `SortingFilteringResource`, `SequenceRequest`, `DestinationSequenceResponse`
+  - `GetDestinationsRequest` supports `fields` array, pagination (`page`/`per_page`), `order_by`, `group_by`, `timezone`, and rich filter criteria
+  - Key destination fields: `destination_name`, `custom_fields` (Dictionary<string,string>), `is_depot`, `is_visited`, `is_departed`, `stop_status_id`, `address_stop_type`, `notes`, `sequence_no`
+- Examples (`Route4MeSDKTest/Examples/API5/RouteDestinations/`): `GetRouteDestinationsListV5`, `GetRouteDestinationNamesV5`, `GetRouteDestinationV5`, `GetDestinationColumnsV5`, `GetDestinationFieldsV5`, `OptimizeDestinationSequenceV5`
+- NUnit tests: `Route4MeSdkV5UnitTest/V5/RouteDestinations/RouteDestinationsTests.cs` — 19 tests covering sync/async list, single-destination fetch, custom-fields access, and sequence optimization
+
 ## [v8.13.0] - 2026-01-20
 ### Added
 - **Dedicated route custom data API (V5)** — GET/PUT `/route-custom-data/{route_id}`, POST `/route-custom-data/bulk`
