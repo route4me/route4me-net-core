@@ -366,6 +366,19 @@ namespace Route4MeSDK
 
         #endregion
 
+        #region Route Destinations
+
+        public const string RouteDestinations = MainHost + "/route-destinations";
+        public const string RouteDestinationsById = RouteDestinations + "/{id}";
+        public const string RouteDestinationsByOrder = RouteDestinations + "/order/{order_uuid}";
+        public const string RouteDestinationsColumns = RouteDestinations + "/columns";
+        public const string RouteDestinationsSorting = RouteDestinations + "/sorting";
+        public const string RouteDestinationsListFields = RouteDestinations + "/list/fields";
+        public const string RouteDestinationsList = RouteDestinations + "/list";
+        public const string RouteDestinationsSequence = RouteDestinations + "/sequence";
+
+        #endregion
+
         #endregion
     }
 }
