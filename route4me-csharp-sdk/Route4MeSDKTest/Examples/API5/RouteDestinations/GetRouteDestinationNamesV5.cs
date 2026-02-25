@@ -53,6 +53,7 @@ namespace Route4MeSDK.Examples
             var request = new GetDestinationsRequest
             {
                 Filters = new DestinationFilters { RouteId = route.Data.RouteID },
+                Fields = new[] { "route_destination_id", "destination_name" },
                 Page = 1,
                 PerPage = 100
             };

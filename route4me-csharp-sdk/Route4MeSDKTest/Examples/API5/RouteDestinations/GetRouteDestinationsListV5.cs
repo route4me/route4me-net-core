@@ -41,6 +41,7 @@ namespace Route4MeSDK.Examples
             var request = new GetDestinationsRequest
             {
                 Filters = new DestinationFilters { RouteId = routeId },
+                Fields = new[] { "route_destination_id", "address_stop_type", "stop_status_id", "custom_fields" },
                 Page = 1,
                 PerPage = 50
             };
