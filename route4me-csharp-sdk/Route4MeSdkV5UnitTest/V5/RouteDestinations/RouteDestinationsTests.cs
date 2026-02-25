@@ -83,7 +83,7 @@ public class RouteDestinationsTests
             {
                 "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                 "custom_fields", "is_depot", "is_visited", "is_departed",
-                "notes", "service_time", "running_distance", "skills"
+                "notes", "sequence_no"
             },
             Page = 1,
             PerPage = 20
@@ -113,7 +113,7 @@ public class RouteDestinationsTests
             {
                 "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                 "custom_fields", "is_depot", "is_visited", "is_departed",
-                "notes", "service_time", "running_distance", "skills"
+                "notes", "sequence_no"
             },
             Page = 1,
             PerPage = 20
@@ -143,7 +143,7 @@ public class RouteDestinationsTests
             {
                 "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                 "custom_fields", "is_depot", "is_visited", "is_departed",
-                "notes", "service_time", "running_distance", "skills"
+                "notes", "sequence_no"
             },
             Page = 1,
             PerPage = 50
@@ -184,7 +184,7 @@ public class RouteDestinationsTests
             {
                 "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                 "custom_fields", "is_depot", "is_visited", "is_departed",
-                "notes", "service_time", "running_distance", "skills"
+                "notes", "sequence_no"
             },
             Page = 1,
             PerPage = 5
@@ -221,7 +221,7 @@ public class RouteDestinationsTests
             {
                 "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                 "custom_fields", "is_depot", "is_visited", "is_departed",
-                "notes", "service_time", "running_distance", "skills"
+                "notes", "sequence_no"
             },
             Page = 1,
             PerPage = 5
@@ -255,7 +255,7 @@ public class RouteDestinationsTests
             {
                 "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                 "custom_fields", "is_depot", "is_visited", "is_departed",
-                "notes", "service_time", "running_distance", "skills"
+                "notes", "sequence_no"
             },
             Page = 1,
             PerPage = 5
