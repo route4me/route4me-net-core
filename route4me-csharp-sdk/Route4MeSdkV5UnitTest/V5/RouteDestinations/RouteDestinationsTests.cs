@@ -55,6 +55,7 @@ public class RouteDestinationsTests
         var request = new GetDestinationsRequest
         {
             Filters = new DestinationFilters { RouteId = routeId },
+            Fields = new[] { "route_destination_id", "destination_name", "address_stop_type", "custom_fields" },
             Page = 1,
             PerPage = 20
         };
@@ -79,6 +80,7 @@ public class RouteDestinationsTests
         var request = new GetDestinationsRequest
         {
             Filters = new DestinationFilters { RouteId = routeId },
+            Fields = new[] { "route_destination_id", "destination_name", "address_stop_type", "custom_fields" },
             Page = 1,
             PerPage = 20
         };
@@ -103,6 +105,7 @@ public class RouteDestinationsTests
         var request = new GetDestinationsRequest
         {
             Filters = new DestinationFilters { RouteId = routeId },
+            Fields = new[] { "route_destination_id", "custom_fields" },
             Page = 1,
             PerPage = 50
         };
@@ -138,6 +141,7 @@ public class RouteDestinationsTests
         var listRequest = new GetDestinationsRequest
         {
             Filters = new DestinationFilters { RouteId = routeId },
+            Fields = new[] { "route_destination_id" },
             Page = 1,
             PerPage = 5
         };
@@ -169,6 +173,7 @@ public class RouteDestinationsTests
         var listRequest = new GetDestinationsRequest
         {
             Filters = new DestinationFilters { RouteId = routeId },
+            Fields = new[] { "route_destination_id" },
             Page = 1,
             PerPage = 5
         };
@@ -197,6 +202,7 @@ public class RouteDestinationsTests
         var listRequest = new GetDestinationsRequest
         {
             Filters = new DestinationFilters { RouteId = routeId },
+            Fields = new[] { "route_destination_id" },
             Page = 1,
             PerPage = 5
         };
