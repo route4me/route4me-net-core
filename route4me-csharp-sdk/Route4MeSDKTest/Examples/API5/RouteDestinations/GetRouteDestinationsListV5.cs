@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Route4MeSDK.DataTypes.V5;
 
@@ -31,6 +32,26 @@ namespace Route4MeSDK.Examples
                 {
                     SD10Stops_optimization_problem_id_V5
                 };
+
+                // V5 destination list uses eventual consistency.
+                // Poll until the index count stabilises before querying.
+                var pollReq = new GetDestinationsRequest
+                {
+                    Filters = new DestinationFilters { RouteId = SD10Stops_route_id_V5 },
+                    Fields = new[] { "route_destination_id" },
+                    Page = 1,
+                    PerPage = 100
+                };
+                DateTime deadline = DateTime.UtcNow.AddSeconds(30);
+                int prevCount = -1;
+                while (DateTime.UtcNow < deadline)
+                {
+                    Thread.Sleep(2000);
+                    int cur = route4Me.GetDestinationsList(pollReq, out _)?.Items?.Length ?? 0;
+                    if (cur > 0 && cur == prevCount)
+                        break;
+                    prevCount = cur;
+                }
             }
 
             var routeId = SD10Stops_route_id_V5;
