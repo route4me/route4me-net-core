@@ -53,7 +53,12 @@ namespace Route4MeSDK.Examples
             var request = new GetDestinationsRequest
             {
                 Filters = new DestinationFilters { RouteId = route.Data.RouteID },
-                Fields = new[] { "route_destination_id", "destination_name" },
+                Fields = new[]
+                {
+                    "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
+                    "custom_fields", "is_depot", "is_visited", "is_departed",
+                    "notes", "service_time", "running_distance", "skills"
+                },
                 Page = 1,
                 PerPage = 100
             };
