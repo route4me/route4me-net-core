@@ -104,5 +104,22 @@ namespace Route4MeSDKLibrary
         ///     };
         /// </example>
         public static Func<HttpMessageHandler> HttpMessageHandlerFactory { get; set; } = null;
+
+        /// <summary>
+        ///     Gets or sets whether to use improved error handling for API requests.
+        ///     Default is false (uses legacy behavior for backward compatibility).
+        ///     When enabled, GET requests will check HTTP status codes and provide more detailed error messages.
+        /// </summary>
+        /// <remarks>
+        ///     The improved error handling provides:
+        ///     - Proper HTTP status code checking
+        ///     - Error message extraction from failed responses
+        ///     - Better resource disposal for HTTP responses
+        /// </remarks>
+        /// <example>
+        ///     // Enable improved error handling
+        ///     Route4MeConfig.UseImprovedErrorHandling = true;
+        /// </example>
+        public static bool UseImprovedErrorHandling { get; set; } = false;
     }
 }
