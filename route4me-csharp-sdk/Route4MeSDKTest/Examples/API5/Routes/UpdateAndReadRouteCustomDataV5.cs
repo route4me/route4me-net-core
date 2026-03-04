@@ -8,8 +8,8 @@ using Route4MeSDK.QueryTypes.V5;
 namespace Route4MeSDK.Examples
 {
     /// <summary>
-    /// Route-level custom data example (API V5): read via GET /route-custom-data/{route_id},
-    /// update via PUT /route-custom-data/{route_id}, read again, then show custom data
+    /// Route-level custom data example (API V5): read via GET /routes/{route_id}/custom-data,
+    /// update via PUT /routes/{route_id}/custom-data, read again, then show custom data
     /// on the route payload (GetRoute and GetRoutesList).
     /// </summary>
     public sealed partial class Route4MeExamples
@@ -38,7 +38,7 @@ namespace Route4MeSDK.Examples
 
             Console.WriteLine("");
 
-            // Step 1: Read route custom data (GET /route-custom-data/{route_id})
+            // Step 1: Read route custom data (GET /routes/{route_id}/custom-data)
             Console.WriteLine("{0} Step 1: Reading route custom data...", tag);
             var read1 = route4Me.GetRouteCustomDataDedicated(routeId, out ResultResponse resp1);
             if (resp1 != null)
@@ -51,7 +51,7 @@ namespace Route4MeSDK.Examples
             Console.WriteLine("{0} Step 1 OK. Current custom data:", tag);
             PrintRouteCustomDataDictionary(read1);
 
-            // Step 2: Update route custom data (PUT /route-custom-data/{route_id})
+            // Step 2: Update route custom data (PUT /routes/{route_id}/custom-data)
             var customData = new Dictionary<string, string>
             {
                 { "priority", "high" },
