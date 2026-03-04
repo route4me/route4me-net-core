@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [v8.15.0] - 2026-03-04
+## [v8.14.1] - 2026-03-04
 ### Fixed
 - **Route custom data API (V5)**: corrected endpoint URLs to match the V5 API specification
   - `GET /routes/{route_id}/custom-data` (was `/route-custom-data/{route_id}`)
