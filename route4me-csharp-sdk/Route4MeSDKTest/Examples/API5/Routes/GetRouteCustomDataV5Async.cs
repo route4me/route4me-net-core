@@ -9,7 +9,7 @@ namespace Route4MeSDK.Examples
     {
         /// <summary>
         /// Gets the custom data for a specific route asynchronously using the dedicated
-        /// GET /route-custom-data/{route_id} endpoint (API V5).
+        /// GET /routes/{route_id}/custom-data endpoint (API V5).
         /// </summary>
         public async Task GetRouteCustomDataV5Async()
         {
