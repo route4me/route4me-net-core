@@ -1249,7 +1249,7 @@ namespace Route4MeSDK
 
         /// <summary>
         /// Gets the custom data for the specified route using the dedicated
-        /// GET /route-custom-data/{route_id} endpoint.
+        /// GET /routes/{route_id}/custom-data endpoint.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="resultResponse">Failure response</param>
@@ -1261,7 +1261,7 @@ namespace Route4MeSDK
 
         /// <summary>
         /// Gets the custom data for the specified route asynchronously using the dedicated
-        /// GET /route-custom-data/{route_id} endpoint.
+        /// GET /routes/{route_id}/custom-data endpoint.
         /// </summary>
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <returns>A Tuple containing the custom data dictionary or/and failure response</returns>
@@ -1272,7 +1272,7 @@ namespace Route4MeSDK
 
         /// <summary>
         /// Updates the custom data for the specified route using the dedicated
-        /// PUT /route-custom-data/{route_id} endpoint.
+        /// PUT /routes/{route_id}/custom-data endpoint.
         /// Replaces all existing custom data; keys not present in <paramref name="customData"/> are removed.
         /// To clear all custom data, submit a single key with a null value.
         /// </summary>
@@ -1290,7 +1290,7 @@ namespace Route4MeSDK
 
         /// <summary>
         /// Updates the custom data for the specified route asynchronously using the dedicated
-        /// PUT /route-custom-data/{route_id} endpoint.
+        /// PUT /routes/{route_id}/custom-data endpoint.
         /// Replaces all existing custom data; keys not present in <paramref name="customData"/> are removed.
         /// To clear all custom data, submit a single key with a null value.
         /// </summary>
@@ -1312,7 +1312,7 @@ namespace Route4MeSDK
         /// <param name="customData">The custom data array to set on the route</param>
         /// <param name="resultResponse">Failure response</param>
         /// <returns>The updated route object</returns>
-        [Obsolete("Use UpdateRouteCustomData(string, Dictionary<string,string>, out ResultResponse) which uses the dedicated /route-custom-data/ endpoint.")]
+        [Obsolete("Use UpdateRouteCustomData(string, Dictionary<string,string>, out ResultResponse) which uses the dedicated /routes/{route_id}/custom-data endpoint.")]
         public DataObjectRoute UpdateRouteCustomData(
             string routeId,
             Dictionary<string, string>[] customData,
@@ -1328,7 +1328,7 @@ namespace Route4MeSDK
         /// <param name="routeId">The route ID (32-character hex string)</param>
         /// <param name="customData">The custom data array to set on the route</param>
         /// <returns>A Tuple containing the updated route or/and failure response</returns>
-        [Obsolete("Use UpdateRouteCustomDataAsync(string, Dictionary<string,string>) which uses the dedicated /route-custom-data/ endpoint.")]
+        [Obsolete("Use UpdateRouteCustomDataAsync(string, Dictionary<string,string>) which uses the dedicated /routes/{route_id}/custom-data endpoint.")]
         public Task<Tuple<DataObjectRoute, ResultResponse, string>> UpdateRouteCustomDataAsync(
             string routeId,
             Dictionary<string, string>[] customData)
@@ -1338,7 +1338,7 @@ namespace Route4MeSDK
 
         /// <summary>
         /// Gets the custom data for multiple routes in a single request using the dedicated
-        /// POST /route-custom-data/bulk endpoint.
+        /// POST /routes/custom-data/bulk endpoint.
         /// </summary>
         /// <param name="routeIds">Array of route IDs (32-character hex strings)</param>
         /// <param name="resultResponse">Failure response</param>
@@ -1355,7 +1355,7 @@ namespace Route4MeSDK
 
         /// <summary>
         /// Gets the custom data for multiple routes asynchronously in a single request using the dedicated
-        /// POST /route-custom-data/bulk endpoint.
+        /// POST /routes/custom-data/bulk endpoint.
         /// </summary>
         /// <param name="routeIds">Array of route IDs (32-character hex strings)</param>
         /// <returns>
@@ -1365,6 +1365,27 @@ namespace Route4MeSDK
             string[] routeIds)
         {
             return _routeCustomDataManager.GetBulkRouteCustomDataAsync(routeIds);
+        }
+
+        /// <summary>
+        /// Gets all distinct custom data keys used across routes for the authenticated member's organization.
+        /// Uses GET /routes/custom-data/keys endpoint.
+        /// </summary>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>An array of distinct custom data key names, or null on failure.</returns>
+        public string[] GetRouteCustomDataKeys(out ResultResponse resultResponse)
+        {
+            return _routeCustomDataManager.GetCustomDataKeys(out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets all distinct custom data keys used across routes for the authenticated member's organization asynchronously.
+        /// Uses GET /routes/custom-data/keys endpoint.
+        /// </summary>
+        /// <returns>A Tuple containing the array of distinct key names and the failure response (if any).</returns>
+        public Task<Tuple<string[], ResultResponse>> GetRouteCustomDataKeysAsync()
+        {
+            return _routeCustomDataManager.GetCustomDataKeysAsync();
         }
 
         #endregion

@@ -15,7 +15,7 @@ namespace Route4MeSDKLibrary.Managers
     /// <summary>
     /// Manager for the Route Custom Data API (V5).
     /// Provides dedicated CRUD operations for route-level custom data via the
-    /// <c>/route-custom-data/</c> endpoints, distinct from the route-level
+    /// <c>/routes/{route_id}/custom-data</c> endpoints, distinct from the route-level
     /// <c>custom_data</c> field in the Routes API (formerly route_custom_data).
     /// </summary>
     public class RouteCustomDataManagerV5 : Route4MeManagerBase
@@ -39,7 +39,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Gets the custom data for the specified route.
-        /// Uses GET /route-custom-data/{route_id} endpoint.
+        /// Uses GET /routes/{route_id}/custom-data endpoint.
         /// </summary>
         /// <param name="routeId">Route ID (32-character hex string).</param>
         /// <param name="resultResponse">Failure response if the request fails.</param>
@@ -63,9 +63,11 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
+            string url = R4MEInfrastructureSettingsV5.RouteCustomDataTemplate.Replace("{route_id}", routeId);
+
             return GetJsonObjectFromAPI<Dictionary<string, string>>(
                 new GenericParameters(),
-                R4MEInfrastructureSettingsV5.RouteCustomData + "/" + routeId,
+                url,
                 HttpMethodType.Get,
                 false,
                 true,
@@ -74,7 +76,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Gets the custom data for the specified route asynchronously.
-        /// Uses GET /route-custom-data/{route_id} endpoint.
+        /// Uses GET /routes/{route_id}/custom-data endpoint.
         /// </summary>
         /// <param name="routeId">Route ID (32-character hex string).</param>
         /// <returns>
@@ -95,9 +97,11 @@ namespace Route4MeSDKLibrary.Managers
                 });
             }
 
+            string getUrl = R4MEInfrastructureSettingsV5.RouteCustomDataTemplate.Replace("{route_id}", routeId);
+
             var result = await GetJsonObjectFromAPIAsync<Dictionary<string, string>>(
                 new GenericParameters(),
-                R4MEInfrastructureSettingsV5.RouteCustomData + "/" + routeId,
+                getUrl,
                 HttpMethodType.Get,
                 null,
                 true,
@@ -110,7 +114,7 @@ namespace Route4MeSDKLibrary.Managers
         /// Updates the custom data for the specified route, replacing all existing entries.
         /// Keys not present in <paramref name="customData"/> are removed.
         /// To clear all custom data, submit a single key with a <c>null</c> value.
-        /// Uses PUT /route-custom-data/{route_id} endpoint.
+        /// Uses PUT /routes/{route_id}/custom-data endpoint.
         /// </summary>
         /// <param name="routeId">Route ID (32-character hex string).</param>
         /// <param name="customData">Custom data key-value pairs to set on the route.</param>
@@ -151,12 +155,14 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
+            string url = R4MEInfrastructureSettingsV5.RouteCustomDataTemplate.Replace("{route_id}", routeId);
+
             var json = R4MeUtils.SerializeObjectToJson(customData, true);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             return GetJsonObjectFromAPI<Dictionary<string, string>>(
                 new GenericParameters(),
-                R4MEInfrastructureSettingsV5.RouteCustomData + "/" + routeId,
+                url,
                 HttpMethodType.Put,
                 content,
                 false,
@@ -168,7 +174,7 @@ namespace Route4MeSDKLibrary.Managers
         /// Updates the custom data for the specified route asynchronously, replacing all existing entries.
         /// Keys not present in <paramref name="customData"/> are removed.
         /// To clear all custom data, submit a single key with a <c>null</c> value.
-        /// Uses PUT /route-custom-data/{route_id} endpoint.
+        /// Uses PUT /routes/{route_id}/custom-data endpoint.
         /// </summary>
         /// <param name="routeId">Route ID (32-character hex string).</param>
         /// <param name="customData">Custom data key-value pairs to set on the route.</param>
@@ -204,12 +210,14 @@ namespace Route4MeSDKLibrary.Managers
                 });
             }
 
+            string putUrl = R4MEInfrastructureSettingsV5.RouteCustomDataTemplate.Replace("{route_id}", routeId);
+
             var json = R4MeUtils.SerializeObjectToJson(customData, true);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var result = await GetJsonObjectFromAPIAsync<Dictionary<string, string>>(
                 new GenericParameters(),
-                R4MEInfrastructureSettingsV5.RouteCustomData + "/" + routeId,
+                putUrl,
                 HttpMethodType.Put,
                 content,
                 true,
@@ -220,7 +228,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Gets the custom data for multiple routes by their IDs in a single request.
-        /// Uses POST /route-custom-data/bulk endpoint.
+        /// Uses POST /routes/custom-data/bulk endpoint.
         /// </summary>
         /// <param name="routeIds">Array of route IDs (32-character hex strings).</param>
         /// <param name="resultResponse">Failure response if the request fails.</param>
@@ -252,7 +260,7 @@ namespace Route4MeSDKLibrary.Managers
 
             return GetJsonObjectFromAPI<RouteCustomDataCollection>(
                 new GenericParameters(),
-                R4MEInfrastructureSettingsV5.RouteCustomDataBulk,
+                R4MEInfrastructureSettingsV5.RouteCustomDataBulkV2,
                 HttpMethodType.Post,
                 content,
                 false,
@@ -262,7 +270,7 @@ namespace Route4MeSDKLibrary.Managers
 
         /// <summary>
         /// Gets the custom data for multiple routes by their IDs in a single request asynchronously.
-        /// Uses POST /route-custom-data/bulk endpoint.
+        /// Uses POST /routes/custom-data/bulk endpoint.
         /// </summary>
         /// <param name="routeIds">Array of route IDs (32-character hex strings).</param>
         /// <returns>
@@ -290,13 +298,53 @@ namespace Route4MeSDKLibrary.Managers
 
             var result = await GetJsonObjectFromAPIAsync<RouteCustomDataCollection>(
                 new GenericParameters(),
-                R4MEInfrastructureSettingsV5.RouteCustomDataBulk,
+                R4MEInfrastructureSettingsV5.RouteCustomDataBulkV2,
                 HttpMethodType.Post,
                 content,
                 true,
                 false).ConfigureAwait(false);
 
             return new Tuple<RouteCustomDataCollection, ResultResponse>(result.Item1, result.Item2);
+        }
+
+        /// <summary>
+        /// Gets all distinct custom data keys used across routes for the authenticated member's organization.
+        /// Uses GET /routes/custom-data/keys endpoint.
+        /// </summary>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>
+        /// An array of distinct custom data key names, or <c>null</c> on failure.
+        /// </returns>
+        public string[] GetCustomDataKeys(out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<string[]>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.RouteCustomDataKeys,
+                HttpMethodType.Get,
+                false,
+                true,
+                out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets all distinct custom data keys used across routes for the authenticated member's organization asynchronously.
+        /// Uses GET /routes/custom-data/keys endpoint.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Tuple{T1,T2}"/> containing the array of distinct key names
+        /// and the failure response (if any).
+        /// </returns>
+        public async Task<Tuple<string[], ResultResponse>> GetCustomDataKeysAsync()
+        {
+            var result = await GetJsonObjectFromAPIAsync<string[]>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.RouteCustomDataKeys,
+                HttpMethodType.Get,
+                null,
+                true,
+                false).ConfigureAwait(false);
+
+            return new Tuple<string[], ResultResponse>(result.Item1, result.Item2);
         }
     }
 }

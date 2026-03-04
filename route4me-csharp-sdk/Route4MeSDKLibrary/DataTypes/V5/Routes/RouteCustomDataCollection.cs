@@ -7,7 +7,7 @@ namespace Route4MeSDK.DataTypes.V5
 {
     /// <summary>
     /// Response containing route custom data for multiple routes.
-    /// Returned by the bulk route custom data endpoint (POST /route-custom-data/bulk).
+    /// Returned by the bulk route custom data endpoint (POST /routes/custom-data/bulk).
     /// </summary>
     [DataContract]
     public class RouteCustomDataCollection
