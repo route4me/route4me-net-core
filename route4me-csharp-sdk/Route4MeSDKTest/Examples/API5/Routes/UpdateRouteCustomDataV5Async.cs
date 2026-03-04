@@ -10,7 +10,7 @@ namespace Route4MeSDK.Examples
     {
         /// <summary>
         /// Updates (replaces) the custom data for a specific route asynchronously using the dedicated
-        /// PUT /route-custom-data/{route_id} endpoint (API V5).
+        /// PUT /routes/{route_id}/custom-data endpoint (API V5).
         /// All existing custom data keys not present in the request are removed.
         /// </summary>
         public async Task UpdateRouteCustomDataV5Async()
