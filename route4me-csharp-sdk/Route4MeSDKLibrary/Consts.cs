@@ -127,8 +127,15 @@ namespace Route4MeSDK
         public const string RouteBreaks = MainHost + "/route-breaks";
         public const string RouteAddressDynamicInsert = MainHost + "/routes/lookup-for-new-destination";
 
+        [Obsolete("Use RouteCustomDataTemplate and replace {route_id} with the actual route ID.")]
         public const string RouteCustomData = MainHost + "/route-custom-data";
+
+        [Obsolete("Use RouteCustomDataBulkV2 instead.")]
         public const string RouteCustomDataBulk = MainHost + "/route-custom-data/bulk";
+
+        public const string RouteCustomDataTemplate = MainHost + "/routes/{route_id}/custom-data";
+        public const string RouteCustomDataBulkV2 = MainHost + "/routes/custom-data/bulk";
+        public const string RouteCustomDataKeys = MainHost + "/routes/custom-data/keys";
 
         public const string TeamUsers = MainHost + "/team/users";
 
