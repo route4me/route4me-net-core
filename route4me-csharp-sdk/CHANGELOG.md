@@ -1,6 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [v8.15.0] - 2026-03-04
+### Fixed
+- **Route custom data API (V5)**: corrected endpoint URLs to match the V5 API specification
+  - `GET /routes/{route_id}/custom-data` (was `/route-custom-data/{route_id}`)
+  - `PUT /routes/{route_id}/custom-data` (was `/route-custom-data/{route_id}`)
+  - `POST /routes/custom-data/bulk` (was `/route-custom-data/bulk`)
+  - Input validation: `routeId` must be a 32-character hex string; invalid values now return a `ResultResponse` error instead of producing a malformed HTTP request
+### Added
+- **Route custom data keys endpoint**: `GET /routes/custom-data/keys` — returns all distinct custom data key names used across routes for the authenticated member's organization
+  - Constant: `R4MEInfrastructureSettingsV5.RouteCustomDataKeys`
+  - New constants (replacing deprecated ones): `RouteCustomDataTemplate`, `RouteCustomDataBulkV2`
+  - `Route4MeManagerV5`: `GetRouteCustomDataKeys` / `GetRouteCustomDataKeysAsync`
+  - Examples: `GetRouteCustomDataKeysV5`, `GetRouteCustomDataKeysV5Async`
+### Deprecated
+- `R4MEInfrastructureSettingsV5.RouteCustomData` → use `RouteCustomDataTemplate` (contains `{route_id}` placeholder)
+- `R4MEInfrastructureSettingsV5.RouteCustomDataBulk` → use `RouteCustomDataBulkV2`
+
 ## [v8.14.0] - 2026-02-25
 ### Added
 - **Route Destinations API (V5)** — `POST /route-destinations/list`, `GET /route-destinations/{destination_uuid}`, `GET /route-destinations/order/{order_uuid}`, `GET /route-destinations/list-fields`, `GET /route-destinations/columns`, `PUT /route-destinations/sequence`
