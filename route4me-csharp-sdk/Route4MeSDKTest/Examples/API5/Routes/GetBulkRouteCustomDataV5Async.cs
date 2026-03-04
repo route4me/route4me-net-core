@@ -10,7 +10,7 @@ namespace Route4MeSDK.Examples
     {
         /// <summary>
         /// Gets the custom data for multiple routes asynchronously in a single request using the dedicated
-        /// POST /route-custom-data/bulk endpoint (API V5).
+        /// POST /routes/custom-data/bulk endpoint (API V5).
         /// </summary>
         public async Task GetBulkRouteCustomDataV5Async()
         {
