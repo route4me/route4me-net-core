@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,10 @@ namespace Route4MeSDKLibrary.Managers
     /// </summary>
     public class RouteCustomDataManagerV5 : Route4MeManagerBase
     {
+        private static readonly Regex s_routeIdPattern = new Regex(@"^[0-9a-fA-F]{32}$", RegexOptions.Compiled);
+
+        private static bool IsValidRouteId(string routeId) => s_routeIdPattern.IsMatch(routeId);
+
         /// <summary>
         /// Initializes a new instance of <see cref="RouteCustomDataManagerV5"/> with an API key.
         /// </summary>
@@ -63,6 +68,20 @@ namespace Route4MeSDKLibrary.Managers
                 return null;
             }
 
+            if (!IsValidRouteId(routeId))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId must be a 32-character hexadecimal string" } }
+                    }
+                };
+
+                return null;
+            }
+
             string url = R4MEInfrastructureSettingsV5.RouteCustomDataTemplate.Replace("{route_id}", routeId);
 
             return GetJsonObjectFromAPI<Dictionary<string, string>>(
@@ -93,6 +112,18 @@ namespace Route4MeSDKLibrary.Managers
                     Messages = new Dictionary<string, string[]>
                     {
                         { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                });
+            }
+
+            if (!IsValidRouteId(routeId))
+            {
+                return new Tuple<Dictionary<string, string>, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId must be a 32-character hexadecimal string" } }
                     }
                 });
             }
@@ -135,6 +166,20 @@ namespace Route4MeSDKLibrary.Managers
                     Messages = new Dictionary<string, string[]>
                     {
                         { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                };
+
+                return null;
+            }
+
+            if (!IsValidRouteId(routeId))
+            {
+                resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId must be a 32-character hexadecimal string" } }
                     }
                 };
 
@@ -194,6 +239,18 @@ namespace Route4MeSDKLibrary.Managers
                     Messages = new Dictionary<string, string[]>
                     {
                         { "Error", new[] { "The routeId parameter is not specified" } }
+                    }
+                });
+            }
+
+            if (!IsValidRouteId(routeId))
+            {
+                return new Tuple<Dictionary<string, string>, ResultResponse>(null, new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]>
+                    {
+                        { "Error", new[] { "The routeId must be a 32-character hexadecimal string" } }
                     }
                 });
             }
