@@ -143,6 +143,12 @@ namespace Route4MeSDK.QueryTypes.V5
         public bool ShowAllVehicles { get; set; }
 
         /// <summary>
+        ///     If true, limits the visibility of future routes.
+        /// </summary>
+        [DataMember(Name = "limit_future_routes_visible", EmitDefaultValue = false)]
+        public bool? LimitFutureRoutesVisible { get; set; }
+
+        /// <summary>
         ///     Display maximum_routes number of future days.
         /// </summary>
         [DataMember(Name = "display_max_routes_future_days", EmitDefaultValue = false)]
