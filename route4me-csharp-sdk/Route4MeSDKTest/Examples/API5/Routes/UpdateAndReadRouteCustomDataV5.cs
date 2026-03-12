@@ -85,8 +85,7 @@ namespace Route4MeSDK.Examples
 
             // Step 4: GetRoute by id — route payload includes route-level custom_data
             Console.WriteLine("{0} Step 4: GetRoute by id (route-level custom_data in payload)...", tag);
-            var getRouteResponse = route4Me.GetRoute(routeId, out ResultResponse respGetRoute);
-            var routeById = getRouteResponse?.Data;
+            var routeById = route4Me.GetRoute(routeId, out ResultResponse respGetRoute);
             if (respGetRoute != null)
             {
                 PrintFailResponse(respGetRoute, tag);
