@@ -10,6 +10,14 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
     [DataContract]
     public class AbstractRouteDestinationResource
     {
+        /// <summary>Sequence number of this stop within the route.</summary>
+        [DataMember(Name = "sequence_no")]
+        public int? SequenceNo { get; set; }
+
+        /// <summary>Unix timestamp of the actual arrival time. Null if the stop has not been visited.</summary>
+        [DataMember(Name = "actual_arrival_time_timestamp")]
+        public long? ActualArrivalTimeTimestamp { get; set; }
+
         /// <summary>Integer ID of the route destination (stop).</summary>
         [DataMember(Name = "route_destination_id")]
         public int? RouteDestinationId { get; set; }
