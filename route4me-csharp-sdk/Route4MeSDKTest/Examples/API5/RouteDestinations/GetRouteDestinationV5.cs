@@ -70,6 +70,10 @@ namespace Route4MeSDK.Examples
                 Console.WriteLine("  status={0}", result.StopStatusId ?? "(none)");
                 Console.WriteLine("  customer_id={0}", result.CustomerId ?? "(none)");
                 Console.WriteLine("  is_visited={0}", result.IsVisited);
+                Console.WriteLine("  sequence_no={0}",
+                    result.SequenceNo.HasValue ? result.SequenceNo.Value.ToString() : "(null)");
+                Console.WriteLine("  actual_arrival_time_timestamp={0}",
+                    result.ActualArrivalTimeTimestamp.HasValue ? result.ActualArrivalTimeTimestamp.Value.ToString() : "(null)");
 
                 // Print destination-level custom key/value data
                 if (result.CustomFields == null || result.CustomFields.Count == 0)
