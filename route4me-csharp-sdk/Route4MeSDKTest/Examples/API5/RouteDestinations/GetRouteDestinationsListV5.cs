@@ -49,7 +49,7 @@ namespace Route4MeSDK.Examples
                 {
                     "route_destination_id", "destination_name", "address_stop_type", "stop_status_id",
                     "custom_fields", "is_depot", "is_visited", "is_departed",
-                    "notes", "sequence_no"
+                    "notes", "sequence_no", "actual_arrival_time_timestamp"
                 },
                 Page = 1,
                 PerPage = 50
@@ -68,6 +68,10 @@ namespace Route4MeSDK.Examples
                     {
                         Console.WriteLine("  destination_id={0}, stop_type={1}, status={2}",
                             item.RouteDestinationId, item.AddressStopType, item.StopStatusId ?? "(none)");
+                        Console.WriteLine("  sequence_no={0}",
+                            item.SequenceNo.HasValue ? item.SequenceNo.Value.ToString() : "(null)");
+                        Console.WriteLine("  actual_arrival_time_timestamp={0}",
+                            item.ActualArrivalTimeTimestamp.HasValue ? item.ActualArrivalTimeTimestamp.Value.ToString() : "(null)");
 
                         // Print destination-level custom key/value data
                         PrintDestinationCustomFields(item.CustomFields);
