@@ -157,5 +157,15 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         /// <summary>Notes attached to this destination.</summary>
         [DataMember(Name = "notes")]
         public List<RouteDestinationNote> Notes { get; set; }
+
+        /// <summary>
+        /// Actual arrival time as a Unix timestamp (UTC).
+        /// </summary>
+        [DataMember(Name = "actual_arrival_time_timestamp", EmitDefaultValue = false)]
+        public long? ActualArrivalTimeTimestamp { get; set; }
+
+        /// <summary>Zero-based stop sequence number within the route.</summary>
+        [DataMember(Name = "sequence_no", EmitDefaultValue = false)]
+        public int? SequenceNo { get; set; }
     }
 }
