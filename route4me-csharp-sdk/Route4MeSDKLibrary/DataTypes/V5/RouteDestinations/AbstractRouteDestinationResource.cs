@@ -164,6 +164,22 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         [DataMember(Name = "actual_arrival_time_timestamp", EmitDefaultValue = false)]
         public long? ActualArrivalTimeTimestamp { get; set; }
 
+        /// <summary>Unix timestamp of the last time this stop was visited.</summary>
+        [DataMember(Name = "timestamp_last_visited", EmitDefaultValue = false)]
+        public long? TimestampLastVisited { get; set; }
+
+        /// <summary>Unix timestamp of when the driver departed this stop.</summary>
+        [DataMember(Name = "departed_timestamp", EmitDefaultValue = false)]
+        public long? DepartedTimestamp { get; set; }
+
+        /// <summary>Unix timestamp of when geofence detected the driver visited this stop.</summary>
+        [DataMember(Name = "geofence_detected_visited_timestamp", EmitDefaultValue = false)]
+        public long? GeofenceDetectedVisitedTimestamp { get; set; }
+
+        /// <summary>Unix timestamp of when geofence detected the driver departed this stop.</summary>
+        [DataMember(Name = "geofence_detected_departed_timestamp", EmitDefaultValue = false)]
+        public long? GeofenceDetectedDepartedTimestamp { get; set; }
+
         /// <summary>Zero-based stop sequence number within the route.</summary>
         [DataMember(Name = "sequence_no", EmitDefaultValue = false)]
         public int? SequenceNo { get; set; }
