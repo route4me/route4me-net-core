@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Route4MeSDK.QueryTypes;
@@ -18,7 +19,9 @@ namespace Route4MeSDK.DataTypes.V5
     [DataContract]
     public sealed class AddressBookContact : GenericParameters
     {
-        private object _address_custom_data;
+        [DataMember(Name = "address_custom_data", EmitDefaultValue = false)]
+        [JsonConverter(typeof(AddressCustomDataConverter))]
+        private Dictionary<string, string> AddressCustomDataRaw { get; set; }
 
         /// <summary>
         ///     A territory shape name the contact belongs.
@@ -167,31 +170,18 @@ namespace Route4MeSDK.DataTypes.V5
         /// <summary>
         ///     An array of the contact's custom field-value pairs.
         /// </summary>
-        [DataMember(Name = "address_custom_data", EmitDefaultValue = false)]
+        [IgnoreDataMember]
         public object AddressCustomData
         {
-            get => _address_custom_data;
+            get => AddressCustomDataRaw;
             set
             {
-                try
+                if (value is Dictionary<string, string> dict)
                 {
-                    if (value == null || value.GetType() == typeof(Array))
-                    {
-                        _address_custom_data = null;
-                    }
-                    else
-                    {
-                        if (value.GetType() == typeof(JObject))
-                            _address_custom_data = ((JObject)value).ToObject<Dictionary<string, string>>();
-                        else if (value.GetType() == typeof(Dictionary<string, string>))
-                            if (value == null || value.GetType() != typeof(Array))
-                                _address_custom_data = value;
-                    }
+                    AddressCustomDataRaw = dict;
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                AddressCustomDataRaw = null;
             }
         }
 
@@ -323,12 +313,46 @@ namespace Route4MeSDK.DataTypes.V5
         [DataMember(Name = "eligible_depot", EmitDefaultValue = false)]
         public bool? EligibleDepot { get; set; }
 
-        [OnSerializing]
-        internal void OnSerializingMethod(StreamingContext context)
+        private sealed class AddressCustomDataConverter
+            : JsonConverter<Dictionary<string, string>>
         {
-            if (_address_custom_data == null) return;
+            public override Dictionary<string, string> ReadJson(
+                JsonReader reader,
+                Type objectType,
+                Dictionary<string, string> existingValue,
+                bool hasExistingValue,
+                JsonSerializer serializer)
+            {
+                switch (reader.TokenType)
+                {
+                    case JsonToken.Null:
+                        return null;
+                    case JsonToken.StartArray:
+                        JArray.Load(reader);
+                        return null;
+                    case JsonToken.StartObject:
+                        return JObject.Load(reader)
+                            .ToObject<Dictionary<string, string>>(serializer);
+                    default:
+                        throw new JsonSerializationException(
+                            $"Unexpected token {reader.TokenType} for address_custom_data");
+                }
+            }
 
-            if (_address_custom_data.GetType() != typeof(Dictionary<string, string>)) _address_custom_data = null;
+            public override void WriteJson(
+                JsonWriter writer,
+                Dictionary<string, string> value,
+                JsonSerializer serializer)
+            {
+                if (value == null || value.Count == 0)
+                {
+                    writer.WriteStartObject();
+                    writer.WriteEndObject();
+                    return;
+                }
+
+                serializer.Serialize(writer, value);
+            }
         }
     }
 

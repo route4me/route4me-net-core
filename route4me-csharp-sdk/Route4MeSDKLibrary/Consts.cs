@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Route4MeSDK
 {
@@ -101,6 +101,7 @@ namespace Route4MeSDK
         public const string MainHostWeb = "https://wh.route4me.com/modules/webapi/v5.0";
 
         public const string Routes = MainHost + "/routes";
+        public const string RoutesList = MainHost + "/routes/list";
         public const string Routes51 = MainHost51 + "/routes";
 
         public const string RoutesDuplicate = MainHost + "/routes/duplicate";
@@ -125,6 +126,16 @@ namespace Route4MeSDK
         public const string RoutesDatatableConfigFallback = MainHost + "/routes/fallback/datatable/config";
         public const string RouteBreaks = MainHost + "/route-breaks";
         public const string RouteAddressDynamicInsert = MainHost + "/routes/lookup-for-new-destination";
+
+        [Obsolete("Use RouteCustomDataTemplate and replace {route_id} with the actual route ID.")]
+        public const string RouteCustomData = MainHost + "/route-custom-data";
+
+        [Obsolete("Use RouteCustomDataBulkV2 instead.")]
+        public const string RouteCustomDataBulk = MainHost + "/route-custom-data/bulk";
+
+        public const string RouteCustomDataTemplate = MainHost + "/routes/{route_id}/custom-data";
+        public const string RouteCustomDataBulkV2 = MainHost + "/routes/custom-data/bulk";
+        public const string RouteCustomDataKeys = MainHost + "/routes/custom-data/keys";
 
         public const string TeamUsers = MainHost + "/team/users";
 
@@ -359,6 +370,19 @@ namespace Route4MeSDK
         #region Facilities
         public const string Facilities = MainHost + "/facilities";
         public const string FacilityTypes = Facilities + "/types";
+
+        #endregion
+
+        #region Route Destinations
+
+        public const string RouteDestinations = MainHost + "/route-destinations";
+        public const string RouteDestinationsById = RouteDestinations + "/{id}";
+        public const string RouteDestinationsByOrder = RouteDestinations + "/order/{order_uuid}";
+        public const string RouteDestinationsColumns = RouteDestinations + "/columns";
+        public const string RouteDestinationsSorting = RouteDestinations + "/sorting";
+        public const string RouteDestinationsListFields = RouteDestinations + "/list/fields";
+        public const string RouteDestinationsList = RouteDestinations + "/list";
+        public const string RouteDestinationsSequence = RouteDestinations + "/sequence";
 
         #endregion
 
