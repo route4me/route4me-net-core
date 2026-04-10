@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Route4MeSDK.DataTypes.V5;
@@ -10,6 +11,7 @@ using Route4MeSDKLibrary.DataTypes.V5.AddressBookContact;
 using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.DataTypes.V5.Internal.Requests;
 using Route4MeSDKLibrary.DataTypes.V5.Orders;
+using Route4MeSDKLibrary.DataTypes.V5.RouteDestinations;
 using Route4MeSDKLibrary.DataTypes.V5.Routes;
 using Route4MeSDKLibrary.DataTypes.V5.RouteStatus;
 using Route4MeSDKLibrary.Managers;
@@ -54,6 +56,8 @@ namespace Route4MeSDK
             _locationManager = new LocationManagerV5(apiKey);
             _customerManager = new CustomerManagerV5(apiKey);
             _facilityManager = new FacilityManagerV5(apiKey);
+            _routeCustomDataManager = new RouteCustomDataManagerV5(apiKey);
+            _routeDestinationsManager = new RouteDestinationsManagerV5(apiKey);
         }
 
         #endregion
@@ -74,6 +78,8 @@ namespace Route4MeSDK
         private readonly LocationManagerV5 _locationManager;
         private readonly CustomerManagerV5 _customerManager;
         private readonly FacilityManagerV5 _facilityManager;
+        private readonly RouteCustomDataManagerV5 _routeCustomDataManager;
+        private readonly RouteDestinationsManagerV5 _routeDestinationsManager;
 
         #endregion
 
@@ -931,6 +937,50 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Retrieves a single route by ID with full details including addresses and parameters.
+        /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>The route with full details</returns>
+        public GetRouteResponse GetRoute(string routeId, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRoute(routeId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Retrieves a single route by ID with full details including addresses and parameters asynchronously.
+        /// Uses GET /api/v5.0/routes/{route_id} endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <returns>A Tuple type object containing the route response or/and failure response</returns>
+        public Task<Tuple<GetRouteResponse, ResultResponse>> GetRouteAsync(string routeId)
+        {
+            return _routeManager.GetRouteAsync(routeId);
+        }
+
+        /// <summary>
+        /// Retrieves a list of the routes via the routes/list endpoint (POST /api/v5.0/routes/list).
+        /// </summary>
+        /// <param name="routeParameters">Query parameters</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of the routes</returns>
+        public DataObjectRoute[] GetRoutesList(RouteParametersQuery routeParameters, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRoutesList(routeParameters, out resultResponse);
+        }
+
+        /// <summary>
+        /// Retrieves a list of the routes via the routes/list endpoint asynchronously (POST /api/v5.0/routes/list).
+        /// </summary>
+        /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
+        /// <returns>A Tuple type object containing a route list or/and failure response</returns>
+        public Task<Tuple<DataObjectRoute[], ResultResponse>> GetRoutesListAsync(RouteParametersQuery routeParameters)
+        {
+            return _routeManager.GetRoutesListAsync(routeParameters);
+        }
+
+        /// <summary>
         /// Retrieves a paginated list of the routes.
         /// </summary>
         /// <param name="routeParameters">Query parameters <see cref="RouteParametersQuery"/></param>
@@ -1170,6 +1220,172 @@ namespace Route4MeSDK
                                                 DynamicInsertRequest dynamicInsertRequest)
         {
             return _routeManager.DynamicInsertRouteAddressesAsync(dynamicInsertRequest);
+        }
+
+        /// <summary>
+        /// Gets the route-level custom data for the specified route.
+        /// Uses GET /api/v5.0/routes/{route_id} and extracts the custom_data field.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>An array of dictionaries representing route custom data, or null if not set</returns>
+        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicated instead")]
+        public Dictionary<string, string> GetRouteCustomData(string routeId, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetRouteCustomData(routeId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the route-level custom data for the specified route asynchronously.
+        /// Uses GET /api/v5.0/routes/{route_id} and extracts the custom_data field.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <returns>A Tuple containing route custom data or/and failure response</returns>
+        [Obsolete("Use RouteCustomDataManagerV5.GetRouteCustomDataDedicatedAsync instead")]
+        public Task<Tuple<Dictionary<string, string>, ResultResponse>> GetRouteCustomDataAsync(string routeId)
+        {
+            return _routeManager.GetRouteCustomDataAsync(routeId);
+        }
+
+        /// <summary>
+        /// Gets the custom data for the specified route using the dedicated
+        /// GET /routes/{route_id}/custom-data endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>A flat dictionary of custom key-value pairs, or null on failure</returns>
+        public Dictionary<string, string> GetRouteCustomDataDedicated(string routeId, out ResultResponse resultResponse)
+        {
+            return _routeCustomDataManager.GetRouteCustomData(routeId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the custom data for the specified route asynchronously using the dedicated
+        /// GET /routes/{route_id}/custom-data endpoint.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <returns>A Tuple containing the custom data dictionary or/and failure response</returns>
+        public Task<Tuple<Dictionary<string, string>, ResultResponse>> GetRouteCustomDataDedicatedAsync(string routeId)
+        {
+            return _routeCustomDataManager.GetRouteCustomDataAsync(routeId);
+        }
+
+        /// <summary>
+        /// Updates the custom data for the specified route using the dedicated
+        /// PUT /routes/{route_id}/custom-data endpoint.
+        /// Replaces all existing custom data; keys not present in <paramref name="customData"/> are removed.
+        /// To clear all custom data, submit a single key with a null value.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="customData">Custom data key-value pairs to set on the route</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>The updated custom data dictionary as stored by the API, or null on failure</returns>
+        public Dictionary<string, string> UpdateRouteCustomData(
+            string routeId,
+            Dictionary<string, string> customData,
+            out ResultResponse resultResponse)
+        {
+            return _routeCustomDataManager.UpdateRouteCustomData(routeId, customData, out resultResponse);
+        }
+
+        /// <summary>
+        /// Updates the custom data for the specified route asynchronously using the dedicated
+        /// PUT /routes/{route_id}/custom-data endpoint.
+        /// Replaces all existing custom data; keys not present in <paramref name="customData"/> are removed.
+        /// To clear all custom data, submit a single key with a null value.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="customData">Custom data key-value pairs to set on the route</param>
+        /// <returns>A Tuple containing the updated custom data or/and failure response</returns>
+        public Task<Tuple<Dictionary<string, string>, ResultResponse>> UpdateRouteCustomDataAsync(
+            string routeId,
+            Dictionary<string, string> customData)
+        {
+            return _routeCustomDataManager.UpdateRouteCustomDataAsync(routeId, customData);
+        }
+
+        /// <summary>
+        /// Updates route-level custom data for the specified route via the Routes API.
+        /// Uses PUT /api/v5.0/routes with custom_data in the request body.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="customData">The custom data array to set on the route</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>The updated route object</returns>
+        [Obsolete("Use UpdateRouteCustomData(string, Dictionary<string,string>, out ResultResponse) which uses the dedicated /routes/{route_id}/custom-data endpoint.")]
+        public DataObjectRoute UpdateRouteCustomData(
+            string routeId,
+            Dictionary<string, string>[] customData,
+            out ResultResponse resultResponse)
+        {
+            return _routeManager.UpdateRouteCustomData(routeId, customData, out resultResponse);
+        }
+
+        /// <summary>
+        /// Updates route-level custom data for the specified route asynchronously via the Routes API.
+        /// Uses PUT /api/v5.0/routes with custom_data in the request body.
+        /// </summary>
+        /// <param name="routeId">The route ID (32-character hex string)</param>
+        /// <param name="customData">The custom data array to set on the route</param>
+        /// <returns>A Tuple containing the updated route or/and failure response</returns>
+        [Obsolete("Use UpdateRouteCustomDataAsync(string, Dictionary<string,string>) which uses the dedicated /routes/{route_id}/custom-data endpoint.")]
+        public Task<Tuple<DataObjectRoute, ResultResponse, string>> UpdateRouteCustomDataAsync(
+            string routeId,
+            Dictionary<string, string>[] customData)
+        {
+            return _routeManager.UpdateRouteCustomDataAsync(routeId, customData);
+        }
+
+        /// <summary>
+        /// Gets the custom data for multiple routes in a single request using the dedicated
+        /// POST /routes/custom-data/bulk endpoint.
+        /// </summary>
+        /// <param name="routeIds">Array of route IDs (32-character hex strings)</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>
+        /// A <see cref="RouteCustomDataCollection"/> whose Data property maps each route ID
+        /// to its custom data dictionary, or null on failure.
+        /// </returns>
+        public RouteCustomDataCollection GetBulkRouteCustomData(
+            string[] routeIds,
+            out ResultResponse resultResponse)
+        {
+            return _routeCustomDataManager.GetBulkRouteCustomData(routeIds, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the custom data for multiple routes asynchronously in a single request using the dedicated
+        /// POST /routes/custom-data/bulk endpoint.
+        /// </summary>
+        /// <param name="routeIds">Array of route IDs (32-character hex strings)</param>
+        /// <returns>
+        /// A Tuple containing a <see cref="RouteCustomDataCollection"/> and the failure response (if any).
+        /// </returns>
+        public Task<Tuple<RouteCustomDataCollection, ResultResponse>> GetBulkRouteCustomDataAsync(
+            string[] routeIds)
+        {
+            return _routeCustomDataManager.GetBulkRouteCustomDataAsync(routeIds);
+        }
+
+        /// <summary>
+        /// Gets all distinct custom data keys used across routes for the authenticated member's organization.
+        /// Uses GET /routes/custom-data/keys endpoint.
+        /// </summary>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>An array of distinct custom data key names, or null on failure.</returns>
+        public string[] GetRouteCustomDataKeys(out ResultResponse resultResponse)
+        {
+            return _routeCustomDataManager.GetCustomDataKeys(out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets all distinct custom data keys used across routes for the authenticated member's organization asynchronously.
+        /// Uses GET /routes/custom-data/keys endpoint.
+        /// </summary>
+        /// <returns>A Tuple containing the array of distinct key names and the failure response (if any).</returns>
+        public Task<Tuple<string[], ResultResponse>> GetRouteCustomDataKeysAsync()
+        {
+            return _routeCustomDataManager.GetCustomDataKeysAsync();
         }
 
         #endregion
@@ -2623,6 +2839,200 @@ namespace Route4MeSDK
             DeleteLocationTypeAsync(string locationTypeId)
         {
             return _locationManager.DeleteLocationTypeAsync(locationTypeId);
+        }
+
+        #endregion
+
+        #region Route Destinations
+
+        /// <summary>
+        /// Gets the columns list and their saved display order.
+        /// Uses GET /route-destinations/columns.
+        /// </summary>
+        /// <param name="columnsConfiguratorKey">Configuration key identifying the saved column set.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Columns resource describing available columns and their order.</returns>
+        public RouteDestinationColumnsResource GetDestinationColumns(
+            string columnsConfiguratorKey,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationColumns(columnsConfiguratorKey, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the columns list and their saved display order asynchronously.
+        /// Uses GET /route-destinations/columns.
+        /// </summary>
+        public Task<Tuple<RouteDestinationColumnsResource, ResultResponse>> GetDestinationColumnsAsync(
+            string columnsConfiguratorKey)
+        {
+            return _routeDestinationsManager.GetDestinationColumnsAsync(columnsConfiguratorKey);
+        }
+
+        /// <summary>
+        /// Updates the display order of destination columns.
+        /// Uses PUT /route-destinations/columns.
+        /// </summary>
+        /// <param name="request">Request containing the configurator key and desired column order.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Response with the saved column order.</returns>
+        public EditDestinationColumnsResponse EditDestinationColumns(
+            EditDestinationColumnsRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.EditDestinationColumns(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Updates the display order of destination columns asynchronously.
+        /// Uses PUT /route-destinations/columns.
+        /// </summary>
+        public Task<Tuple<EditDestinationColumnsResponse, ResultResponse>> EditDestinationColumnsAsync(
+            EditDestinationColumnsRequest request)
+        {
+            return _routeDestinationsManager.EditDestinationColumnsAsync(request);
+        }
+
+        /// <summary>
+        /// Gets a single route destination by its integer ID or UUID.
+        /// The <see cref="RouteDestinationResource.CustomFields"/> property contains
+        /// destination-level custom key/value data.
+        /// Uses GET /route-destinations/{id}.
+        /// </summary>
+        /// <param name="id">Destination integer ID or 32-character hex UUID.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Full destination resource including custom fields.</returns>
+        public RouteDestinationResource GetDestination(string id, out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestination(id, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets a single route destination asynchronously.
+        /// Uses GET /route-destinations/{id}.
+        /// </summary>
+        public Task<Tuple<RouteDestinationResource, ResultResponse>> GetDestinationAsync(string id)
+        {
+            return _routeDestinationsManager.GetDestinationAsync(id);
+        }
+
+        /// <summary>
+        /// Gets a paginated list of route destinations matching the specified filters.
+        /// Each item includes <see cref="AbstractRouteDestinationResource.CustomFields"/>
+        /// with destination-level custom key/value data.
+        /// Uses POST /route-destinations/list.
+        /// </summary>
+        /// <param name="request">Filter, pagination and field-selection parameters.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>List response containing matching destination items.</returns>
+        public RouteDestinationsListResponse GetDestinationsList(
+            GetDestinationsRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationsList(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets a paginated list of route destinations asynchronously.
+        /// Uses POST /route-destinations/list.
+        /// </summary>
+        public Task<Tuple<RouteDestinationsListResponse, ResultResponse>> GetDestinationsListAsync(
+            GetDestinationsRequest request)
+        {
+            return _routeDestinationsManager.GetDestinationsListAsync(request);
+        }
+
+        /// <summary>
+        /// <summary>
+        /// Gets the list of available destination fields for filtering and sorting.
+        /// Uses GET /route-destinations/list/fields.
+        /// </summary>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Fields response with field metadata.</returns>
+        public RouteDestinationFieldsResponse GetDestinationFields(out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationFields(out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets the list of available destination fields asynchronously.
+        /// Uses GET /route-destinations/list/fields.
+        /// </summary>
+        public Task<Tuple<RouteDestinationFieldsResponse, ResultResponse>> GetDestinationFieldsAsync()
+        {
+            return _routeDestinationsManager.GetDestinationFieldsAsync();
+        }
+
+        /// <summary>
+        /// Looks up a destination by its label code and returns route/stop context.
+        /// Uses GET /route-destinations/sorting?label_code={labelCode}.
+        /// </summary>
+        /// <param name="labelCode">Label code assigned to the destination (e.g., "label_5").</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Sorting/filtering resource with destination context.</returns>
+        public SortingFilteringResource GetDestinationByLabelCode(
+            string labelCode,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationByLabelCode(labelCode, out resultResponse);
+        }
+
+        /// <summary>
+        /// Looks up a destination by its label code asynchronously.
+        /// Uses GET /route-destinations/sorting?label_code={labelCode}.
+        /// </summary>
+        public Task<Tuple<SortingFilteringResource, ResultResponse>> GetDestinationByLabelCodeAsync(
+            string labelCode)
+        {
+            return _routeDestinationsManager.GetDestinationByLabelCodeAsync(labelCode);
+        }
+
+        /// <summary>
+        /// Gets all route destinations linked to a specific order UUID.
+        /// Uses GET /route-destinations/order/{order_uuid}.
+        /// </summary>
+        /// <param name="orderUuid">32-character hex UUID of the order.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Response containing destinations for the specified order.</returns>
+        public RouteDestinationsByOrderResponse GetDestinationsByOrder(
+            string orderUuid,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationsByOrder(orderUuid, out resultResponse);
+        }
+
+        /// <summary>
+        /// Gets all route destinations linked to a specific order UUID asynchronously.
+        /// Uses GET /route-destinations/order/{order_uuid}.
+        /// </summary>
+        public Task<Tuple<RouteDestinationsByOrderResponse, ResultResponse>> GetDestinationsByOrderAsync(
+            string orderUuid)
+        {
+            return _routeDestinationsManager.GetDestinationsByOrderAsync(orderUuid);
+        }
+
+        /// <summary>
+        /// Computes the optimised visit sequence for a list of coordinates.
+        /// Uses POST /route-destinations/sequence.
+        /// </summary>
+        /// <param name="request">Coordinates to optimise.</param>
+        /// <param name="resultResponse">Failure response if the request fails.</param>
+        /// <returns>Sequence response with optimised index order.</returns>
+        public DestinationSequenceResponse GetDestinationSequence(
+            DestinationSequenceRequest request,
+            out ResultResponse resultResponse)
+        {
+            return _routeDestinationsManager.GetDestinationSequence(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Computes the optimised visit sequence for a list of coordinates asynchronously.
+        /// Uses POST /route-destinations/sequence.
+        /// </summary>
+        public Task<Tuple<DestinationSequenceResponse, ResultResponse>> GetDestinationSequenceAsync(
+            DestinationSequenceRequest request)
+        {
+            return _routeDestinationsManager.GetDestinationSequenceAsync(request);
         }
 
         #endregion

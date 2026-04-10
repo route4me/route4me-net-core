@@ -52,7 +52,6 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
 
             lsCreatedContacts.Add(contact1);
 
-
             contactParams = new AddressBookContact
             {
                 FirstName = "Test FirstName " + new Random().Next(0, 1000),
@@ -572,6 +571,124 @@ namespace Route4MeSdkV5UnitTest.V5.AddressBookContactApi
             }, out var res);
 
             Assert.That(res.Status);
+        }
+
+
+
+        [Test]
+        public void AddressBookContactCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(ApiKey);
+
+            // Create custom data with multiple key-value pairs
+            var customData = new Dictionary<string, string>
+            {
+                { "customer_id", "CUST-12345" },
+                { "order_number", "ORD-98765" },
+                { "delivery_notes", "Leave at back door" },
+                { "priority", "high" }
+            };
+
+            // Create a contact with custom data
+            var contactParams = new AddressBookContact
+            {
+                FirstName = "CustomData Test " + new Random().Next(0, 1000),
+                Address1 = "Test Address " + new Random().Next(0, 1000),
+                CachedLat = 38.024654,
+                CachedLng = -77.338814,
+                AddressStopType = AddressStopType.PickUp.Description(),
+                AddressCustomData = customData
+            };
+
+            var createdContact = route4Me.AddAddressBookContact(contactParams, out var createError);
+
+            Assert.That(createError, Is.Null, "Failed to create contact with custom data");
+            Assert.That(createdContact, Is.Not.Null, "Created contact should not be null");
+            Assert.That(createdContact.AddressId, Is.Not.Null, "Created contact should have an AddressId");
+
+            lsCreatedContacts.Add(createdContact);
+
+            // Retrieve the contact and verify custom data was persisted
+            var retrievedContact = route4Me.GetAddressBookContactById(
+                createdContact.AddressId.Value,
+                out var retrieveError);
+
+            Assert.That(retrieveError, Is.Null, "Failed to retrieve contact");
+            Assert.That(retrievedContact, Is.Not.Null, "Retrieved contact should not be null");
+            Assert.That(retrievedContact.AddressCustomData, Is.Not.Null, "Custom data should not be null");
+
+            // Verify the custom data values
+            var retrievedCustomData = retrievedContact.AddressCustomData as Dictionary<string, string>;
+            Assert.That(retrievedCustomData, Is.Not.Null, "Custom data should be a Dictionary<string, string>");
+            Assert.That(retrievedCustomData.ContainsKey("customer_id"), Is.True, "Custom data should contain 'customer_id'");
+            Assert.That(retrievedCustomData["customer_id"], Is.EqualTo("CUST-12345"), "customer_id value should match");
+            Assert.That(retrievedCustomData.ContainsKey("order_number"), Is.True, "Custom data should contain 'order_number'");
+            Assert.That(retrievedCustomData["order_number"], Is.EqualTo("ORD-98765"), "order_number value should match");
+            Assert.That(retrievedCustomData.ContainsKey("delivery_notes"), Is.True, "Custom data should contain 'delivery_notes'");
+            Assert.That(retrievedCustomData["delivery_notes"], Is.EqualTo("Leave at back door"), "delivery_notes value should match");
+            Assert.That(retrievedCustomData.ContainsKey("priority"), Is.True, "Custom data should contain 'priority'");
+            Assert.That(retrievedCustomData["priority"], Is.EqualTo("high"), "priority value should match");
+        }
+
+        [Test]
+        public void UpdateAddressBookContactCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(ApiKey);
+
+            // Create initial custom data
+            var initialCustomData = new Dictionary<string, string>
+            {
+                { "initial_key", "initial_value" }
+            };
+
+            // Create a contact with initial custom data
+            var contactParams = new AddressBookContact
+            {
+                FirstName = "Update Test " + new Random().Next(0, 1000),
+                Address1 = "Test Address " + new Random().Next(0, 1000),
+                CachedLat = 38.024654,
+                CachedLng = -77.338814,
+                AddressStopType = AddressStopType.PickUp.Description(),
+                AddressCustomData = initialCustomData
+            };
+
+            var createdContact = route4Me.AddAddressBookContact(contactParams, out var createError);
+
+            Assert.That(createError, Is.Null, "Failed to create contact");
+            Assert.That(createdContact, Is.Not.Null);
+
+            lsCreatedContacts.Add(createdContact);
+
+            // Update custom data with new values
+            var updatedCustomData = new Dictionary<string, string>
+            {
+                { "updated_key", "updated_value" },
+                { "new_field", "new_value" }
+            };
+
+            createdContact.AddressCustomData = updatedCustomData;
+
+            var updatedContact = route4Me.UpdateAddressBookContact(
+                createdContact.AddressId.Value,
+                createdContact,
+                out var updateError);
+
+            Assert.That(updateError, Is.Null, "Failed to update contact custom data");
+
+            // Retrieve and verify updated custom data
+            var retrievedContact = route4Me.GetAddressBookContactById(
+                createdContact.AddressId.Value,
+                out var retrieveError);
+
+            Assert.That(retrieveError, Is.Null, "Failed to retrieve updated contact");
+            Assert.That(retrievedContact.AddressCustomData, Is.Not.Null, "Updated custom data should not be null");
+
+            var retrievedCustomData = retrievedContact.AddressCustomData as Dictionary<string, string>;
+            Assert.That(retrievedCustomData, Is.Not.Null, "Custom data should be a Dictionary<string, string>");
+            Assert.That(retrievedCustomData.ContainsKey("updated_key"), Is.True, "Custom data should contain 'updated_key'");
+            Assert.That(retrievedCustomData["updated_key"], Is.EqualTo("updated_value"), "updated_key value should match");
+            Assert.That(retrievedCustomData.ContainsKey("new_field"), Is.True, "Custom data should contain 'new_field'");
+            Assert.That(retrievedCustomData["new_field"], Is.EqualTo("new_value"), "new_field value should match");
         }
     }
 }

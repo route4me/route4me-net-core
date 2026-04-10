@@ -1,4 +1,8 @@
-﻿using System.Runtime.Serialization;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+
+using Newtonsoft.Json;
 
 namespace Route4MeSDK.DataTypes.V5
 {
@@ -253,5 +257,13 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        ///     Route-level custom data (key-value dictionary).
+        ///     API may return a single object or array; converter normalizes to a single dictionary (array → first element).
+        /// </summary>
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
+        [JsonConverter(typeof(RouteCustomDataArrayConverter))]
+        public Dictionary<string, string> RouteCustomData { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -11,13 +11,19 @@ namespace Route4MeSDK.DataTypes.V5
     ///     The route data structure
     /// </summary>
     [DataContract]
-    public sealed class DataObjectRoute : DataObjectBase
+    public class DataObjectRoute : DataObjectBase
     {
         /// <summary>
         ///     The route ID
         /// </summary>
         [DataMember(Name = "route_id", EmitDefaultValue = false)]
         public string RouteID { get; set; }
+
+        /// <summary>
+        ///     The route name (e.g. from GET /api/v5.0/routes/{route_id}).
+        /// </summary>
+        [DataMember(Name = "route_name", EmitDefaultValue = false)]
+        public string RouteName { get; set; }
 
         /// <summary>
         ///     Organization ID
@@ -223,6 +229,83 @@ namespace Route4MeSDK.DataTypes.V5
         public long? ActualTravelTime { get; set; }
 
         /// <summary>
+        ///     Route scheduled start time (Unix timestamp).
+        /// </summary>
+        [DataMember(Name = "route_scheduled_start_unix", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? RouteScheduledStartUnix { get; set; }
+
+        /// <summary>
+        ///     Actual start time (Unix timestamp).
+        /// </summary>
+        [DataMember(Name = "actual_start_timestamp", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? ActualStartTimestamp { get; set; }
+
+        /// <summary>
+        ///     Actual route duration (seconds).
+        /// </summary>
+        [DataMember(Name = "actual_route_duration", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? ActualRouteDuration { get; set; }
+
+        /// <summary>
+        ///     Planned total service time (seconds).
+        /// </summary>
+        [DataMember(Name = "planned_total_service_time", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? PlannedTotalServiceTime { get; set; }
+
+        /// <summary>
+        ///     Geofence-detected actual total service time (seconds).
+        /// </summary>
+        [DataMember(Name = "geofence_actual_total_service_time", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? GeofenceActualTotalServiceTime { get; set; }
+
+        /// <summary>
+        ///     Manual registered actual total service time (seconds).
+        /// </summary>
+        [DataMember(Name = "manual_registered_actual_total_service_time", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? ManualRegisteredActualTotalServiceTime { get; set; }
+
+        /// <summary>
+        ///     Planned total travel time (seconds).
+        /// </summary>
+        [DataMember(Name = "planned_total_travel_time", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? PlannedTotalTravelTime { get; set; }
+
+        /// <summary>
+        ///     Telematics actual travel timestamp (Unix timestamp).
+        /// </summary>
+        [DataMember(Name = "telematics_actual_travel_timestamp", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? TelematicsActualTravelTimestamp { get; set; }
+
+        /// <summary>
+        ///     Mobile actual travel timestamp (Unix timestamp).
+        /// </summary>
+        [DataMember(Name = "mobile_actual_travel_timestamp", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public long? MobileActualTravelTimestamp { get; set; }
+
+        /// <summary>
+        ///     Telematics actual travel distance.
+        /// </summary>
+        [DataMember(Name = "telematics_actual_travel_distance", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public double? TelematicsActualTravelDistance { get; set; }
+
+        /// <summary>
+        ///     Mobile actual travel distance.
+        /// </summary>
+        [DataMember(Name = "mobile_actual_travel_distance", EmitDefaultValue = false)]
+        [ReadOnly(true)]
+        public double? MobileActualTravelDistance { get; set; }
+
+        /// <summary>
         ///     Actual footsteps.
         /// </summary>
         [DataMember(Name = "actual_footsteps", EmitDefaultValue = false)]
@@ -298,11 +381,12 @@ namespace Route4MeSDK.DataTypes.V5
         public Direction[] Directions { get; set; }
 
         /// <summary>
-        ///     Edge-wise path to be drawn on the map See <see cref="DirectionPathPoint" />
+        ///     Edge-wise path as encoded polyline strings (e.g. Google polyline encoding per segment).
+        ///     GET /api/v5.0/routes/{route_id} returns path as string[].
         /// </summary>
         [DataMember(Name = "path")]
         [ReadOnly(true)]
-        public DirectionPathPoint[] Path { get; set; }
+        public string[] Path { get; set; }
 
         /// <summary>
         ///     A vehicle assigned to the route.
@@ -354,5 +438,13 @@ namespace Route4MeSDK.DataTypes.V5
         /// </summary>
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        ///     Route-level custom data (key-value dictionary).
+        ///     API may return a single object or an array; converter normalizes to a single dictionary (array → first element).
+        /// </summary>
+        [DataMember(Name = "custom_data", EmitDefaultValue = false)]
+        [JsonConverter(typeof(RouteCustomDataArrayConverter))]
+        public Dictionary<string, string> RouteCustomData { get; set; }
     }
 }

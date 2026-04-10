@@ -1,26 +1,166 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [7.13.3] - 2025-12-17
+## [v8.14.1] - 2026-03-04
+### Fixed
+- **Route custom data API (V5)**: corrected endpoint URLs to match the V5 API specification
+  - `GET /routes/{route_id}/custom-data` (was `/route-custom-data/{route_id}`)
+  - `PUT /routes/{route_id}/custom-data` (was `/route-custom-data/{route_id}`)
+  - `POST /routes/custom-data/bulk` (was `/route-custom-data/bulk`)
+  - Input validation: `routeId` must be a 32-character hex string; invalid values now return a `ResultResponse` error instead of producing a malformed HTTP request
+### Added
+- **Route custom data keys endpoint**: `GET /routes/custom-data/keys` — returns all distinct custom data key names used across routes for the authenticated member's organization
+  - Constant: `R4MEInfrastructureSettingsV5.RouteCustomDataKeys`
+  - New constants (replacing deprecated ones): `RouteCustomDataTemplate`, `RouteCustomDataBulkV2`
+  - `Route4MeManagerV5`: `GetRouteCustomDataKeys` / `GetRouteCustomDataKeysAsync`
+  - Examples: `GetRouteCustomDataKeysV5`, `GetRouteCustomDataKeysV5Async`
+### Deprecated
+- `R4MEInfrastructureSettingsV5.RouteCustomData` → use `RouteCustomDataTemplate` (contains `{route_id}` placeholder)
+- `R4MEInfrastructureSettingsV5.RouteCustomDataBulk` → use `RouteCustomDataBulkV2`
+
+## [v8.14.0] - 2026-02-25
+### Added
+- **Route Destinations API (V5)** — `POST /route-destinations/list`, `GET /route-destinations/{destination_uuid}`, `GET /route-destinations/order/{order_uuid}`, `GET /route-destinations/list-fields`, `GET /route-destinations/columns`, `PUT /route-destinations/sequence`
+  - Constants: `R4MEInfrastructureSettingsV5.RouteDestinations`, `RouteDestinationListFields`, `RouteDestinationColumns`, `RouteDestinationByUuid`, `RouteDestinationsByOrder`, `RouteDestinationSequence`
+  - Manager: `RouteDestinationsManagerV5`
+  - `Route4MeManagerV5`: `GetDestinationFields` / `GetDestinationFieldsAsync`, `GetDestinationColumns` / `GetDestinationColumnsAsync`, `GetDestinationsList` / `GetDestinationsListAsync`, `GetDestination` / `GetDestinationAsync`, `GetDestinationsByOrder` / `GetDestinationsByOrderAsync`, `OptimizeDestinationSequence` / `OptimizeDestinationSequenceAsync`
+  - New types (`DataTypes/V5/RouteDestinations/`): `AbstractRouteDestinationResource`, `RouteDestinationResource`, `RouteDestinationListResource`, `RouteDestinationsListResponse`, `GetDestinationsRequest`, `DestinationFilters`, `FilterRoutesRequest`, `RouteDestinationNote`, `FacilityDataResource`, `RouteDestinationColumnsResource`, `RouteDestinationFieldItem`, `SortingFilteringResource`, `SequenceRequest`, `DestinationSequenceResponse`
+  - `GetDestinationsRequest` supports `fields` array, pagination (`page`/`per_page`), `order_by`, `group_by`, `timezone`, and rich filter criteria
+  - Key destination fields: `destination_name`, `custom_fields` (Dictionary<string,string>), `is_depot`, `is_visited`, `is_departed`, `stop_status_id`, `address_stop_type`, `notes`, `sequence_no`
+- Examples (`Route4MeSDKTest/Examples/API5/RouteDestinations/`): `GetRouteDestinationsListV5`, `GetRouteDestinationNamesV5`, `GetRouteDestinationV5`, `GetDestinationColumnsV5`, `GetDestinationFieldsV5`, `OptimizeDestinationSequenceV5`
+- NUnit tests: `Route4MeSdkV5UnitTest/V5/RouteDestinations/RouteDestinationsTests.cs` — 19 tests covering sync/async list, single-destination fetch, custom-fields access, and sequence optimization
+
+## [v8.13.0] - 2026-01-20
+### Added
+- **Dedicated route custom data API (V5)** — GET/PUT `/route-custom-data/{route_id}`, POST `/route-custom-data/bulk`
+  - Constants: `R4MEInfrastructureSettingsV5.RouteCustomData`, `RouteCustomDataBulk`
+  - Manager: `RouteCustomDataManagerV5`
+  - `Route4MeManagerV5`: `GetRouteCustomDataDedicated` / `GetRouteCustomDataDedicatedAsync`, `UpdateRouteCustomData(routeId, customData)` / `UpdateRouteCustomDataAsync`, `GetBulkRouteCustomData` / `GetBulkRouteCustomDataAsync`
+  - Type: `RouteCustomDataCollection` for bulk responses
+- **Serialization**: `RouteCustomDataArrayConverter` and `RouteCustomDataDictionaryConverter` — accept API `custom_data` as object or array
+### Deprecated
+- `RouteManagerV5` / `Route4MeManagerV5`: `GetRouteCustomData`, `GetRouteCustomDataAsync` → use `GetRouteCustomDataDedicated` / `GetRouteCustomDataDedicatedAsync`
+- `UpdateRouteCustomData` / `UpdateRouteCustomDataAsync` (overload returning `DataObjectRoute`) → use overload with `(string routeId, Dictionary<string,string> customData, out ResultResponse)`
+
+## [v8.12.0] - 2026-02-16
+### Added
+- Routes API V5: `route_custom_data` support for route-level custom key/value data
+  - New `RouteCustomData` property on `DataObjectRoute` (response model)
+  - New `RouteCustomData` property on `RouteFilterResponseData` (list/filter response model)
+  - New `RouteCustomData` property on `RouteParametersQuery` (V5) for route update requests
+  - `RouteManagerV5.GetRouteCustomData` / `GetRouteCustomDataAsync` — retrieve route custom data by route ID
+  - `RouteManagerV5.UpdateRouteCustomData` / `UpdateRouteCustomDataAsync` — update route custom data by route ID
+  - `Route4MeManagerV5.GetRouteCustomData` / `GetRouteCustomDataAsync`
+  - `Route4MeManagerV5.UpdateRouteCustomData` / `UpdateRouteCustomDataAsync`
+
+## [v8.11.0] - 2026-02-05
+### Added
+- Routes API V5: Get Route endpoint (GET /api/v5.0/routes/{route_id})
+  - New type `GetRouteResponse` and `DataObjectRouteExtended` for single-route response with full details
+  - `DataObjectRouteExtended` fields: `RouteCost`, `RouteWeight`, `RouteCube`, `RoutePieces`, `RouteRevenue`, `NetRevenuePerDistanceUnit`, `TrackingHistory`
+  - `RouteManagerV5.GetRoute` / `GetRouteAsync`
+  - `Route4MeManagerV5.GetRoute` / `GetRouteAsync`
 ### Changed
-- Reduced default HTTP request timeout from 30 minutes to 30 seconds
-- Added configurable HTTP timeout via `Route4MeConfig.HttpTimeout` property
+- Route model V5: `DataObjectRoute` is no longer sealed to allow `DataObjectRouteExtended` inheritance
+### Fixed
+- Route model V5: change `TelematicsActualTravelDistance` and `MobileActualTravelDistance` from `string` to `double?`
+
+## [v8.10.0] - 2026-02-02
+### Added
+- Routes API V5: Routes List endpoint (POST /api/v5.0/routes/list)
+  - New constant `R4MEInfrastructureSettingsV5.RoutesList`
+  - `RouteManagerV5.GetRoutesList` / `GetRoutesListAsync`
+  - `Route4MeManagerV5.GetRoutesList` / `GetRoutesListAsync`
+- Routes API V5: additional route list data items on `DataObjectRoute` for list responses (RouteScoutResource alignment)
+  - `RouteScheduledStartUnix`, `ActualStartTimestamp`, `ActualRouteDuration`
+  - `PlannedTotalServiceTime`, `GeofenceActualTotalServiceTime`, `ManualRegisteredActualTotalServiceTime`
+  - `PlannedTotalTravelTime`, `TelematicsActualTravelTimestamp`, `MobileActualTravelTimestamp`
+  - `TelematicsActualTravelDistance`, `MobileActualTravelDistance`
+
+## [v8.9.0] - 2026-01-22
+### Added
+- Route API: add `use_combined_timestamp` query parameter support for V4 and V5 APIs
+  - Controls which date filtering method is used when querying routes via GET /route.php endpoint
+  - Boolean values serialize to '1'/'0' in query string
+  - Optional parameter with default behavior (null = not included)
+
+## [v8.8.1] - 2026-01-21
+### Fixed
+- Fix `AddressCustomData` serialization issue
+### Changed
+- Remove redundant methods (internal cleanup)
+
+## [v8.8.0] - 2026-01-21
+### Added
+- Support injecting custom HTTP message handler
+### Fixed
+- Improve handler disposal via `HandlerFactory` to avoid disposal issues
+
+## [v8.7.0] - 2026-01-20
+### Added
+- Route API: add `timezone` and `compress_path_points` query parameters
+
+## [v8.6.0] - 2026-01-20
+### Added
+- Optimization API: support multiple breaks in optimization requests
+### Changed
+- Align formatting/encoding in test files
+- Suppress NetAnalyzers upgrade warning in Directory.Build.props
+
+## [v8.5.0] - 2026-01-19
+### Added
+- Optimization create: support `Vehicle` object parameter
+### Fixed
+- Map vehicle object to `vehicle_id` in optimization requests
+- Register vehicle type for `RouteParameters` serialization
+### Changed
+- Test file newline/formatting fixes
+
+## [v8.4.0] - 2025-12-25
+### Added
+- Dynamic insert endpoint: extend request with `route_ids` field
+
+## [v8.3.0] - 2025-12-25
+### Added
+- V4 endpoint: add `dispatched_timestamp` field
+
+## [v8.2.0] - 2025-12-19
+### Added
+- HTTP resilience: Polly retry and circuit breaker support
+### Changed
+- Update Microsoft.Extensions.Logging package dependencies
+- Fix package version conflicts
+
+## [v8.1.0] - 2025-12-19
+### Added
+- Microsoft.Extensions.Logging support for the SDK
+### Fixed
+- Fix logger concurrency race condition in `HttpClientHolderManager`
+
+## [v8.0.0] - 2025-12-17
+### Changed (BREAKING)
+- Add configurable HTTP client timeout via `Route4MeConfig.HttpTimeout` property
+- Reduce default HTTP request timeout from 30 minutes to 30 seconds
 - Users can now customize timeout globally before making API calls
 
-## [7.13.2] - 2025-01-17
+## [v7.15.0] - 2025-11-25
+### Added
+- Flexible Route Start Time support
+
+## [v7.14.0] - 2025-11-19
 ### Changed
-Migrated project to .NET 10.0:
-- **Test Projects**: Upgraded target framework from `net6.0` to `net10.0`
-  - `Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj`
-  - `Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj`
-  - `Route4MeSDKTest/Route4MeSDKTest.csproj`
-- **Docker Infrastructure**: Updated to use .NET 10.0 SDK
-  - `Dockerfile`: Updated base image from .NET 6.0 to .NET 10.0
-  - `docker-compose.yml`: Removed obsolete `netcoreapp2.1` framework flag
-- **CI/CD Configuration**:
-  - `appveyor.yml`: Updated from Visual Studio 2017 to Visual Studio 2022
-  - `.github/workflows/code-quality.yml`: Updated to .NET 10.0.x
-- **Library**: `Route4MeSDKLibrary` continues to target `netstandard2.0` for maximum compatibility
+- Migrate test projects to .NET 10.0:
+  - **Test Projects**: Upgraded target framework from `net6.0` to `net10.0`
+    - `Route4MeSDKUnitTest/Route4MeSDKUnitTest.csproj`
+    - `Route4MeSdkV5UnitTest/Route4MeSdkV5UnitTest.csproj`
+    - `Route4MeSDKTest/Route4MeSDKTest.csproj`
+  - **Docker Infrastructure**: Updated to use .NET 10.0 SDK
+    - `Dockerfile`: Updated base image from .NET 6.0 to .NET 10.0
+    - `docker-compose.yml`: Removed obsolete `netcoreapp2.1` framework flag
+  - **CI/CD Configuration**:
+    - `appveyor.yml`: Updated from Visual Studio 2017 to Visual Studio 2022
+    - `.github/workflows/code-quality.yml`: Updated to .NET 10.0.x
+  - **Library**: `Route4MeSDKLibrary` continues to target `netstandard2.0` for maximum compatibility
 
 **Note**: The SDK library (`Route4MeSDKLibrary`) remains on `netstandard2.0`, ensuring compatibility with both .NET Framework and .NET 10.0+ applications.
 
