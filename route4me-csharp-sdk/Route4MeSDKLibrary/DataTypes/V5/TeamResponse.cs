@@ -242,6 +242,12 @@ namespace Route4MeSDK.DataTypes.V5
         public double? IdlingRate { get; set; }
 
         /// <summary>
+        ///     If true, limits the visibility of future routes.
+        /// </summary>
+        [DataMember(Name = "limit_future_routes_visible", EmitDefaultValue = false)]
+        public bool? LimitFutureRoutesVisible { get; set; }
+
+        /// <summary>
         ///     Display maximum_routes number of future days.
         /// </summary>
         [DataMember(Name = "display_max_routes_future_days", EmitDefaultValue = false)]

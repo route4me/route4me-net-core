@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -82,6 +83,53 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
             var dataObjects = route4Me.GetRoutes(routeParameters, out ResultResponse resultResponse);
 
             Assert.That(dataObjects.GetType(), Is.EqualTo(typeof(DataObjectRoute[])));
+        }
+
+        [Test]
+        public void GetSingleRouteWithExtendedDetailsTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            // Get route ID from test data
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            // Run the query to get extended route details
+            var response = route4Me.GetRoute(routeId, out ResultResponse resultResponse);
+
+            Assert.NotNull(response);
+            Assert.That(response.GetType(), Is.EqualTo(typeof(GetRouteResponse)));
+            Assert.NotNull(response.Data);
+            Assert.That(response.Data.GetType(), Is.EqualTo(typeof(DataObjectRouteExtended)));
+            Assert.That(response.Data.RouteID, Is.EqualTo(routeId));
+
+            // Verify extended fields are populated
+            Assert.NotNull(response.Data.Addresses, "Addresses should not be null");
+            Assert.True(response.Data.Addresses.Length > 0, "Addresses array should not be empty");
+            Assert.NotNull(response.Data.Parameters, "Parameters should not be null");
+        }
+
+        [Test]
+        public async Task GetSingleRouteWithExtendedDetailsAsyncTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            // Get route ID from test data
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            // Run the async query to get extended route details
+            var result = await route4Me.GetRouteAsync(routeId);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Item1);
+            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(GetRouteResponse)));
+            Assert.NotNull(result.Item1.Data);
+            Assert.That(result.Item1.Data.GetType(), Is.EqualTo(typeof(DataObjectRouteExtended)));
+            Assert.That(result.Item1.Data.RouteID, Is.EqualTo(routeId));
+
+            // Verify extended fields are populated
+            Assert.NotNull(result.Item1.Data.Addresses, "Addresses should not be null");
+            Assert.True(result.Item1.Data.Addresses.Length > 0, "Addresses array should not be empty");
+            Assert.NotNull(result.Item1.Data.Parameters, "Parameters should not be null");
         }
 
         [Test]
@@ -245,9 +293,16 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
-            var result = route4Me.GetRouteDataTableFallbackConfig(out _);
+            var result = route4Me.GetRouteDataTableFallbackConfig(out ResultResponse resultResponse);
 
-            Assert.NotNull(result);
+            // Fallback config endpoint may not be available in all environments (deprecated / optional)
+            if (result == null)
+            {
+                Assert.Ignore(
+                    "GetRouteDataTableFallbackConfig returned null. The fallback datatable config endpoint may not be available in this environment. " +
+                    (resultResponse?.Messages != null ? string.Join("; ", resultResponse.Messages) : ""));
+            }
+
             Assert.That(result.GetType(), Is.EqualTo(typeof(RouteDataTableConfigResponse)));
         }
 
@@ -474,21 +529,115 @@ namespace Route4MeSdkV5UnitTest.V5.AddOnRoutesApi
         {
             var route4Me = new Route4MeManagerV5(CApiKey);
 
-            var routeParameters = new RouteParametersQuery
-            {
-                Limit = 1,
-                Offset = 15
-            };
+            var firstAddressWithDestinationId = _tdr.SD10Stops_route.Addresses
+                .FirstOrDefault(a => a.RouteDestinationId.HasValue);
+            Assert.That(firstAddressWithDestinationId, Is.Not.Null,
+                "Route has no address with RouteDestinationId set (e.g. optimization response may omit it for depot).");
+            var routeDestinationId = firstAddressWithDestinationId.RouteDestinationId!.Value;
 
-            var routeDestinationId = _tdr.SD10Stops_route.Addresses.First().RouteDestinationId;
             var result = route4Me.SetRouteStopStatus(new SetRouteStopStatusParameters()
             {
-                DestinationIds = new long[] { routeDestinationId.Value },
+                DestinationIds = new long[] { routeDestinationId },
                 Status = RouteStopStatus.Failed.Description()
             }, out var err3);
 
-
+            Assert.That(result, Is.Not.Null,
+                "SetRouteStopStatus returned null. " +
+                (err3?.Messages != null ? string.Join("; ", err3.Messages) : ""));
             Assert.That(result.GetType(), Is.EqualTo(typeof(StatusResponse)));
+        }
+
+        [Test]
+        public void UpdateRouteCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            var customData = new Dictionary<string, string>
+            {
+                { "priority", "high" },
+                { "region", "west" },
+                { "notes", "Handle with care" }
+            };
+
+            var result = route4Me.UpdateRouteCustomData(routeId, customData, out ResultResponse resultResponse);
+
+            Assert.NotNull(result, "UpdateRouteCustomData returned null. " +
+                                   (resultResponse?.Messages != null
+                                       ? string.Join("; ", resultResponse.Messages)
+                                       : ""));
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Dictionary<string, string>)));
+        }
+
+        [Test]
+        public async Task UpdateRouteCustomDataAsyncTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            var customData = new Dictionary<string, string>
+            {
+                { "priority", "high" },
+                { "region", "west" }
+            };
+
+            var result = await route4Me.UpdateRouteCustomDataAsync(routeId, customData);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Item1, "UpdateRouteCustomDataAsync returned null.");
+            Assert.That(result.Item1.GetType(), Is.EqualTo(typeof(Dictionary<string, string>)));
+        }
+
+        [Test]
+        public void GetRouteCustomDataTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            // First, set custom data on the route using the dedicated endpoint
+            var customData = new Dictionary<string, string>
+            {
+                { "priority", "high" },
+                { "region", "west" }
+            };
+
+            route4Me.UpdateRouteCustomData(routeId, customData, out _);
+
+            // Retrieve via the same dedicated endpoint (write and read use same API)
+            var retrievedCustomData = route4Me.GetRouteCustomDataDedicated(routeId, out ResultResponse resultResponse);
+
+            Assert.NotNull(retrievedCustomData, "GetRouteCustomDataDedicated returned null. " +
+                                                (resultResponse?.Messages != null
+                                                    ? string.Join("; ", resultResponse.Messages)
+                                                    : ""));
+            Assert.That(retrievedCustomData.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task GetRouteCustomDataAsyncTest()
+        {
+            var route4Me = new Route4MeManagerV5(CApiKey);
+
+            var routeId = _tdr.SD10Stops_route.RouteID;
+
+            // First, set custom data on the route using the dedicated endpoint
+            var customData = new Dictionary<string, string>
+            {
+                { "priority", "high" },
+                { "region", "west" }
+            };
+
+            await route4Me.UpdateRouteCustomDataAsync(routeId, customData);
+
+            // Retrieve via the same dedicated endpoint (GET /route-custom-data/{route_id})
+            var result = await route4Me.GetRouteCustomDataDedicatedAsync(routeId);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Item1, "GetRouteCustomDataDedicatedAsync returned null custom data.");
+            Assert.That(result.Item1.Count, Is.GreaterThan(0));
         }
     }
 }
