@@ -76,6 +76,12 @@ namespace Route4MeSDK.DataTypes
         public bool ApprovedForExecution { get; set; }
 
         /// <summary>
+        ///     Unix timestamp when the route is scheduled to start
+        /// </summary>
+        [DataMember(Name = "scheduled_start_timestamp", EmitDefaultValue = false)]
+        public long? ScheduledStartTimestamp { get; set; }
+
+        /// <summary>
         ///     Unix timestamp when the route was dispatched for execution
         /// </summary>
         [DataMember(Name = "dispatched_timestamp", EmitDefaultValue = false)]
