@@ -9,7 +9,9 @@ using Route4MeSDK.DataTypes;
 using Route4MeSDK.QueryTypes;
 
 using Route4MeSDKLibrary.DataTypes;
+using Route4MeSDKLibrary.DataTypes.V5.Facilities;
 using Route4MeSDKLibrary.QueryTypes;
+using Route4MeSDKLibrary.QueryTypes.V5.Facilities;
 
 using Route4MeSDKUnitTest.Types;
 
@@ -705,6 +707,94 @@ namespace Route4MeSDKUnitTest.Tests
             var orders = route4Me.GetOrdersUpdates(new OrderUpdatesParameters() { LastKnownTs = lastKnownTs }, out var errorString4);
 
             Assert.That(orders.Data.Where(x => x.OrderId == order.OrderId && x.Data != null && x.Data.TryGetValue("Assigned_Inspector", out var assignedInspector) && assignedInspector == newAssignedInspector).Any);
+        }
+
+        [Test]
+        public void AddReadUpdateOrder_WithFacilityIds_Test()
+        {
+            if (_skip == "yes") return;
+
+            var route4Me = new Route4MeManager(c_ApiKey);
+            var route4MeV5 = new Route4MeManagerV5(c_ApiKey);
+
+            var facilityIds = new List<string>();
+            string createdOrderId = null;
+
+            try
+            {
+                for (var i = 0; i < 2; i++)
+                {
+                    var facilityRequest = new FacilityCreateRequest
+                    {
+                        FacilityAlias = $"V4 Order Facility Test {i} {new Random().Next()}",
+                        Address = "123 Test St, Chicago, IL 60601",
+                        Coordinates = new FacilityCoordinates { Lat = 41.8781, Lng = -87.6298 },
+                        FacilityTypes = new[]
+                        {
+                            new FacilityTypeAssignment { FacilityTypeId = 1, IsDefault = true }
+                        },
+                        Status = 1
+                    };
+
+                    var createdFacility = route4MeV5.FacilityManager.CreateFacility(facilityRequest, out var facilityError);
+
+                    Assert.IsNotNull(createdFacility, "Failed to create test facility. " + facilityError);
+                    facilityIds.Add(createdFacility.FacilityId);
+                }
+
+                var initialFacilityIds = new[] { facilityIds[0] };
+
+                var orderParams = new Order
+                {
+                    Address1 = $"V4 Order Facility Test Address {new Random().Next()}",
+                    AddressAlias = $"V4 Facility Test {new Random().Next()}",
+                    CachedLat = 37.773972,
+                    CachedLng = -122.431297,
+                    FacilityIds = initialFacilityIds
+                };
+
+                var createdOrder = route4Me.AddOrder(orderParams, out var createError);
+
+                Assert.IsNotNull(createdOrder, "AddOrder with facility_ids failed. " + createError);
+                createdOrderId = createdOrder.OrderId.ToString();
+
+                var loadedOrder = route4Me.GetOrderByID(
+                    new OrderParameters { order_id = createdOrderId },
+                    out var getError);
+
+                Assert.IsNotNull(loadedOrder, "GetOrderByID after create failed. " + getError);
+                Assert.IsNotNull(loadedOrder.FacilityIds, "FacilityIds not returned on read after create.");
+                Assert.That(loadedOrder.FacilityIds, Is.EquivalentTo(initialFacilityIds));
+
+                var updatedFacilityIds = new[] { facilityIds[1] };
+                loadedOrder.FacilityIds = updatedFacilityIds;
+
+                var updatedOrder = route4Me.UpdateOrder(loadedOrder, out var updateError);
+
+                Assert.IsNotNull(updatedOrder, "UpdateOrder with facility_ids failed. " + updateError);
+
+                var reloadedOrder = route4Me.GetOrderByID(
+                    new OrderParameters { order_id = createdOrderId },
+                    out var reloadError);
+
+                Assert.IsNotNull(reloadedOrder, "GetOrderByID after update failed. " + reloadError);
+                Assert.IsNotNull(reloadedOrder.FacilityIds, "FacilityIds not returned on read after update.");
+                Assert.That(reloadedOrder.FacilityIds, Is.EquivalentTo(updatedFacilityIds));
+            }
+            finally
+            {
+                if (createdOrderId != null)
+                {
+                    try { route4Me.RemoveOrders(new[] { createdOrderId }, out _); }
+                    catch { /* ignored */ }
+                }
+
+                foreach (var fId in facilityIds)
+                {
+                    try { route4MeV5.FacilityManager.DeleteFacility(fId, out _); }
+                    catch { /* ignored */ }
+                }
+            }
         }
 
         [OneTimeTearDown]

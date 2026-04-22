@@ -351,6 +351,12 @@ namespace Route4MeSDK.DataTypes
         public int? OrganizationId { get; set; }
 
         /// <summary>
+        /// Facility IDs (hexadecimal UUID strings)
+        /// </summary>
+        [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
+        public string[] FacilityIds { get; set; }
+
+        /// <summary>
         ///     A day ID, when the order was completed.
         /// </summary>
         [DataMember(Name = "done_day_id", EmitDefaultValue = false)]
