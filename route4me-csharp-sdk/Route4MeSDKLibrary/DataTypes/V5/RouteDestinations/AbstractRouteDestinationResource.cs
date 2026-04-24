@@ -118,9 +118,9 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         [DataMember(Name = "stop_status_id")]
         public string StopStatusId { get; set; }
 
-        /// <summary>Workflow identifier associated with this stop.</summary>
+        /// <summary>Workflow identifier (hexadecimal UUID) associated with this stop.</summary>
         [DataMember(Name = "workflow_id")]
-        public int? WorkflowId { get; set; }
+        public string WorkflowId { get; set; }
 
         /// <summary>Stop type (e.g., "Dropoff", "Pickup", "Service").</summary>
         [DataMember(Name = "address_stop_type")]
