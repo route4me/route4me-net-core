@@ -131,9 +131,10 @@ jobs:
             echo "\`\`\`"
           } > gemini_prompt.txt
           
-          # Pass prompt file to Gemini (read from stdin or file if supported)
-          # If Gemini CLI doesn't support file input, we'll use the file content
-          gemini "$(cat gemini_prompt.txt)" > gemini_output.txt 2>&1
+          # Pipe prompt via stdin to avoid "Argument list too long" errors
+          # and shell expansion of diff content. --skip-trust bypasses the
+          # folder-trust prompt which would otherwise hang in CI.
+          gemini --skip-trust < gemini_prompt.txt > gemini_output.txt 2>&1
           GEMINI_EXIT_CODE=$?
           
           echo "Gemini CLI exit code: $GEMINI_EXIT_CODE"
