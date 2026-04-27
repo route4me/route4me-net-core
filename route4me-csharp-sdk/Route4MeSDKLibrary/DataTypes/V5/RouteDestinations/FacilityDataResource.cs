@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
+using Route4MeSDKLibrary.DataTypes.V5.Facilities;
+
 namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
 {
     /// <summary>
@@ -29,9 +31,9 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
     [DataContract]
     public class FacilityDataResource
     {
-        /// <summary>Unique integer identifier for the facility.</summary>
+        /// <summary>Facility identifier (32-character hexadecimal UUID).</summary>
         [DataMember(Name = "facility_id")]
-        public int? FacilityId { get; set; }
+        public string FacilityId { get; set; }
 
         /// <summary>Human-readable alias for the facility (e.g., "Main Warehouse").</summary>
         [DataMember(Name = "facility_alias")]
@@ -41,13 +43,13 @@ namespace Route4MeSDKLibrary.DataTypes.V5.RouteDestinations
         [DataMember(Name = "status")]
         public string Status { get; set; }
 
-        /// <summary>Short status code (e.g., "A").</summary>
+        /// <summary>Numeric status code (e.g., 1 for Active).</summary>
         [DataMember(Name = "status_code")]
-        public string StatusCode { get; set; }
+        public int? StatusCode { get; set; }
 
-        /// <summary>Coordinates of the facility formatted as "lat,lng" (e.g., "49.8397,24.0297").</summary>
+        /// <summary>Facility coordinates as a nested object with <c>lat</c> and <c>lng</c>.</summary>
         [DataMember(Name = "coordinates")]
-        public string Coordinates { get; set; }
+        public FacilityCoordinates Coordinates { get; set; }
 
         /// <summary>Street address of the facility.</summary>
         [DataMember(Name = "address")]
