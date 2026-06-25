@@ -1223,6 +1223,80 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Dispatches an asynchronous (tracked-batch) dynamic insert lookup job and returns a job
+        /// identifier envelope. Accepts the same input as the synchronous lookup.
+        /// </summary>
+        /// <param name="dynamicInsertRequest">Request body parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The 202 envelope containing the job id and the status/result URLs</returns>
+        public DynamicInsertJobResponse DynamicInsertRouteAddressesJob(
+                                                DynamicInsertRequest dynamicInsertRequest,
+                                                out ResultResponse resultResponse)
+        {
+            return _routeManager.DynamicInsertRouteAddressesJob(dynamicInsertRequest, out resultResponse);
+        }
+
+        /// <summary>
+        /// Dispatches an asynchronous (tracked-batch) dynamic insert lookup job asynchronously.
+        /// </summary>
+        /// <param name="dynamicInsertRequest">Request body parameters</param>
+        /// <returns>A Tuple type object containing the job envelope, a failure response,
+        /// and the job id extracted from the Location header</returns>
+        public Task<Tuple<DynamicInsertJobResponse, ResultResponse, string>> DynamicInsertRouteAddressesJobAsync(
+                                                DynamicInsertRequest dynamicInsertRequest)
+        {
+            return _routeManager.DynamicInsertRouteAddressesJobAsync(dynamicInsertRequest);
+        }
+
+        /// <summary>
+        /// Returns the HTTP-level status of a dynamic insert lookup job. The returned
+        /// <see cref="StatusResponse"/> reflects the HTTP status of the status endpoint, not the
+        /// job-state string, because the backend signals a terminal job with a redirect to the result
+        /// endpoint. To obtain the payload, poll
+        /// <see cref="GetDynamicInsertJobResult(string, out ResultResponse)"/> until its
+        /// <see cref="DynamicInsertJobResult.Result"/> is non-null.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The object containing the HTTP-level status of the job</returns>
+        public StatusResponse GetDynamicInsertJobStatus(string jobId, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetDynamicInsertJobStatus(jobId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Asynchronously returns the status of a dynamic insert lookup job.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <returns>A Tuple type object containing the job status or/and failure response</returns>
+        public Task<Tuple<StatusResponse, ResultResponse>> GetDynamicInsertJobStatusAsync(string jobId)
+        {
+            return _routeManager.GetDynamicInsertJobStatusAsync(jobId);
+        }
+
+        /// <summary>
+        /// Returns the result of a dynamic insert lookup job. The result payload matches the shape
+        /// the synchronous lookup-for-new-destination endpoint returns.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The job result containing the list of best insertion options</returns>
+        public DynamicInsertJobResult GetDynamicInsertJobResult(string jobId, out ResultResponse resultResponse)
+        {
+            return _routeManager.GetDynamicInsertJobResult(jobId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Asynchronously returns the result of a dynamic insert lookup job.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <returns>A Tuple type object containing the job result or/and failure response</returns>
+        public Task<Tuple<DynamicInsertJobResult, ResultResponse, string>> GetDynamicInsertJobResultAsync(string jobId)
+        {
+            return _routeManager.GetDynamicInsertJobResultAsync(jobId);
+        }
+
+        /// <summary>
         /// Gets the route-level custom data for the specified route.
         /// Uses GET /api/v5.0/routes/{route_id} and extracts the custom_data field.
         /// </summary>
