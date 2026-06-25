@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -247,5 +248,122 @@ public class DynamicInsertTests
         Assert.NotNull(result, "DynamicInsertRouteAddresses returned null");
         Assert.That(result.GetType(), Is.EqualTo(typeof(DynamicInsertMatchedRoute[])));
         Assert.Greater(result.Length, 0, "No matched routes returned");
+    }
+
+    [Test]
+    public void DynamicInsertRouteAddressesJob_WithRouteIds_ShouldReturnJobEnvelope()
+    {
+        // Arrange
+        var route4Me = new Route4MeManagerV5(CApiKey);
+
+        var dynamicInsertParams = BuildRequest();
+
+        // Act
+        var dispatch = route4Me.DynamicInsertRouteAddressesJob(
+            dynamicInsertParams,
+            out ResultResponse resultResponse);
+
+        // Assert - the 202 envelope carries job_id, status_url and result_url
+        Assert.NotNull(dispatch, "DynamicInsertRouteAddressesJob returned null");
+        Assert.IsNotEmpty(dispatch.JobId, "job_id should be present in the 202 body");
+        Assert.IsNotEmpty(dispatch.StatusUrl, "status_url should be present in the 202 body");
+        Assert.IsNotEmpty(dispatch.ResultUrl, "result_url should be present in the 202 body");
+    }
+
+    [Test]
+    public async Task DynamicInsertRouteAddressesJobAsync_WithRouteIds_ShouldReturnJobEnvelope()
+    {
+        // Arrange
+        var route4Me = new Route4MeManagerV5(CApiKey);
+
+        var dynamicInsertParams = BuildRequest();
+
+        // Act
+        var result = await route4Me.DynamicInsertRouteAddressesJobAsync(dynamicInsertParams);
+
+        // Assert
+        Assert.NotNull(result, "DynamicInsertRouteAddressesJobAsync returned null");
+        Assert.NotNull(result.Item1, "Job envelope should not be null");
+        Assert.IsNotEmpty(result.Item1.JobId, "job_id should be present in the 202 body");
+        Assert.IsNotEmpty(result.Item1.StatusUrl, "status_url should be present in the 202 body");
+        Assert.IsNotEmpty(result.Item1.ResultUrl, "result_url should be present in the 202 body");
+        // The job id is also surfaced from the Location header (third tuple element).
+        Assert.IsNotEmpty(result.Item3, "job id should be extracted from the Location header");
+    }
+
+    [Test]
+    public void DynamicInsertJob_FullFlow_DispatchPollResult_ShouldMatchSyncShape()
+    {
+        // Arrange
+        var route4Me = new Route4MeManagerV5(CApiKey);
+
+        var dynamicInsertParams = BuildRequest();
+
+        // Act - dispatch
+        var dispatch = route4Me.DynamicInsertRouteAddressesJob(
+            dynamicInsertParams,
+            out ResultResponse resultResponse);
+
+        Assert.NotNull(dispatch, "Dispatch returned null");
+        Assert.IsNotEmpty(dispatch.JobId, "job_id should be present");
+
+        // Act - poll status, then fetch result once terminal
+        DynamicInsertJobResult jobResult = null;
+
+        for (var attempt = 0; attempt < 30; attempt++)
+        {
+            var status = route4Me.GetDynamicInsertJobStatus(dispatch.JobId, out resultResponse);
+            Assert.NotNull(status, "Status response should not be null");
+
+            jobResult = route4Me.GetDynamicInsertJobResult(dispatch.JobId, out resultResponse);
+
+            if (jobResult?.Result != null)
+            {
+                break;
+            }
+
+            Thread.Sleep(2000);
+        }
+
+        // Assert - the result payload matches the synchronous endpoint's shape
+        Assert.NotNull(jobResult, "Job result was not produced in time");
+        Assert.IsTrue(jobResult.Status, "Job result status should be true");
+        Assert.That(jobResult.Result.GetType(), Is.EqualTo(typeof(DynamicInsertMatchedRoute[])));
+        Assert.Greater(jobResult.Result.Length, 0, "No matched routes returned");
+
+        var matchedRoute = jobResult.Result.First();
+        Assert.NotNull(matchedRoute.RouteId, "RouteId should not be null");
+        Assert.NotNull(matchedRoute.RouteName, "RouteName should not be null");
+        Assert.IsNotNull(matchedRoute.RecommendedInsertionStopNumber,
+            "RecommendedInsertionStopNumber should not be null");
+    }
+
+    [Test]
+    public void GetDynamicInsertJobResult_UnknownJobId_ShouldReturnFailure()
+    {
+        // Arrange
+        var route4Me = new Route4MeManagerV5(CApiKey);
+
+        // Act - an unknown/expired job id must not yield a result payload
+        var jobResult = route4Me.GetDynamicInsertJobResult(
+            "00000000-0000-0000-0000-000000000000",
+            out ResultResponse resultResponse);
+
+        // Assert
+        Assert.IsTrue(jobResult?.Result == null, "Unknown job id should not return a result payload");
+    }
+
+    private DynamicInsertRequest BuildRequest()
+    {
+        return new DynamicInsertRequest()
+        {
+            RouteIds = new[] { s_tdr.SD10Stops_route.RouteID },
+            Latitude = 33.1296514,
+            Longitude = -83.2485687,
+            InsertMode = DynamicInsertMode.OptimalAfterLastVisited.Description(),
+            LookupResultsLimit = 3,
+            RecommendBy = DynamicInsertRecomendBy.Distance.Description(),
+            MaxIncreasePercentAllowed = 500
+        };
     }
 }
