@@ -42,13 +42,13 @@ namespace Route4MeSDK.DataTypes
         ///     The position latitude where the address note was added
         /// </summary>
         [DataMember(Name = "lat")]
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         /// <summary>
         ///     The position longitude where the address note was added
         /// </summary>
         [DataMember(Name = "lng")]
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         /// <summary>
         ///     The activity type
