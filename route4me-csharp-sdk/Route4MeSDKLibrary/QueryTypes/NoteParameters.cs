@@ -38,8 +38,8 @@ namespace Route4MeSDK.QueryTypes
         ///         <para>Query parameter.</para>
         ///     </remarks>
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "dev_lat")]
-        public double Latitude { get; set; }
+        [HttpQueryMemberAttribute(Name = "dev_lat", EmitDefaultValue = false)]
+        public double? Latitude { get; set; }
 
         /// <summary>
         ///     Longitude of a device position.
@@ -47,8 +47,8 @@ namespace Route4MeSDK.QueryTypes
         ///         <para>Query parameter.</para>
         ///     </remarks>
         /// </summary>
-        [HttpQueryMemberAttribute(Name = "dev_lng")]
-        public double Longitude { get; set; }
+        [HttpQueryMemberAttribute(Name = "dev_lng", EmitDefaultValue = false)]
+        public double? Longitude { get; set; }
 
         /// <summary>
         ///     The type of device making this request.
