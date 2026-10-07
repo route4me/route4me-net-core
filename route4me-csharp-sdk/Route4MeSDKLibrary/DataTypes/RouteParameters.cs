@@ -557,6 +557,18 @@ namespace Route4MeSDK.DataTypes
         public double? TruckWeight { get; set; }
 
         /// <summary>
+        ///     The truck speed cap.
+        ///     <remarks>
+        ///         <para>
+        ///             For routes that have trucking directions enabled, directions generated
+        ///             will not assume the truck travels faster than this speed.
+        ///         </para>
+        ///     </remarks>
+        /// </summary>
+        [DataMember(Name = "truck_speed_cap", EmitDefaultValue = false)]
+        public double? TruckSpeedCap { get; set; }
+
+        /// <summary>
         ///     The minimum number of stops permitted per created subroute.
         /// </summary>
         [DataMember(Name = "min_tour_size", EmitDefaultValue = false)]
