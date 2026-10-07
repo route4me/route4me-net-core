@@ -557,15 +557,20 @@ namespace Route4MeSDK.DataTypes
         public double? TruckWeight { get; set; }
 
         /// <summary>
-        ///     The truck speed cap.
+        ///     The truck speed cap, in kilometers per hour.
         ///     <remarks>
         ///         <para>
-        ///             For routes that have trucking directions enabled, directions generated
+        ///             For trucking routes (travel mode Trucking), directions generated
         ///             will not assume the truck travels faster than this speed.
+        ///         </para>
+        ///         <para>
+        ///             The cap is always in km/h, whatever the route's distance unit is.
+        ///             For example, 80 caps the truck at about 50 mph. 0 leaves the speed uncapped.
         ///         </para>
         ///     </remarks>
         /// </summary>
         [DataMember(Name = "truck_speed_cap", EmitDefaultValue = false)]
+        [Range(0.0, double.MaxValue)]
         public double? TruckSpeedCap { get; set; }
 
         /// <summary>

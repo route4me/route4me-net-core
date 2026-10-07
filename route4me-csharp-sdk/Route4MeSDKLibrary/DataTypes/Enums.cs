@@ -34,7 +34,9 @@ namespace Route4MeSDK.DataTypes
     {
         [Description("Driving")] Driving,
 
-        [Description("Walking")] Walking
+        [Description("Walking")] Walking,
+
+        [Description("Trucking")] Trucking
     }
 
     /// <summary>

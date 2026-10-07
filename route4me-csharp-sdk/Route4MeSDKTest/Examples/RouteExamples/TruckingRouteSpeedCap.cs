@@ -76,12 +76,13 @@ namespace Route4MeSDK.Examples
                 Optimize = Optimize.Time.Description(),
                 DistanceUnit = DistanceUnit.MI.Description(),
                 DeviceType = DeviceType.Web.Description(),
-                TravelMode = "Trucking",
+                TravelMode = TravelMode.Trucking.Description(),
 
                 TruckHeightMeters = 4,
                 TruckLengthMeters = 12,
                 TruckWidthMeters = 3,
-                TruckSpeedCap = 55
+                // Always km/h, even when the distance unit is miles (80 km/h is about 50 mph)
+                TruckSpeedCap = 80
             };
 
             var optimizationParameters = new OptimizationParameters()
@@ -100,16 +101,21 @@ namespace Route4MeSDK.Examples
             if (!string.IsNullOrEmpty(dataObject?.OptimizationProblemId))
                 OptimizationsToRemove.Add(dataObject.OptimizationProblemId);
 
-            PrintExampleOptimizationResult(dataObject, errorString);
+            try
+            {
+                PrintExampleOptimizationResult(dataObject, errorString);
 
-            Console.WriteLine();
+                Console.WriteLine();
 
-            Console.WriteLine(
-                "TruckSpeedCap: " +
-                dataObject?.Parameters?.TruckSpeedCap
-            );
-
-            RemoveTestOptimizations();
+                Console.WriteLine(
+                    "TruckSpeedCap: " +
+                    dataObject?.Parameters?.TruckSpeedCap
+                );
+            }
+            finally
+            {
+                RemoveTestOptimizations();
+            }
         }
     }
 }

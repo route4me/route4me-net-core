@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using Newtonsoft.Json.Linq;
+
 using NUnit.Framework;
 
 using Route4MeSDK;
@@ -21,9 +26,9 @@ namespace Route4MeSDKUnitTest.Tests
             };
 
             // Same serializer the SDK uses for the request body
-            var json = R4MeUtils.SerializeObjectToJson(optimizationParameters);
+            var json = JObject.Parse(R4MeUtils.SerializeObjectToJson(optimizationParameters));
 
-            Assert.That(json, Does.Contain("\"parameters\":{\"truck_speed_cap\":80}"));
+            Assert.That(json["parameters"]?["truck_speed_cap"]?.Value<double>(), Is.EqualTo(80.0));
         }
 
         [Test]
@@ -31,13 +36,13 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var routeParameters = new RouteParameters
             {
-                TravelMode = "Trucking",
+                TravelMode = TravelMode.Trucking.Description(),
                 TruckSpeedCap = 55.5
             };
 
-            var json = R4MeUtils.SerializeObjectToJson(routeParameters, true);
+            var json = JObject.Parse(R4MeUtils.SerializeObjectToJson(routeParameters, true));
 
-            Assert.That(json, Does.Contain("\"truck_speed_cap\":55.5"));
+            Assert.That(json["truck_speed_cap"]?.Value<double>(), Is.EqualTo(55.5));
         }
 
         [Test]
@@ -45,12 +50,12 @@ namespace Route4MeSDKUnitTest.Tests
         {
             var routeParameters = new RouteParameters
             {
-                TravelMode = "Trucking"
+                TravelMode = TravelMode.Trucking.Description()
             };
 
-            var json = R4MeUtils.SerializeObjectToJson(routeParameters, true);
+            var json = JObject.Parse(R4MeUtils.SerializeObjectToJson(routeParameters, true));
 
-            Assert.That(json, Does.Not.Contain("truck_speed_cap"));
+            Assert.That(json.ContainsKey("truck_speed_cap"), Is.False);
         }
 
         [Test]
@@ -62,6 +67,44 @@ namespace Route4MeSDKUnitTest.Tests
 
             Assert.That(routeParameters, Is.Not.Null);
             Assert.That(routeParameters.TruckSpeedCap, Is.EqualTo(80.0));
+        }
+
+        [TestCase(-1.0)]
+        [TestCase(double.NaN)]
+        [TestCase(double.PositiveInfinity)]
+        public void ValidateRouteParameters_WithInvalidTruckSpeedCap_FailsValidation(double truckSpeedCap)
+        {
+            var routeParameters = new RouteParameters
+            {
+                TruckSpeedCap = truckSpeedCap
+            };
+
+            var isValid = Validator.TryValidateObject(
+                routeParameters,
+                new ValidationContext(routeParameters),
+                new List<ValidationResult>(),
+                true);
+
+            Assert.That(isValid, Is.False);
+        }
+
+        // 0 is valid: the API treats it as no cap
+        [TestCase(0.0)]
+        [TestCase(80.0)]
+        public void ValidateRouteParameters_WithValidTruckSpeedCap_PassesValidation(double truckSpeedCap)
+        {
+            var routeParameters = new RouteParameters
+            {
+                TruckSpeedCap = truckSpeedCap
+            };
+
+            var isValid = Validator.TryValidateObject(
+                routeParameters,
+                new ValidationContext(routeParameters),
+                new List<ValidationResult>(),
+                true);
+
+            Assert.That(isValid, Is.True);
         }
     }
 }
