@@ -32,6 +32,23 @@ public class RouteParametersTruckSpeedCapTests
     }
 
     [Test]
+    public void SerializeOptimizationRequest_WithZeroTruckSpeedCap_SendsZero()
+    {
+        // 0 means "no cap" to the API, so it must be sent rather than dropped as a default value
+        var optimizationParameters = new OptimizationParameters
+        {
+            Parameters = new RouteParameters
+            {
+                TruckSpeedCap = 0
+            }
+        };
+
+        var json = JObject.Parse(R4MeUtils.SerializeObjectToJson(optimizationParameters));
+
+        Assert.That(json["parameters"]?["truck_speed_cap"]?.Value<double>(), Is.EqualTo(0.0));
+    }
+
+    [Test]
     public void SerializeRouteParameters_WithTruckSpeedCap_IncludesTruckSpeedCapInPayload()
     {
         var routeParameters = new RouteParameters
@@ -69,7 +86,10 @@ public class RouteParametersTruckSpeedCapTests
         Assert.That(routeParameters.TruckSpeedCap, Is.EqualTo(80.0));
     }
 
+    // The API fails the optimization above 255 km/h
     [TestCase(-1.0)]
+    [TestCase(256.0)]
+    [TestCase(1e308)]
     [TestCase(double.NaN)]
     [TestCase(double.PositiveInfinity)]
     public void ValidateRouteParameters_WithInvalidTruckSpeedCap_FailsValidation(double truckSpeedCap)
@@ -91,6 +111,7 @@ public class RouteParametersTruckSpeedCapTests
     // 0 is valid: the API treats it as no cap
     [TestCase(0.0)]
     [TestCase(80.0)]
+    [TestCase(255.0)]
     public void ValidateRouteParameters_WithValidTruckSpeedCap_PassesValidation(double truckSpeedCap)
     {
         var routeParameters = new RouteParameters

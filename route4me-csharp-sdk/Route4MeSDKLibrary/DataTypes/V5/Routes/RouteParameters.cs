@@ -130,15 +130,7 @@ namespace Route4MeSDK.DataTypes.V5
 
         /// <summary>
         ///     The mode of travel that the directions should be optimized for.
-        ///     <para>
-        ///         Available values:
-        ///         <value>Driving</value>
-        ///         ,
-        ///         <value>Walking</value>
-        ///         ,
-        ///         <value>Trucking</value>
-        ///         .
-        ///     </para>
+        ///     <para>Available values: Driving, Walking, Trucking.</para>
         /// </summary>
         [DataMember(Name = "travel_mode", EmitDefaultValue = false)]
         public string TravelMode { get; set; }
@@ -554,20 +546,21 @@ namespace Route4MeSDK.DataTypes.V5
         public double? TruckWeight { get; set; }
 
         /// <summary>
-        ///     The truck speed cap, in kilometers per hour.
-        ///     <remarks>
-        ///         <para>
-        ///             For trucking routes (travel mode Trucking), directions generated
-        ///             will not assume the truck travels faster than this speed.
-        ///         </para>
-        ///         <para>
-        ///             The cap is always in km/h, whatever the route's distance unit is.
-        ///             For example, 80 caps the truck at about 50 mph. 0 leaves the speed uncapped.
-        ///         </para>
-        ///     </remarks>
+        ///     The truck speed cap, in kilometers per hour (0 to 255).
         /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         For trucking routes (travel mode Trucking), directions generated
+        ///         will not assume the truck travels faster than this speed.
+        ///     </para>
+        ///     <para>
+        ///         The cap is always in km/h, whatever the route's distance unit is.
+        ///         For example, 80 caps the truck at about 50 mph. 0 leaves the speed uncapped.
+        ///         The API rejects values above 255: the optimization ends in an error state.
+        ///     </para>
+        /// </remarks>
         [DataMember(Name = "truck_speed_cap", EmitDefaultValue = false)]
-        [Range(0.0, double.MaxValue)]
+        [Range(0.0, 255.0)]
         public double? TruckSpeedCap { get; set; }
 
         /// <summary>
