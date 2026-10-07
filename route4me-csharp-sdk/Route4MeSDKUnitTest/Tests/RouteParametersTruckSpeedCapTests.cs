@@ -60,8 +60,8 @@ namespace Route4MeSDKUnitTest.Tests
 
             var routeParameters = R4MeUtils.ReadObjectNew<RouteParameters>(json);
 
-            Assert.IsNotNull(routeParameters);
-            Assert.That(routeParameters.TruckSpeedCap, Is.EqualTo(80));
+            Assert.That(routeParameters, Is.Not.Null);
+            Assert.That(routeParameters.TruckSpeedCap, Is.EqualTo(80.0));
         }
     }
 }

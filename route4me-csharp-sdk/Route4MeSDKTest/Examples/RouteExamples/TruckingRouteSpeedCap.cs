@@ -95,18 +95,18 @@ namespace Route4MeSDK.Examples
                 optimizationParameters,
                 out string errorString);
 
-            OptimizationsToRemove = new List<string>()
-            {
-                dataObject?.OptimizationProblemId ?? null
-            };
+            OptimizationsToRemove = new List<string>();
+
+            if (!string.IsNullOrEmpty(dataObject?.OptimizationProblemId))
+                OptimizationsToRemove.Add(dataObject.OptimizationProblemId);
 
             PrintExampleOptimizationResult(dataObject, errorString);
 
-            Console.WriteLine("");
+            Console.WriteLine();
 
             Console.WriteLine(
                 "TruckSpeedCap: " +
-                (dataObject?.Parameters?.TruckSpeedCap ?? null)
+                dataObject?.Parameters?.TruckSpeedCap
             );
 
             RemoveTestOptimizations();

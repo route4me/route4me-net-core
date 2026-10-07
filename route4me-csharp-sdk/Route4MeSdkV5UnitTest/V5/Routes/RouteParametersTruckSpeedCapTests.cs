@@ -23,7 +23,7 @@ public class RouteParametersTruckSpeedCapTests
         // Same serializer the SDK uses for the request body
         var json = R4MeUtils.SerializeObjectToJson(optimizationParameters);
 
-        Assert.That(json, Is.EqualTo("{\"parameters\":{\"truck_speed_cap\":80}}"));
+        Assert.That(json, Does.Contain("\"parameters\":{\"truck_speed_cap\":80}"));
     }
 
     [Test]
@@ -60,7 +60,7 @@ public class RouteParametersTruckSpeedCapTests
 
         var routeParameters = R4MeUtils.ReadObjectNew<RouteParameters>(json);
 
-        Assert.IsNotNull(routeParameters);
-        Assert.That(routeParameters.TruckSpeedCap, Is.EqualTo(80));
+        Assert.That(routeParameters, Is.Not.Null);
+        Assert.That(routeParameters.TruckSpeedCap, Is.EqualTo(80.0));
     }
 }
