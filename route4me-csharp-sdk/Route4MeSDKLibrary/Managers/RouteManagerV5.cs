@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +14,7 @@ using Route4MeSDK.QueryTypes;
 using Route4MeSDK.QueryTypes.V5;
 
 using Route4MeSDKLibrary.DataTypes.V5.Routes;
+using Route4MeSDKLibrary.Resilience;
 
 using RouteParametersQuery = Route4MeSDK.QueryTypes.V5.RouteParametersQuery;
 
@@ -577,6 +580,159 @@ namespace Route4MeSDKLibrary.Managers
                 null,
                 false,
                 false);
+        }
+
+        /// <summary>
+        /// Dispatches an asynchronous lookup of the best positions to insert a new destination.
+        /// Poll <see cref="GetDynamicInsertJobStatus"/>, then fetch <see cref="GetDynamicInsertJobResult"/>.
+        /// </summary>
+        /// <param name="dynamicInsertRequest">Request body parameters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The accepted job</returns>
+        public DynamicInsertJob DispatchDynamicInsertRouteAddresses(
+                                                DynamicInsertRequest dynamicInsertRequest,
+                                                out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<DynamicInsertJob>(
+                dynamicInsertRequest,
+                R4MEInfrastructureSettingsV5.RouteAddressDynamicInsertAsync,
+                HttpMethodType.Post,
+                out resultResponse);
+        }
+
+        /// <summary>
+        /// Dispatches an asynchronous lookup of the best positions to insert a new destination asynchronously.
+        /// </summary>
+        /// <param name="dynamicInsertRequest">Request body parameters</param>
+        /// <returns>A Tuple type object containing the accepted job or/and failure response</returns>
+        public Task<Tuple<DynamicInsertJob, ResultResponse>> DispatchDynamicInsertRouteAddressesAsync(
+                                                DynamicInsertRequest dynamicInsertRequest)
+        {
+            return GetJsonObjectFromAPIAsync<DynamicInsertJob>(
+                dynamicInsertRequest,
+                R4MEInfrastructureSettingsV5.RouteAddressDynamicInsertAsync,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
+        /// Returns the status of an asynchronous dynamic insert job.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The job status</returns>
+        public DynamicInsertJobResult GetDynamicInsertJobStatus(string jobId, out ResultResponse resultResponse)
+        {
+            var result = GetDynamicInsertJobStatusAsync(jobId).GetAwaiter().GetResult();
+
+            resultResponse = result.Item2;
+
+            return result.Item1;
+        }
+
+        /// <summary>
+        /// Returns the status of an asynchronous dynamic insert job asynchronously.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <returns>A Tuple type object containing the job status or/and failure response</returns>
+        public async Task<Tuple<DynamicInsertJobResult, ResultResponse>> GetDynamicInsertJobStatusAsync(string jobId)
+        {
+            try
+            {
+                var url = R4MEInfrastructureSettingsV5.RouteAddressDynamicInsertJobStatus + "/" + jobId;
+
+                using (var response = await HttpResiliencePolicy.GetAsyncPolicy()
+                           .ExecuteAsync(async () =>
+                           {
+                               // A request message cannot be sent twice, so each retry builds a new one.
+                               using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                               {
+                                   request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
+                                   request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                                   return await NoRedirectHttpClient.Value.SendAsync(request).ConfigureAwait(false);
+                               }
+                           })
+                           .ConfigureAwait(false))
+                {
+                    // 303 means the job is done; its body carries the final status.
+                    if (response.StatusCode != HttpStatusCode.SeeOther)
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
+
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+                    return new Tuple<DynamicInsertJobResult, ResultResponse>(
+                        stream.ReadObjectNew<DynamicInsertJobResult>(), null);
+                }
+            }
+            catch (Exception e)
+            {
+                var resultResponse = new ResultResponse
+                {
+                    Status = false,
+                    Messages = new Dictionary<string, string[]> { { "Error", new[] { e.Message } } }
+                };
+
+                return new Tuple<DynamicInsertJobResult, ResultResponse>(null, resultResponse);
+            }
+        }
+
+        // The job status endpoint answers 303 when the job is done, and .NET drops the Authorization
+        // header when it follows a redirect, so the follow-up request fails with 401.
+        // This client does not follow redirects, so the 303 body can be read directly.
+        private static readonly Lazy<HttpClient> NoRedirectHttpClient = new Lazy<HttpClient>(() =>
+        {
+            var handler = Route4MeConfig.HttpMessageHandlerFactory?.Invoke() ?? new HttpClientHandler();
+
+            // A custom handler usually wraps the transport handler, so walk the chain to reach it.
+            var transport = handler;
+            while (transport is DelegatingHandler delegatingHandler)
+            {
+                transport = delegatingHandler.InnerHandler;
+            }
+
+            if (transport is HttpClientHandler httpClientHandler)
+            {
+                httpClientHandler.AllowAutoRedirect = false;
+            }
+
+            return new HttpClient(handler) { Timeout = Route4MeConfig.HttpTimeout };
+        });
+
+        /// <summary>
+        /// Returns the result of a finished asynchronous dynamic insert job.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>The job result with the best insertion options</returns>
+        public DynamicInsertJobResult GetDynamicInsertJobResult(string jobId, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<DynamicInsertJobResult>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.RouteAddressDynamicInsertJobResult + "/" + jobId,
+                HttpMethodType.Get,
+                false,
+                true,
+                out resultResponse);
+        }
+
+        /// <summary>
+        /// Returns the result of a finished asynchronous dynamic insert job asynchronously.
+        /// </summary>
+        /// <param name="jobId">Job ID</param>
+        /// <returns>A Tuple type object containing the job result or/and failure response</returns>
+        public async Task<Tuple<DynamicInsertJobResult, ResultResponse>> GetDynamicInsertJobResultAsync(string jobId)
+        {
+            var result = await GetJsonObjectFromAPIAsync<DynamicInsertJobResult>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.RouteAddressDynamicInsertJobResult + "/" + jobId,
+                HttpMethodType.Get,
+                null,
+                true,
+                false).ConfigureAwait(false);
+
+            return new Tuple<DynamicInsertJobResult, ResultResponse>(result.Item1, result.Item2);
         }
 
         /// <summary>
