@@ -248,4 +248,78 @@ public class DynamicInsertTests
         Assert.That(result.GetType(), Is.EqualTo(typeof(DynamicInsertMatchedRoute[])));
         Assert.Greater(result.Length, 0, "No matched routes returned");
     }
+
+    [Test]
+    public void DynamicInsertRouteAddresses_WithTimeWindow_ShouldReturnTimeWindowViolations()
+    {
+        // Arrange
+        var route4Me = new Route4MeManagerV5(CApiKey);
+
+        var dynamicInsertParams = new DynamicInsertRequest()
+        {
+            RouteIds = new[] { s_tdr.SD10Stops_route.RouteID },
+            Latitude = 33.1296514,
+            Longitude = -83.2485687,
+            InsertMode = DynamicInsertMode.OptimalAnywhere.Description(),
+            RecommendBy = DynamicInsertRecomendBy.Distance.Description(),
+            MaxIncreasePercentAllowed = 500,
+            // A one-minute window right after midnight cannot be met, so the inserted stop is late.
+            TimeWindowStart = 0,
+            TimeWindowEnd = 60
+        };
+
+        // Act
+        var result = route4Me.DynamicInsertRouteAddresses(
+            dynamicInsertParams,
+            out ResultResponse resultResponse);
+
+        // Assert
+        Assert.NotNull(result, "DynamicInsertRouteAddresses returned null: " + resultResponse?.Messages?.FirstOrDefault().Value?.FirstOrDefault());
+        Assert.Greater(result.Length, 0, "No matched routes returned");
+
+        var violations = result.First().TimeWindowViolations;
+        Assert.NotNull(violations, "TimeWindowViolations should not be null");
+        Assert.Greater(violations.Count, 0, "The inserted stop should violate its time window");
+        Assert.IsNotEmpty(violations.Destinations, "Violated destinations should be listed");
+    }
+
+    [Test]
+    public async Task DispatchDynamicInsertRouteAddressesAsync_ShouldReturnJobResult()
+    {
+        // Arrange
+        var route4Me = new Route4MeManagerV5(CApiKey);
+
+        var dynamicInsertParams = new DynamicInsertRequest()
+        {
+            RouteIds = new[] { s_tdr.SD10Stops_route.RouteID },
+            Latitude = 33.1296514,
+            Longitude = -83.2485687,
+            InsertMode = DynamicInsertMode.OptimalAfterLastVisited.Description(),
+            RecommendBy = DynamicInsertRecomendBy.Distance.Description(),
+            MaxIncreasePercentAllowed = 500
+        };
+
+        // Act
+        var job = await route4Me.DispatchDynamicInsertRouteAddressesAsync(dynamicInsertParams);
+
+        Assert.NotNull(job.Item1, "Dispatch returned null: " + job.Item2?.Messages?.FirstOrDefault().Value?.FirstOrDefault());
+        Assert.IsNotEmpty(job.Item1.JobId, "JobId should not be empty");
+
+        var status = await route4Me.GetDynamicInsertJobStatusAsync(job.Item1.JobId);
+        for (var i = 0; i < 30 && status.Item1?.Status == "processing"; i++)
+        {
+            await Task.Delay(1000);
+            status = await route4Me.GetDynamicInsertJobStatusAsync(job.Item1.JobId);
+        }
+
+        Assert.NotNull(status.Item1, "Job status returned null: " + status.Item2?.Messages?.FirstOrDefault().Value?.FirstOrDefault());
+        Assert.That(status.Item1.Status, Is.EqualTo("processed"), "The job should finish within 30 seconds");
+
+        var result = await route4Me.GetDynamicInsertJobResultAsync(job.Item1.JobId);
+
+        // Assert
+        Assert.NotNull(result.Item1, "Job result returned null: " + result.Item2?.Messages?.FirstOrDefault().Value?.FirstOrDefault());
+        Assert.IsNotEmpty(result.Item1.Result, "No matched routes returned");
+        Assert.NotNull(result.Item1.Result.First().RouteId, "RouteId should not be null");
+    }
 }
