@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -655,9 +655,18 @@ namespace Route4MeSDKLibrary.Managers
                            .ConfigureAwait(false))
                 {
                     // 303 means the job is done; its body carries the final status.
-                    if (response.StatusCode != HttpStatusCode.SeeOther)
+                    if (response.StatusCode != HttpStatusCode.SeeOther && !response.IsSuccessStatusCode)
                     {
-                        response.EnsureSuccessStatusCode();
+                        var errorMessageContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                        return new Tuple<DynamicInsertJobResult, ResultResponse>(null, new ResultResponse
+                        {
+                            Status = false,
+                            Messages = new Dictionary<string, string[]>
+                            {
+                                { "ErrorMessageContent", new[] { errorMessageContent } }
+                            }
+                        });
                     }
 
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
@@ -692,10 +701,8 @@ namespace Route4MeSDKLibrary.Managers
                 transport = delegatingHandler.InnerHandler;
             }
 
-            if (transport is HttpClientHandler httpClientHandler)
-            {
-                httpClientHandler.AllowAutoRedirect = false;
-            }
+            // Reflection also reaches SocketsHttpHandler, which netstandard2.0 cannot reference.
+            transport?.GetType().GetProperty("AllowAutoRedirect")?.SetValue(transport, false);
 
             return new HttpClient(handler) { Timeout = Route4MeConfig.HttpTimeout };
         });
