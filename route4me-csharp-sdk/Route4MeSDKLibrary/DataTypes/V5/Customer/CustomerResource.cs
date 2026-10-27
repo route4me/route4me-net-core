@@ -115,5 +115,17 @@ namespace Route4MeSDKLibrary.DataTypes.V5.Customers
         /// </summary>
         [DataMember(Name = "facilities", EmitDefaultValue = false)]
         public Facility[] Facilities { get; set; }
+
+        /// <summary>
+        /// Customer importance (priority) ID
+        /// </summary>
+        [DataMember(Name = "priority_id", EmitDefaultValue = false)]
+        public string PriorityId { get; set; }
+
+        /// <summary>
+        /// Customer importance (priority) name
+        /// </summary>
+        [DataMember(Name = "priority_label", EmitDefaultValue = false)]
+        public string PriorityLabel { get; set; }
     }
 }

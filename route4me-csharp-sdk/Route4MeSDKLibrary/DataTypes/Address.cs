@@ -471,6 +471,12 @@ namespace Route4MeSDK.DataTypes
         public int? Importance { get; set; }
 
         /// <summary>
+        ///     ID of the customer this stop belongs to. Links the stop to the customer's importance.
+        /// </summary>
+        [DataMember(Name = "customer_id", EmitDefaultValue = false)]
+        public string CustomerId { get; set; }
+
+        /// <summary>
         ///     Curbside latitude.
         ///     Generate optimal routes and driving directions to this curbside latitude.
         /// </summary>

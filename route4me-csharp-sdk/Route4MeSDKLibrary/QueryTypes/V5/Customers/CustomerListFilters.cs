@@ -49,5 +49,11 @@ namespace Route4MeSDKLibrary.QueryTypes.V5.Customers
 
         [DataMember(Name = "facility_ids", EmitDefaultValue = false)]
         public string[] FacilityIds { get; set; }
+
+        /// <summary>
+        /// Customer importance (priority) IDs. Use "empty" to match customers with no importance.
+        /// </summary>
+        [DataMember(Name = "priority_id", EmitDefaultValue = false)]
+        public string[] PriorityId { get; set; }
     }
 }

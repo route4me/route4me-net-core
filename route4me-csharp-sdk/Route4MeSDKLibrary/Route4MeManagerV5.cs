@@ -2663,6 +2663,111 @@ namespace Route4MeSDK
             return _customerManager.DeleteCustomerAsync(parameters);
         }
 
+        /// <summary>
+        /// Get the customer importance (priority) levels
+        /// </summary>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Customer priority list</returns>
+        public CustomerPriorityListResponse GetCustomerPriorities(out ResultResponse resultResponse)
+        {
+            return _customerManager.GetCustomerPriorities(out resultResponse);
+        }
+
+        /// <summary>
+        /// Get the customer importance (priority) levels (async)
+        /// </summary>
+        /// <returns>Customer priority list</returns>
+        public Task<Tuple<CustomerPriorityListResponse, ResultResponse>> GetCustomerPrioritiesAsync()
+        {
+            return _customerManager.GetCustomerPrioritiesAsync();
+        }
+
+        /// <summary>
+        /// Get a customer importance (priority) level by ID
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Customer priority</returns>
+        public CustomerPriorityResource GetCustomerPriority(string priorityId, out ResultResponse resultResponse)
+        {
+            return _customerManager.GetCustomerPriority(priorityId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Get a customer importance (priority) level by ID (async)
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID</param>
+        /// <returns>Customer priority</returns>
+        public Task<Tuple<CustomerPriorityResource, ResultResponse>> GetCustomerPriorityAsync(string priorityId)
+        {
+            return _customerManager.GetCustomerPriorityAsync(priorityId);
+        }
+
+        /// <summary>
+        /// Create a customer importance (priority) level
+        /// </summary>
+        /// <param name="request">Request body</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Created customer priority</returns>
+        public CustomerPriorityResource CreateCustomerPriority(CustomerPriorityRequest request, out ResultResponse resultResponse)
+        {
+            return _customerManager.CreateCustomerPriority(request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Create a customer importance (priority) level (async)
+        /// </summary>
+        /// <param name="request">Request body</param>
+        /// <returns>Created customer priority</returns>
+        public Task<Tuple<CustomerPriorityResource, ResultResponse>> CreateCustomerPriorityAsync(CustomerPriorityRequest request)
+        {
+            return _customerManager.CreateCustomerPriorityAsync(request);
+        }
+
+        /// <summary>
+        /// Update a customer importance (priority) level. The name is required.
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID</param>
+        /// <param name="request">Request body</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Updated customer priority</returns>
+        public CustomerPriorityResource UpdateCustomerPriority(string priorityId, CustomerPriorityRequest request, out ResultResponse resultResponse)
+        {
+            return _customerManager.UpdateCustomerPriority(priorityId, request, out resultResponse);
+        }
+
+        /// <summary>
+        /// Update a customer importance (priority) level (async). The name is required.
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID</param>
+        /// <param name="request">Request body</param>
+        /// <returns>Updated customer priority</returns>
+        public Task<Tuple<CustomerPriorityResource, ResultResponse>> UpdateCustomerPriorityAsync(string priorityId, CustomerPriorityRequest request)
+        {
+            return _customerManager.UpdateCustomerPriorityAsync(priorityId, request);
+        }
+
+        /// <summary>
+        /// Delete a customer importance (priority) level
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID</param>
+        /// <param name="resultResponse">Failure response</param>
+        /// <returns>Result status</returns>
+        public ResultResponse DeleteCustomerPriority(string priorityId, out ResultResponse resultResponse)
+        {
+            return _customerManager.DeleteCustomerPriority(priorityId, out resultResponse);
+        }
+
+        /// <summary>
+        /// Delete a customer importance (priority) level (async)
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID</param>
+        /// <returns>Result status</returns>
+        public Task<Tuple<ResultResponse, ResultResponse>> DeleteCustomerPriorityAsync(string priorityId)
+        {
+            return _customerManager.DeleteCustomerPriorityAsync(priorityId);
+        }
+
         #endregion
 
         #region Facilities
