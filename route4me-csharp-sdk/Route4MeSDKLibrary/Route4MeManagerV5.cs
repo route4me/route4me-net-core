@@ -2751,9 +2751,9 @@ namespace Route4MeSDK
         /// Delete a customer importance (priority) level
         /// </summary>
         /// <param name="priorityId">Customer priority ID</param>
-        /// <param name="resultResponse">Failure response</param>
-        /// <returns>Result status</returns>
-        public ResultResponse DeleteCustomerPriority(string priorityId, out ResultResponse resultResponse)
+        /// <param name="resultResponse">Failure response. Null on success.</param>
+        /// <returns>True if the priority was deleted</returns>
+        public bool DeleteCustomerPriority(string priorityId, out ResultResponse resultResponse)
         {
             return _customerManager.DeleteCustomerPriority(priorityId, out resultResponse);
         }
@@ -2762,8 +2762,8 @@ namespace Route4MeSDK
         /// Delete a customer importance (priority) level (async)
         /// </summary>
         /// <param name="priorityId">Customer priority ID</param>
-        /// <returns>Result status</returns>
-        public Task<Tuple<ResultResponse, ResultResponse>> DeleteCustomerPriorityAsync(string priorityId)
+        /// <returns>True if the priority was deleted, and the failure response (null on success)</returns>
+        public Task<Tuple<bool, ResultResponse>> DeleteCustomerPriorityAsync(string priorityId)
         {
             return _customerManager.DeleteCustomerPriorityAsync(priorityId);
         }

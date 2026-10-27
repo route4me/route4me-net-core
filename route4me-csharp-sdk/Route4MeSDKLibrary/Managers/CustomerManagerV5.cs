@@ -375,67 +375,55 @@ namespace Route4MeSDKLibrary.Managers
         ///     Delete a customer importance (priority) level. The API clears it from customers asynchronously.
         /// </summary>
         /// <param name="priorityId">Customer priority ID.</param>
-        /// <param name="resultResponse">Failing response.</param>
-        /// <returns>Status result.</returns>
-        public ResultResponse DeleteCustomerPriority(string priorityId, out ResultResponse resultResponse)
+        /// <param name="resultResponse">Failing response. Null on success.</param>
+        /// <returns>True if the priority was deleted.</returns>
+        public bool DeleteCustomerPriority(string priorityId, out ResultResponse resultResponse)
         {
-            var response = GetJsonObjectFromAPI<ResultResponse>(
+            // Newtonsoft parsing reads the empty 204 body as null instead of throwing,
+            // so resultResponse is set only on a real failure.
+            GetJsonObjectFromAPI<StatusResponse>(
                 new GenericParameters(),
                 CustomerPriorityUrl(priorityId),
                 HttpMethodType.Delete,
+                false,
+                true,
                 out resultResponse);
 
-            // Handle empty or null response (204 No Content)
-            if (response == null && (resultResponse == null || resultResponse.Code == 0))
-            {
-                resultResponse = PriorityDeletedResponse();
-            }
-
-            return resultResponse;
+            return resultResponse == null;
         }
 
         /// <summary>
         ///     Delete a customer importance (priority) level (async).
         /// </summary>
         /// <param name="priorityId">Customer priority ID.</param>
-        /// <returns>Status result.</returns>
-        public async Task<Tuple<ResultResponse, ResultResponse>> DeleteCustomerPriorityAsync(string priorityId)
+        /// <returns>True if the priority was deleted, and the failing response (null on success).</returns>
+        public async Task<Tuple<bool, ResultResponse>> DeleteCustomerPriorityAsync(string priorityId)
         {
-            var responseTuple = await GetJsonObjectFromAPIAsync<ResultResponse>(
+            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(
                 new GenericParameters(),
                 CustomerPriorityUrl(priorityId),
-                HttpMethodType.Delete);
+                HttpMethodType.Delete,
+                null,
+                true,
+                false).ConfigureAwait(false);
 
-            var result = responseTuple?.Item1;
-            var meta = responseTuple?.Item2;
-
-            // If the API returned 204 or no content at all, it's a success.
-            if (result == null && (meta == null || meta.Code == 0 || meta.Code == 204))
+            // The async call does not check the HTTP status of a DELETE; StatusResponse.Status carries it.
+            if (result.Item2 == null && result.Item1?.Status == false)
             {
-                var successResponse = PriorityDeletedResponse();
-                return Tuple.Create(successResponse, successResponse);
+                return Tuple.Create(false, new ResultResponse { Status = false, Code = result.Item1.StatusCode ?? 0 });
             }
 
-            return responseTuple;
+            return Tuple.Create(result.Item2 == null, result.Item2);
         }
 
         private static string CustomerPriorityUrl(string priorityId)
         {
-            return R4MEInfrastructureSettingsV5.CustomerPriorityById.Replace("{priority_id}", priorityId);
-        }
-
-        private static ResultResponse PriorityDeletedResponse()
-        {
-            return new ResultResponse
+            if (string.IsNullOrWhiteSpace(priorityId))
             {
-                Status = true,
-                Code = 204,
-                ExitCode = 0,
-                Messages = new Dictionary<string, string[]>
-                {
-                    { "Info", new[] { "No Content (204) — Customer priority deleted successfully." } }
-                }
-            };
+                throw new ArgumentException("Customer priority ID is required.", nameof(priorityId));
+            }
+
+            return R4MEInfrastructureSettingsV5.CustomerPriorityById.Replace("{priority_id}", Uri.EscapeDataString(priorityId));
         }
 
         #endregion
