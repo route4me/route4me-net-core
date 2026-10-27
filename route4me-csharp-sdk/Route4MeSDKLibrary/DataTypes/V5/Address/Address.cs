@@ -476,6 +476,13 @@ namespace Route4MeSDK.DataTypes.V5
         public int? Priority { get; set; }
 
         /// <summary>
+        ///     The stop's own importance, used when the optimization sets use_customer_importance.
+        ///     1 is the most important. It wins over the importance of the stop's customer.
+        /// </summary>
+        [DataMember(Name = "importance", EmitDefaultValue = false)]
+        public int? Importance { get; set; }
+
+        /// <summary>
         ///     Curbside latitude.
         ///     Generate optimal routes and driving directions to this curbside latitude.
         /// </summary>

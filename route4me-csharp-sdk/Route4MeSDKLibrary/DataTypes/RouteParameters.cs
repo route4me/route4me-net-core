@@ -727,6 +727,13 @@ namespace Route4MeSDK.DataTypes
         /// </summary>
         [DataMember(Name = "breaks", EmitDefaultValue = false)]
         public OptimizationBreak[] Breaks { get; set; }
+
+        /// <summary>
+        /// If true, the optimization ranks stops by the importance of the stop or its customer.
+        /// If not set, the account default applies.
+        /// </summary>
+        [DataMember(Name = "use_customer_importance", EmitDefaultValue = false)]
+        public bool? UseCustomerImportance { get; set; }
     }
 
     /// <summary>
