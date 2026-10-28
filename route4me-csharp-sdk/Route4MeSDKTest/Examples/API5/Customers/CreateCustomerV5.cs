@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Route4MeSDKLibrary.DataTypes.V5.Customers;
 
@@ -17,7 +18,9 @@ namespace Route4MeSDK.Examples
             {
                 Name = "Test Customer " + DateTime.Now.ToString("yyyyMMddHHmmss"),
                 ExternalId = Guid.NewGuid().ToString("N"),
-                Status = 1
+                Status = 1,
+                // Required: the team member accountable for the customer.
+                AccountablePersonId = route4Me.GetTeamMembers(out _)?.FirstOrDefault()?.MemberId
             };
 
             var customer = route4Me.CreateCustomer(request, out var resultResponse);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Route4MeSDKLibrary.DataTypes.V5.Customers;
 using Route4MeSDKLibrary.Managers;
@@ -18,7 +19,9 @@ namespace Route4MeSDK.Examples
                 ExternalId = "EXT-" + Guid.NewGuid().ToString("N").Substring(0, 8),
                 Status = 1,
                 Currency = "USD",
-                TaxId = "TAX-" + (new Random()).Next(1000, 9999)
+                TaxId = "TAX-" + (new Random()).Next(1000, 9999),
+                // Required: the team member accountable for the customer.
+                AccountablePersonId = new Route4MeManagerV5(ActualApiKey).GetTeamMembers(out _)?.FirstOrDefault()?.MemberId
             };
 
             var createdCustomer = route4Me.CreateCustomer(createRequest, out var createResponse);
