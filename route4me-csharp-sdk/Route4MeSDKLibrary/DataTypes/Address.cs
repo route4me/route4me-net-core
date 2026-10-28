@@ -471,7 +471,8 @@ namespace Route4MeSDK.DataTypes
         public int? Importance { get; set; }
 
         /// <summary>
-        ///     ID of the customer this stop belongs to. Links the stop to the customer's importance.
+        ///     ID of the customer this stop belongs to. Returned on every stop and accepted when updating a route address.
+        ///     Ignored when creating an optimization: there the stop's customer comes from its address book contact or order.
         /// </summary>
         [DataMember(Name = "customer_id", EmitDefaultValue = false)]
         public string CustomerId { get; set; }
