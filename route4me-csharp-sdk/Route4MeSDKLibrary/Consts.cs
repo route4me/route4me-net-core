@@ -315,6 +315,8 @@ namespace Route4MeSDK
         public const string Customers = MainHost + "/customers";
         public const string CustomersList = Customers + "/list";
         public const string CustomersById = Customers + "/{customer_id}";
+        public const string CustomerPriorities = Customers + "/priorities";
+        public const string CustomerPriorityById = CustomerPriorities + "/{priority_id}";
 
         #endregion
 

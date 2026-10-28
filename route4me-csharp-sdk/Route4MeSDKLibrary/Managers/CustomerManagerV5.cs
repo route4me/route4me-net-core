@@ -256,5 +256,176 @@ namespace Route4MeSDKLibrary.Managers
         }
 
         #endregion
+
+        #region Customer Priorities
+
+        /// <summary>
+        ///     Get the customer importance (priority) levels.
+        /// </summary>
+        /// <param name="resultResponse">Failing response.</param>
+        /// <returns>Customer priority list response.</returns>
+        public CustomerPriorityListResponse GetCustomerPriorities(out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<CustomerPriorityListResponse>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.CustomerPriorities,
+                HttpMethodType.Get,
+                out resultResponse);
+        }
+
+        /// <summary>
+        ///     Get the customer importance (priority) levels (async).
+        /// </summary>
+        /// <returns>Customer priority list response.</returns>
+        public Task<Tuple<CustomerPriorityListResponse, ResultResponse>> GetCustomerPrioritiesAsync()
+        {
+            return GetJsonObjectFromAPIAsync<CustomerPriorityListResponse>(
+                new GenericParameters(),
+                R4MEInfrastructureSettingsV5.CustomerPriorities,
+                HttpMethodType.Get);
+        }
+
+        /// <summary>
+        ///     Get a customer importance (priority) level by ID.
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID.</param>
+        /// <param name="resultResponse">Failing response.</param>
+        /// <returns>Customer priority.</returns>
+        public CustomerPriorityResource GetCustomerPriority(string priorityId, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<CustomerPriorityResource>(
+                new GenericParameters(),
+                CustomerPriorityUrl(priorityId),
+                HttpMethodType.Get,
+                out resultResponse);
+        }
+
+        /// <summary>
+        ///     Get a customer importance (priority) level by ID (async).
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID.</param>
+        /// <returns>Customer priority.</returns>
+        public Task<Tuple<CustomerPriorityResource, ResultResponse>> GetCustomerPriorityAsync(string priorityId)
+        {
+            return GetJsonObjectFromAPIAsync<CustomerPriorityResource>(
+                new GenericParameters(),
+                CustomerPriorityUrl(priorityId),
+                HttpMethodType.Get);
+        }
+
+        /// <summary>
+        ///     Create a customer importance (priority) level.
+        /// </summary>
+        /// <param name="request">Create customer priority request.</param>
+        /// <param name="resultResponse">Failing response.</param>
+        /// <returns>Created customer priority.</returns>
+        public CustomerPriorityResource CreateCustomerPriority(CustomerPriorityRequest request, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<CustomerPriorityResource>(
+                request,
+                R4MEInfrastructureSettingsV5.CustomerPriorities,
+                HttpMethodType.Post,
+                out resultResponse);
+        }
+
+        /// <summary>
+        ///     Create a customer importance (priority) level (async).
+        /// </summary>
+        /// <param name="request">Create customer priority request.</param>
+        /// <returns>Created customer priority.</returns>
+        public Task<Tuple<CustomerPriorityResource, ResultResponse>> CreateCustomerPriorityAsync(CustomerPriorityRequest request)
+        {
+            return GetJsonObjectFromAPIAsync<CustomerPriorityResource>(
+                request,
+                R4MEInfrastructureSettingsV5.CustomerPriorities,
+                HttpMethodType.Post);
+        }
+
+        /// <summary>
+        ///     Update a customer importance (priority) level. The name is required.
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID.</param>
+        /// <param name="request">Update customer priority request.</param>
+        /// <param name="resultResponse">Failing response.</param>
+        /// <returns>Updated customer priority.</returns>
+        public CustomerPriorityResource UpdateCustomerPriority(string priorityId, CustomerPriorityRequest request, out ResultResponse resultResponse)
+        {
+            return GetJsonObjectFromAPI<CustomerPriorityResource>(
+                request,
+                CustomerPriorityUrl(priorityId),
+                HttpMethodType.Put,
+                out resultResponse);
+        }
+
+        /// <summary>
+        ///     Update a customer importance (priority) level (async). The name is required.
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID.</param>
+        /// <param name="request">Update customer priority request.</param>
+        /// <returns>Updated customer priority.</returns>
+        public Task<Tuple<CustomerPriorityResource, ResultResponse>> UpdateCustomerPriorityAsync(string priorityId, CustomerPriorityRequest request)
+        {
+            return GetJsonObjectFromAPIAsync<CustomerPriorityResource>(
+                request,
+                CustomerPriorityUrl(priorityId),
+                HttpMethodType.Put);
+        }
+
+        /// <summary>
+        ///     Delete a customer importance (priority) level. The API clears it from customers asynchronously.
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID.</param>
+        /// <param name="resultResponse">Failing response. Null on success.</param>
+        /// <returns>True if the priority was deleted.</returns>
+        public bool DeleteCustomerPriority(string priorityId, out ResultResponse resultResponse)
+        {
+            // Newtonsoft parsing reads the empty 204 body as null instead of throwing,
+            // so resultResponse is set only on a real failure.
+            GetJsonObjectFromAPI<StatusResponse>(
+                new GenericParameters(),
+                CustomerPriorityUrl(priorityId),
+                HttpMethodType.Delete,
+                false,
+                true,
+                out resultResponse);
+
+            return resultResponse == null;
+        }
+
+        /// <summary>
+        ///     Delete a customer importance (priority) level (async).
+        /// </summary>
+        /// <param name="priorityId">Customer priority ID.</param>
+        /// <returns>True if the priority was deleted, and the failing response (null on success).</returns>
+        public async Task<Tuple<bool, ResultResponse>> DeleteCustomerPriorityAsync(string priorityId)
+        {
+            var result = await GetJsonObjectFromAPIAsync<StatusResponse>(
+                new GenericParameters(),
+                CustomerPriorityUrl(priorityId),
+                HttpMethodType.Delete,
+                null,
+                true,
+                false).ConfigureAwait(false);
+
+            // The async call does not check the HTTP status of a DELETE; StatusResponse.Status carries it.
+            if (result.Item2 == null && result.Item1?.Status == false)
+            {
+                return Tuple.Create(false, new ResultResponse { Status = false, Code = result.Item1.StatusCode ?? 0 });
+            }
+
+            return Tuple.Create(result.Item2 == null, result.Item2);
+        }
+
+        private static string CustomerPriorityUrl(string priorityId)
+        {
+            if (string.IsNullOrWhiteSpace(priorityId))
+            {
+                throw new ArgumentException("Customer priority ID is required.", nameof(priorityId));
+            }
+
+            return R4MEInfrastructureSettingsV5.CustomerPriorityById.Replace("{priority_id}", Uri.EscapeDataString(priorityId));
+        }
+
+        #endregion
     }
 }
