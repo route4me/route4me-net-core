@@ -1289,6 +1289,31 @@ namespace Route4MeSDK
         }
 
         /// <summary>
+        /// Suggests where each route needs refuelling, with fuel stations along the way
+        /// and the stop after which to insert each one. The route itself is not changed.
+        /// </summary>
+        /// <param name="refuelRequest">Routes named one by one, or the Routes list filters</param>
+        /// <param name="resultResponse">Failing response</param>
+        /// <returns>Per-route suggestions in the account units</returns>
+        public RouteRefuelSuggestionsResponse SuggestRouteRefuels(
+                                                RouteRefuelSuggestionsRequest refuelRequest,
+                                                out ResultResponse resultResponse)
+        {
+            return _routeManager.SuggestRouteRefuels(refuelRequest, out resultResponse);
+        }
+
+        /// <summary>
+        /// Suggests where each route needs refuelling asynchronously.
+        /// </summary>
+        /// <param name="refuelRequest">Routes named one by one, or the Routes list filters</param>
+        /// <returns>A Tuple type object containing the per-route suggestions or/and failure response</returns>
+        public Task<Tuple<RouteRefuelSuggestionsResponse, ResultResponse>> SuggestRouteRefuelsAsync(
+                                                RouteRefuelSuggestionsRequest refuelRequest)
+        {
+            return _routeManager.SuggestRouteRefuelsAsync(refuelRequest);
+        }
+
+        /// <summary>
         /// Gets the route-level custom data for the specified route.
         /// Uses GET /api/v5.0/routes/{route_id} and extracts the custom_data field.
         /// </summary>

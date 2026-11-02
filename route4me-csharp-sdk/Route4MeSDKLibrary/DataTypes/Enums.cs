@@ -229,7 +229,9 @@ namespace Route4MeSDK.DataTypes
 
         [Description("VISIT")] Visit,
 
-        [Description("DRIVEBY")] DriverBy
+        [Description("DRIVEBY")] DriverBy,
+
+        [Description("REFUEL")] Refuel
     }
 
     /// <summary>

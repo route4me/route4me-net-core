@@ -48,7 +48,7 @@ namespace Route4MeSDK
 
         private static readonly string[] AddressStopTypes =
         {
-            "DELIVERY", "PICKUP", "BREAK", "MEETUP", "SERVICE", "VISIT", "DRIVEBY"
+            "DELIVERY", "PICKUP", "BREAK", "MEETUP", "SERVICE", "VISIT", "DRIVEBY", "REFUEL"
         };
 
         public static ValidationResult ValidateMonthlyNthN(int N)
