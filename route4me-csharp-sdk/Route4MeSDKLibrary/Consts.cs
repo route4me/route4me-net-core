@@ -129,6 +129,7 @@ namespace Route4MeSDK
         public const string RouteAddressDynamicInsertAsync = RouteAddressDynamicInsert + "/async";
         public const string RouteAddressDynamicInsertJobStatus = RouteAddressDynamicInsert + "/job-tracker/status";
         public const string RouteAddressDynamicInsertJobResult = RouteAddressDynamicInsert + "/job-tracker/result";
+        public const string RouteRefuelSuggestions = MainHost + "/routes/refuel-suggestions";
 
         [Obsolete("Use RouteCustomDataTemplate and replace {route_id} with the actual route ID.")]
         public const string RouteCustomData = MainHost + "/route-custom-data";
