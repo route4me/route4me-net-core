@@ -65,6 +65,7 @@ namespace Route4MeSDKTest
                 examples.Route300Stops();
                 examples.SingleDriverRoute10Stops();
                 examples.RouteSlowdown();
+                examples.TruckingRouteSpeedCap();
                 examples.SingleDriverRoundTrip();
                 examples.SingleDepotMultipleDriverNoTimeWindow();
                 examples.SingleDriverMultipleTimeWindows();
